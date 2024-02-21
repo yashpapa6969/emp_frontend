@@ -36,9 +36,9 @@ const boxData = [
     route: "/getAllClient",
   },
   {
-    title: "Employee Information",
-    buttonLabel: "View Employee Information",
-    route: "/getAllEmp",
+    title: "Create Employee",
+    buttonLabel: "Create Here",
+    route: "/createEmp",
   },
   // Add more box data as needed
 ];

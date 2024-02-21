@@ -9,6 +9,7 @@ import UserInfo from "./components/UserInfo";
 import GetAllManager from "./components/GetAllManager";
 import GetAllEmp from "./components/GetAllEmp";
 import GetAllClient from "./components/GetAllClient";
+import CreateEmp from "./components/CreateEmp";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/getAllManager" element={<GetAllManager />} />
           <Route path="/getAllEmp" element={<GetAllEmp />} />
           <Route path="/getAllClient" element={<GetAllClient />} />
+          <Route path="/createEmp" element={<CreateEmp />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/error" />} />
