@@ -2,13 +2,21 @@
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Box, Button, FormControl, FormLabel, Input,Text } from "@chakra-ui/react";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { login } from "../store/slice/authSlice";
 import Navbar from "./Navbar";
-import { toast } from "react-toastify";
-import { setUser } from "../store/slice/UserSlice"; // Import setUser action from userSlice
+import { setUser } from "../store/slice/UserSlice";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -27,26 +35,32 @@ const Login = () => {
           password,
         }
       );
-      if (response.data.status === "success") {
-        dispatch(login());
-        dispatch(setUser(response.data.employee)); // Dispatch user data to Redux store
-        navigate("/home");
-        console.log("Login successful!");
-        console.log(response.data.message);
-        toast.success(response.data.message);
-      } else {
-        setError("Invalid credentials");
-      }
+     if (response.status === 200) {
+       dispatch(login());
+       dispatch(setUser(response.data.employee));
+       toast.success(response.data.message);
+       navigate("/home"); 
+       console.log("Login successful!");
+       console.log(response.data.message);
+     } else {
+       toast.error(error.response.data.message);
+       setError("Invalid credentials");
+     }
     } catch (error) {
       console.error("Error logging in:", error);
-      toast.error(error.response.data.message);
-      setError("An error occurred. Please try again later.");
+      if (error.response) {
+        // Check if there's a response object in the error
+        toast.error(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
     }
   };
 
   return (
     <>
       <Navbar></Navbar>
+      <ToastContainer position="top-center" autoClose={3000} />
       <Box
         maxW="md"
         mx="auto"

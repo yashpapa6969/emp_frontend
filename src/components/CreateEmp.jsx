@@ -60,30 +60,54 @@ const CreateEmp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
   };
 
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, dob: date });
-  };
-  const handleJoiningDateChange = (date) => {
-    setFormData({ ...formData, joiningDate: date });
-  };
+const handleDateChange = (date) => {
+  setFormData({ ...formData, dob: date });
+};
+const handleJoiningDateChange = (date) => {
+  setFormData({ ...formData, joiningDate: date });
+};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
-        formData
-      )
-      .then((response) => {
-        toast.success(response.data.message);
-      })
-      .catch((error) => {
-        console.error("Error creating employee:", error);
-        toast.error("Failed to create employee");
-      });
-  };
+
+ const handleSubmit = (e) => {
+   e.preventDefault();
+
+   // Assuming formData is an object containing the form data
+   // Modify dob and joining date formats here
+   const modifiedFormData = {
+     ...formData,
+     dob: formatDate(formData.dob),
+     joiningDate: formatDate(formData.joiningDate),
+   };
+
+   axios
+     .post(
+       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
+       modifiedFormData
+     )
+     .then((response) => {
+       toast.success(response.data.message);
+     })
+     .catch((error) => {
+       console.error("Error creating employee:", error);
+       toast.error("Failed to create employee");
+     });
+ };
+
+const formatDate = (dateString) => {
+  if (!dateString || typeof dateString !== "string") {
+    return dateString; // return as is if dateString is not valid
+  }
+  const parts = dateString.split("-");
+  if (parts.length !== 3) {
+    return dateString; // return as is if dateString doesn't have 3 parts
+  }
+  const [year, month, day] = parts;
+  return `${day}${month}${year}`;
+};
+
 
   return (
     <>
