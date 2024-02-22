@@ -76,10 +76,11 @@ const Login = () => {
         borderRadius="lg"
       >
         <Text
-          bgGradient="linear(to-r, green.500, yellow.500)"
-          bgClip="text"
+          color="black"
           fontSize="5xl"
           fontWeight="extrabold"
+          textAlign="center"
+          mb={4}
         >
           Employee Login
         </Text>
@@ -105,7 +106,7 @@ const Login = () => {
               {error}
             </Box>
           )}
-          <Button type="submit" colorScheme="teal" mt={4} w="100%">
+          <Button type="submit" colorScheme="green" mt={4} w="100%">
             Login
           </Button>
         </form>
