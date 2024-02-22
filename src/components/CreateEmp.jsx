@@ -96,17 +96,7 @@ const handleJoiningDateChange = (date) => {
      });
  };
 
-const formatDate = (dateString) => {
-  if (!dateString || typeof dateString !== "string") {
-    return dateString; // return as is if dateString is not valid
-  }
-  const parts = dateString.split("-");
-  if (parts.length !== 3) {
-    return dateString; // return as is if dateString doesn't have 3 parts
-  }
-  const [year, month, day] = parts;
-  return `${day}${month}${year}`;
-};
+
 
 
   return (

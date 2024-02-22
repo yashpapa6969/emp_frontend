@@ -47,7 +47,7 @@ const boxData = [
 const generateGradient = (index) => {
   return index % 2 === 0
     ? "linear(to-l, #7928CA, #FF0080)"
-    : "linear(to-r, green.500, yellow.500)";
+    : "linear(to-r, green.500, blue.500)";
 };
 
 function Home() {
@@ -64,20 +64,24 @@ function Home() {
             overflow="hidden"
             bg="white"
             boxShadow="md"
+            bgGradient={generateGradient(index)}
             p="4"
             mt="4"
             flexBasis={{ base: "100%", md: "30%" }}
           >
             <Text
-              bgGradient={generateGradient(index)}
               bgClip="text"
               fontSize="3xl"
               fontWeight="extrabold"
+              color="white"
+              textAlign="center"
             >
               {data.title}
             </Text>
             <Link to={data.route}>
-              <Button colorScheme="blue">{data.buttonLabel}</Button>
+              <Button  mx="auto" display="block" mt={2}>
+                {data.buttonLabel}
+              </Button>
             </Link>
           </Box>
         ))}

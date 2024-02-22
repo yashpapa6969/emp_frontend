@@ -43,7 +43,7 @@ const UserInfo = () => {
           width="400px"
           boxShadow="md"
           textAlign="left"
-          bgGradient="linear(to-r, yellow.500,pink.500)"
+          bgGradient="linear(to-r, red.500,blue.500)"
           color="white"
         >
           <Text fontWeight="bold" mb="4" fontSize="2xl" textAlign="center">
