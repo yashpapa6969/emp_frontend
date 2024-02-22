@@ -45,10 +45,13 @@ const boxData = [
     buttonLabel: "Create Here",
     route: "/createClient",
   },
-  // Add more box data as needed
+  {
+    title: "Create Project",
+    buttonLabel: "Create Here",
+    route: "/createProject",
+  },
 ];
 
-// Function to generate alternating gradients
 const generateGradient = (index) => {
   return index % 2 === 0
     ? "linear(to-l, #7928CA, #FF0080)"

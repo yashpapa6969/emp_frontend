@@ -11,6 +11,7 @@ import GetAllEmp from "./components/GetAllEmp";
 import GetAllClient from "./components/GetAllClient";
 import CreateEmp from "./components/CreateEmp";
 import CreateClient from "./components/CreateClient";
+import CreateProject from "./components/CreateProject";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/getAllClient" element={<GetAllClient />} />
           <Route path="/createEmp" element={<CreateEmp />} />
           <Route path="/createClient" element={<CreateClient />} />
+          <Route path="/createProject" element={<CreateProject />} />
           <Route path="/*" element={<Navigate to="/home" />} />
         </>
       ) : (

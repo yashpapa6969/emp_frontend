@@ -20,11 +20,47 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import Navbar from "./Navbar";
+import CreateClientB from "./CreateClientB";
 
 const GetAllClient = () => {
   const [managers, setManagers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedManager, setSelectedManager] = useState(null);
+
+  const CreateClientButton = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    return (
+      <>
+        <Button
+          colorScheme="blue"
+          onClick={onOpen}
+          // Center the button horizontally
+          mt="4" // Add margin from the top
+          _hover={{ bg: "yellow.500", color: "black.500" }}
+          mb="2" // Change color on hover
+        >
+          Add Client
+        </Button>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Create Client</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <CreateClientB />
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -58,6 +94,7 @@ const GetAllClient = () => {
         >
           All Client Details
         </Text>
+        <CreateClientButton />
         <Table variant="striped" colorScheme="red" width="60%">
           <Thead>
             <Tr>
