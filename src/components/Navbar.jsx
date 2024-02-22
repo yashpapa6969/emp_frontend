@@ -37,11 +37,11 @@ const Navbar = () => {
   return (
     <>
       <Flex
-        bg="teal"
+        bg="navy"
         justify="space-between"
         align="center"
-        px={4}
-        py={2}
+        px={5}
+        py={5}
         color="white"
       >
         {isLoggedIn && <Button onClick={toggleDrawer}>menu</Button>}
@@ -49,9 +49,9 @@ const Navbar = () => {
           <Text
             fontSize="xl"
             fontWeight="bold"
-            color="white" // Set color to white
-            bgGradient="linear(to-r, teal.200, cyan.200)"
-            bgClip="text"
+            color="white"
+            align="center" // Set alignment to center
+            textAlign="center" // Center the text horizontally
           >
             EMP DB SYSTEM
           </Text>

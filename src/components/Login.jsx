@@ -48,8 +48,6 @@ const Login = () => {
        dispatch(setUser(response.data.employee));
        toast.success(response.data.message);
        navigate("/home"); 
-       console.log("Login successful!");
-       console.log(response.data.message);
      } else {
        toast.error(error.response.data.message);
        setError("Invalid credentials");

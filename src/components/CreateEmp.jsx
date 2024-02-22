@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Box,
   Button,
@@ -8,7 +9,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Navbar from "./Navbar";
@@ -32,9 +33,10 @@ const CreateEmp = () => {
     "Operations",
   ]);
   const [positions, setPositions] = useState([
-    "Manager",
-    "Executive",
-    "Sales",
+    "superadmin",
+    "admin",
+    "user",
+    "manager"
   ]);
   const [managers, setManagers] = useState([]);
   const [loadingManagers, setLoadingManagers] = useState(false);
@@ -46,12 +48,17 @@ const CreateEmp = () => {
         .get(
           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllManagersbyDepartment/${formData.department}`
         )
+        
         .then((response) => {
+           if (response.data.length === 0) {
+             setManagers([]); // Reset managers array to empty
+           }
           setManagers(response.data);
           setLoadingManagers(false);
         })
         .catch((error) => {
           console.error("Error fetching managers:", error);
+          setManagers([]); 
           setLoadingManagers(false);
         });
     }
@@ -73,26 +80,19 @@ const handleJoiningDateChange = (date) => {
 
  const handleSubmit = (e) => {
    e.preventDefault();
-
-   // Assuming formData is an object containing the form data
-   // Modify dob and joining date formats here
-   const modifiedFormData = {
-     ...formData,
-     dob: formatDate(formData.dob),
-     joiningDate: formatDate(formData.joiningDate),
-   };
-
    axios
      .post(
        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
-       modifiedFormData
+       formData
      )
      .then((response) => {
-       toast.success(response.data.message);
+      toast.success(response.data.message, {
+      });
+
      })
      .catch((error) => {
        console.error("Error creating employee:", error);
-       toast.error("Failed to create employee");
+       toast.error(error.response.data.message);
      });
  };
 
@@ -103,6 +103,7 @@ const handleJoiningDateChange = (date) => {
     <>
       <Navbar />
 
+      <ToastContainer position="top-center" autoClose={3000} />
       <Box
         maxW="xl"
         mx="auto"
@@ -128,6 +129,7 @@ const handleJoiningDateChange = (date) => {
               selected={formData.dob}
               onChange={handleDateChange}
               dateFormat="MM/dd/yyyy"
+              placeholderText="Add date"
             />
           </FormControl>
           <FormControl mb="4">
@@ -137,6 +139,9 @@ const handleJoiningDateChange = (date) => {
               value={formData.position}
               onChange={handleChange}
             >
+              <option value="" disabled selected>
+                Select position
+              </option>
               {positions.map((position) => (
                 <option key={position} value={position}>
                   {position}
@@ -151,6 +156,9 @@ const handleJoiningDateChange = (date) => {
               value={formData.department}
               onChange={handleChange}
             >
+              <option value="" disabled>
+                Select an option
+              </option>
               {departments.map((department) => (
                 <option key={department} value={department}>
                   {department}
@@ -182,6 +190,7 @@ const handleJoiningDateChange = (date) => {
               selected={formData.joiningDate}
               onChange={handleJoiningDateChange}
               dateFormat="MM/dd/yyyy"
+              placeholderText="Add date"
             />
           </FormControl>
           <FormControl mb="4">
@@ -201,6 +210,11 @@ const handleJoiningDateChange = (date) => {
                   {managers.length === 0 && (
                     <option value="" disabled>
                       No Manager Available
+                    </option>
+                  )}
+                  {managers.length > 0 && (
+                    <option value="" disabled>
+                      Select an option
                     </option>
                   )}
                   {managers.map((manager) => (
