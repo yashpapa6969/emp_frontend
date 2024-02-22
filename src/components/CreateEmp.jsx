@@ -7,6 +7,8 @@ import {
   FormLabel,
   Input,
   Select,
+  Text,
+  Flex
 } from "@chakra-ui/react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -102,8 +104,6 @@ const handleJoiningDateChange = (date) => {
   return (
     <>
       <Navbar />
-
-      <ToastContainer position="top-center" autoClose={3000} />
       <Box
         maxW="xl"
         mx="auto"
@@ -114,6 +114,17 @@ const handleJoiningDateChange = (date) => {
         mt="4"
       >
         <form onSubmit={handleSubmit}>
+          <Text
+            bgGradient="linear(to-r, blue.500, green.500)" // Set color to blue
+            fontSize="5xl"
+            fontWeight="extrabold"
+            bgClip="text"
+            textAlign="center"
+            // Center the text horizontally
+          >
+            Create Employee
+          </Text>
+
           <FormControl mb="4">
             <FormLabel>Name</FormLabel>
             <Input
@@ -226,9 +237,11 @@ const handleJoiningDateChange = (date) => {
               )}
             </Select>
           </FormControl>
-          <Button type="submit" colorScheme="blue">
-            Submit
-          </Button>
+          <Flex justify="center">
+            <Button type="submit" colorScheme="blue">
+              Submit
+            </Button>
+          </Flex>
         </form>
       </Box>
     </>
