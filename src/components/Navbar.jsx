@@ -47,7 +47,7 @@ const Navbar = () => {
         {isLoggedIn && <Button onClick={toggleDrawer}>menu</Button>}
         <Link to="/home">
           <Text
-            fontSize="xl"
+            fontSize="3xl"
             fontWeight="bold"
             color="white"
             align="center" // Set alignment to center
