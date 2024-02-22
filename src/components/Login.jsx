@@ -1,7 +1,7 @@
 // Login.jsx
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Box,
@@ -13,18 +13,26 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { login } from "../store/slice/authSlice";
+import { login,selectIsLoggedIn } from "../store/slice/authSlice";
+import { selectUser } from "../store/slice/UserSlice";
 import Navbar from "./Navbar";
 import { setUser } from "../store/slice/UserSlice";
 import { ToastContainer, toast } from "react-toastify";
+import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  useEffect(() => {
+    if (user && isLoggedIn === true) {
+      navigate("/home");
+    }
+  }, [isLoggedIn]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

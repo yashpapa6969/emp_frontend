@@ -14,10 +14,12 @@ import CreateEmp from "./components/CreateEmp";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
       {isLoggedIn ? (
         <>
           <Route path="/home" element={<Home />} />
@@ -26,10 +28,12 @@ function App() {
           <Route path="/getAllEmp" element={<GetAllEmp />} />
           <Route path="/getAllClient" element={<GetAllClient />} />
           <Route path="/createEmp" element={<CreateEmp />} />
+          <Route path="/*" element={<Navigate to="/home" />} />
         </>
       ) : (
-        <Route path="*" element={<Navigate to="/error" />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       )}
+      <Route path="/login" element={<Login />} />
       <Route path="/error" element={<ErrorPage />} />
     </Routes>
   );

@@ -15,7 +15,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
-import { selectUser } from "../store/slice/UserSlice";
+import { selectUser,clearUser } from "../store/slice/UserSlice";
 import { Link } from "react-router-dom";// Import selectUser selector
 
 const Navbar = () => {
@@ -28,7 +28,8 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = () => {
+  const handleLogout = () => { 
+    dispatch(clearUser());
     dispatch(logout());
     navigate("/login");
   };

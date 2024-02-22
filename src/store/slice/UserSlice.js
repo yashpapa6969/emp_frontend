@@ -1,32 +1,23 @@
 // userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Defaults to localStorage for web
-
-const initialState = {
-  user: null,
-};
 
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: {
+    userData: JSON.parse(sessionStorage.getItem("userData")) || null,
+  },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.userData = action.payload;
+      sessionStorage.setItem("userData", JSON.stringify(action.payload));
+    },
+    clearUser: (state) => {
+      state.userData = null;
+      sessionStorage.removeItem("userData");
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
-
-export const selectUser = (state) => state.user && state.user.user;
-
-const persistConfig = {
-  key: "root",
-  storage,
-  whitelist: ["user"], 
-};
-
-const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
-
-export default persistedReducer;
+export const { setUser, clearUser } = userSlice.actions;
+export const selectUser = (state) => state.user.userData;
+export default userSlice.reducer;

@@ -30,7 +30,7 @@ const UserInfo = () => {
     };
 
     fetchUserData();
-  }, [user, toast]);
+  }, []);
 
   return (
     <>
