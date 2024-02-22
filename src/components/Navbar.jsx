@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { selectUser,clearUser } from "../store/slice/UserSlice";
-import { Link } from "react-router-dom";// Import selectUser selector
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +50,8 @@ const Navbar = () => {
             fontSize="3xl"
             fontWeight="bold"
             color="white"
-            align="center" // Set alignment to center
-            textAlign="center" // Center the text horizontally
+            align="center"
+            textAlign="center"
           >
             EMP DB SYSTEM
           </Text>

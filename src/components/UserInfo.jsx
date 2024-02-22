@@ -42,6 +42,7 @@ const UserInfo = () => {
           p="4"
           width="400px"
           boxShadow="md"
+          mt="5"
         >
           <Text fontWeight="bold" mb="4" fontSize="2xl" textAlign="center">
             User Profile
