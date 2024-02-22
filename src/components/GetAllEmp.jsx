@@ -95,7 +95,7 @@ const GetAllEmp = () => {
           All Employee Details
         </Text>
         <CreateEmployeeButton />
-        <Table variant="striped" colorScheme="yellow" width="60%">
+        <Table variant="striped" colorScheme="blue" width="60%">
           <Thead>
             <Tr>
               <Th fontWeight="bold">Name</Th>
@@ -114,7 +114,7 @@ const GetAllEmp = () => {
                 <Td fontWeight="bold">{manager.joiningDate}</Td>
                 <Td>
                   <Button
-                    colorScheme="yellow"
+                    colorScheme="purple"
                     onClick={() => handleMoreInfo(manager)}
                   >
                     More Info

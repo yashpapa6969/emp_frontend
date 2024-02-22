@@ -237,7 +237,7 @@ const handleJoiningDateChange = (date) => {
             </Select>
           </FormControl>
           <Flex justify="center">
-            <Button type="submit" colorScheme="blue">
+            <Button type="submit" colorScheme="purple">
               Submit
             </Button>
           </Flex>

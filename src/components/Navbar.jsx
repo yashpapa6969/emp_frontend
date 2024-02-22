@@ -15,7 +15,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
-import { selectUser,clearUser } from "../store/slice/UserSlice";
+import { selectUser, clearUser } from "../store/slice/UserSlice";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -23,17 +23,48 @@ const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = () => { 
+  const handleLogout = () => {
     dispatch(clearUser());
     dispatch(logout());
     navigate("/login");
   };
 
+  const boxData = [
+    {
+      label: "User Information",
+      route: "/UserInfo",
+    },
+    {
+      label: "Manager Information",
+      route: "/getAllManager",
+    },
+    {
+      label: "Employee Information",
+      route: "/getAllEmp",
+    },
+    {
+      label: "Client Information",
+      route: "/getAllClient",
+    },
+    {
+      label: "Employee",
+      route: "/createEmp",
+    },
+    {
+      label: "Client",
+      route: "/createClient",
+    },
+    {
+      label: "Add Project",
+      route: "/createProject",
+    },
+  ];
   return (
     <>
       <Flex
@@ -57,11 +88,10 @@ const Navbar = () => {
           </Text>
         </Link>
         <Box>
-          {/* Conditionally render logout button based on login state */}
           {isLoggedIn && <Button onClick={handleLogout}>Logout</Button>}
         </Box>
       </Flex>
-      {isLoggedIn && ( // Render the Drawer only if user is logged in
+      {isLoggedIn && (
         <Drawer placement="left" isOpen={isOpen} onClose={toggleDrawer}>
           <DrawerOverlay />
           <DrawerContent>
@@ -69,26 +99,21 @@ const Navbar = () => {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
               <VStack spacing={4}>
-                <UserMenu />
+                {boxData.map((data, index) => (
+                  <Button
+                    key={index}
+                    as={Link}
+                    to={data.route}
+                    onClick={toggleDrawer}
+                  >
+                    {data.label}
+                  </Button>
+                ))}
               </VStack>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
       )}
-    </>
-  );
-};
-
-const UserMenu = () => {
-  const user = useSelector(selectUser); 
-
-  return (
-    <>
-    
-      {user &&
-        user.permissions.map((permission, index) => (
-          <Button key={index}>{permission}</Button>
-        ))}
     </>
   );
 };

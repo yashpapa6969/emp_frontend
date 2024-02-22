@@ -106,7 +106,7 @@ const Login = () => {
               {error}
             </Box>
           )}
-          <Button type="submit" colorScheme="green" mt={4} w="100%">
+          <Button type="submit" colorScheme="purple" mt={4} w="100%">
             Login
           </Button>
         </form>

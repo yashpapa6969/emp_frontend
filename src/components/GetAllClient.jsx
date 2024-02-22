@@ -33,12 +33,11 @@ const GetAllClient = () => {
     return (
       <>
         <Button
-          colorScheme="blue"
+          colorScheme="purple"
           onClick={onOpen}
-          // Center the button horizontally
-          mt="4" // Add margin from the top
+          mt="4" 
           _hover={{ bg: "yellow.500", color: "black.500" }}
-          mb="2" // Change color on hover
+          mb="2"
         >
           Add Client
         </Button>
@@ -95,7 +94,7 @@ const GetAllClient = () => {
           All Client Details
         </Text>
         <CreateClientButton />
-        <Table variant="striped" colorScheme="red" width="60%">
+        <Table variant="striped" colorScheme="blue" width="60%">
           <Thead>
             <Tr>
               <Th fontWeight="bold">Name</Th>
@@ -114,7 +113,7 @@ const GetAllClient = () => {
                 <Td fontWeight="bold">{manager.country}</Td>
                 <Td>
                   <Button
-                    colorScheme="yellow"
+                    colorScheme="purple"
                     onClick={() => handleMoreInfo(manager)}
                   >
                     More Info
@@ -174,7 +173,7 @@ const GetAllClient = () => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="yellow" mr={3} onClick={onClose}>
+            <Button colorScheme="purple" mr={3} onClick={onClose}>
               Close
             </Button>
           </ModalFooter>

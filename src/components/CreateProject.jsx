@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
+  Text,
   FormControl,
   FormLabel,
   Input,
@@ -123,6 +124,14 @@ const handleEmployeeChange = (e) => {
         mt="4"
       >
         <form onSubmit={handleSubmit}>
+          <Text
+            textColor="black" // Set text color to black
+            fontSize="3xl"
+            fontWeight="extrabold"
+            textAlign="center"
+          >
+            Add Project
+          </Text>
           <VStack spacing={4} align="stretch">
             <FormControl id="projectName" isRequired>
               <FormLabel>Project Name</FormLabel>
@@ -252,7 +261,7 @@ const handleEmployeeChange = (e) => {
                 </Tag>
               ))}
             </FormControl>
-            <Button type="submit" colorScheme="blue">
+            <Button type="submit" colorScheme="purple">
               Create Project
             </Button>
           </VStack>
