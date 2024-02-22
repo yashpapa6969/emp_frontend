@@ -11,7 +11,6 @@ import GetAllEmp from "./components/GetAllEmp";
 import GetAllClient from "./components/GetAllClient";
 import CreateEmp from "./components/CreateEmp";
 
-
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const refreshPage = () => {

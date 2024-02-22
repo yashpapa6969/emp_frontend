@@ -42,43 +42,40 @@ const UserInfo = () => {
           p="4"
           width="400px"
           boxShadow="md"
-          textAlign="left"
-          bgGradient="linear(to-r, red.500,blue.500)"
-          color="white"
         >
           <Text fontWeight="bold" mb="4" fontSize="2xl" textAlign="center">
             User Profile
           </Text>
           {userData ? (
             <>
-              <Text fontWeight="bold" color="white">
+              <Text fontWeight="bold" color="black">
                 Name:
               </Text>
-              <Text color="cyan.50">{userData.name}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.name}</Text>
+              <Text fontWeight="bold" color="black">
                 Email:
               </Text>
-              <Text color="cyan.50">{userData.email}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.email}</Text>
+              <Text fontWeight="bold" color="black">
                 Position:
               </Text>
-              <Text color="cyan.50">{userData.position}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.position}</Text>
+              <Text fontWeight="bold" color="black">
                 Department:
               </Text>
-              <Text color="cyan.50">{userData.department}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.department}</Text>
+              <Text fontWeight="bold" color="black">
                 Manager ID:
               </Text>
-              <Text color="cyan.50">{userData.manager_id}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.manager_id}</Text>
+              <Text fontWeight="bold" color="black">
                 Join Date:
               </Text>
-              <Text color="cyan.50">{userData.joiningDate}</Text>
-              <Text fontWeight="bold" color="white">
+              <Text color="black.50">{userData.joiningDate}</Text>
+              <Text fontWeight="bold" color="black">
                 Employee ID:
               </Text>
-              <Text color="cyan.50">{userData.employee_id}</Text>
+              <Text color="black.50">{userData.employee_id}</Text>
 
               {/* Iterate through permissions array and display */}
               <Text fontWeight="bold" color="white.200">

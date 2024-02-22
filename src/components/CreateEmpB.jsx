@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Box,
   Button,
@@ -8,15 +7,14 @@ import {
   Input,
   Select,
   Text,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Navbar from "./Navbar";
 
-const CreateEmp = () => {
+const CreateEmpB = () => {
   const [formData, setFormData] = useState({
     name: "",
     dob: null,
@@ -38,7 +36,7 @@ const CreateEmp = () => {
     "superadmin",
     "admin",
     "user",
-    "manager"
+    "manager",
   ]);
   const [managers, setManagers] = useState([]);
   const [loadingManagers, setLoadingManagers] = useState(false);
@@ -50,17 +48,17 @@ const CreateEmp = () => {
         .get(
           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllManagersbyDepartment/${formData.department}`
         )
-        
+
         .then((response) => {
-           if (response.data.length === 0) {
-             setManagers([]); // Reset managers array to empty
-           }
+          if (response.data.length === 0) {
+            setManagers([]); // Reset managers array to empty
+          }
           setManagers(response.data);
           setLoadingManagers(false);
         })
         .catch((error) => {
           console.error("Error fetching managers:", error);
-          setManagers([]); 
+          setManagers([]);
           setLoadingManagers(false);
         });
     }
@@ -69,41 +67,34 @@ const CreateEmp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
   };
 
-const handleDateChange = (date) => {
-  setFormData({ ...formData, dob: date });
-};
-const handleJoiningDateChange = (date) => {
-  setFormData({ ...formData, joiningDate: date });
-};
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, dob: date });
+  };
+  const handleJoiningDateChange = (date) => {
+    setFormData({ ...formData, joiningDate: date });
+  };
 
-
- const handleSubmit = (e) => {
-   e.preventDefault();
-   axios
-     .post(
-       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
-       formData
-     )
-     .then((response) => {
-      toast.success(response.data.message, {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
+        formData
+      )
+      .then((response) => {
+        toast.success(response.data.message, {});
+      })
+      .catch((error) => {
+        console.error("Error creating employee:", error);
+        toast.error(error.response.data.message);
       });
-
-     })
-     .catch((error) => {
-       console.error("Error creating employee:", error);
-       toast.error(error.response.data.message);
-     });
- };
-
-
-
+  };
 
   return (
     <>
-      <Navbar />
+      
       <Box
         maxW="xl"
         mx="auto"
@@ -114,14 +105,7 @@ const handleJoiningDateChange = (date) => {
         mt="4"
       >
         <form onSubmit={handleSubmit}>
-          <Text
-            textColor="black" // Set text color to black
-            fontSize="5xl"
-            fontWeight="extrabold"
-            textAlign="center"
-          >
-            Create Employee
-          </Text>
+        
 
           <FormControl mb="4">
             <FormLabel>Name</FormLabel>
@@ -138,7 +122,7 @@ const handleJoiningDateChange = (date) => {
               selected={formData.dob}
               onChange={handleDateChange}
               dateFormat="MM/dd/yyyy"
-              placeholderText="Pick Date"
+              placeholderText="Add date"
             />
           </FormControl>
           <FormControl mb="4">
@@ -199,7 +183,7 @@ const handleJoiningDateChange = (date) => {
               selected={formData.joiningDate}
               onChange={handleJoiningDateChange}
               dateFormat="MM/dd/yyyy"
-              placeholderText="Pick Date"
+              placeholderText="Add date"
             />
           </FormControl>
           <FormControl mb="4">
@@ -246,4 +230,4 @@ const handleJoiningDateChange = (date) => {
   );
 };
 
-export default CreateEmp;
+export default CreateEmpB;

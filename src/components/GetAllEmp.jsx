@@ -20,6 +20,42 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import Navbar from "./Navbar";
+import CreateEmpB from "./CreateEmpB"; // Import your CreateEmp component here
+
+const CreateEmployeeButton = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button
+        colorScheme="blue"
+        onClick={onOpen}
+       // Center the button horizontally
+        mt="4" // Add margin from the top
+        _hover={{ bg: "yellow.500", color: "black.500" }}
+        mb="2" // Change color on hover
+      >
+        Create Employee
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create Employee</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <CreateEmpB />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
 
 const GetAllEmp = () => {
   const [managers, setManagers] = useState([]);
@@ -48,7 +84,17 @@ const GetAllEmp = () => {
   return (
     <>
       <Navbar />
-      <Box display="flex" justifyContent="center" pt={10}>
+      <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
+        <Text
+          color="black"
+          fontSize="5xl"
+          fontWeight="extrabold"
+          textAlign="center"
+          mb={4} 
+        >
+          All Employee Details
+        </Text>
+        <CreateEmployeeButton />
         <Table variant="striped" colorScheme="yellow" width="60%">
           <Thead>
             <Tr>

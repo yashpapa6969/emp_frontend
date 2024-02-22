@@ -48,7 +48,16 @@ const GetAllManagers = () => {
   return (
     <>
       <Navbar />
-      <Box display="flex" justifyContent="center" pt={10}>
+      <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
+        <Text
+          color="black"
+          fontSize="5xl"
+          fontWeight="extrabold"
+          textAlign="center"
+          mb={4} 
+        >
+          All Managers
+        </Text>
         <Table variant="striped" colorScheme="purple" width="60%">
           <Thead>
             <Tr>
