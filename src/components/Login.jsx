@@ -1,5 +1,3 @@
-// Login.jsx
-
 import { useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,7 +53,6 @@ const Login = () => {
     } catch (error) {
       console.error("Error logging in:", error);
       if (error.response) {
-        // Check if there's a response object in the error
         toast.error(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");

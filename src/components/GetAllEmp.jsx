@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import Navbar from "./Navbar";
-import CreateEmpB from "./CreateEmpB"; // Import your CreateEmp component here
+import CreateEmpB from "./CreateEmpB"; 
 
 const CreateEmployeeButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,10 +30,9 @@ const CreateEmployeeButton = () => {
       <Button
         colorScheme="blue"
         onClick={onOpen}
-       // Center the button horizontally
-        mt="4" // Add margin from the top
+        mt="4" 
         _hover={{ bg: "yellow.500", color: "black.500" }}
-        mb="2" // Change color on hover
+        mb="2" 
       >
         Create Employee
       </Button>

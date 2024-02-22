@@ -31,7 +31,7 @@ function Home() {
           flexDirection="column"
         >
           <Text
-            textColor="black" // Set text color to black
+            textColor="black" 
             fontSize="5xl"
             fontWeight="extrabold"
             textAlign="center"

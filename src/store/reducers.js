@@ -1,8 +1,7 @@
-// src/store/reducers.js
 
 import { combineReducers } from "redux";
 import authSlice from "./slice/authSlice";
-import userSlice from "./slice/UserSlice" // Import userSlice
+import userSlice from "./slice/UserSlice" 
 
 const rootReducer = combineReducers({
   auth: authSlice,

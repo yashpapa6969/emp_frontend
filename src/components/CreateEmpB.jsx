@@ -51,7 +51,7 @@ const CreateEmpB = () => {
 
         .then((response) => {
           if (response.data.length === 0) {
-            setManagers([]); // Reset managers array to empty
+            setManagers([]); 
           }
           setManagers(response.data);
           setLoadingManagers(false);
