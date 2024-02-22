@@ -40,6 +40,11 @@ const boxData = [
     buttonLabel: "Create Here",
     route: "/createEmp",
   },
+  {
+    title: "Create Client",
+    buttonLabel: "Create Here",
+    route: "/createClient",
+  },
   // Add more box data as needed
 ];
 
