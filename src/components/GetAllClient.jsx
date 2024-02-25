@@ -82,7 +82,7 @@ const GetAllClient = () => {
   return (
     <>
       <div className="w-full p-8">
-        <h1 className="text-3xl font-bold mb-4">Manager Information</h1>
+        <h1 className="text-3xl font-bold mb-4">Client Information</h1>
         <CreateClientButton />
         <Table width="100%">
           <Thead bg={"#F1F5F9"}>
