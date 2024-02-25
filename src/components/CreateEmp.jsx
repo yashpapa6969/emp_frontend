@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   Box,
@@ -14,7 +14,6 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Navbar from "./Navbar";
 
 const CreateEmp = () => {
   const [formData, setFormData] = useState({
@@ -103,7 +102,6 @@ const handleJoiningDateChange = (date) => {
 
   return (
     <>
-      <Navbar />
       <ToastContainer></ToastContainer>
       <Box
         maxW="xl"
