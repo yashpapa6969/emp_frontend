@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { login, selectIsLoggedIn } from "../store/slice/authSlice";
 import { selectUser } from "../store/slice/UserSlice";
-import Navbar from "./Navbar";
 import { setUser } from "../store/slice/UserSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";

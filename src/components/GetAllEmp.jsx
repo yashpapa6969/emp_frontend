@@ -15,11 +15,11 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Box,
-  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import CreateEmpB from "./CreateEmpB"; 
+import CreateEmpB from "./CreateEmpB";
+import { GoPlus } from "react-icons/go";
+import InfoModal from "./common/InfoModal";
 
 const CreateEmployeeButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,11 +29,11 @@ const CreateEmployeeButton = () => {
       <Button
         colorScheme="blue"
         onClick={onOpen}
-        mt="4" 
-        _hover={{ bg: "yellow.500", color: "black.500" }}
-        mb="2" 
+        _hover={{ bg: "blue.600" }}
+        mb="10"
+        className="flex gap-2 items-center"
       >
-        Create Employee
+        <GoPlus /> Create Employee
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -56,9 +56,9 @@ const CreateEmployeeButton = () => {
 };
 
 const GetAllEmp = () => {
-  const [managers, setManagers] = useState([]);
+  const [employee, setEmployees] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedManager, setSelectedManager] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -66,7 +66,7 @@ const GetAllEmp = () => {
         const response = await axios.get(
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
         );
-        setManagers(response.data);
+        setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -74,27 +74,20 @@ const GetAllEmp = () => {
     fetchData();
   }, []);
 
-  const handleMoreInfo = (manager) => {
-    setSelectedManager(manager);
+  const handleMoreInfo = (employee) => {
+    setSelectedEmployee(employee);
     onOpen();
   };
 
   return (
     <>
-      <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
-        <Text
-          color="black"
-          fontSize="5xl"
-          fontWeight="extrabold"
-          textAlign="center"
-          mb={4} 
-        >
-          All Employee Details
-        </Text>
+      <div className="w-full p-8">
+        <h1 className="text-3xl font-bold mb-4">Manager Information</h1>
         <CreateEmployeeButton />
-        <Table variant="striped" colorScheme="blue" width="60%">
-          <Thead>
+        <Table width="100%">
+          <Thead bg={"#F1F5F9"}>
             <Tr>
+              <Th fontWeight="bold">S. No.</Th>
               <Th fontWeight="bold">Name</Th>
               <Th fontWeight="bold">Position</Th>
               <Th fontWeight="bold">Department</Th>
@@ -103,16 +96,17 @@ const GetAllEmp = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {managers.map((manager) => (
-              <Tr key={manager._id}>
-                <Td fontWeight="bold">{manager.name}</Td>
-                <Td fontWeight="bold">{manager.position}</Td>
-                <Td fontWeight="bold">{manager.department}</Td>
-                <Td fontWeight="bold">{manager.joiningDate}</Td>
+            {employee.map((emp, index) => (
+              <Tr key={emp._id}>
+                <Td fontWeight="bold">{index+1}</Td>
+                <Td fontWeight="bold">{emp.name}</Td>
+                <Td fontWeight="bold">{emp.position}</Td>
+                <Td fontWeight="bold">{emp.department}</Td>
+                <Td fontWeight="bold">{emp.joiningDate}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"
-                    onClick={() => handleMoreInfo(manager)}
+                    onClick={() => handleMoreInfo(emp)}
                   >
                     More Info
                   </Button>
@@ -121,44 +115,9 @@ const GetAllEmp = () => {
             ))}
           </Tbody>
         </Table>
-      </Box>
+      </div>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Employee Information</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedManager && (
-              <div>
-                <Text fontWeight="bold">Name: </Text>
-                <Text>{selectedManager.name}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{selectedManager.email}</Text>
-                <Text fontWeight="bold">Position: </Text>
-                <Text>{selectedManager.position}</Text>
-                <Text fontWeight="bold">Department: </Text>
-                <Text>{selectedManager.department}</Text>
-                <Text fontWeight="bold">Joining Date: </Text>
-                <Text>{selectedManager.joiningDate}</Text>
-                <Text fontWeight="bold">Employee ID: </Text>
-                <Text>{selectedManager.employee_id}</Text>
-                <Text fontWeight="bold">Manager ID: </Text>
-                <Text>{selectedManager.manager_id}</Text>
-                <Text fontWeight="bold">Permissions:</Text>
-                {selectedManager.permissions.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
-              </div>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="yellow" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <InfoModal modalFor="employee" data={selectedEmployee} onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
