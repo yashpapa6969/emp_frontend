@@ -54,11 +54,11 @@ const GetAllManagers = () => {
           <Tbody>
             {managers.map((manager) => (
               <Tr key={manager._id}>
-                <Td fontWeight="bold">{manager.manager_id}</Td>
-                <Td fontWeight="bold">{manager.name}</Td>
-                <Td fontWeight="bold">{manager.position}</Td>
-                <Td fontWeight="bold">{manager.department}</Td>
-                <Td fontWeight="bold">{manager.joiningDate}</Td>
+                <Td>{manager.manager_id}</Td>
+                <Td>{manager.name}</Td>
+                <Td>{manager.position}</Td>
+                <Td>{manager.department}</Td>
+                <Td>{manager.joiningDate}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"

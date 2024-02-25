@@ -98,11 +98,11 @@ const GetAllClient = () => {
           <Tbody>
             {clients.map((client, index) => (
               <Tr key={client._id}>
-                <Td fontWeight="bold">{index+1}</Td>
-                <Td fontWeight="bold">{client.clientName}</Td>
-                <Td fontWeight="bold">{client.phone}</Td>
-                <Td fontWeight="bold">{client.industry}</Td>
-                <Td fontWeight="bold">{client.country}</Td>
+                <Td>{index+1}</Td>
+                <Td>{client.clientName}</Td>
+                <Td>{client.phone}</Td>
+                <Td>{client.industry}</Td>
+                <Td>{client.country}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"

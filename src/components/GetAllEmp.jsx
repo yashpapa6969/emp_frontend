@@ -98,11 +98,11 @@ const GetAllEmp = () => {
           <Tbody>
             {employee.map((emp, index) => (
               <Tr key={emp._id}>
-                <Td fontWeight="bold">{index+1}</Td>
-                <Td fontWeight="bold">{emp.name}</Td>
-                <Td fontWeight="bold">{emp.position}</Td>
-                <Td fontWeight="bold">{emp.department}</Td>
-                <Td fontWeight="bold">{emp.joiningDate}</Td>
+                <Td>{index+1}</Td>
+                <Td>{emp.name}</Td>
+                <Td>{emp.position}</Td>
+                <Td>{emp.department}</Td>
+                <Td>{emp.joiningDate}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"
