@@ -157,6 +157,10 @@ const CreateLead = () => {
                 <FormLabel>Pincode</FormLabel>
                 <Input name="pincode" onChange={handleChange} />
               </FormControl>
+              <FormControl id="state" isRequired>
+                <FormLabel>State</FormLabel>
+                <Input name="state" onChange={handleChange} />
+              </FormControl>
               <FormControl id="country" isRequired>
                 <FormLabel>Country</FormLabel>
                 <Input name="country" onChange={handleChange} />
