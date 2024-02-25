@@ -15,16 +15,16 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Box,
-  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import CreateClientB from "./CreateClientB";
+import InfoModal from "./common/InfoModal";
+import { GoPlus } from "react-icons/go";
 
 const GetAllClient = () => {
-  const [managers, setManagers] = useState([]);
+  const [clients, setClients] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedManager, setSelectedManager] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const CreateClientButton = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,13 +32,13 @@ const GetAllClient = () => {
     return (
       <>
         <Button
-          colorScheme="purple"
+          colorScheme="blue"
           onClick={onOpen}
-          mt="4" 
-          _hover={{ bg: "yellow.500", color: "black.500" }}
-          mb="2"
+          _hover={{ bg: "blue.600" }}
+          mb="10"
+          className="flex gap-2 items-center"
         >
-          Add Client
+          <GoPlus /> Add a client
         </Button>
 
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -66,7 +66,7 @@ const GetAllClient = () => {
         const response = await axios.get(
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
         );
-        setManagers(response.data);
+        setClients(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -75,26 +75,19 @@ const GetAllClient = () => {
   }, []);
 
   const handleMoreInfo = (manager) => {
-    setSelectedManager(manager);
+    setSelectedClient(manager);
     onOpen();
   };
 
   return (
     <>
-      <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
-        <Text
-          color="black"
-          fontSize="5xl"
-          fontWeight="extrabold"
-          textAlign="center"
-          mb={4}
-        >
-          All Client Details
-        </Text>
+      <div className="w-full p-8">
+        <h1 className="text-3xl font-bold mb-4">Client Information</h1>
         <CreateClientButton />
-        <Table variant="striped" colorScheme="blue" width="60%">
-          <Thead>
+        <Table width="100%">
+          <Thead bg={"#F1F5F9"}>
             <Tr>
+              <Th fontWeight="bold">S. No.</Th>
               <Th fontWeight="bold">Name</Th>
               <Th fontWeight="bold">Phone</Th>
               <Th fontWeight="bold">Industry</Th>
@@ -103,16 +96,17 @@ const GetAllClient = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {managers.map((manager) => (
-              <Tr key={manager._id}>
-                <Td fontWeight="bold">{manager.clientName}</Td>
-                <Td fontWeight="bold">{manager.phone}</Td>
-                <Td fontWeight="bold">{manager.industry}</Td>
-                <Td fontWeight="bold">{manager.country}</Td>
+            {clients.map((client, index) => (
+              <Tr key={client._id}>
+                <Td>{index+1}</Td>
+                <Td>{client.clientName}</Td>
+                <Td>{client.phone}</Td>
+                <Td>{client.industry}</Td>
+                <Td>{client.country}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"
-                    onClick={() => handleMoreInfo(manager)}
+                    onClick={() => handleMoreInfo(client)}
                   >
                     More Info
                   </Button>
@@ -121,62 +115,9 @@ const GetAllClient = () => {
             ))}
           </Tbody>
         </Table>
-      </Box>
+      </div>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Employee Information</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedManager && (
-              <div>
-                <Text fontWeight="bold">Name: </Text>
-                <Text>{selectedManager.clientName}</Text>
-                <Text fontWeight="bold">Contact Name: </Text>
-                <Text>{selectedManager.contactName}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{selectedManager.email}</Text>
-                <Text fontWeight="bold">Phone: </Text>
-                <Text>{selectedManager.phone}</Text>
-                <Text fontWeight="bold">Industry: </Text>
-                <Text>{selectedManager.industry}</Text>
-                <Text fontWeight="bold">Notes: </Text>
-                <Text>{selectedManager.notes}</Text>
-                <Text fontWeight="bold">Website: </Text>
-                <Text>{selectedManager.website}</Text>
-                <Text fontWeight="bold">Currency: </Text>
-                <Text>{selectedManager.currency}</Text>
-                <Text fontWeight="bold">Default Language: </Text>
-                <Text>{selectedManager.defaultLanguage}</Text>
-                <Text fontWeight="bold">Address: </Text>
-                <Text>{selectedManager.address}</Text>
-                <Text fontWeight="bold">City: </Text>
-                <Text>{selectedManager.city}</Text>
-                <Text fontWeight="bold">State: </Text>
-                <Text>{selectedManager.state}</Text>
-                <Text fontWeight="bold">ZipCode: </Text>
-                <Text>{selectedManager.zipCode}</Text>
-                <Text fontWeight="bold">Country: </Text>
-                <Text>{selectedManager.country}</Text>
-                <Text fontWeight="bold">Status: </Text>
-                <Text>{selectedManager.status}</Text>
-                <Text fontWeight="bold">Client ID: </Text>
-                <Text>{selectedManager.client_id}</Text>
-                <Text fontWeight="bold">Groups:</Text>
-                {selectedManager.groups.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
-              </div>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="purple" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <InfoModal modalFor="client" data={selectedClient} onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

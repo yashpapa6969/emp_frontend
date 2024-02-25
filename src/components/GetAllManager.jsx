@@ -7,23 +7,15 @@ import {
   Th,
   Td,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
-  Box,
-  Text
 } from "@chakra-ui/react";
 import axios from "axios";
+import InfoModal from "./common/InfoModal";
 
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedManager, setSelectedManager] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,19 +38,12 @@ const GetAllManagers = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
-        <Text
-          color="black"
-          fontSize="5xl"
-          fontWeight="extrabold"
-          textAlign="center"
-          mb={4} 
-        >
-          All Managers
-        </Text>
-        <Table variant="striped" colorScheme="blue" width="60%">
-          <Thead>
+      <div className="w-full p-8">
+        <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
+        <Table width="100%">
+          <Thead bg={"#F1F5F9"}>
             <Tr>
+              <Th fontWeight="bold">Id</Th>
               <Th fontWeight="bold">Name</Th>
               <Th fontWeight="bold">Position</Th>
               <Th fontWeight="bold">Department</Th>
@@ -69,10 +54,11 @@ const GetAllManagers = () => {
           <Tbody>
             {managers.map((manager) => (
               <Tr key={manager._id}>
-                <Td fontWeight="bold">{manager.name}</Td>
-                <Td fontWeight="bold">{manager.position}</Td>
-                <Td fontWeight="bold">{manager.department}</Td>
-                <Td fontWeight="bold">{manager.joiningDate}</Td>
+                <Td>{manager.manager_id}</Td>
+                <Td>{manager.name}</Td>
+                <Td>{manager.position}</Td>
+                <Td>{manager.department}</Td>
+                <Td>{manager.joiningDate}</Td>
                 <Td>
                   <Button
                     colorScheme="purple"
@@ -85,44 +71,9 @@ const GetAllManagers = () => {
             ))}
           </Tbody>
         </Table>
-      </Box>
+      </div>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Manager Information</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedManager && (
-              <div>
-                <Text fontWeight="bold">Name: </Text>
-                <Text>{selectedManager.name}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{selectedManager.email}</Text>
-                <Text fontWeight="bold">Position: </Text>
-                <Text>{selectedManager.position}</Text>
-                <Text fontWeight="bold">Department: </Text>
-                <Text>{selectedManager.department}</Text>
-                <Text fontWeight="bold">Joining Date: </Text>
-                <Text>{selectedManager.joiningDate}</Text>
-                <Text fontWeight="bold">Employee ID: </Text>
-                <Text>{selectedManager.employee_id}</Text>
-                <Text fontWeight="bold">Manager ID: </Text>
-                <Text>{selectedManager.manager_id}</Text>
-                <Text fontWeight="bold">Permissions:</Text>
-                {selectedManager.permissions.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
-              </div>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="yellow" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <InfoModal modalFor="manager" data={selectedManager} onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

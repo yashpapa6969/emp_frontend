@@ -23,7 +23,6 @@ function App() {
   // };
 
   const [activeSideabarLink, setActiveSideabarLink] = useState('');
- 
 
   return (
     <Routes>
@@ -65,7 +64,7 @@ function App() {
             </AppLayout>
           } />
           <Route path="/createLead" element={
-            <AppLayout activeSideabarLink={"CreateClient"} setActiveSideabarLink={setActiveSideabarLink}>
+            <AppLayout activeSideabarLink={"createLead"} setActiveSideabarLink={setActiveSideabarLink}>
               <CreateLead />
             </AppLayout>
           } />
