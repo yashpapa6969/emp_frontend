@@ -12,6 +12,7 @@ import GetAllClient from "./components/GetAllClient";
 import CreateEmp from "./components/CreateEmp";
 import CreateClient from "./components/CreateClient";
 import CreateProject from "./components/CreateProject";
+import CreateLead from "./components/CreateLead";
 import AppLayout from "./layouts/AppLayout";
 import { useState } from "react";
 
@@ -22,7 +23,7 @@ function App() {
   // };
 
   const [activeSideabarLink, setActiveSideabarLink] = useState('');
-  console.log(activeSideabarLink);
+ 
 
   return (
     <Routes>
@@ -61,6 +62,11 @@ function App() {
           <Route path="/createClient" element={
             <AppLayout activeSideabarLink={"CreateClient"} setActiveSideabarLink={setActiveSideabarLink}>
               <CreateClient />
+            </AppLayout>
+          } />
+          <Route path="/createLead" element={
+            <AppLayout activeSideabarLink={"CreateClient"} setActiveSideabarLink={setActiveSideabarLink}>
+              <CreateLead />
             </AppLayout>
           } />
           <Route path="/createProject" element={
