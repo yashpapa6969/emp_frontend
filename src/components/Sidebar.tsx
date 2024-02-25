@@ -39,7 +39,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             </Link>
 
             <Accordion allowToggle>
-                <AccordionItem>
+                <AccordionItem border="none" shadow="none" bg={ "#172032" }>
                     <AccordionButton _expanded={{ bg: '#172032' }}>
                         <Box className='p-2' as="span" flex='1' textAlign='left'>
                             Create
