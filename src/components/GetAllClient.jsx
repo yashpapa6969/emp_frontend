@@ -76,8 +76,8 @@ const GetAllClient = () => {
     fetchData();
   }, []);
 
-  const handleMoreInfo = (manager) => {
-    setSelectedClient(manager);
+  const handleMoreInfo = (client) => {
+    setSelectedClient(client);
     onOpen();
   };
 

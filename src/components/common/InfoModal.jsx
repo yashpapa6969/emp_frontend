@@ -125,7 +125,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
                 <Text fontWeight="bold">Groups:</Text>
-                {data.groups.map((permission, index) => (
+                {data?.groups?.map((permission, index) => (
                   <Text key={index}>{permission}</Text>
                 ))}
               </div>
