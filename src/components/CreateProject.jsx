@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -15,7 +15,6 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Navbar from "./Navbar";
 import axios from "axios";
 
 
@@ -112,7 +111,6 @@ const handleEmployeeChange = (e) => {
 
   return (
     <>
-      <Navbar />
       <ToastContainer />
       <Box
         maxW="xl"

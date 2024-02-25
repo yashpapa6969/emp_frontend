@@ -1,9 +1,9 @@
-import { Button, ChakraProvider, Box, Text, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Text, Flex } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
-import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+// import Navbar from "./Navbar";
+// import { Link } from "react-router-dom";
 import { selectUser } from "../store/slice/UserSlice"; 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 const theme = extendTheme({
@@ -22,7 +22,7 @@ function Home() {
   const user = useSelector(selectUser);
   return (
     <ChakraProvider theme={theme}>
-      <Navbar className="mt-0" />
+      {/* <Navbar className="mt-0" /> */}
      
         <Flex
           height="100vh"

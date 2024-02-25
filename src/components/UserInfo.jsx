@@ -3,7 +3,6 @@ import { Box, Text, useToast, Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slice/UserSlice";
-import Navbar from "./Navbar";
 
 const UserInfo = () => {
   const user = useSelector(selectUser);
@@ -30,11 +29,10 @@ const UserInfo = () => {
     };
 
     fetchUserData();
-  }, []);
+  });
 
   return (
     <>
-      <Navbar />
       <Center mt="4">
         <Box
           borderWidth="2px"

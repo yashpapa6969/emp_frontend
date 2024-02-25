@@ -12,25 +12,62 @@ import GetAllClient from "./components/GetAllClient";
 import CreateEmp from "./components/CreateEmp";
 import CreateClient from "./components/CreateClient";
 import CreateProject from "./components/CreateProject";
+import AppLayout from "./layouts/AppLayout";
+import { useState } from "react";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const refreshPage = () => {
-    window.location.reload();
-  };
+  // const refreshPage = () => {
+  //   window.location.reload();
+  // };
+
+  const [activeSideabarLink, setActiveSideabarLink] = useState('');
+  console.log(activeSideabarLink);
 
   return (
     <Routes>
       {isLoggedIn ? (
         <>
-          <Route path="/home" element={<Home />} />
-          <Route path="/UserInfo" element={<UserInfo />} />
-          <Route path="/getAllManager" element={<GetAllManager />} />
-          <Route path="/getAllEmp" element={<GetAllEmp />} />
-          <Route path="/getAllClient" element={<GetAllClient />} />
-          <Route path="/createEmp" element={<CreateEmp />} />
-          <Route path="/createClient" element={<CreateClient />} />
-          <Route path="/createProject" element={<CreateProject />} />
+          <Route path="/home" element={
+            <AppLayout activeSideabarLink={"Dashboard"} setActiveSideabarLink={setActiveSideabarLink}>
+              <Home />
+            </AppLayout>
+          } />
+          <Route path="/UserInfo" element={
+            <AppLayout activeSideabarLink={"UserInfo"} setActiveSideabarLink={setActiveSideabarLink}>
+              <UserInfo />
+            </AppLayout>
+          } />
+          <Route path="/getAllManager" element={
+            <AppLayout activeSideabarLink={"getAllManager"} setActiveSideabarLink={setActiveSideabarLink}>
+              <GetAllManager />
+            </AppLayout>
+          } />
+          <Route path="/getAllEmp" element={
+            <AppLayout activeSideabarLink={"getAllEmp"} setActiveSideabarLink={setActiveSideabarLink}>
+              <GetAllEmp />
+            </AppLayout>
+          } />
+          <Route path="/getAllClient" element={
+            <AppLayout activeSideabarLink={"getAllClient"} setActiveSideabarLink={setActiveSideabarLink}>
+              <GetAllClient />
+            </AppLayout>
+          } />
+          <Route path="/createEmp" element={
+            <AppLayout activeSideabarLink={"CreateEmp"} setActiveSideabarLink={setActiveSideabarLink}>
+              <CreateEmp />
+            </AppLayout>
+          } />
+          <Route path="/createClient" element={
+            <AppLayout activeSideabarLink={"CreateClient"} setActiveSideabarLink={setActiveSideabarLink}>
+              <CreateClient />
+            </AppLayout>
+          } />
+          <Route path="/createProject" element={
+            <AppLayout activeSideabarLink={"CreateProject"} setActiveSideabarLink={setActiveSideabarLink}>
+              <CreateProject />
+            </AppLayout>
+          } />
           <Route path="/*" element={<Navigate to="/home" />} />
         </>
       ) : (

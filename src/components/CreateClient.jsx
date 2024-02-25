@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
   Input,
-  Select,
   Text,
   Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Navbar from "./Navbar";
 
 const CreateClient = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +61,6 @@ const CreateClient = () => {
 
   return (
     <>
-      <Navbar />
       <ToastContainer></ToastContainer>
       <Box
         maxW="xl"

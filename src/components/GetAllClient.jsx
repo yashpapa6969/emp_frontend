@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   Thead,
@@ -19,7 +19,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import Navbar from "./Navbar";
 import CreateClientB from "./CreateClientB";
 
 const GetAllClient = () => {
@@ -82,7 +81,6 @@ const GetAllClient = () => {
 
   return (
     <>
-      <Navbar />
       <Box display="flex" flexDirection="column" alignItems="center" pt={10}>
         <Text
           color="black"

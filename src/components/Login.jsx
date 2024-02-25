@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Box,
@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { login,selectIsLoggedIn } from "../store/slice/authSlice";
+import { login, selectIsLoggedIn } from "../store/slice/authSlice";
 import { selectUser } from "../store/slice/UserSlice";
 import Navbar from "./Navbar";
 import { setUser } from "../store/slice/UserSlice";
@@ -41,15 +41,15 @@ const Login = () => {
           password,
         }
       );
-     if (response.status === 200) {
-       dispatch(login());
-       dispatch(setUser(response.data.employee));
-       toast.success(response.data.message);
-       navigate("/home"); 
-     } else {
-       toast.error(error.response.data.message);
-       setError("Invalid credentials");
-     }
+      if (response.status === 200) {
+        dispatch(login());
+        dispatch(setUser(response.data.employee));
+        toast.success(response.data.message);
+        navigate("/home");
+      } else {
+        toast.error(error.response.data.message);
+        setError("Invalid credentials");
+      }
     } catch (error) {
       console.error("Error logging in:", error);
       if (error.response) {
@@ -62,7 +62,6 @@ const Login = () => {
 
   return (
     <>
-      <Navbar></Navbar>
       <ToastContainer position="top-center" autoClose={3000} />
       <Box
         maxW="md"
