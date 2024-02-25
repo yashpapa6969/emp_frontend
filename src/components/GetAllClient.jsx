@@ -12,7 +12,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter, 
   useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -43,19 +42,14 @@ const GetAllClient = () => {
           <GoPlus /> Add a client
         </Button>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Create Client</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <CreateClientB />
+              <CreateClientB onClose={onClose} />
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -6,15 +6,14 @@ import {
   FormLabel,
   Input,
   Select,
-  Text,
   Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const CreateEmpB = () => {
+const CreateEmpB = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     dob: null,
@@ -94,19 +93,12 @@ const CreateEmpB = () => {
 
   return (
     <>
-      
       <Box
-        maxW="xl"
         mx="auto"
-        borderWidth="1px"
-        borderRadius="lg"
-        p="4"
-        boxShadow="lg"
         mt="4"
+        mb={"10"}
       >
         <form onSubmit={handleSubmit}>
-        
-
           <FormControl mb="4">
             <FormLabel>Name</FormLabel>
             <Input
@@ -219,7 +211,10 @@ const CreateEmpB = () => {
               )}
             </Select>
           </FormControl>
-          <Flex justify="center">
+          <Flex justify="end" mt={6} gap={2}>
+            <Button onClick={onClose}>
+              Close
+            </Button>
             <Button type="submit" colorScheme="purple">
               Submit
             </Button>

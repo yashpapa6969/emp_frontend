@@ -12,7 +12,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
   useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -36,19 +35,19 @@ const CreateEmployeeButton = () => {
         <GoPlus /> Create Employee
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create Employee</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CreateEmpB />
+            <CreateEmpB onClose={onClose} />
           </ModalBody>
-          <ModalFooter>
+          {/* <ModalFooter>
             <Button colorScheme="blue" onClick={onClose}>
               Close
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>
