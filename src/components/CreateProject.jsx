@@ -150,7 +150,7 @@ const handleEmployeeChange = (e) => {
           <VStack spacing={4} align="stretch">
             <FormControl id="projectName" isRequired>
               <FormLabel>Project Name</FormLabel>
-              <Input name="projectName" onChange={handleChange} />
+              <Input name="projectName" onChange={handleChange}/>
             </FormControl>
             <FormControl id="client_id" isRequired>
               <FormLabel>Client Name</FormLabel>

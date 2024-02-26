@@ -1,5 +1,5 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
-
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure,Image } from '@chakra-ui/react'
+import { Link } from "react-router-dom";
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
 
   if (modalFor === "manager")
@@ -84,49 +84,43 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
 
   if (modalFor === "client")
     return (
-      <Modal onClose={onClose} isOpen={isOpen} motionPreset='slideInBottom' isCentered>
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Employee Information</ModalHeader>
+          <ModalHeader>Client Information</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
               <div>
-                <Text fontWeight="bold">Name: </Text>
+                <Text fontWeight="bold">Client Name: </Text>
                 <Text>{data.clientName}</Text>
-                <Text fontWeight="bold">Contact Name: </Text>
-                <Text>{data.contactName}</Text>
+                <Text fontWeight="bold">Brand Name: </Text>
+                <Text>{data.brandName}</Text>
                 <Text fontWeight="bold">Email: </Text>
-                <Text>{data.email}</Text>
+                <Text>{data.email1}</Text>
                 <Text fontWeight="bold">Phone: </Text>
-                <Text>{data.phone}</Text>
-                <Text fontWeight="bold">Industry: </Text>
-                <Text>{data.industry}</Text>
-                <Text fontWeight="bold">Notes: </Text>
-                <Text>{data.notes}</Text>
-                <Text fontWeight="bold">Website: </Text>
-                <Text>{data.website}</Text>
-                <Text fontWeight="bold">Currency: </Text>
-                <Text>{data.currency}</Text>
-                <Text fontWeight="bold">Default Language: </Text>
-                <Text>{data.defaultLanguage}</Text>
-                <Text fontWeight="bold">Address: </Text>
-                <Text>{data.address}</Text>
-                <Text fontWeight="bold">City: </Text>
-                <Text>{data.city}</Text>
-                <Text fontWeight="bold">State: </Text>
-                <Text>{data.state}</Text>
-                <Text fontWeight="bold">ZipCode: </Text>
-                <Text>{data.zipCode}</Text>
-                <Text fontWeight="bold">Country: </Text>
-                <Text>{data.country}</Text>
-                <Text fontWeight="bold">Status: </Text>
-                <Text>{data.status}</Text>
+                <Text>{data.phone1}</Text>
+                <Text fontWeight="bold">Enquiry Date: </Text>
+                <Text>{data.enquiryDate}</Text>
+                <Text fontWeight="bold">Source: </Text>
+                <Text>{data.source}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
-                <Text fontWeight="bold">Groups:</Text>
-                {data?.groups?.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
+                <Text fontWeight="bold">Single File: </Text>
+                <Image src={data.singleFile} alt={`Single File, url:- ${data.singleFile}`} />
+                <Text fontWeight="bold">Multiple Files: </Text>
+                {data.multipleFiles.map((file, index) => (
+                  <div key={index}>
+                    <Image
+                      src={file}
+                      alt={`File ${index + 1}, url:- ${file}`}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -138,7 +132,67 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    )
+    );
+  if (modalFor === "project")
+    return (
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Project Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <div>
+                <Text fontWeight="bold">Project Name: </Text>
+                <Text>{data.projectName}</Text>
+                <Text fontWeight="bold">Client ID: </Text>
+                <Link to={`/GetClient/${data.client_id}`}>
+                  <Text>{data.client_id}</Text>
+                </Link>
+                <Text fontWeight="bold">progress: </Text>
+                <Text>{data.progress}</Text>
+                <Text fontWeight="bold">Billing Type: </Text>
+                <Text>{data.billingType}</Text>
+                <Text fontWeight="bold">Status </Text>
+                <Text>{data.status}</Text>
+                <Text fontWeight="bold">Total Rate: </Text>
+                <Text>{data.totalRate}</Text>
+                <Text fontWeight="bold">Estimated Hours: </Text>
+                <Text>{data.estimatedHours}</Text>
+                <Text fontWeight="bold">Start Date </Text>
+                <Text>{data.startDate}</Text>
+                <Text fontWeight="bold">End date </Text>
+                <Text>{data.endDate}</Text>
+                <Text fontWeight="bold">Tags </Text>
+                {data.tags.map((tag, index) => (
+                  <Text key={index}>{tag}</Text>
+                ))}
+                <Text fontWeight="bold">Employee </Text>
+                {data.employees.map((employee, index) => (
+                  <Link key={index} to={`/GetEmp/${employee}`}>
+                    <Text>{employee}</Text>
+                  </Link>
+                ))}
+                <Text fontWeight="bold">Project ID: </Text>
+                <Text>{data.project_id}</Text>
+                <Text fontWeight="bold">Description: </Text>
+                <Text>{data.description}</Text>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
 }
 
 export default InfoModal

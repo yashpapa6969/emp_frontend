@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
 import Home from "./components/Home";
@@ -16,6 +16,8 @@ import CreateLead from "./components/CreateLead";
 import AppLayout from "./layouts/AppLayout";
 import { useState } from "react";
 import ToDoPage from "./components/ToDoPage";
+import GetAllProject from "./components/GetAllProject";
+import InfoBoxByID from "./components/common/InfoBoxByID";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -29,56 +31,149 @@ function App() {
     <Routes>
       {isLoggedIn ? (
         <>
-          <Route path="/home" element={
-            <AppLayout activeSideabarLink={"Dashboard"} setActiveSideabarLink={setActiveSideabarLink}>
-              <Home />
-            </AppLayout>
-          } />
-          <Route path="/UserInfo" element={
-            <AppLayout activeSideabarLink={"UserInfo"} setActiveSideabarLink={setActiveSideabarLink}>
-              <UserInfo />
-            </AppLayout>
-          } />
-          <Route path="/getAllManager" element={
-            <AppLayout activeSideabarLink={"getAllManager"} setActiveSideabarLink={setActiveSideabarLink}>
-              <GetAllManager />
-            </AppLayout>
-          } />
-          <Route path="/getAllEmp" element={
-            <AppLayout activeSideabarLink={"getAllEmp"} setActiveSideabarLink={setActiveSideabarLink}>
-              <GetAllEmp />
-            </AppLayout>
-          } />
-          <Route path="/getAllClient" element={
-            <AppLayout activeSideabarLink={"getAllClient"} setActiveSideabarLink={setActiveSideabarLink}>
-              <GetAllClient />
-            </AppLayout>
-          } />
-          <Route path="/getAllTodo" element={
-            <AppLayout activeSideabarLink={"getAllTodo"} setActiveSideabarLink={setActiveSideabarLink}>
-              <ToDoPage />
-            </AppLayout>
-          } />
-          <Route path="/createEmp" element={
-            <AppLayout activeSideabarLink={"CreateEmp"} setActiveSideabarLink={setActiveSideabarLink}>
-              <CreateEmp />
-            </AppLayout>
-          } />
-          <Route path="/createClient" element={
-            <AppLayout activeSideabarLink={"CreateClient"} setActiveSideabarLink={setActiveSideabarLink}>
-              <CreateClient />
-            </AppLayout>
-          } />
-          <Route path="/createLead" element={
-            <AppLayout activeSideabarLink={"createLead"} setActiveSideabarLink={setActiveSideabarLink}>
-              <CreateLead />
-            </AppLayout>
-          } />
-          <Route path="/createProject" element={
-            <AppLayout activeSideabarLink={"CreateProject"} setActiveSideabarLink={setActiveSideabarLink}>
-              <CreateProject />
-            </AppLayout>
-          } />
+          <Route
+            path="/home"
+            element={
+              <AppLayout
+                activeSideabarLink={"Dashboard"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <Home />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UserInfo"
+            element={
+              <AppLayout
+                activeSideabarLink={"UserInfo"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UserInfo />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllManager"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllManager"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllManager />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllEmp"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllEmp"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllEmp />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllProject"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllProject"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllProject />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllClient"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllClient />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllTodo"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllTodo"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <ToDoPage />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createEmp"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateEmp"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateEmp />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createClient"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateClient />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createLead"
+            element={
+              <AppLayout
+                activeSideabarLink={"createLead"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateLead />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createProject"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateProject"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateProject />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/GetEmp/:employee"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateProject"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <InfoBoxByID modalFor="employee" />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/GetClient/:client"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateProject"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <InfoBoxByID modalFor="client" />
+              </AppLayout>
+            }
+          />
           <Route path="/*" element={<Navigate to="/home" />} />
         </>
       ) : (
