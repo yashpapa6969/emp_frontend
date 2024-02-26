@@ -19,6 +19,7 @@ import ToDoPage from "./components/ToDoPage";
 import GetAllProject from "./components/GetAllProject";
 import InfoBoxByID from "./components/common/InfoBoxByID";
 import GetAllLead from "./components/GetAllLead";
+import CreateTag from "./components/CreateTag";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -161,6 +162,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateProject />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createTag"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateProject"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateTag />
               </AppLayout>
             }
           />
