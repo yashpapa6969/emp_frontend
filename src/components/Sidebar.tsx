@@ -25,9 +25,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/home" className={`flex m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
                 Dashboard
             </Link>
-            <Link to="/UserInfo" className={`flex m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'UserInfo' && 'bg-gray-500'}`}>
+            {/* <Link to="/UserInfo" className={`flex m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'UserInfo' && 'bg-gray-500'}`}>
                 User Information
-            </Link>
+            </Link> */}
             <Link to="/getAllManager" className={`flex m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
                 Manager Information
             </Link>
@@ -39,7 +39,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             </Link>
 
             <Accordion allowToggle>
-                <AccordionItem>
+                <AccordionItem border="none" shadow="none" bg={ "#172032" }>
                     <AccordionButton _expanded={{ bg: '#172032' }}>
                         <Box className='p-2' as="span" flex='1' textAlign='left'>
                             Create

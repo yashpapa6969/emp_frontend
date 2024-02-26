@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
   Input,
-  Select,
-  Text,
   Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const CreateClientB = () => {
+const CreateClientB = ({ onClose }) => {
   const [formData, setFormData] = useState({
     clientName: "",
     contactName: "",
@@ -58,19 +55,14 @@ const CreateClientB = () => {
 
   return (
     <>
-    
+
       <ToastContainer></ToastContainer>
       <Box
-        maxW="xl"
         mx="auto"
-        borderWidth="1px"
-        borderRadius="lg"
-        p="4"
-        boxShadow="lg"
         mt="4"
+        mb={"10"}
       >
         <form onSubmit={handleSubmit}>
-         
 
           <FormControl mb="4">
             <FormLabel>Client Name</FormLabel>
@@ -216,7 +208,10 @@ const CreateClientB = () => {
               onChange={handleChange}
             />
           </FormControl>
-          <Flex justify="center">
+          <Flex justify="end" mt={6} gap={2}>
+            <Button onClick={onClose}>
+              Close
+            </Button>
             <Button type="submit" colorScheme="purple">
               Submit
             </Button>

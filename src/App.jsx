@@ -15,6 +15,7 @@ import CreateProject from "./components/CreateProject";
 import CreateLead from "./components/CreateLead";
 import AppLayout from "./layouts/AppLayout";
 import { useState } from "react";
+import ToDoPage from "./components/ToDoPage";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -51,6 +52,11 @@ function App() {
           <Route path="/getAllClient" element={
             <AppLayout activeSideabarLink={"getAllClient"} setActiveSideabarLink={setActiveSideabarLink}>
               <GetAllClient />
+            </AppLayout>
+          } />
+          <Route path="/getAllTodo" element={
+            <AppLayout activeSideabarLink={"getAllTodo"} setActiveSideabarLink={setActiveSideabarLink}>
+              <ToDoPage />
             </AppLayout>
           } />
           <Route path="/createEmp" element={

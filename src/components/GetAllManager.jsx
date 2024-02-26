@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  Table,
   Thead,
   Tbody,
   Tr,
@@ -11,11 +10,14 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
+import TableContainer from "./common/TableContainer";
 
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
+  const [filteredManagers, setFilteredManagers] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -40,9 +42,11 @@ const GetAllManagers = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
-        <Table width="100%">
+
+        <TableContainer searchText={searchText} setSearchText={setSearchText} setFilteredData={setFilteredManagers} data={managers}>
           <Thead bg={"#F1F5F9"}>
             <Tr>
+              {/* <Th width={"5%"}><Checkbox defaultIsChecked /></Th> */}
               <Th fontWeight="bold">Id</Th>
               <Th fontWeight="bold">Name</Th>
               <Th fontWeight="bold">Position</Th>
@@ -52,25 +56,45 @@ const GetAllManagers = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {managers.map((manager) => (
-              <Tr key={manager._id}>
-                <Td>{manager.manager_id}</Td>
-                <Td>{manager.name}</Td>
-                <Td>{manager.position}</Td>
-                <Td>{manager.department}</Td>
-                <Td>{manager.joiningDate}</Td>
-                <Td>
-                  <Button
-                    colorScheme="purple"
-                    onClick={() => handleMoreInfo(manager)}
-                  >
-                    More Info
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
+            {searchText != "" ?
+              filteredManagers.map((manager) => (
+                <Tr key={manager._id}>
+                  {/* <Td><Checkbox defaultIsChecked /></Td> */}
+                  <Td>{manager.manager_id}</Td>
+                  <Td>{manager.name}</Td>
+                  <Td>{manager.position}</Td>
+                  <Td>{manager.department}</Td>
+                  <Td>{manager.joiningDate}</Td>
+                  <Td>
+                    <Button
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(manager)}
+                    >
+                      More Info
+                    </Button>
+                  </Td>
+                </Tr>
+              )) :
+              managers.map((manager) => (
+                <Tr key={manager._id}>
+                  {/* <Td><Checkbox defaultIsChecked /></Td> */}
+                  <Td>{manager.manager_id}</Td>
+                  <Td>{manager.name}</Td>
+                  <Td>{manager.position}</Td>
+                  <Td>{manager.department}</Td>
+                  <Td>{manager.joiningDate}</Td>
+                  <Td>
+                    <Button
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(manager)}
+                    >
+                      More Info
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
           </Tbody>
-        </Table>
+        </TableContainer>
       </div>
 
       <InfoModal modalFor="manager" data={selectedManager} onClose={onClose} isOpen={isOpen} />
