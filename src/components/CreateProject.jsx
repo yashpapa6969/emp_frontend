@@ -35,17 +35,30 @@ const CreateProject = () => {
   });
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
+   const [clients, setClients] = useState([]);
 
-  useEffect(() => {
-    const dummyTags = ["web development", "frontend", "backend"];
-    setTags(dummyTags);
+   useEffect(() => {
+     const dummyTags = ["web development", "frontend", "backend"];
+     setTags(dummyTags);
 
-    fetch(
-      "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
-    )
-      .then((response) => response.json())
-      .then((data) => setEmployees(data));
-  }, []);
+     // Fetch clients from the API
+     axios
+       .get(
+         "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
+       )
+       .then((response) => {
+         setClients(response.data);
+       })
+       .catch((error) => {
+         console.error("Error fetching clients:", error);
+       });
+
+     fetch(
+       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
+     )
+       .then((response) => response.json())
+       .then((data) => setEmployees(data));
+   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +70,10 @@ const CreateProject = () => {
   const handleEndDateChange = (date) => {
     setProjectData({ ...projectData, endDate: date });
   };
+   const handleClientChange = (e) => {
+     const clientId = e.target.value;
+     setProjectData({ ...projectData, client_id: clientId });
+   };
 
 const handleTagChange = (e) => {
   const selectedTags = Array.from(
@@ -123,7 +140,7 @@ const handleEmployeeChange = (e) => {
       >
         <form onSubmit={handleSubmit}>
           <Text
-            textColor="black" // Set text color to black
+            textColor="black"
             fontSize="3xl"
             fontWeight="extrabold"
             textAlign="center"
@@ -136,8 +153,19 @@ const handleEmployeeChange = (e) => {
               <Input name="projectName" onChange={handleChange} />
             </FormControl>
             <FormControl id="client_id" isRequired>
-              <FormLabel>Client ID</FormLabel>
-              <Input name="client_id" onChange={handleChange} />
+              <FormLabel>Client Name</FormLabel>
+              <Select
+                onChange={handleClientChange}
+                size="md"
+                placeholder="Select client"
+                isRequired
+              >
+                {clients.map((client) => (
+                  <option key={client.client_id} value={client.client_id}>
+                    {client.clientName}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
             <FormControl id="progress" isRequired>
               <FormLabel>Progress</FormLabel>
@@ -173,7 +201,7 @@ const handleEmployeeChange = (e) => {
               />
             </FormControl>
             <FormControl mb="4">
-              <FormLabel>End Date </FormLabel>
+              <FormLabel>End Date</FormLabel>
               <DatePicker
                 selected={projectData.endDate}
                 onChange={handleEndDateChange}
