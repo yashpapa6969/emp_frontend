@@ -18,6 +18,7 @@ import { useState } from "react";
 import ToDoPage from "./components/ToDoPage";
 import GetAllProject from "./components/GetAllProject";
 import InfoBoxByID from "./components/common/InfoBoxByID";
+import GetAllLead from "./components/GetAllLead";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -138,6 +139,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateLead />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllLead"
+            element={
+              <AppLayout
+                activeSideabarLink={"createLead"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllLead />
               </AppLayout>
             }
           />

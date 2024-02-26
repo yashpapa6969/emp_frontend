@@ -193,6 +193,62 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
+  if (modalFor === "lead")
+    return (
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Lead Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <div>
+                <Text fontWeight="bold">Enquiry Date: </Text>
+                <Text>{data.enquiryDate}</Text>
+                <Text fontWeight="bold">Source: </Text>
+                <Text>{data.source}</Text>
+                <Text fontWeight="bold">Brand Name </Text>
+                <Text>{data.brandName}</Text>
+                <Text fontWeight="bold">Client Name </Text>
+                <Text>{data.clientName}</Text>
+                <Text fontWeight="bold">Phone Number: </Text>
+                <Text>{data.phone1}</Text>
+                <Text fontWeight="bold">Email: </Text>
+                <Text>{data.email1}</Text>
+                <Text fontWeight="bold">Status: </Text>
+                <Text>{data.status}</Text>
+                <Text fontWeight="bold">Single File: </Text>
+                <Image
+                  src={data.singleFile}
+                  alt={`Single File, url:- ${data.singleFile}`}
+                />
+                <Text fontWeight="bold">Multiple Files: </Text>
+                {data.multipleFiles.map((file, index) => (
+                  <div key={index}>
+                    <Image
+                      src={file}
+                      alt={`File ${index + 1}, url:- ${file}`}
+                    />
+                  </div>
+                ))}
+                <Text fontWeight="bold">Lead ID: </Text>
+                <Text>{data.lead_id}</Text>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
 }
 
 export default InfoModal
