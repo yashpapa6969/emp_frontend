@@ -41,6 +41,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               <MenuItem>
                 <Link to="/UserInfo">My Profile</Link>
               </MenuItem>
+              <MenuItem>
+                <Link to="/getAllTodo">To do List</Link>
+              </MenuItem>
               <MenuDivider />
               <MenuGroup title='Profile'>
                 <MenuItem>

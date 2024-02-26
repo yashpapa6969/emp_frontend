@@ -262,7 +262,7 @@ function Home() {
             <CardBody>
               <div className="flex justify-between">
                 <h1 className="text-lg flex gap-2 items-center"><GoVerified size={24} color="#ccc" /> My To Do Items</h1>
-                <Link to="/todo" className="text-blue-400 text-sm">View all</Link>
+                <Link to="/getAllTodo" className="text-blue-400 text-sm">View all</Link>
               </div>
               <Divider my={4} />
               <div className="w-full flex flex-col">
