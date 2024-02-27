@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
 import Home from "./components/Home";
@@ -148,7 +148,7 @@ function App() {
             path="/getAllLead"
             element={
               <AppLayout
-                activeSideabarLink={"createLead"}
+                activeSideabarLink={"getAllLead"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllLead />
@@ -170,7 +170,7 @@ function App() {
             path="/createTag"
             element={
               <AppLayout
-                activeSideabarLink={"CreateProject"}
+                activeSideabarLink={"CreateTag"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateTag />
@@ -181,7 +181,7 @@ function App() {
             path="/createTask"
             element={
               <AppLayout
-                activeSideabarLink={"CreateProject"}
+                activeSideabarLink={"CreateTask"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateTask />

@@ -39,25 +39,20 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <Link to="/UserInfo">My Profile</Link>
+                <Link to="/UserInfo" className='w-full'>My Profile</Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/getAllTodo">To do List</Link>
+                <Link to="/getAllTodo" className='w-full'>To do List</Link>
               </MenuItem>
               <MenuDivider />
               <MenuGroup title='Profile'>
                 <MenuItem>
-                  <Link to="/home" className="flex gap-2 items-center justify-center"><IoMdHome /> Dashboard</Link>
+                  <Link to="/home" className="flex gap-2 items-center w-full"><IoMdHome /> Dashboard</Link>
                 </MenuItem>
                 <MenuItem>
-                  <div className="flex gap-2 items-center justify-center" onClick={handleLogout}><IoIosLogOut /> Logout</div>
+                  <div className="flex gap-2 items-center w-full" onClick={handleLogout}><IoIosLogOut /> Logout</div>
                 </MenuItem>
               </MenuGroup>
-              {/* <MenuDivider />
-              <MenuGroup title='Help'>
-                <MenuItem>Docs</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-              </MenuGroup> */}
             </MenuList>
           </Menu>
         </div>
