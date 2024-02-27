@@ -199,7 +199,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.projectName}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Link to={`/GetClient/${data.client_id}`}>
-                  <Text>{data.client_id}</Text>
+                  <Button>Get Client details</Button>
                 </Link>
                 <Text fontWeight="bold">progress: </Text>
                 <Text>{data.progress}</Text>
