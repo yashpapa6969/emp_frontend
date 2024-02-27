@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
+import {
+  selectEmployeeIds,
+  clearEmployeeIds,
+} from "../../store/slice/EmployeeSlice";
+import { selectClientIds, clearClientIds } from "../../store/slice/ClientSlice";
 import {
   Box,
   Heading,
@@ -18,7 +21,7 @@ const InfoBoxByID = ({ modalFor }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const employeeIds = useSelector(selectEmployeeIds);
-  
+  const clientIds = useSelector(selectClientIds);
   const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
@@ -27,28 +30,54 @@ const InfoBoxByID = ({ modalFor }) => {
       setLoading(true);
       setError(null);
       try {
-        const promises = employeeIds.map((id) =>
-          axios.get(
-            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
-          )
-        );
-        const responses = await Promise.all(promises);
-        const employeeData = responses.map((res) => res.data);
-        setData(employeeData);
-         dispatch(clearEmployeeIds());
-        setLoading(false);      
+        let promises = [];
+        let fetchedData = [];
+        if (modalFor === "employee" && employeeIds.length > 0) {
+          promises = employeeIds.map((id) =>
+            axios.get(
+              `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
+            )
+          );
+        } else if (modalFor === "client") {
+          if (Array.isArray(clientIds)) {
+            promises = clientIds.map((id) =>
+              axios.get(
+                `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${id}`
+              )
+            );
+          } else {
+            promises.push(
+              axios.get(
+                `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${clientIds}`
+              )
+            );
+          }
+        }
+        if (promises.length > 0) {
+          const responses = await Promise.all(promises);
+          fetchedData = responses.map((res) => res.data);
+        }
+        setData(fetchedData);
+        setLoading(false);
+        // Clear employeeIds and clientIds after fetching data
+        if (modalFor === "employee") {
+          dispatch(clearEmployeeIds());
+        } else if (modalFor === "client") {
+          dispatch(clearClientIds());
+        }
       } catch (error) {
         setError(error.message);
         setLoading(false);
       }
     };
 
-    if (employeeIds.length > 0) {
+    if (
+      (modalFor === "employee" && employeeIds.length > 0) ||
+      modalFor === "client"
+    ) {
       fetchData();
     }
-  }, [employeeIds]);
-
- 
+  }, []);
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
@@ -61,9 +90,9 @@ const InfoBoxByID = ({ modalFor }) => {
       {error && <Text color="red.500">{error}</Text>}
       {!loading && !error && (
         <VStack align="start" spacing={2}>
-          {data.map((employee, index) => (
+          {data.map((item, index) => (
             <Box key={index}>
-              {Object.entries(employee).map(([key, value]) => (
+              {Object.entries(item).map(([key, value]) => (
                 <div key={key}>
                   <Text fontWeight="bold">{key}:</Text>
                   <Text>{value}</Text>

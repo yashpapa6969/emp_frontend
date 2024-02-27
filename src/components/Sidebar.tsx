@@ -64,6 +64,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         <Link to="/createLead" className={`flex p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
                             Lead
                         </Link>
+                        <Link to="/createTask" className={`flex p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
+                            Task
+                        </Link>
                         <Link to="/createTag" className={`flex p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
                             Tag
                         </Link>
