@@ -14,8 +14,8 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
-import { addClientId } from "../../store/slice/ClientSlice";
-import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
+import { setClientId } from "../../store/slice/ClientSlice";
+import { selectEmployeeIds,clearEmployeeIds,setEmployeeId,clearEmployeeId } from "../../store/slice/EmployeeSlice";
 import { useEffect,useState } from "react";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
@@ -28,24 +28,20 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
        dispatch(addEmployeeId(id));
      });
    }
+   if (modalFor === "task" && data?.employee_id) {
+     const employeeId = data.employee_id;
+     dispatch(setEmployeeId(employeeId));
+   }
 
    if (modalFor === "project" && data && data.client_id) {
-     let clientIds = data.client_id;
-     if (!Array.isArray(clientIds)) {
-       // If clientIds is not an array, convert it to an array with a single element
-       clientIds = [clientIds];
-     }
-     clientIds.forEach((id) => {
-       dispatch(addClientId(id));
-     });
+     const clientId = data.client_id;
+     dispatch(setClientId(clientId));
    }
  }, [modalFor, data, dispatch]);
 
 
 
-  const addEmployeeIdToRedux = (id) => {
-    dispatch(addEmployeeId(id));
-  };
+ 
 
   if (modalFor === "manager")
     return (
@@ -299,6 +295,51 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 ))}
                 <Text fontWeight="bold">Lead ID: </Text>
                 <Text>{data.lead_id}</Text>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  if (modalFor === "task")
+    return (
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Task Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <div>
+                <Text fontWeight="bold">BrandName </Text>
+                <Text>{data.brandName}</Text>
+                <Text fontWeight="bold">Project ID: </Text>
+                <Text>{data.project_id}</Text>
+                <Link to={`/GetEmp`}>
+                  <Button>Get EMP details</Button>
+                </Link>
+                <Text fontWeight="bold">Priority </Text>
+                <Text>{data.priority}</Text>
+                <Text fontWeight="bold">Status: </Text>
+                <Text>{data.status}</Text>
+                <Text fontWeight="bold">Start Date: </Text>
+                <Text>{data.startDate}</Text>
+                <Text fontWeight="bold">Deadline: </Text>
+                <Text>{data.deadline}</Text>
+                <Text fontWeight="bold">Description: </Text>
+                <Text>{data.description}</Text>
+                <Text fontWeight="bold">Task ID: </Text>
+                <Text>{data.task_id}</Text>
               </div>
             )}
           </ModalBody>

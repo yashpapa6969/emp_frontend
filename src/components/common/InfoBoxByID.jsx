@@ -4,8 +4,9 @@ import axios from "axios";
 import {
   selectEmployeeIds,
   clearEmployeeIds,
+  selectEmployeeId
 } from "../../store/slice/EmployeeSlice";
-import { selectClientIds, clearClientIds } from "../../store/slice/ClientSlice";
+import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
 import {
   Box,
   Heading,
@@ -21,9 +22,11 @@ const InfoBoxByID = ({ modalFor }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const employeeIds = useSelector(selectEmployeeIds);
-  const clientIds = useSelector(selectClientIds);
+  const clientId = useSelector(selectClientId);
+  const employeeId = useSelector(selectEmployeeId);
   const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
+ 
 
  useEffect(() => {
    const fetchData = async () => {
@@ -31,7 +34,12 @@ const InfoBoxByID = ({ modalFor }) => {
      setError(null);
      try {
        let fetchedData = [];
-       if (modalFor === "employee" && employeeIds.length > 0) {
+       if (modalFor === "employee" && employeeId) {
+         const employeeResponse = await axios.get(
+           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${employeeId}`
+         );
+         fetchedData.push(employeeResponse.data);
+       } else if (modalFor === "employee" && employeeIds.length > 0) {
          const promises = employeeIds.map((id) =>
            axios.get(
              `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
@@ -39,19 +47,18 @@ const InfoBoxByID = ({ modalFor }) => {
          );
          const responses = await Promise.all(promises);
          fetchedData = responses.map((res) => res.data);
-       } else if (modalFor === "client" && clientIds.length > 0) {
+       } else if (modalFor === "client" && clientId) {
          const response = await axios.get(
-           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${clientIds[0]}`
+           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${clientId}`
          );
          fetchedData.push(response.data);
        }
        setData(fetchedData);
        setLoading(false);
-       // Clear employeeIds and clientIds after fetching data
        if (modalFor === "employee") {
          dispatch(clearEmployeeIds());
        } else if (modalFor === "client") {
-         dispatch(clearClientIds());
+         dispatch(clearClientId());
        }
      } catch (error) {
        setError(error.message);
@@ -61,11 +68,12 @@ const InfoBoxByID = ({ modalFor }) => {
 
    if (
      (modalFor === "employee" && employeeIds.length > 0) ||
-     (modalFor === "client" && clientIds.length > 0)
+     (modalFor === "client" && clientId) ||
+     (modalFor === "employee" && employeeId)
    ) {
      fetchData();
    }
- }, [modalFor, employeeIds, clientIds]);
+ }, []);
 
 
   return (

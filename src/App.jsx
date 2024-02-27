@@ -21,6 +21,7 @@ import InfoBoxByID from "./components/common/InfoBoxByID";
 import GetAllLead from "./components/GetAllLead";
 import CreateTag from "./components/CreateTag";
 import CreateTask from "./components/CreateTask";
+import GetAllTask from "./components/GetAllTask";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -152,6 +153,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllLead />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllTask"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllLead"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllTask />
               </AppLayout>
             }
           />
