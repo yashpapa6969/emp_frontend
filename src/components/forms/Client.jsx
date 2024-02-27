@@ -4,7 +4,6 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Text,
     Flex,
 } from "@chakra-ui/react";
 import axios from "axios";

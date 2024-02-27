@@ -3,12 +3,9 @@ import {
   Box,
   Input,
   Button,
-  VStack,
-  Grid,
-  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { Space, Tag } from "antd";
+import { Tag } from "antd";
 
 const CreateTag = () => {
   const [tags, setTags] = useState([]);
@@ -45,17 +42,17 @@ const CreateTag = () => {
 
   return (
     <div className="p-4">
-      <div className="flex gap-2 max-w-[400px]">
+      <div className="flex justify-start gap-2 w-[400px]">
         <Input
           placeholder="Enter new tag"
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
         />
-        <Button colorScheme="blue" onClick={handleAddTag}>
+        <Button px={6} colorScheme="blue" onClick={handleAddTag}>
           Add Tag
         </Button>
       </div>
-      <div className="max-w-[600px] mt-6">
+      <Box bg={"#172032"} mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"} minH={"sm"}>
         {tags.map((tag) => (
           <>
             <Tag key={tag._id} color="gold">
@@ -63,7 +60,7 @@ const CreateTag = () => {
             </Tag>
           </>
         ))}
-      </div>
+      </Box>
     </div>
   );
 };

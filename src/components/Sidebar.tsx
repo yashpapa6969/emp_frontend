@@ -37,11 +37,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/getAllEmp" className={`flex items-center gap-2 m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
                 <IoMdPerson size={20} /> Employee Information
             </Link>
-            <Link to="/getAllClient" className={`flex items-center gap-2 m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
-                <IoPeopleSharp size={20} /> Client Information
-            </Link>
             <Link to="/getAllProject" className={`flex items-center gap-2 m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
                 <FaDiagramProject size={20} />Project Information
+            </Link>
+            <Link to="/getAllClient" className={`flex items-center gap-2 m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
+                <IoPeopleSharp size={20} /> Client Information
             </Link>
             <Link to="/getAllLead" className={`flex items-center gap-2 m-4 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} />Lead Information
@@ -58,11 +58,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         <Link to="/createEmp" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateEmp' && 'bg-gray-500'}`}>
                             <IoPersonAddOutline size={16} /> Employee
                         </Link>
-                        <Link to="/createClient" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateClient' && 'bg-gray-500'}`}>
-                            <IoPeopleOutline size={18} />Client
-                        </Link>
                         <Link to="/createProject" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateProject' && 'bg-gray-500'}`}>
                             <LiaProjectDiagramSolid size={18} /> Project
+                        </Link>
+                        <Link to="/createClient" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateClient' && 'bg-gray-500'}`}>
+                            <IoPeopleOutline size={18} />Client
                         </Link>
                         <Link to="/createLead" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
                             <LiaTtySolid /> Lead
