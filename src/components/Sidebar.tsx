@@ -29,22 +29,22 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <img src='/logo.png' alt='logo' className='h-6' /> ADSVERSIFY
             </Link>
 
-            <Link to="/home" className={`flex items-center gap-2 m-4 p-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
+            <Link to="/home" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
                 <IoMdHome size={20} /> Dashboard
             </Link>
-            <Link to="/getAllManager" className={`flex items-center gap-2 m-4 p-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
+            <Link to="/getAllManager" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
                 <GoPersonFill /> Manager Information
             </Link>
-            <Link to="/getAllEmp" className={`flex items-center gap-2 m-4 p-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
+            <Link to="/getAllEmp" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
                 <IoMdPerson size={20} /> Employee Information
             </Link>
-            <Link to="/getAllProject" className={`flex items-center gap-2 m-4 p-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
+            <Link to="/getAllProject" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
                 <FaDiagramProject size={20} />Project Information
             </Link>
-            <Link to="/getAllClient" className={`flex items-center gap-2 m-4 p-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
+            <Link to="/getAllClient" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
                 <IoPeopleSharp size={20} /> Client Information
             </Link>
-            <Link to="/getAllLead" className={`flex items-center gap-2 m-4 px-2 py-1 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
+            <Link to="/getAllLead" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} />Lead Information
             </Link>
             <Accordion defaultIndex={[0]} allowToggle>
