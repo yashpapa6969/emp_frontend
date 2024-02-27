@@ -147,7 +147,7 @@ function App() {
             path="/getAllLead"
             element={
               <AppLayout
-                activeSideabarLink={"createLead"}
+                activeSideabarLink={"getAllLead"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllLead />
@@ -169,7 +169,7 @@ function App() {
             path="/createTag"
             element={
               <AppLayout
-                activeSideabarLink={"CreateProject"}
+                activeSideabarLink={"CreateTag"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateTag />
