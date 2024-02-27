@@ -14,21 +14,34 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
+import { addClientId } from "../../store/slice/ClientSlice";
 import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
 import { useEffect,useState } from "react";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   const dispatch = useDispatch();
     
-    useEffect(() => {
-      if (modalFor === "project" && data?.employees) {
-        const employeeIds = data.employees;
-        employeeIds.forEach((id) => {
-          dispatch(addEmployeeId(id));
-        });
-       
-      }
-    }, [modalFor, data, dispatch]);
+ useEffect(() => {
+   if (modalFor === "project" && data?.employees) {
+     const employeeIds = data.employees;
+     employeeIds.forEach((id) => {
+       dispatch(addEmployeeId(id));
+     });
+   }
+
+   if (modalFor === "project" && data && data.client_id) {
+     let clientIds = data.client_id;
+     if (!Array.isArray(clientIds)) {
+       // If clientIds is not an array, convert it to an array with a single element
+       clientIds = [clientIds];
+     }
+     clientIds.forEach((id) => {
+       dispatch(addClientId(id));
+     });
+   }
+ }, [modalFor, data, dispatch]);
+
+
 
   const addEmployeeIdToRedux = (id) => {
     dispatch(addEmployeeId(id));
@@ -198,7 +211,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Project Name: </Text>
                 <Text>{data.projectName}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
-                <Link to={`/GetClient/${data.client_id}`}>
+                <Link to={`/GetClient`}>
                   <Button>Get Client details</Button>
                 </Link>
                 <Text fontWeight="bold">progress: </Text>

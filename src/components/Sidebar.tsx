@@ -69,6 +69,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         </Link>
                         <Link to="/createTag" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
                             <IoPricetagOutline /> Tag
+                        <Link to="/createTask" className={`flex p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createTask' && 'bg-gray-500'}`}>
+                            Task
+                        </Link>
+                        <Link to="/createTag" className={`flex p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
+                            Tag
                         </Link>
                     </AccordionPanel>
                 </AccordionItem>
