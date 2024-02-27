@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
 import {
   Box,
   Heading,
@@ -12,34 +14,41 @@ import {
 } from "@chakra-ui/react";
 
 const InfoBoxByID = ({ modalFor }) => {
-  const [data, setData] = useState(null);
-  const { employee } = useParams();
-  const { client } = useParams();
-  console.log(client);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
+  const employeeIds = useSelector(selectEmployeeIds);
+  
+  const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        let response;
-        if (modalFor === "employee") {
-          response = await axios.get(
-            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${employee}`
-          );
-        } else if (modalFor === "client") {
-          response = await axios.get(
-            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${client}`
-          );
-        }
-        setData(response.data);
-        
+        const promises = employeeIds.map((id) =>
+          axios.get(
+            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
+          )
+        );
+        const responses = await Promise.all(promises);
+        const employeeData = responses.map((res) => res.data);
+        setData(employeeData);
+         dispatch(clearEmployeeIds());
+        setLoading(false);      
       } catch (error) {
-        alert(error.response.data.message);
-       
+        setError(error.message);
+        setLoading(false);
       }
+    };
+
+    if (employeeIds.length > 0) {
+      fetchData();
     }
-    fetchData();
-  }, [modalFor, employee]);
+  }, [employeeIds]);
+
+ 
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
@@ -48,14 +57,18 @@ const InfoBoxByID = ({ modalFor }) => {
           ? "Employee Information"
           : "Client Information"}
       </Heading>
-      {!data ? (
-        <Spinner />
-      ) : (
+      {loading && <Spinner />}
+      {error && <Text color="red.500">{error}</Text>}
+      {!loading && !error && (
         <VStack align="start" spacing={2}>
-          {Object.entries(data).map(([key, value]) => (
-            <Box key={key}>
-              <Text fontWeight="bold">{key}:</Text>
-              <Text>{value}</Text>
+          {data.map((employee, index) => (
+            <Box key={index}>
+              {Object.entries(employee).map(([key, value]) => (
+                <div key={key}>
+                  <Text fontWeight="bold">{key}:</Text>
+                  <Text>{value}</Text>
+                </div>
+              ))}
               <Divider mt={2} />
             </Box>
           ))}

@@ -177,7 +177,7 @@ function App() {
             }
           />
           <Route
-            path="/GetEmp/:employee"
+            path="/GetEmp"
             element={
               <AppLayout
                 activeSideabarLink={"CreateProject"}

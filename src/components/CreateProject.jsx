@@ -38,10 +38,17 @@ const CreateProject = () => {
    const [clients, setClients] = useState([]);
 
    useEffect(() => {
-     const dummyTags = ["web development", "frontend", "backend"];
-     setTags(dummyTags);
+     axios
+       .get(
+         "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
+       )
+       .then((response) => {
+         setTags(response.data);
+       })
+       .catch((error) => {
+         console.error("Error fetching clients:", error);
+       });
 
-     // Fetch clients from the API
      axios
        .get(
          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
@@ -76,27 +83,41 @@ const CreateProject = () => {
    };
 
 const handleTagChange = (e) => {
-  const selectedTags = Array.from(
-    e.target.selectedOptions,
-    (option) => option.value
-  );
+  const selectedTags = Array.from(e.target.selectedOptions, (option) => ({
+    id: option.value,
+    tagName: option.label,
+  }));
   setProjectData({
     ...projectData,
     tags: [...projectData.tags, ...selectedTags],
   });
 };
+const removeTagById = (tagToRemove) => {
+  setProjectData({
+    ...projectData,
+    tags: projectData.tags.filter((tag) => tag !== tagToRemove),
+  });
+};
 
 const handleEmployeeChange = (e) => {
-  const selectedEmployees = Array.from(
-    e.target.selectedOptions,
-    (option) => option.value
-  );
+  const selectedEmployees = Array.from(e.target.selectedOptions, (option) => ({
+    id: option.value,
+    employeeName: option.label,
+  }));
   setProjectData({
     ...projectData,
     employees: [...projectData.employees, ...selectedEmployees],
   });
 };
 
+const removeEmployeeById = (employeeIdToRemove) => {
+  setProjectData({
+    ...projectData,
+    employees: projectData.employees.filter(
+      (employeeId) => employeeId !== employeeIdToRemove
+    ),
+  });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -150,7 +171,7 @@ const handleEmployeeChange = (e) => {
           <VStack spacing={4} align="stretch">
             <FormControl id="projectName" isRequired>
               <FormLabel>Project Name</FormLabel>
-              <Input name="projectName" onChange={handleChange}/>
+              <Input name="projectName" onChange={handleChange} />
             </FormControl>
             <FormControl id="client_id" isRequired>
               <FormLabel>Client Name</FormLabel>
@@ -219,27 +240,20 @@ const handleEmployeeChange = (e) => {
               >
                 {tags.map((tag) => (
                   <option key={tag} value={tag}>
-                    {tag}
+                    {tag.tagName}
                   </option>
                 ))}
               </Select>
               {projectData.tags.map((tag) => (
                 <Tag
-                  key={tag}
+                  key={tag.id}
                   size="md"
                   borderRadius="full"
                   variant="solid"
                   colorScheme="blue"
                 >
-                  <TagLabel>{tag}</TagLabel>
-                  <TagCloseButton
-                    onClick={() =>
-                      setProjectData({
-                        ...projectData,
-                        tags: projectData.tags.filter((t) => t !== tag),
-                      })
-                    }
-                  />
+                  <TagLabel>{tag.tagName}</TagLabel>
+                  <TagCloseButton onClick={() => removeTagById(tag)} />
                 </Tag>
               ))}
             </FormControl>
@@ -253,37 +267,23 @@ const handleEmployeeChange = (e) => {
               >
                 {employees.map((employee) => (
                   <option
-                    key={employee.employee_id}
-                    value={employee.employee_id}
+                    key={employee}
+                    value={employee}
                   >
                     {employee.name}
                   </option>
                 ))}
               </Select>
-              {projectData.employees.map((employee) => (
+              {projectData.employees.map((tag) => (
                 <Tag
-                  key={employee}
+                  key={tag.id}
                   size="md"
                   borderRadius="full"
                   variant="solid"
                   colorScheme="blue"
                 >
-                  <TagLabel>
-                    {
-                      employees.find((emp) => emp.employee_id === employee)
-                        ?.name
-                    }
-                  </TagLabel>
-                  <TagCloseButton
-                    onClick={() =>
-                      setProjectData({
-                        ...projectData,
-                        employees: projectData.employees.filter(
-                          (emp) => emp !== employee
-                        ),
-                      })
-                    }
-                  />
+                  <TagLabel>{tag.employeeName}</TagLabel>
+                  <TagCloseButton onClick={() => removeEmployeeById(tag)} />
                 </Tag>
               ))}
             </FormControl>

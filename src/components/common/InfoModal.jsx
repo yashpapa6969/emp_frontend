@@ -1,10 +1,47 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure,Image } from '@chakra-ui/react'
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  Image,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addEmployeeId } from "../../store/slice/EmployeeSlice";
+import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
+import { useEffect,useState } from "react";
+
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
+  const dispatch = useDispatch();
+    
+    useEffect(() => {
+      if (modalFor === "project" && data?.employees) {
+        const employeeIds = data.employees;
+        employeeIds.forEach((id) => {
+          dispatch(addEmployeeId(id));
+        });
+       
+      }
+    }, [modalFor, data, dispatch]);
+
+  const addEmployeeIdToRedux = (id) => {
+    dispatch(addEmployeeId(id));
+  };
 
   if (modalFor === "manager")
     return (
-      <Modal onClose={onClose} isOpen={isOpen} motionPreset='slideInBottom' isCentered>
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Manager Information</ModalHeader>
@@ -40,11 +77,16 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    )
+    );
 
   if (modalFor === "employee")
     return (
-      <Modal onClose={onClose} isOpen={isOpen} motionPreset='slideInBottom' isCentered>
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Employee Information</ModalHeader>
@@ -80,7 +122,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    )
+    );
 
   if (modalFor === "client")
     return (
@@ -112,7 +154,10 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
                 <Text fontWeight="bold">Single File: </Text>
-                <Image src={data.singleFile} alt={`Single File, url:- ${data.singleFile}`} />
+                <Image
+                  src={data.singleFile}
+                  alt={`Single File, url:- ${data.singleFile}`}
+                />
                 <Text fontWeight="bold">Multiple Files: </Text>
                 {data.multipleFiles.map((file, index) => (
                   <div key={index}>
@@ -133,7 +178,9 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
-  if (modalFor === "project")
+  if (modalFor === "project") {
+   
+
     return (
       <Modal
         onClose={onClose}
@@ -173,11 +220,11 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   <Text key={index}>{tag}</Text>
                 ))}
                 <Text fontWeight="bold">Employee </Text>
-                {data.employees.map((employee, index) => (
-                  <Link key={index} to={`/GetEmp/${employee}`}>
-                    <Text>{employee}</Text>
-                  </Link>
-                ))}
+
+                <Link to={`/GetEmp`}>
+                  <Button>Get EMP details</Button>
+                </Link>
+
                 <Text fontWeight="bold">Project ID: </Text>
                 <Text>{data.project_id}</Text>
                 <Text fontWeight="bold">Description: </Text>
@@ -193,6 +240,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
+  }
   if (modalFor === "lead")
     return (
       <Modal
@@ -249,6 +297,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
-}
+};
 
-export default InfoModal
+export default InfoModal;

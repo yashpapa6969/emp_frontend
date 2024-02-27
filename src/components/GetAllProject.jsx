@@ -77,7 +77,7 @@ const GetAllProject = () => {
         <TableContainer
           searchText={searchText}
           setSearchText={setSearchText}
-          setFilteredData={setFilteredClients}
+          setFilteredData={setFilteredClients}//regex to be done 
           data={clients}
         >
           <Thead bg={"#F1F5F9"}>
