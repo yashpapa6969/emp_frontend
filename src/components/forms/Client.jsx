@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
 const Client = () => {
     const [formData, setFormData] = useState({
@@ -93,6 +94,8 @@ const Client = () => {
                     onChange={(date) =>
                         setFormData({ ...formData, enquiryDate: date })
                     }
+                    dateFormat="MM/dd/yyyy"
+                    defaultValue={moment()}
                 />
             </FormControl>
             <FormControl mb="4">

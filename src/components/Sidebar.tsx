@@ -51,7 +51,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
                     <AccordionButton _expanded={{ bg: '#172032' }}>
                         <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
-                            <GoPlus /> Create
+                            Create
                         </Box>
                         <AccordionIcon />
                     </AccordionButton>

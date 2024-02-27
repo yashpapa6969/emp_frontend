@@ -1,16 +1,10 @@
 import {
   Box,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
 } from "@chakra-ui/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Lead from "./forms/Lead";
-import Client from "./forms/Client";
 
 const CreateLead = () => {
   return (
@@ -24,21 +18,10 @@ const CreateLead = () => {
         boxShadow="lg"
         m="4"
       >
-        <Tabs>
-          <TabList>
-            <Tab>Lead</Tab>
-            <Tab>Client</Tab>
-          </TabList>
+        <h1 className="text-2xl font-semibold">Add Lead</h1>
+        <p className="font-light mb-4">Fill the below form to add a new lead</p>
 
-          <TabPanels>
-            <TabPanel>
-              <Lead />
-            </TabPanel>
-            <TabPanel>
-              <Client />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <Lead />
       </Box>
     </>
   );

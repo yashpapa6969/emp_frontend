@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, VStack, Button } from "@chakra-ui/react"
+import { FormControl, FormLabel, VStack, Button, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
 import { DatePicker, Input } from "antd"
 import axios from "axios";
 import { useState } from "react";
@@ -84,77 +84,90 @@ const Lead = () => {
                 />
             </FormControl>
             <VStack spacing={4} align="stretch" mt={4}>
-                <div className="flex gap-3">
-                    <FormControl id="source" isRequired>
-                        <FormLabel>Source</FormLabel>
-                        <Input name="source" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="brandName" isRequired >
-                        <FormLabel>Brand Name</FormLabel>
-                        <Input name="brandName" onChange={handleChange} />
-                    </FormControl>
-                </div>
-                <div className="flex gap-3">
-                    <FormControl id="firstName" isRequired>
-                        <FormLabel>First Name</FormLabel>
-                        <Input name="firstName" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="lastName" isRequired>
-                        <FormLabel>Last Name</FormLabel>
-                        <Input name="lastName" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="phone1" isRequired>
-                        <FormLabel>Phone Number 1</FormLabel>
-                        <Input name="phone1" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="phone2">
-                        <FormLabel>Phone Number 2</FormLabel>
-                        <Input name="phone2" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="email1" isRequired>
-                        <FormLabel>Email 1</FormLabel>
-                        <Input name="email1" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="email2">
-                        <FormLabel>Email 2</FormLabel>
-                        <Input name="email2" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="website" isRequired>
-                        <FormLabel>Website</FormLabel>
-                        <Input name="website" onChange={handleChange} />
-                    </FormControl>
-                </div>
-                <div className="flex gap-3">
-                    <FormControl id="businessAddress" isRequired>
-                        <FormLabel>Business Address</FormLabel>
-                        <Input name="businessAddress" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="city" isRequired>
-                        <FormLabel>City</FormLabel>
-                        <Input name="city" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="state" isRequired>
-                        <FormLabel>State</FormLabel>
-                        <RegionDropdown
-                            country={selectedCountry}
-                            name="state"
-                            value={selectedState}
-                            onChange={(e) => handleSelectChange(setSelectedState, "state", e)}
-                            className="border-[0.375px] rounded-md h-[2rem] max-w-24" />
-                    </FormControl>
-                    <FormControl id="pincode" isRequired>
-                        <FormLabel>Pincode</FormLabel>
-                        <Input name="pincode" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="country" isRequired>
-                        <FormLabel>Country</FormLabel>
-                        <CountryDropdown
-                            name="country"
-                            value={selectedCountry}
-                            onChange={(e) => handleSelectChange(setSelectedCountry, "country", e)}
-                            className="border-[0.375px] rounded-md h-[2rem]" />
-                    </FormControl>
-                </div>
+                <Tabs>
+                    <TabList>
+                        <Tab>Personal Information</Tab>
+                        <Tab>Address Information</Tab>
+                    </TabList>
+
+                    <TabPanels>
+                        <TabPanel>
+                            <div className="flex gap-3">
+                                <FormControl id="source" isRequired>
+                                    <FormLabel>Source</FormLabel>
+                                    <Input name="source" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="brandName" isRequired >
+                                    <FormLabel>Brand Name</FormLabel>
+                                    <Input name="brandName" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                            <div className="flex gap-3">
+                                <FormControl id="firstName" isRequired>
+                                    <FormLabel>First Name</FormLabel>
+                                    <Input name="firstName" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="lastName" isRequired>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <Input name="lastName" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="phone1" isRequired>
+                                    <FormLabel>Phone Number 1</FormLabel>
+                                    <Input name="phone1" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="phone2">
+                                    <FormLabel>Phone Number 2</FormLabel>
+                                    <Input name="phone2" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="email1" isRequired>
+                                    <FormLabel>Email 1</FormLabel>
+                                    <Input name="email1" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="email2">
+                                    <FormLabel>Email 2</FormLabel>
+                                    <Input name="email2" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="website" isRequired>
+                                    <FormLabel>Website</FormLabel>
+                                    <Input name="website" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="flex gap-3">
+                                <FormControl id="businessAddress" isRequired>
+                                    <FormLabel>Business Address</FormLabel>
+                                    <Input name="businessAddress" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="city" isRequired>
+                                    <FormLabel>City</FormLabel>
+                                    <Input name="city" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="state" isRequired>
+                                    <FormLabel>State</FormLabel>
+                                    <RegionDropdown
+                                        country={selectedCountry}
+                                        name="state"
+                                        value={selectedState}
+                                        onChange={(e) => handleSelectChange(setSelectedState, "state", e)}
+                                        className="border-[0.375px] rounded-md h-[2rem] max-w-24" />
+                                </FormControl>
+                                <FormControl id="pincode" isRequired>
+                                    <FormLabel>Pincode</FormLabel>
+                                    <Input name="pincode" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="country" isRequired>
+                                    <FormLabel>Country</FormLabel>
+                                    <CountryDropdown
+                                        name="country"
+                                        value={selectedCountry}
+                                        onChange={(e) => handleSelectChange(setSelectedCountry, "country", e)}
+                                        className="border-[0.375px] rounded-md h-[2rem]" />
+                                </FormControl>
+                            </div>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
                 <div className="flex gap-3">
                     <FormControl id="requirement">
                         <FormLabel>Requirement</FormLabel>
