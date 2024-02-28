@@ -45,7 +45,7 @@ const CreateTask = () => {
     // Fetch projects based on selected brand
     axios
       .get(
-        `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getProjectsByBrandName/${selectedBrand}`
+        `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName/${selectedBrand}`
       )
       .then((response) => {
         setProjects(response.data);
