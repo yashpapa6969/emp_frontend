@@ -123,7 +123,7 @@ const GetAllTask = () => {
                     <Td>{client.status}</Td>
                     <Td>
                       {client.status === 0 && "Not Started"}
-                      {client.status === 1 && "In-Progress"}
+                      {client.status === 1 && "Working"}
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
@@ -193,7 +193,7 @@ const GetAllTask = () => {
                     <Td>{client.status}</Td>
                     <Td>
                       {client.status === 0 && "Not Started"}
-                      {client.status === 1 && "In-Progress"}
+                      {client.status === 1 && "Working"}
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
@@ -213,7 +213,7 @@ const GetAllTask = () => {
                               handleStatusChange(client.task_id, 1)
                             }
                           >
-                            In-Progress
+                            Working
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
