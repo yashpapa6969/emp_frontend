@@ -73,9 +73,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Manager ID: </Text>
                 <Text>{data.manager_id}</Text>
                 <Text fontWeight="bold">Permissions:</Text>
-                {data?.permissions?.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -118,9 +122,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Manager ID: </Text>
                 <Text>{data.manager_id}</Text>
                 <Text fontWeight="bold">Permissions:</Text>
-                {data.permissions?.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -162,20 +170,20 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.source}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
-                <Text fontWeight="bold">Single File: </Text>
-                <Image
-                  src={data.singleFile}
-                  alt={`Single File, url:- ${data.singleFile}`}
-                />
-                <Text fontWeight="bold">Multiple Files: </Text>
-                {data.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <Image
-                      src={file}
-                      alt={`File ${index + 1}, url:- ${file}`}
-                    />
-                  </div>
-                ))}
+              
+                <Text fontWeight="bold">Files Provided: </Text>
+                {data.multipleFiles && data.multipleFiles.length > 0 ? (
+                  data.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <Image
+                        src={file}
+                        alt={`File ${index + 1}, url:- ${file}`}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <Text style={{ color: "red" }}>No Files found</Text>
+                )}
               </div>
             )}
           </ModalBody>
