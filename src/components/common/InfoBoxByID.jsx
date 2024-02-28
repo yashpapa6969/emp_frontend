@@ -4,7 +4,8 @@ import axios from "axios";
 import {
   selectEmployeeIds,
   clearEmployeeIds,
-  selectEmployeeId
+  selectEmployeeId,
+  clearEmployeeId,
 } from "../../store/slice/EmployeeSlice";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
 import {
@@ -57,11 +58,12 @@ const InfoBoxByID = ({ modalFor }) => {
        setLoading(false);
        if (modalFor === "employee") {
          dispatch(clearEmployeeIds());
+         dispatch(clearEmployeeId());       
        } else if (modalFor === "client") {
          dispatch(clearClientId());
        }
      } catch (error) {
-       setError(error.message);
+       setError(error.response.data.message);
        setLoading(false);
      }
    };

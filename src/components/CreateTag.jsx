@@ -3,9 +3,10 @@ import {
   Box,
   Input,
   Button,
+  Tag,
+  TagLabel
 } from "@chakra-ui/react";
 import axios from "axios";
-import { Tag } from "antd";
 
 const CreateTag = () => {
   const [tags, setTags] = useState([]);
@@ -52,11 +53,19 @@ const CreateTag = () => {
           Add Tag
         </Button>
       </div>
-      <Box bg={"#172032"} mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"} minH={"sm"}>
+      <Box
+        bg={"#172032"}
+        mt={10}
+        p={10}
+        boxShadow={"md"}
+        rounded={"lg"}
+        width={"full"}
+        minH={"lg"}
+      >
         {tags.map((tag) => (
           <>
-            <Tag key={tag._id} color="gold">
-              {tag.tagName}
+            <Tag key={tag._id} variant="subtle" colorScheme="cyan" mr={2} size={'lg'}>
+              <TagLabel> {tag.tagName}</TagLabel>
             </Tag>
           </>
         ))}
