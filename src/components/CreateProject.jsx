@@ -44,7 +44,7 @@ const CreateProject = () => {
   useEffect(() => {
     axios
       .get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`
       )
       .then((response) => {
         setTags(response.data);
@@ -55,7 +55,7 @@ const CreateProject = () => {
 
     axios
       .get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
       )
       .then((response) => {
         setClients(response.data);
@@ -65,7 +65,7 @@ const CreateProject = () => {
       });
 
     fetch(
-      "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
+      `${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`
     )
       .then((response) => response.json())
       .then((data) => {setEmployees(data)
@@ -130,7 +130,7 @@ const CreateProject = () => {
     e.preventDefault();
     axios
       .post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createProject",
+        `${import.meta.env.VITE_API_BASE}/api/admin/createProject`,
         projectData,
         {
           headers: {

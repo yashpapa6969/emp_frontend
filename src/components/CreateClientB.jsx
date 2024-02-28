@@ -40,7 +40,7 @@ const CreateClientB = ({ onClose }) => {
     e.preventDefault();
     axios
       .post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createClient",
+        `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
         formData
       )
       .then((response) => {

@@ -44,7 +44,7 @@ const GetAllProject = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllProjects"
+          `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
         );
         setProjects(response.data);
         setIsLoading(false); // Set loading to false once data is fetched

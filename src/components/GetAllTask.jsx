@@ -30,7 +30,7 @@ const GetAllTask = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTasks"
+          `${import.meta.env.VITE_API_BASE}/api/admin/getAllTasks`
         );
         setClients(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
@@ -53,7 +53,7 @@ const GetAllTask = () => {
       );
       // Fetch data again after updating status
       const response = await axios.get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTasks"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTasks`
       );
       setClients(response.data);
     } catch (error) {

@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/loginEmployee",
+        `${import.meta.env.VITE_API_BASE}/api/admin/loginEmployee`,
         {
           email,
           password,
