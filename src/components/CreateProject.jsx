@@ -91,16 +91,23 @@ const CreateProject = () => {
     });
   };
 
-  const handleTagChange = (e) => {
-    const selectedTags = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setProjectData({
-      ...projectData,
-      tags: [...projectData.tags, ...selectedTags],
-    });
-  };
+ const handleTagChange = (e) => {
+   const selectedTags = Array.from(
+     e.target.selectedOptions,
+     (option) => option.value
+   );
+
+   // Fetch tag names for selected tag IDs
+   const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
+   console.log(selectedTagNames)
+
+   // Update projectData with tag names
+   setProjectData({
+     ...projectData,
+     tags: [...projectData.tags, ...selectedTagNames],
+   });
+ };
+
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -260,7 +267,7 @@ const CreateProject = () => {
                   variant="solid"
                   colorScheme="blue"
                 >
-                  <TagLabel>{getTagNameById(tag)}</TagLabel>
+                  <TagLabel>{tag}</TagLabel>
                   <TagCloseButton onClick={() => removeTagById(tag)} />
                 </Tag>
               ))}

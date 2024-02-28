@@ -1,26 +1,51 @@
 import {
     FormControl,
     FormLabel,
-    VStack,
     Button,
     Tabs,
     TabList,
     Tab,
     TabPanels,
     TabPanel,
-    Select,
+    // Select,
+    Tag,
+    TagLabel,
+    TagCloseButton,
+    Flex,
 } from "@chakra-ui/react";
-import { DatePicker, Input } from "antd";
+import { DatePicker, Input, Select } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { IoMdCheckmark } from "react-icons/io";
+import { PiPlus } from "react-icons/pi";
+
+const TagRender = ({ label, value, closable, onClose }) => {
+    const onPreventMouseDown = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    return (
+        <Tag
+            color={value}
+            onMouseDown={onPreventMouseDown}
+            closable={closable}
+            onClose={onClose}
+            style={{
+                marginRight: 3,
+            }}
+        >
+            {label}
+        </Tag>
+    );
+};
 
 const Lead = () => {
     const [projectData, setProjectData] = useState({
         enquiryDate: new Date(),
-        source: "",
+        source: [],
         companyName: "",
         clientName: "",
         brandName: "",
@@ -44,12 +69,56 @@ const Lead = () => {
 
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
+    const [tags, setTags] = useState([]);
+    const [tabsForPhone, setTabsForPhone] = useState(false);
 
+    const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
+    const [selectSourceValue, setSelectSourceValue] = useState([]);
+
+    const removeTagById = (tagToRemove) => {
+        setProjectData({
+            ...projectData,
+            source: projectData.source.filter((tag) => tag !== tagToRemove),
+        });
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProjectData({ ...projectData, [name]: value });
     };
+    const getTagNameById = (id) => {
+        const tag = tags.find((tag) => tag.source_tag_id === id);
+        return tag ? tag.sourceTagName : "Unknown Tag";
+    };
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`)
+            .then((response) => {
+                setTags(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching clients:", error);
+            });
+    });
 
+    const handleTagChange = (e) => {
+        const selectedTags = Array.from(
+            e.target.selectedOptions,
+            (option) => option.value
+        );
+
+
+        // Fetch tag names for selected tag IDs
+        const selectedTagNames = selectedTags.map((tagId) =>
+            getTagNameById(tagId)
+        );
+        console.log(selectedTagNames);
+
+        // Update projectData with tag names
+        setProjectData({
+            ...projectData,
+            source: [...projectData.source, ...selectedTagNames],
+        });
+    };
     const handleSelectChange = (setSelected, name, value) => {
         setSelected(value);
         setProjectData({ ...projectData, [name]: value });
@@ -96,7 +165,6 @@ const Lead = () => {
                     toast.success(response.data.message);
                 } else {
                     console.error("Failed to create project");
-                    console.log(response.data.message);
                     toast.success(response.data.message);
                 }
             })
@@ -105,6 +173,21 @@ const Lead = () => {
                 toast.error(error.response.data.message);
             });
     };
+
+    useLayoutEffect(() => {
+        const windowWidth = window.innerWidth;
+        if (windowWidth <= 560) setTabsForPhone(true);
+    }, [])
+
+    const handleAddSource = () => {
+        setSourceAddBtnClick(!sourceAddBtnClick);
+        try {
+            axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
+                { sourceTagName: selectSourceValue }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -119,7 +202,7 @@ const Lead = () => {
                     defaultValue={moment()}
                 />
             </FormControl>
-            <VStack spacing={4} align="stretch" mt={4}>
+            <div className="hidden md:block">
                 <Tabs>
                     <TabList>
                         <Tab>Personal Information</Tab>
@@ -146,9 +229,24 @@ const Lead = () => {
                                 </FormControl>
                             </div>
                             <div className="flex gap-3 mb-3">
-                                <FormControl id="source">
+                                <FormControl id="tags" isRequired>
                                     <FormLabel>Source</FormLabel>
-                                    <Input name="source" onChange={handleChange} />
+                                    <Flex>
+                                        <Select
+                                            mode="multiple"
+                                            tagRender={TagRender}
+                                            style={{
+                                                width: '100%',
+                                            }}
+                                            options={tags.map((item) => ({
+                                                label: item.sourceTagName,
+                                                value: item.sourceTagName,
+                                            }))}
+                                            value={selectSourceValue}
+                                            onChange={setSelectSourceValue}
+                                        />
+                                        <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
+                                    </Flex>
                                 </FormControl>
                                 <FormControl id="title">
                                     <FormLabel>Title</FormLabel>
@@ -184,7 +282,7 @@ const Lead = () => {
                             </div>
                         </TabPanel>
                         <TabPanel>
-                            <div className="flex gap-3 mb-3">
+                            <div className="flex gap-3 mb-3 flex-col md:flex-row">
                                 <FormControl id="country">
                                     <FormLabel>Country</FormLabel>
                                     <CountryDropdown
@@ -193,7 +291,7 @@ const Lead = () => {
                                         onChange={(e) =>
                                             handleSelectChange(setSelectedCountry, "country", e)
                                         }
-                                        className="border-[0.375px] rounded-md h-[2rem]"
+                                        className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
                                     />
                                 </FormControl>
                                 <FormControl id="state">
@@ -252,7 +350,7 @@ const Lead = () => {
                             </FormControl>
                         </TabPanel>
                         <TabPanel>
-                            <div className="flex gap-3">
+                            <div className="flex flex-col gap-3">
                                 <FormControl id="requirement" className="w-1/2">
                                     <FormLabel>Requirement</FormLabel>
                                     <Input
@@ -312,7 +410,217 @@ const Lead = () => {
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
-            </VStack>
+            </div>
+
+            <div className="block md:hidden">
+                <Tabs>
+                    <TabList>
+                        <Tab>Personal Information</Tab>
+                        <Tab>Other Information</Tab>
+                    </TabList>
+
+                    <TabPanels>
+                        <TabPanel>
+                            <div className="flex gap-3 mb-3">
+                                <FormControl id="clientName" isRequired>
+                                    <FormLabel>Client Name</FormLabel>
+                                    <Input name="clientName" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="phone1" isRequired>
+                                    <FormLabel>Phone Number 1</FormLabel>
+                                    <Input name="phone1" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="phone2">
+                                    <FormLabel>Phone Number 2</FormLabel>
+                                    <Input name="phone2" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                            <div className="flex gap-3 mb-3">
+                                <FormControl id="tags" isRequired>
+                                    <FormLabel>Source</FormLabel>
+                                    <Select
+                                        onChange={handleTagChange}
+                                        size="md"
+                                        placeholder="Select Source"
+                                        isRequired
+                                    >
+                                        {tags.map((tag) => (
+                                            <option key={tag._id} value={tag.source_tag_id}>
+
+                                                {tag.sourceTagName}
+                                            </option>
+                                        ))}
+                                    </Select>
+
+                                    {projectData.source.map((tag) => (
+                                        <Tag
+                                            key={tag._id}
+                                            size="md"
+                                            borderRadius="full"
+                                            variant="solid"
+                                            colorScheme="blue"
+                                        >
+                                            <TagLabel>{tag}</TagLabel>
+                                            <TagCloseButton onClick={() => removeTagById(tag)} />
+                                        </Tag>
+                                    ))}
+                                </FormControl>
+                                <FormControl id="title">
+                                    <FormLabel>Title</FormLabel>
+                                    <Input name="title" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="gender">
+                                    <FormLabel>Gender</FormLabel>
+                                    <Select
+                                        name="gender"
+                                        onChange={handleChange}
+                                        placeholder="Select gender"
+                                    >
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+                                    </Select>
+                                </FormControl>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <FormControl id="email1">
+                                    <FormLabel>Email 1</FormLabel>
+                                    <Input name="email1" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="email2">
+                                    <FormLabel>Email 2</FormLabel>
+                                    <Input name="email2" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="website">
+                                    <FormLabel>Website</FormLabel>
+                                    <Input name="website" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="flex gap-3 mb-3 flex-col md:flex-row">
+                                <FormControl id="country">
+                                    <FormLabel>Country</FormLabel>
+                                    <CountryDropdown
+                                        name="country"
+                                        value={selectedCountry}
+                                        onChange={(e) =>
+                                            handleSelectChange(setSelectedCountry, "country", e)
+                                        }
+                                        className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
+                                    />
+                                </FormControl>
+                                <FormControl id="state">
+                                    <FormLabel>State</FormLabel>
+                                    <RegionDropdown
+                                        country={selectedCountry}
+                                        name="state"
+                                        value={selectedState}
+                                        onChange={(e) =>
+                                            handleSelectChange(setSelectedState, "state", e)
+                                        }
+                                        className="border-[0.375px] rounded-md h-[2rem] max-w-24"
+                                    />
+                                </FormControl>
+                                <FormControl id="city">
+                                    <FormLabel>City</FormLabel>
+                                    <Input name="city" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="pincode" isRequired>
+                                    <FormLabel>Pincode</FormLabel>
+                                    <Input name="pincode" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                            <FormControl id="businessAddress" className="w-1/2">
+                                <FormLabel>Business Address</FormLabel>
+                                <Input
+                                    name="businessAddress"
+                                    onChange={handleChange}
+                                    className="h-32"
+                                />
+                            </FormControl>
+                            <div className="flex gap-3">
+                                <FormControl id="brandName" mb={3} isRequired>
+                                    <FormLabel>Brand Name</FormLabel>
+                                    <Input name="brandName" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="companyName" mb={3} isRequired>
+                                    <FormLabel>Company Name</FormLabel>
+                                    <Input name="companyName" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="gst" mb={3}>
+                                    <FormLabel>GST</FormLabel>
+                                    <Input name="gst" onChange={handleChange} />
+                                </FormControl>
+                            </div>
+                            <FormControl id="billingAddress" isRequired className="w-1/2">
+                                <FormLabel>Billing Address</FormLabel>
+                                <Input
+                                    name="billingAddress"
+                                    onChange={handleChange}
+                                    className="h-32"
+                                />
+                            </FormControl>
+                            <div className="flex flex-col gap-3">
+                                <FormControl id="requirement" className="w-1/2">
+                                    <FormLabel>Requirement</FormLabel>
+                                    <Input
+                                        name="requirement"
+                                        onChange={handleChange}
+                                        className="h-16"
+                                    />
+                                </FormControl>
+                                <FormControl id="additionalInformation" className="w-1/2">
+                                    <FormLabel>Additional Information</FormLabel>
+                                    <Input
+                                        name="additionalInformation"
+                                        onChange={handleChange}
+                                        className="h-16"
+                                    />
+                                </FormControl>
+                            </div>
+                            <div className="flex gap-3">
+                                {/* Display single file */}
+                                {projectData.singleFile && (
+                                    <div>
+                                        <p>Single File: {projectData.singleFile.name}</p>
+                                        <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                                    </div>
+                                )}
+                                <FormControl mb="4">
+                                    <FormLabel>Single File</FormLabel>
+                                    <Input type="file" onChange={handleSingleFileChange} />
+                                </FormControl>
+                            </div>
+                            <div className="flex gap-3">
+                                {/* Display multiple files */}
+                                {projectData.multipleFiles.map((file, index) => (
+                                    <div key={index}>
+                                        <p>
+                                            File {index + 1}: {file.name}
+                                        </p>
+                                        <Button onClick={() => handleDeleteMultipleFile(index)}>
+                                            Delete
+                                        </Button>
+                                    </div>
+                                ))}
+                                <FormControl mb="4">
+                                    <FormLabel>Multiple Files</FormLabel>
+                                    <Input
+                                        type="file"
+                                        multiple
+                                        onChange={handleMultipleFilesChange}
+                                    />
+                                </FormControl>
+                            </div>
+                            <Button type="submit" colorScheme="purple" className="mt-5">
+                                Create Lead
+                            </Button>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </div>
         </form>
     );
 };

@@ -82,6 +82,7 @@ const GetAllProject = () => {
           } />
         ) : (
           <TableContainer
+            formFor="project"
             searchText={searchText}
             setSearchText={setSearchText}
             setFilteredData={setFilteredProjects}
@@ -100,39 +101,39 @@ const GetAllProject = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">{project.progress}</Td>
-                      <Td className="md:table-cell hidden">{project.billingType}</Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className="md:table-cell hidden">{project.progress}</Td>
+                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.status}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : projects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">{project.progress}</Td>
-                      <Td className="md:table-cell hidden">{project.billingType}</Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className="md:table-cell hidden">{project.progress}</Td>
+                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.status}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}

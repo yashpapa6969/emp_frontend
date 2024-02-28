@@ -9,15 +9,35 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DatePicker, Select } from "antd"
+import { DatePicker, Select, Tag } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { PiPlus } from "react-icons/pi";
 import { IoMdCheckmark } from "react-icons/io";
 
+const TagRender = ({ label, value, closable, onClose }) => {
+    const onPreventMouseDown = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    return (
+        <Tag
+            color={value}
+            onMouseDown={onPreventMouseDown}
+            closable={closable}
+            onClose={onClose}
+            style={{
+                marginRight: 3,
+            }}
+        >
+            {label}
+        </Tag>
+    );
+};
+
 const Client = () => {
     const [sources, setSources] = useState([]);
-    const [selectSourceValue, setSelectSourceValue] = useState([""]);
+    const [selectSourceValue, setSelectSourceValue] = useState([]);
 
     const [formData, setFormData] = useState({
         enquiryDate: new Date(),
@@ -106,12 +126,12 @@ const Client = () => {
     const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
     const handleAddSource = () => {
         setSourceAddBtnClick(!sourceAddBtnClick);
-        // try {
-        //     axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
-        //     { sourceTagName: selectSourceValue }
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        try {
+            axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
+                { sourceTagName: selectSourceValue }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -130,24 +150,22 @@ const Client = () => {
             <FormControl mb="4">
                 <FormLabel>Source</FormLabel>
                 <Flex>
-                <Select
-                    className="min-w-[300px] h-10"
-                    name="source"
-                    value={selectSourceValue}
-                    onChange={setSelectSourceValue}
-                    options={sources.map((item) => ({
-                        label: item.sourceTagName,
-                        value: item.sourceTagName,
-                    }))}
-                />
-                <Button onClick={handleAddSource} className="h-10"> { sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus /> } </Button>
+                    <Select
+                        className="max-w-[400px]"
+                        mode="multiple"
+                        tagRender={TagRender}
+                        style={{
+                            width: '100%',
+                        }}
+                        options={sources.map((item) => ({
+                            label: item.sourceTagName,
+                            value: item.sourceTagName,
+                        }))}
+                        value={selectSourceValue}
+                        onChange={setSelectSourceValue}
+                    />
+                    <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
                 </Flex>
-                {/* <Input
-                    type="text"
-                    name="source"
-                    value={formData.source}
-                    onChange={handleChange}
-                /> */}
             </FormControl>
             <FormControl mb="4">
                 <FormLabel>Brand Name</FormLabel>

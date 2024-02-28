@@ -20,8 +20,14 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 if (formFor === "client") {
                     return elem.clientName.toLowerCase().includes(searchText.toLowerCase());
                 }
+                if (formFor === "project") {
+                    return elem.projectName.toLowerCase().includes(searchText.toLowerCase());
+                }
                 if (formFor === "brand") {
                     return elem.brandName.toLowerCase().includes(searchText.toLowerCase());
+                }
+                if (formFor === "lead") {
+                    return elem.companyName.toLowerCase().includes(searchText.toLowerCase());
                 }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
