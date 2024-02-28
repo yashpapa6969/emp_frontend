@@ -96,9 +96,9 @@ const GetAllLead = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Company Name</Th>
-                <Th fontWeight="bold">Status</Th>
-                <Th fontWeight="bold">Brand Name</Th>
-                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -108,9 +108,9 @@ const GetAllLead = () => {
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
                       <Td>{client.companyName}</Td>
-                      <Td>{client.status}</Td>
-                      <Td>{client.brandName}</Td>
-                      <Td>
+                      <Td className="md:table-cell hidden">{client.status}</Td>
+                      <Td className="md:table-cell hidden">{client.brandName}</Td>
+                      <Td className="md:table-cell hidden">
                         {client.status === 0 && "Raw"}
                         {client.status === 1 && "In-Progress"}
                         {client.status === 2 && "Converted"}
@@ -165,9 +165,9 @@ const GetAllLead = () => {
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
                       <Td>{client.companyName}</Td>
-                      <Td>{client.status}</Td>
-                      <Td>{client.brandName}</Td>
-                      <Td>
+                      <Td className="md:table-cell hidden">{client.status}</Td>
+                      <Td className="md:table-cell hidden">{client.brandName}</Td>
+                      <Td className="md:table-cell hidden">
                         {client.status === 0 && "Raw"}
                         {client.status === 1 && "In-Progress"}
                         {client.status === 2 && "Converted"}

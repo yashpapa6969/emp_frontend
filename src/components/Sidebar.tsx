@@ -24,31 +24,36 @@ interface Props {
 }
 
 const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Props) => {
+    const handleNavClose = () => {
+        const windowWidth = window.innerWidth;
+        if (windowWidth <= 640) setShowSidebar(false);
+    }
+
     return (
         <div className='h-screen w-[300px] bg-[#1E293B] text-white sticky top-0'>
-            <Link to="/home" className="w-full h-[70px] bg-[#172032] flex items-center gap-3 p-4 text-2xl">
+            <Link to="/home" onClick={handleNavClose} className="w-full h-[70px] bg-[#172032] flex items-center gap-3 p-4 text-lg md:text-2xl">
                 <img src='/logo.png' alt='logo' className='h-6' /> ADSVERSIFY
             </Link>
 
-            <Link to="/home" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
+            <Link to="/home" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
                 <IoMdHome size={20} /> Dashboard
             </Link>
-            <Link to="/getAllManager" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
+            <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
                 <GoPersonFill /> Manager Information
             </Link>
-            <Link to="/getAllEmp" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
+            <Link to="/getAllEmp" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
                 <IoMdPerson size={20} /> Employee Information
             </Link>
-            <Link to="/getAllProject" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
+            <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
                 <FaDiagramProject size={20} />Project Information
             </Link>
-            <Link to="/getAllClient" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
+            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
                 <IoPeopleSharp size={20} /> Client Information
             </Link>
-            <Link to="/getAllLead" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
+            <Link to="/getAllLead" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} /> Lead Information
             </Link>
-            <Link to="/getAllTask" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
+            <Link to="/getAllTask" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
                 <GrTask size={20} /> Task Information
             </Link>
             <Accordion defaultIndex={[0]} allowToggle>
@@ -60,22 +65,22 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel>
-                        <Link to="/createEmp" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateEmp' && 'bg-gray-500'}`}>
+                        <Link to="/createEmp" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateEmp' && 'bg-gray-500'}`}>
                             <IoPersonAddOutline size={16} /> Employee
                         </Link>
-                        <Link to="/createProject" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateProject' && 'bg-gray-500'}`}>
+                        <Link to="/createProject" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateProject' && 'bg-gray-500'}`}>
                             <LiaProjectDiagramSolid size={18} /> Project
                         </Link>
-                        <Link to="/createClient" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateClient' && 'bg-gray-500'}`}>
+                        <Link to="/createClient" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateClient' && 'bg-gray-500'}`}>
                             <IoPeopleOutline size={18} />Client
                         </Link>
-                        <Link to="/createLead" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
+                        <Link to="/createLead" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'createLead' && 'bg-gray-500'}`}>
                             <LiaTtySolid /> Lead
                         </Link>
-                        <Link to="/createTask" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTask' && 'bg-gray-500'}`}>
+                        <Link to="/createTask" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTask' && 'bg-gray-500'}`}>
                             <MdOutlineAddTask size={18} /> Task
                         </Link>
-                        <Link to="/createTag" className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
+                        <Link to="/createTag" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
                             <IoPricetagOutline /> Tag
                         </Link>
                     </AccordionPanel>
