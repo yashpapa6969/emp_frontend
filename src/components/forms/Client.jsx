@@ -13,6 +13,7 @@ import { DatePicker, Select } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { PiPlus } from "react-icons/pi";
+import { IoMdCheckmark } from "react-icons/io";
 
 const Client = () => {
     const [sources, setSources] = useState([]);
@@ -102,7 +103,9 @@ const Client = () => {
             });
     };
 
+    const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
     const handleAddSource = () => {
+        setSourceAddBtnClick(!sourceAddBtnClick);
         // try {
         //     axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
         //     { sourceTagName: selectSourceValue }
@@ -137,7 +140,7 @@ const Client = () => {
                         value: item.sourceTagName,
                     }))}
                 />
-                <Button onClick={handleAddSource} className="h-10"><PiPlus /></Button>
+                <Button onClick={handleAddSource} className="h-10"> { sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus /> } </Button>
                 </Flex>
                 {/* <Input
                     type="text"
