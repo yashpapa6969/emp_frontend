@@ -162,6 +162,7 @@ const Client = () => {
                         }))}
                         value={selectSourceValue}
                         onChange={setSelectSourceValue}
+                        className="max-w-[400px]"
                     />
                     <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
                 </Flex>
