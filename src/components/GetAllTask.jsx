@@ -91,7 +91,20 @@ const handleMoreInfo = (client) => {
           <Tbody>
             {searchText !== ""
               ? filteredClients.map((client, index) => (
-                  <Tr key={client._id} className={`${client.priority.toLowerCase() === "urgent" && "bg-red-400"} ${client.priority.toLowerCase() === "high" && "bg-orange-300"} ${client.priority.toLowerCase() === "medium" && "bg-blue-300"} ${client.priority.toLowerCase() === "low" && "bg-gray-300"}`}>
+                  <Tr
+                    key={client._id}
+                    className={`${
+                      client.priority.toLowerCase() === "urgent" && "bg-red-400"
+                    } ${
+                      client.priority.toLowerCase() === "high" &&
+                      "bg-orange-300"
+                    } ${
+                      client.priority.toLowerCase() === "medium" &&
+                      "bg-blue-300"
+                    } ${
+                      client.priority.toLowerCase() === "low" && "bg-gray-300"
+                    }`}
+                  >
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
                     <Td>{client.priority}</Td>
@@ -111,28 +124,28 @@ const handleMoreInfo = (client) => {
                               handleStatusChange(client.task_id, 0)
                             }
                           >
-                            Raw
+                            Not Started
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
                               handleStatusChange(client.task_id, 1)
                             }
                           >
-                            In-Progress
+                            Working
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
                               handleStatusChange(client.task_id, 2)
                             }
                           >
-                            Converted
+                            Awaited Feedback
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
                               handleStatusChange(client.task_id, 3)
                             }
                           >
-                            Lost
+                            Completed
                           </MenuItem>
                         </MenuList>
                       </Menu>
@@ -148,16 +161,29 @@ const handleMoreInfo = (client) => {
                   </Tr>
                 ))
               : clients.map((client, index) => (
-                  <Tr key={client._id} className={`${client.priority.toLowerCase() === "urgent" && "bg-red-400"} ${client.priority.toLowerCase() === "high" && "bg-orange-300"} ${client.priority.toLowerCase() === "medium" && "bg-blue-300"} ${client.priority.toLowerCase() === "low" && "bg-gray-300"}`}>
+                  <Tr
+                    key={client._id}
+                    className={`${
+                      client.priority.toLowerCase() === "urgent" && "bg-red-400"
+                    } ${
+                      client.priority.toLowerCase() === "high" &&
+                      "bg-orange-300"
+                    } ${
+                      client.priority.toLowerCase() === "medium" &&
+                      "bg-blue-300"
+                    } ${
+                      client.priority.toLowerCase() === "low" && "bg-gray-300"
+                    }`}
+                  >
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
                     <Td>{client.priority}</Td>
                     <Td>{client.status}</Td>
                     <Td>
-                      {client.status === 0 && "Raw"}
+                      {client.status === 0 && "Not Started"}
                       {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
+                      {client.status === 2 && "Awaited Feedback"}
+                      {client.status === 3 && "Completed"}
                       <Menu>
                         <MenuButton as={Button} colorScheme="purple">
                           Change Status
@@ -168,7 +194,7 @@ const handleMoreInfo = (client) => {
                               handleStatusChange(client.task_id, 0)
                             }
                           >
-                            Raw
+                            Not Started
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
@@ -182,14 +208,14 @@ const handleMoreInfo = (client) => {
                               handleStatusChange(client.task_id, 2)
                             }
                           >
-                            Converted
+                            Awaited Feedback
                           </MenuItem>
                           <MenuItem
                             onClick={() =>
                               handleStatusChange(client.task_id, 3)
                             }
                           >
-                            Lost
+                            Completed
                           </MenuItem>
                         </MenuList>
                       </Menu>
