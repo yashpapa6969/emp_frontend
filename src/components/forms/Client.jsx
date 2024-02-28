@@ -73,7 +73,7 @@ const Client = () => {
 
         axios
             .post(
-                "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEnquiry",
+                `${import.meta.env.VITE_API_BASE}/api/admin/createEnquiry`,
                 formDataToSend
             )
             .then((response) => {

@@ -28,7 +28,7 @@ const CreateTask = () => {
     // Fetch brand names
     axios
       .get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
       )
       .then((response) => {
         setBrandNames(response.data);
@@ -57,7 +57,6 @@ const CreateTask = () => {
 
   const handleProjectChange = (event) => {
     const selectedProjectId = event.target.value;
-    console.log(e.target.value);
     setSelectedProject(selectedProjectId);
 
     // Find the selected project
@@ -89,7 +88,7 @@ const CreateTask = () => {
     };
     axios
       .post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/addTask",
+        `${import.meta.env.VITE_API_BASE}/api/admin/addTask`,
         taskData
       )
       .then((response) => {

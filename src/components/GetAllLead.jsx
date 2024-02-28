@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Thead,
   Tbody,
@@ -17,7 +17,6 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
-import InfoModalByID from "./common/InfoModalByID";
 
 const GetAllLead = () => {
   const [clients, setClients] = useState([]);
@@ -30,7 +29,7 @@ const GetAllLead = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllLeads"
+          `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
         );
         setClients(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
@@ -49,11 +48,11 @@ const GetAllLead = () => {
   const handleStatusChange = async (leadId, statusNo) => {
     try {
       await axios.get(
-        `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/updateLeadStatus/${leadId}/${statusNo}`
+        `${import.meta.env.VITE_API_BASE}/api/admin/updateLeadStatus/${leadId}/${statusNo}`
       );
       // Fetch data again after updating status
       const response = await axios.get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllLeads"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
       );
       setClients(response.data);
     } catch (error) {

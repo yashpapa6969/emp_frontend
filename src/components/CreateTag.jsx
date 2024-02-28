@@ -19,7 +19,7 @@ const CreateTag = () => {
   const fetchTags = async () => {
     try {
       const response = await axios.get(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`
       );
       setTags(response.data);
     } catch (error) {
@@ -30,7 +30,7 @@ const CreateTag = () => {
   const handleAddTag = async () => {
     try {
       await axios.post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/addTag",
+        `${import.meta.env.VITE_API_BASE}/api/admin/addTag`,
         { tagName: newTag }
       );
       setNewTag("");

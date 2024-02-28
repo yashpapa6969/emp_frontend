@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
+import { Empty } from "antd";
 
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
@@ -25,7 +26,7 @@ const GetAllManagers = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getManagersAllDetails"
+          `${import.meta.env.VITE_API_BASE}/api/admin/getManagersAllDetails`
         );
         setManagers(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
@@ -56,7 +57,11 @@ const GetAllManagers = () => {
         <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
 
         {managers.length === 0 && (
-          <p className="text-red-500 text-lg">No managers assigned</p>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Managers Assigned
+            </span>
+          } />
         )}
 
         {managers.length > 0 && (
@@ -70,9 +75,9 @@ const GetAllManagers = () => {
               <Tr>
                 <Th fontWeight="bold">Id</Th>
                 <Th fontWeight="bold">Name</Th>
-                <Th fontWeight="bold">Position</Th>
-                <Th fontWeight="bold">Department</Th>
-                <Th fontWeight="bold">Joining Date</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Position</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Department</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Joining Date</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -82,9 +87,9 @@ const GetAllManagers = () => {
                     <Tr key={manager._id}>
                       <Td>{manager.manager_id}</Td>
                       <Td>{manager.name}</Td>
-                      <Td>{manager.position}</Td>
-                      <Td>{manager.department}</Td>
-                      <Td>{manager.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">{manager.position}</Td>
+                      <Td className="md:table-cell hidden">{manager.department}</Td>
+                      <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -99,9 +104,9 @@ const GetAllManagers = () => {
                     <Tr key={manager._id}>
                       <Td>{manager.manager_id}</Td>
                       <Td>{manager.name}</Td>
-                      <Td>{manager.position}</Td>
-                      <Td>{manager.department}</Td>
-                      <Td>{manager.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">{manager.position}</Td>
+                      <Td className="md:table-cell hidden">{manager.department}</Td>
+                      <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"

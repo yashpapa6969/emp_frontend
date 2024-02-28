@@ -83,7 +83,7 @@ const CreateEmp = () => {
     e.preventDefault();
     axios
       .post(
-        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
+        `${import.meta.env.VITE_API_BASE}/api/admin/createEmployee`,
         formData
       )
       .then((response) => {
