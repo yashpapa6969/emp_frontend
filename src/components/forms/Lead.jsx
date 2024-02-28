@@ -88,7 +88,7 @@ const Lead = () => {
     });
 
     axios
-      .post("http://185.199.53.202:3000/api/admin/createLead", formData, {
+      .post(`${import.meta.env.VITE_API_BASE}/api/admin/createLead`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
