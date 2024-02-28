@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -22,6 +23,7 @@ const GetAllTask = () => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
     async function fetchData() {
@@ -30,14 +32,16 @@ const GetAllTask = () => {
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTasks"
         );
         setClients(response.data);
+        setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading to false in case of error too
       }
     }
     fetchData();
   }, []);
 
-const handleMoreInfo = (client) => {
+  const handleMoreInfo = (client) => {
     setSelectedClient(client);
   };
 
@@ -56,6 +60,14 @@ const handleMoreInfo = (client) => {
       alert(error.response.data.message);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -110,10 +122,10 @@ const handleMoreInfo = (client) => {
                     <Td>{client.priority}</Td>
                     <Td>{client.status}</Td>
                     <Td>
-                      {client.status === 0 && "Raw"}
+                      {client.status === 0 && "Not Started"}
                       {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
+                      {client.status === 2 && "Awaited Feedback"}
+                      {client.status === 3 && "Completed"}
                       <Menu>
                         <MenuButton as={Button} colorScheme="purple">
                           Change Status

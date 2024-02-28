@@ -7,6 +7,7 @@ import {
   Td,
   Button,
   useDisclosure,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -14,33 +15,29 @@ import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 
+const CreateProjectButton = ({ onOpen }) => {
+  return (
+    <Link to="/CreateProject">
+      <Button
+        colorScheme="blue"
+        onClick={onOpen}
+        _hover={{ bg: "blue.600" }}
+        mb="2"
+        className="flex gap-2 items-center"
+      >
+        <GoPlus /> Add a Project
+      </Button>
+    </Link>
+  );
+};
+
 const GetAllProject = () => {
   const [projects, setProjects] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
-
-
-  const CreateClientButton = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
-    return (
-      <>
-        <Link to="/CreateProject">
-          <Button
-            colorScheme="blue"
-            onClick={onOpen}
-            _hover={{ bg: "blue.600" }}
-            mb="2"
-            className="flex gap-2 items-center"
-          >
-            <GoPlus /> Add a Project
-          </Button>
-        </Link>
-      </>
-    );
-  };
+  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
     async function fetchData() {
@@ -49,77 +46,96 @@ const GetAllProject = () => {
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllProjects"
         );
         setProjects(response.data);
+        setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading to false in case of error too
       }
     }
     fetchData();
   }, []);
 
-  const handleMoreInfo = (client) => {
-    setSelectedClient(client);
+  const handleMoreInfo = (project) => {
+    setSelectedProject(project);
     onOpen();
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
-        <CreateClientButton />
-        <TableContainer searchText={searchText} setSearchText={setSearchText} setFilteredData={setFilteredProjects} data={projects}>
-          <Thead bg={"#F1F5F9"}>
-            <Tr>
-              <Th fontWeight="bold">S. No.</Th>
-              <Th fontWeight="bold">Project Name</Th>
-              <Th fontWeight="bold">Progress</Th>
-              <Th fontWeight="bold">Billing Type</Th>
-              <Th fontWeight="bold">Status</Th>
-              <Th fontWeight="bold">Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {searchText != ""
-              ? filteredProjects.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.projectName}</Td>
-                    <Td>{client.progress}</Td>
-                    <Td>{client.billingType}</Td>
-                    <Td>{client.status}</Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
-              : projects.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.projectName}</Td>
-                    <Td>{client.progress}</Td>
-                    <Td>{client.billingType}</Td>
-                    <Td>{client.status}</Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
-          </Tbody>
-        </TableContainer>
+        <CreateProjectButton onOpen={onOpen} />
+        {projects.length === 0 ? (
+          <p className="text-red-500 text-lg">No Projects Assigned</p>
+        ) : (
+          <TableContainer
+            searchText={searchText}
+            setSearchText={setSearchText}
+            setFilteredData={setFilteredProjects}
+            data={projects}
+          >
+            <Thead bg={"#F1F5F9"}>
+              <Tr>
+                <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold">Project Name</Th>
+                <Th fontWeight="bold">Progress</Th>
+                <Th fontWeight="bold">Billing Type</Th>
+                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold">Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {searchText !== ""
+                ? filteredProjects.map((project, index) => (
+                    <Tr key={project._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.projectName}</Td>
+                      <Td>{project.progress}</Td>
+                      <Td>{project.billingType}</Td>
+                      <Td>{project.status}</Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                : projects.map((project, index) => (
+                    <Tr key={project._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.projectName}</Td>
+                      <Td>{project.progress}</Td>
+                      <Td>{project.billingType}</Td>
+                      <Td>{project.status}</Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+            </Tbody>
+          </TableContainer>
+        )}
       </div>
-      
+
       <InfoModal
         modalFor="project"
-        data={selectedClient}
+        data={selectedProject}
         onClose={onClose}
         isOpen={isOpen}
       />

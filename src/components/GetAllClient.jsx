@@ -13,6 +13,7 @@ import {
   ModalCloseButton,
   ModalBody,
   useDisclosure,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
 import CreateClientB from "./CreateClientB";
@@ -20,41 +21,29 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 
+const CreateClientButton = ({ onOpen }) => {
+  return (
+    <>
+      <Button
+        colorScheme="blue"
+        onClick={onOpen}
+        _hover={{ bg: "blue.600" }}
+        mb="2"
+        className="flex gap-2 items-center"
+      >
+        <GoPlus /> Add a client
+      </Button>
+    </>
+  );
+};
+
 const GetAllClient = () => {
   const [clients, setClients] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedClient, setSelectedClient] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
-
-  const CreateClientButton = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
-    return (
-      <>
-        <Button
-          colorScheme="blue"
-          onClick={onOpen}
-          _hover={{ bg: "blue.600" }}
-          mb="2"
-          className="flex gap-2 items-center"
-        >
-          <GoPlus /> Add a client
-        </Button>
-
-        <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Create Client</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <CreateClientB onClose={onClose} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  };
+  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
     async function fetchData() {
@@ -63,9 +52,10 @@ const GetAllClient = () => {
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
         );
         setClients(response.data);
-        console.log(clients);
+        setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading to false in case of error too
       }
     }
     fetchData();
@@ -76,13 +66,19 @@ const GetAllClient = () => {
     onOpen();
   };
 
-  console.log(clients)
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Client Information</h1>
-        <CreateClientButton />
+        <CreateClientButton onOpen={onOpen} />
         <TableContainer
           formFor="client"
           searchText={searchText}
@@ -101,7 +97,7 @@ const GetAllClient = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {searchText != ""
+            {searchText !== ""
               ? filteredClients.map((client, index) => (
                   <Tr key={client._id}>
                     <Td>{index + 1}</Td>

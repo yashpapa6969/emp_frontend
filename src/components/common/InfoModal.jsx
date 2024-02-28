@@ -160,14 +160,34 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.clientName}</Text>
                 <Text fontWeight="bold">Brand Name: </Text>
                 <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Email: </Text>
+                <Text fontWeight="bold">Company Name: </Text>
+                <Text>{data.companyName}</Text>
+                <Text fontWeight="bold">Email1: </Text>
                 <Text>{data.email1}</Text>
-                <Text fontWeight="bold">Phone: </Text>
+                <Text fontWeight="bold">Email2: </Text>
+                <Text>{data.email2}</Text>
+                <Text fontWeight="bold">Phone1: </Text>
                 <Text>{data.phone1}</Text>
+                <Text fontWeight="bold">Phone2: </Text>
+                <Text>{data.phone2}</Text>
                 <Text fontWeight="bold">Enquiry Date: </Text>
                 <Text>{data.enquiryDate}</Text>
-                <Text fontWeight="bold">Source: </Text>
-                <Text>{data.source}</Text>
+                <Text fontWeight="bold">Website: </Text>
+                <Text>{data.website}</Text>
+                <Text fontWeight="bold">Business Address: </Text>
+                <Text>{data.buisnessAddress}</Text>
+                <Text fontWeight="bold">City: </Text>
+                <Text>{data.city}</Text>
+                <Text fontWeight="bold">State: </Text>
+                <Text>{data.state}</Text>
+                <Text fontWeight="bold">Pincode: </Text>
+                <Text>{data.pincode}</Text>
+                <Text fontWeight="bold">Country: </Text>
+                <Text>{data.country}</Text>
+                <Text fontWeight="bold">Requirement: </Text>
+                <Text>{data.requirement}</Text>
+                <Text fontWeight="bold">Additional Information: </Text>
+                <Text>{data.additionalInformation}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
               

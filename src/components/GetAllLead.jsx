@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -23,6 +24,7 @@ const GetAllLead = () => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
     async function fetchData() {
@@ -31,9 +33,10 @@ const GetAllLead = () => {
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllLeads"
         );
         setClients(response.data);
-        console.log(clients);
+        setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading to false in case of error too
       }
     }
     fetchData();
@@ -59,6 +62,14 @@ const GetAllLead = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="w-full p-8">
@@ -73,140 +84,144 @@ const GetAllLead = () => {
             <GoPlus /> Add a Lead
           </Button>
         </Link>
-        <TableContainer
-          searchText={searchText}
-          setSearchText={setSearchText}
-          setFilteredData={setFilteredClients}
-          data={clients}
-        >
-          <Thead bg={"#F1F5F9"}>
-            <Tr>
-              <Th fontWeight="bold">S. No.</Th>
-              <Th fontWeight="bold">Enquiry Date</Th>
-              <Th fontWeight="bold">Source</Th>
-              <Th fontWeight="bold">Brand Name</Th>
-              <Th fontWeight="bold">Status</Th>
-              <Th fontWeight="bold">Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {searchText !== ""
-              ? filteredClients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.enquiryDate}</Td>
-                    <Td>{client.source}</Td>
-                    <Td>{client.brandName}</Td>
-                    <Td>
-                      {client.status === 0 && "Raw"}
-                      {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 0)
-                            }
-                          >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 1)
-                            }
-                          >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
-              : clients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.enquiryDate}</Td>
-                    <Td>{client.source}</Td>
-                    <Td>{client.brandName}</Td>
-                    <Td>
-                      {client.status === 0 && "Raw"}
-                      {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 0)
-                            }
-                          >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 1)
-                            }
-                          >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
-          </Tbody>
-        </TableContainer>
+        {clients.length === 0 ? (
+          <p className="text-red-500 text-lg">No Lead Available</p>
+        ) : (
+          <TableContainer
+            searchText={searchText}
+            setSearchText={setSearchText}
+            setFilteredData={setFilteredClients}
+            data={clients}
+          >
+            <Thead bg={"#F1F5F9"}>
+              <Tr>
+                <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold">Enquiry Date</Th>
+                <Th fontWeight="bold">Source</Th>
+                <Th fontWeight="bold">Brand Name</Th>
+                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold">Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {searchText !== ""
+                ? filteredClients.map((client, index) => (
+                    <Tr key={client._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{client.enquiryDate}</Td>
+                      <Td>{client.source}</Td>
+                      <Td>{client.brandName}</Td>
+                      <Td>
+                        {client.status === 0 && "Raw"}
+                        {client.status === 1 && "In-Progress"}
+                        {client.status === 2 && "Converted"}
+                        {client.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton as={Button} colorScheme="purple">
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(client)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                : clients.map((client, index) => (
+                    <Tr key={client._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{client.enquiryDate}</Td>
+                      <Td>{client.source}</Td>
+                      <Td>{client.brandName}</Td>
+                      <Td>
+                        {client.status === 0 && "Raw"}
+                        {client.status === 1 && "In-Progress"}
+                        {client.status === 2 && "Converted"}
+                        {client.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton as={Button} colorScheme="purple">
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(client.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(client)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+            </Tbody>
+          </TableContainer>
+        )}
       </div>
 
       <InfoModal
