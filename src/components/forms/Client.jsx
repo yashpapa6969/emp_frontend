@@ -15,14 +15,14 @@ import moment from "moment";
 import { PiPlus } from "react-icons/pi";
 import { IoMdCheckmark } from "react-icons/io";
 
-const TagRender = ({ label, value, closable, onClose }) => {
+const TagRender = ({ label, closable, onClose }) => {
     const onPreventMouseDown = (event) => {
         event.preventDefault();
         event.stopPropagation();
     };
     return (
         <Tag
-            color={value}
+            // color={value}
             onMouseDown={onPreventMouseDown}
             closable={closable}
             onClose={onClose}
@@ -147,11 +147,10 @@ const Client = () => {
                     defaultValue={moment()}
                 />
             </FormControl>
-            <FormControl mb="4">
+            <FormControl id="sources" mb={4}>
                 <FormLabel>Source</FormLabel>
                 <Flex>
                     <Select
-                        className="max-w-[400px]"
                         mode="multiple"
                         tagRender={TagRender}
                         style={{
