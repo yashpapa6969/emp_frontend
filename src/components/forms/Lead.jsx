@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, VStack, Button, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
+import { FormControl, FormLabel, VStack, Button, Tabs, TabList, Tab, TabPanels, TabPanel, Textarea } from "@chakra-ui/react"
 import { DatePicker, Input } from "antd"
 import axios from "axios";
 import { useState } from "react";
@@ -97,10 +97,10 @@ const Lead = () => {
                             <div className="flex gap-3 mb-3">
                                 <FormControl id="source" isRequired>
                                     <FormLabel>Source</FormLabel>
-                                    <Input name="source" onChange={handleChange} />
+                                    <Input name="source" onChange={handleChange} className="max-w-[400px]" />
                                 </FormControl>
                             </div>
-                            <div className="flex gap-3">
+                            <div className="flex gap-3 flex-col md:flex-row">
                                 <FormControl id="clientName" isRequired>
                                     <FormLabel>Client Name</FormLabel>
                                     <Input name="clientName" onChange={handleChange} />
@@ -128,7 +128,7 @@ const Lead = () => {
                             </div>
                         </TabPanel>
                         <TabPanel>
-                            <div className="flex gap-3">
+                            <div className="flex gap-3 flex-col md:flex-row">
                                 <FormControl id="country" isRequired>
                                     <FormLabel>Country</FormLabel>
                                     <CountryDropdown
@@ -167,16 +167,14 @@ const Lead = () => {
                             </FormControl>
                         </TabPanel>
                         <TabPanel>
-                            <div className="flex gap-3">
-                                <FormControl id="requirement">
-                                    <FormLabel>Requirement</FormLabel>
-                                    <Input name="requirement" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="additionalInformation">
-                                    <FormLabel>Additional Information</FormLabel>
-                                    <Input name="additionalInformation" onChange={handleChange} />
-                                </FormControl>
-                            </div>
+                            <FormControl id="requirement" mb={4}>
+                                <FormLabel>Requirement</FormLabel>
+                                <Input name="requirement" onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="additionalInformation">
+                                <FormLabel>Additional Information</FormLabel>
+                                <Textarea name="additionalInformation" onChange={handleChange} />
+                            </FormControl>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

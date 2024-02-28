@@ -57,7 +57,6 @@ const CreateTask = () => {
 
   const handleProjectChange = (event) => {
     const selectedProjectId = event.target.value;
-    console.log(e.target.value);
     setSelectedProject(selectedProjectId);
 
     // Find the selected project
