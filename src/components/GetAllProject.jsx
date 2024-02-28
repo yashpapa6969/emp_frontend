@@ -6,28 +6,20 @@ import {
   Th,
   Td,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
-import CreateClientB from "./CreateClientB";
 import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
-import InfoModalByID from "./common/InfoModalByID";
 
 const GetAllProject = () => {
-  const [clients, setClients] = useState([]);
+  const [projects, setProjects] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedClient, setSelectedClient] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const [filteredClients, setFilteredClients] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
 
   const CreateClientButton = () => {
@@ -56,7 +48,7 @@ const GetAllProject = () => {
         const response = await axios.get(
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllProjects"
         );
-        setClients(response.data);
+        setProjects(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -74,12 +66,7 @@ const GetAllProject = () => {
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
         <CreateClientButton />
-        <TableContainer
-          searchText={searchText}
-          setSearchText={setSearchText}
-          setFilteredData={setFilteredClients}//regex to be done 
-          data={clients}
-        >
+        <TableContainer searchText={searchText} setSearchText={setSearchText} setFilteredData={setFilteredProjects} data={projects}>
           <Thead bg={"#F1F5F9"}>
             <Tr>
               <Th fontWeight="bold">S. No.</Th>
@@ -92,7 +79,7 @@ const GetAllProject = () => {
           </Thead>
           <Tbody>
             {searchText != ""
-              ? filteredClients.map((client, index) => (
+              ? filteredProjects.map((client, index) => (
                   <Tr key={client._id}>
                     <Td>{index + 1}</Td>
                     <Td>{client.projectName}</Td>
@@ -109,7 +96,7 @@ const GetAllProject = () => {
                     </Td>
                   </Tr>
                 ))
-              : clients.map((client, index) => (
+              : projects.map((client, index) => (
                   <Tr key={client._id}>
                     <Td>{index + 1}</Td>
                     <Td>{client.projectName}</Td>

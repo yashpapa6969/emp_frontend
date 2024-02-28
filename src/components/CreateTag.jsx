@@ -3,10 +3,10 @@ import {
   Box,
   Input,
   Button,
-  Tag,
-  TagLabel
 } from "@chakra-ui/react";
 import axios from "axios";
+import { Tag } from "antd";
+import { FaTrash } from "react-icons/fa6";
 
 const CreateTag = () => {
   const [tags, setTags] = useState([]);
@@ -53,19 +53,13 @@ const CreateTag = () => {
           Add Tag
         </Button>
       </div>
-      <Box
-        bg={"#172032"}
-        mt={10}
-        p={10}
-        boxShadow={"md"}
-        rounded={"lg"}
-        width={"full"}
-        minH={"lg"}
-      >
+      <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"} minH={"sm"}>
         {tags.map((tag) => (
           <>
-            <Tag key={tag._id} variant="subtle" colorScheme="cyan" mr={2} size={'lg'}>
-              <TagLabel> {tag.tagName}</TagLabel>
+            <Tag key={tag._id} className="px-2 py-1 mb-2 bg-purple-400 border-purple-600 text-[16px] font-semibold text-white">
+              <div className="flex gap-5 items-center">
+              {tag.tagName} <div className="p-[7px] transition-all bg-purple-500 hover:bg-purple-400 rounded-full cursor-pointer"> <FaTrash size={12} /> </div>
+              </div>
             </Tag>
           </>
         ))}

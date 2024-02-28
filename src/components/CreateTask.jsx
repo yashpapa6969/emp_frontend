@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
   Select,
-  Input,
   Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
@@ -56,23 +55,23 @@ const CreateTask = () => {
       });
   };
 
-const handleProjectChange = (event) => {
-  const selectedProjectId = event.target.value;
-  console.log(e.target.value);
-  setSelectedProject(selectedProjectId);
+  const handleProjectChange = (event) => {
+    const selectedProjectId = event.target.value;
+    console.log(e.target.value);
+    setSelectedProject(selectedProjectId);
 
-  // Find the selected project
-  const selectedProject = projects.find(
-    (project) => project.project_id === selectedProjectId
-  );
+    // Find the selected project
+    const selectedProject = projects.find(
+      (project) => project.project_id === selectedProjectId
+    );
 
-  // Log selectedProject
+    // Log selectedProject
 
 
-  // Fetch employees based on the selected project's employee IDs
-  const employeeIds = selectedProject.employees;
-  setEmployees(employeeIds);
-};
+    // Fetch employees based on the selected project's employee IDs
+    const employeeIds = selectedProject.employees;
+    setEmployees(employeeIds);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -116,7 +115,17 @@ const handleProjectChange = (event) => {
   };
 
   return (
-    <Box>
+    <Box
+      mx="auto"
+      borderWidth="1px"
+      borderRadius="lg"
+      p="4"
+      boxShadow="lg"
+      m="4"
+    >
+      <h1 className="text-2xl font-semibold">Add Task</h1>
+        <p className="font-light mb-4">Fill the below form to add a new task</p>
+
       <form onSubmit={handleSubmit}>
         <FormControl>
           <FormLabel>Brand Name</FormLabel>
@@ -207,7 +216,7 @@ const handleProjectChange = (event) => {
           />
         </FormControl>
 
-        <Button mt={4} colorScheme="blue" type="submit">
+        <Button mt={4} width={"full"} colorScheme="purple" type="submit">
           Add Task
         </Button>
       </form>

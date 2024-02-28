@@ -160,7 +160,7 @@ function App() {
             path="/getAllTask"
             element={
               <AppLayout
-                activeSideabarLink={"getAllLead"}
+                activeSideabarLink={"getAllTask"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllTask />

@@ -49,17 +49,17 @@ const CreateEmp = () => {
         .get(
           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllManagersbyDepartment/${formData.department}`
         )
-        
+
         .then((response) => {
-           if (response.data.length === 0) {
-             setManagers([]); 
-           }
+          if (response.data.length === 0) {
+            setManagers([]);
+          }
           setManagers(response.data);
           setLoadingManagers(false);
         })
         .catch((error) => {
           console.error("Error fetching managers:", error);
-          setManagers([]); 
+          setManagers([]);
           setLoadingManagers(false);
         });
     }
@@ -68,34 +68,34 @@ const CreateEmp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
+
   };
 
-const handleDateChange = (date) => {
-  setFormData({ ...formData, dob: date });
-};
-const handleJoiningDateChange = (date) => {
-  setFormData({ ...formData, joiningDate: date });
-};
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, dob: date });
+  };
+  const handleJoiningDateChange = (date) => {
+    setFormData({ ...formData, joiningDate: date });
+  };
 
 
- const handleSubmit = (e) => {
-   e.preventDefault();
-   axios
-     .post(
-       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
-       formData
-     )
-     .then((response) => {
-      toast.success(response.data.message, {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createEmployee",
+        formData
+      )
+      .then((response) => {
+        toast.success(response.data.message, {
+        });
+
+      })
+      .catch((error) => {
+        console.error("Error creating employee:", error);
+        toast.error(error.response.data.message);
       });
-
-     })
-     .catch((error) => {
-       console.error("Error creating employee:", error);
-       toast.error(error.response.data.message);
-     });
- };
+  };
 
 
 
@@ -104,24 +104,17 @@ const handleJoiningDateChange = (date) => {
     <>
       <ToastContainer></ToastContainer>
       <Box
-        maxW="xl"
         mx="auto"
         borderWidth="1px"
         borderRadius="lg"
         p="4"
         boxShadow="lg"
-        mt="4"
+        m="4"
       >
+        <h1 className="text-2xl font-semibold">Add Employee</h1>
+        <p className="font-light mb-4">Fill the below form to add a new employee</p>
+        
         <form onSubmit={handleSubmit}>
-          <Text
-            textColor="black" 
-            fontSize="5xl"
-            fontWeight="extrabold"
-            textAlign="center"
-          >
-            Create Employee
-          </Text>
-
           <FormControl mb="4">
             <FormLabel>Name</FormLabel>
             <Input
