@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
 import { setClientId } from "../../store/slice/ClientSlice";
+import { setProjectId } from "../../store/slice/ProjectSlice";
 import { selectEmployeeIds,clearEmployeeIds,setEmployeeId,clearEmployeeId } from "../../store/slice/EmployeeSlice";
 import { useEffect,useState } from "react";
 
@@ -30,7 +31,11 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
    }
    if (modalFor === "task" && data?.employee_id) {
      const employeeId = data.employee_id;
+     const p = data.project_id;
+     const c = data.client_id;
      dispatch(setEmployeeId(employeeId));
+     dispatch(setClientId(c));
+     dispatch(setProjectId(p));
    }
 
    if (modalFor === "project" && data && data.client_id) {
@@ -66,6 +71,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.position}</Text>
                 <Text fontWeight="bold">Department: </Text>
                 <Text>{data.department}</Text>
+                <Text fontWeight="bold">Date Of Birth: </Text>
+                <Text>{data.dob}</Text>
                 <Text fontWeight="bold">Joining Date: </Text>
                 <Text>{data.joiningDate}</Text>
                 <Text fontWeight="bold">Employee ID: </Text>
@@ -73,9 +80,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Manager ID: </Text>
                 <Text>{data.manager_id}</Text>
                 <Text fontWeight="bold">Permissions:</Text>
-                {data?.permissions?.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -109,6 +120,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.email}</Text>
                 <Text fontWeight="bold">Position: </Text>
                 <Text>{data.position}</Text>
+                <Text fontWeight="bold">Date Of Birth: </Text>
+                <Text>{data.dob}</Text>
                 <Text fontWeight="bold">Department: </Text>
                 <Text>{data.department}</Text>
                 <Text fontWeight="bold">Joining Date: </Text>
@@ -118,9 +131,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Manager ID: </Text>
                 <Text>{data.manager_id}</Text>
                 <Text fontWeight="bold">Permissions:</Text>
-                {data.permissions?.map((permission, index) => (
-                  <Text key={index}>{permission}</Text>
-                ))}
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -152,30 +169,50 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.clientName}</Text>
                 <Text fontWeight="bold">Brand Name: </Text>
                 <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Email: </Text>
+                <Text fontWeight="bold">Company Name: </Text>
+                <Text>{data.companyName}</Text>
+                <Text fontWeight="bold">Email1: </Text>
                 <Text>{data.email1}</Text>
-                <Text fontWeight="bold">Phone: </Text>
+                <Text fontWeight="bold">Email2: </Text>
+                <Text>{data.email2}</Text>
+                <Text fontWeight="bold">Phone1: </Text>
                 <Text>{data.phone1}</Text>
+                <Text fontWeight="bold">Phone2: </Text>
+                <Text>{data.phone2}</Text>
                 <Text fontWeight="bold">Enquiry Date: </Text>
                 <Text>{data.enquiryDate}</Text>
-                <Text fontWeight="bold">Source: </Text>
-                <Text>{data.source}</Text>
+                <Text fontWeight="bold">Website: </Text>
+                <Text>{data.website}</Text>
+                <Text fontWeight="bold">Business Address: </Text>
+                <Text>{data.buisnessAddress}</Text>
+                <Text fontWeight="bold">City: </Text>
+                <Text>{data.city}</Text>
+                <Text fontWeight="bold">State: </Text>
+                <Text>{data.state}</Text>
+                <Text fontWeight="bold">Pincode: </Text>
+                <Text>{data.pincode}</Text>
+                <Text fontWeight="bold">Country: </Text>
+                <Text>{data.country}</Text>
+                <Text fontWeight="bold">Requirement: </Text>
+                <Text>{data.requirement}</Text>
+                <Text fontWeight="bold">Additional Information: </Text>
+                <Text>{data.additionalInformation}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
-                <Text fontWeight="bold">Single File: </Text>
-                <Image
-                  src={data.singleFile}
-                  alt={`Single File, url:- ${data.singleFile}`}
-                />
-                <Text fontWeight="bold">Multiple Files: </Text>
-                {data.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <Image
-                      src={file}
-                      alt={`File ${index + 1}, url:- ${file}`}
-                    />
-                  </div>
-                ))}
+              
+                <Text fontWeight="bold">Files Provided: </Text>
+                {data.multipleFiles && data.multipleFiles.length > 0 ? (
+                  data.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <Image
+                        src={file}
+                        alt={`File ${index + 1}, url:- ${file}`}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <Text style={{ color: "red" }}>No Files found</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -323,10 +360,17 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
               <div>
                 <Text fontWeight="bold">BrandName </Text>
                 <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Project ID: </Text>
-                <Text>{data.project_id}</Text>
+                <Text fontWeight="bold">Project: </Text>
+                <Link to={`/GetProject`}>
+                  <Button>Get Project details</Button>
+                </Link>
+                <Text fontWeight="bold">Employee: </Text>
                 <Link to={`/GetEmp`}>
                   <Button>Get EMP details</Button>
+                </Link>
+                <Text fontWeight="bold">Client: </Text>
+                <Link to={`/GetClient`}>
+                  <Button>Get Client details</Button>
                 </Link>
                 <Text fontWeight="bold">Priority </Text>
                 <Text>{data.priority}</Text>

@@ -13,6 +13,7 @@ import {
   ModalCloseButton,
   ModalBody,
   useDisclosure,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
 import CreateEmpB from "./CreateEmpB";
@@ -20,9 +21,7 @@ import { GoPlus } from "react-icons/go";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
 
-const CreateEmployeeButton = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const CreateEmployeeButton = ({ onOpen }) => {
   return (
     <>
       <Button
@@ -34,22 +33,6 @@ const CreateEmployeeButton = () => {
       >
         <GoPlus /> Create Employee
       </Button>
-
-      <Modal isOpen={isOpen} onClose={onClose} size={"6xl"}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create Employee</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <CreateEmpB onClose={onClose} />
-          </ModalBody>
-          {/* <ModalFooter>
-            <Button colorScheme="blue" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter> */}
-        </ModalContent>
-      </Modal>
     </>
   );
 };
@@ -58,8 +41,9 @@ const GetAllEmp = () => {
   const [employee, setEmployees] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [filteredEmployee, setFilteredEmployee] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
     async function fetchData() {
@@ -68,8 +52,10 @@ const GetAllEmp = () => {
           "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
         );
         setEmployees(response.data);
+        setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading to false in case of error too
       }
     }
     fetchData();
@@ -80,63 +66,85 @@ const GetAllEmp = () => {
     onOpen();
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner size="xl" color="purple.500" />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="w-full p-8">
-        <h1 className="text-3xl font-bold mb-4">Employee Information</h1>
-        <CreateEmployeeButton />
-        <TableContainer searchText={searchText} setSearchText={setSearchText} setFilteredData={setFilteredEmployee} data={employee}>
-          <Thead bg={"#F1F5F9"}>
-            <Tr>
-              <Th fontWeight="bold">S. No.</Th>
-              <Th fontWeight="bold">Name</Th>
-              <Th fontWeight="bold">Position</Th>
-              <Th fontWeight="bold">Department</Th>
-              <Th fontWeight="bold">Joining Date</Th>
-              <Th fontWeight="bold">Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {searchText != "" ?
-            filteredEmployee.map((emp, index) => (
-              <Tr key={emp._id}>
-                <Td>{index+1}</Td>
-                <Td>{emp.name}</Td>
-                <Td>{emp.position}</Td>
-                <Td>{emp.department}</Td>
-                <Td>{emp.joiningDate}</Td>
-                <Td>
-                  <Button
-                    colorScheme="purple"
-                    onClick={() => handleMoreInfo(emp)}
-                  >
-                    More Info
-                  </Button>
-                </Td>
+        <h1 className="text-4xl font-bold mb-4">Employee Information</h1>
+        <CreateEmployeeButton onOpen={onOpen} />
+        {employee.length === 0 ? (
+          <p className="text-red-500 text-lg">No Employee data</p>
+        ) : (
+          <TableContainer
+            searchText={searchText}
+            setSearchText={setSearchText}
+            setFilteredData={setFilteredEmployee}
+            data={employee}
+          >
+            <Thead bg={"#F1F5F9"}>
+              <Tr>
+                <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold">Name</Th>
+                <Th fontWeight="bold">Position</Th>
+                <Th fontWeight="bold">Department</Th>
+                <Th fontWeight="bold">Joining Date</Th>
+                <Th fontWeight="bold">Action</Th>
               </Tr>
-            )) :
-            employee.map((emp, index) => (
-              <Tr key={emp._id}>
-                <Td>{index+1}</Td>
-                <Td>{emp.name}</Td>
-                <Td>{emp.position}</Td>
-                <Td>{emp.department}</Td>
-                <Td>{emp.joiningDate}</Td>
-                <Td>
-                  <Button
-                    colorScheme="purple"
-                    onClick={() => handleMoreInfo(emp)}
-                  >
-                    More Info
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </TableContainer>
+            </Thead>
+            <Tbody>
+              {searchText !== ""
+                ? filteredEmployee.map((emp, index) => (
+                    <Tr key={emp._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{emp.name}</Td>
+                      <Td>{emp.position}</Td>
+                      <Td>{emp.department}</Td>
+                      <Td>{emp.joiningDate}</Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(emp)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                : employee.map((emp, index) => (
+                    <Tr key={emp._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{emp.name}</Td>
+                      <Td>{emp.position}</Td>
+                      <Td>{emp.department}</Td>
+                      <Td>{emp.joiningDate}</Td>
+                      <Td>
+                        <Button
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(emp)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
+            </Tbody>
+          </TableContainer>
+        )}
       </div>
 
-      <InfoModal modalFor="employee" data={selectedEmployee} onClose={onClose} isOpen={isOpen} />
+      <InfoModal
+        modalFor="employee"
+        data={selectedEmployee}
+        onClose={onClose}
+        isOpen={isOpen}
+      />
     </>
   );
 };
