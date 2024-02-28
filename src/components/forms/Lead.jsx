@@ -10,10 +10,13 @@ import {
   TabPanel,
   Select,
   IconButton,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from "@chakra-ui/react";
 import { DatePicker, Input } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -22,7 +25,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 const Lead = () => {
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
-    source: "",
+    source: [],
     companyName: "",
     clientName: "",
     brandName: "",
@@ -46,12 +49,51 @@ const Lead = () => {
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
-
+   const [tags, setTags] = useState([]);
+   const removeTagById = (tagToRemove) => {
+     setProjectData({
+       ...projectData,
+       source: projectData.source.filter((tag) => tag !== tagToRemove),
+     });
+   };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProjectData({ ...projectData, [name]: value });
   };
+   const getTagNameById = (id) => {
+     const tag = tags.find((tag) => tag.source_tag_id === id);
+     return tag ? tag.sourceTagName : "Unknown Tag";
+   };
+    useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`)
+      .then((response) => {
+        setTags(response.data);
+        console.log(tags)
+      })
+      .catch((error) => {
+        console.error("Error fetching clients:", error);
+      });
+    },[]);
+   const handleTagChange = (e) => {
+     const selectedTags = Array.from(
+       e.target.selectedOptions,
+       (option) => option.value
+     );
+     
 
+     // Fetch tag names for selected tag IDs
+     const selectedTagNames = selectedTags.map((tagId) =>
+       getTagNameById(tagId)
+     );
+     console.log(selectedTagNames);
+
+     // Update projectData with tag names
+     setProjectData({
+       ...projectData,
+       source: [...projectData.source, ...selectedTagNames],
+     });
+   };
   const handleSelectChange = (setSelected, name, value) => {
     setSelected(value);
     setProjectData({ ...projectData, [name]: value });
@@ -148,9 +190,34 @@ const Lead = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="source">
+                <FormControl id="tags" isRequired>
                   <FormLabel>Source</FormLabel>
-                  <Input name="source" onChange={handleChange} />
+                  <Select
+                    onChange={handleTagChange}
+                    size="md"
+                    placeholder="Select Source"
+                    isRequired
+                  >
+                    {tags.map((tag) => (
+                      <option key={tag._id} value={tag.source_tag_id}>
+                        
+                        {tag.sourceTagName}
+                      </option>
+                    ))}
+                  </Select>
+                 
+                  {projectData.source.map((tag) => (
+                    <Tag
+                      key={tag._id}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton onClick={() => removeTagById(tag)} />
+                    </Tag>
+                  ))}
                 </FormControl>
                 <FormControl id="title">
                   <FormLabel>Title</FormLabel>
