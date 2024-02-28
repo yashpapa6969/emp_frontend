@@ -14,6 +14,7 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
+import { Empty } from "antd";
 
 const CreateProjectButton = ({ onOpen }) => {
   return (
@@ -43,7 +44,7 @@ const GetAllProject = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllProjects"
         );
         setProjects(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
@@ -74,9 +75,14 @@ const GetAllProject = () => {
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
         <CreateProjectButton onOpen={onOpen} />
         {projects.length === 0 ? (
-          <p className="text-red-500 text-lg">No Projects Assigned</p>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Projects Assigned
+            </span>
+          } />
         ) : (
           <TableContainer
+            formFor="project"
             searchText={searchText}
             setSearchText={setSearchText}
             setFilteredData={setFilteredProjects}
@@ -86,48 +92,48 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold">Deadline</Th>
-                <Th fontWeight="bold">Priority</Th>
-                <Th fontWeight="bold">BrandName</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Progress</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Billing Type</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td>{project.deadline}</Td>
-                      <Td>{project.priority}</Td>
-                      <Td>{project.brandName}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className="md:table-cell hidden">{project.progress}</Td>
+                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.status}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : projects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td>{project.deadline}</Td>
-                      <Td>{project.priority}</Td>
-                      <Td>{project.brandName}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className="md:table-cell hidden">{project.progress}</Td>
+                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.status}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}

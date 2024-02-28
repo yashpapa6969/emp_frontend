@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Button,
     FormControl,
@@ -9,11 +9,36 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DatePicker } from "antd"
+import { DatePicker, Select, Tag } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
+import { PiPlus } from "react-icons/pi";
+import { IoMdCheckmark } from "react-icons/io";
+
+const TagRender = ({ label, closable, onClose }) => {
+    const onPreventMouseDown = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    return (
+        <Tag
+            // color={value}
+            onMouseDown={onPreventMouseDown}
+            closable={closable}
+            onClose={onClose}
+            style={{
+                marginRight: 3,
+            }}
+        >
+            {label}
+        </Tag>
+    );
+};
 
 const Client = () => {
+    const [sources, setSources] = useState([]);
+    const [selectSourceValue, setSelectSourceValue] = useState([]);
+
     const [formData, setFormData] = useState({
         enquiryDate: new Date(),
         source: "",
@@ -24,7 +49,6 @@ const Client = () => {
         singleFile: null,
         multipleFiles: [],
     });
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,6 +80,20 @@ const Client = () => {
         });
     };
 
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
+                );
+                setSources(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+        fetchData();
+    })
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -85,6 +123,17 @@ const Client = () => {
             });
     };
 
+    const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
+    const handleAddSource = () => {
+        setSourceAddBtnClick(!sourceAddBtnClick);
+        try {
+            axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
+                { sourceTagName: selectSourceValue }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <FormControl mb="4">
@@ -98,14 +147,25 @@ const Client = () => {
                     defaultValue={moment()}
                 />
             </FormControl>
-            <FormControl mb="4">
+            <FormControl id="sources" mb={4}>
                 <FormLabel>Source</FormLabel>
-                <Input
-                    type="text"
-                    name="source"
-                    value={formData.source}
-                    onChange={handleChange}
-                />
+                <Flex>
+                    <Select
+                        mode="multiple"
+                        tagRender={TagRender}
+                        style={{
+                            width: '100%',
+                        }}
+                        options={sources.map((item) => ({
+                            label: item.sourceTagName,
+                            value: item.sourceTagName,
+                        }))}
+                        value={selectSourceValue}
+                        onChange={setSelectSourceValue}
+                        className="max-w-[400px]"
+                    />
+                    <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
+                </Flex>
             </FormControl>
             <FormControl mb="4">
                 <FormLabel>Brand Name</FormLabel>
