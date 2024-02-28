@@ -100,6 +100,10 @@ const GetAllLead = () => {
             <Thead bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold">Company Name</Th>
+                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold">Brand Name</Th>
+                <Th fontWeight="bold">Status</Th>
                 <Th fontWeight="bold">Enquiry Date</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">Source</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
@@ -112,8 +116,8 @@ const GetAllLead = () => {
                 ? filteredClients.map((client, index) => (
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
-                      <Td>{client.enquiryDate}</Td>
-                      <Td className="md:table-cell hidden">{client.source}</Td>
+                      <Td>{client.companyName}</Td>
+                      <Td className="md:table-cell hidden">{client.status}</Td>
                       <Td className="md:table-cell hidden">{client.brandName}</Td>
                       <Td className="md:table-cell hidden">
                         {client.status === 0 && "Raw"}
@@ -173,6 +177,10 @@ const GetAllLead = () => {
                       <Td className="md:table-cell hidden">{client.source}</Td>
                       <Td className="md:table-cell hidden">{client.brandName}</Td>
                       <Td className="md:table-cell hidden">
+                      <Td>{client.companyName}</Td>
+                      <Td>{client.status}</Td>
+                      <Td>{client.brandName}</Td>
+                      <Td>
                         {client.status === 0 && "Raw"}
                         {client.status === 1 && "In-Progress"}
                         {client.status === 2 && "Converted"}

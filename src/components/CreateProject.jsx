@@ -16,18 +16,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
-
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
     projectName: "",
     client_id: "",
-    progress: "",
-    billingType: "",
-    status: "",
-    totalRate: "",
-    estimatedHours: "",
+    priority: "",
     startDate: "",
-    endDate: "",
+    deadline: "",
     tags: [],
     description: "",
     employees: [],
@@ -35,6 +30,16 @@ const CreateProject = () => {
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
+  const [selectedClient,setSelectedClient] = useState(null);
+  const getEmployeeNameById = (id) => {
+    const employee = employees.find((employee) => employee.employee_id === id);
+    return employee ? employee.name : "Unknown Employee";
+  };
+  const getTagNameById = (id) => {
+    const tag = tags.find((tag) => tag.tag_id === id);
+    return tag ? tag.tagName : "Unknown Tag";
+  };
+
 
   useEffect(() => {
     axios
@@ -63,7 +68,8 @@ const CreateProject = () => {
       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
     )
       .then((response) => response.json())
-      .then((data) => setEmployees(data));
+      .then((data) => {setEmployees(data)
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -74,18 +80,20 @@ const CreateProject = () => {
     setProjectData({ ...projectData, startDate: date });
   };
   const handleEndDateChange = (date) => {
-    setProjectData({ ...projectData, endDate: date });
+    setProjectData({ ...projectData, deadline: date });
   };
   const handleClientChange = (e) => {
     const clientId = e.target.value;
-    setProjectData({ ...projectData, client_id: clientId });
+    const selectedClient = clients.find(
+      (client) => client.client_id === clientId
+    );
+    setSelectedClient(selectedClient);
+    
+    setProjectData({ ...projectData, client_id: clientId,brandName:selectedClient.brandName });
   };
 
   const handleTagChange = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => ({
-      id: option.value,
-      tagName: option.label,
-    }));
+    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
     setProjectData({
       ...projectData,
       tags: [...projectData.tags, ...selectedTags],
@@ -99,13 +107,13 @@ const CreateProject = () => {
   };
 
   const handleEmployeeChange = (e) => {
-    const selectedEmployees = Array.from(e.target.selectedOptions, (option) => ({
-      id: option.value,
-      employeeName: option.label,
-    }));
+    const selectedIds = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setProjectData({
       ...projectData,
-      employees: [...projectData.employees, ...selectedEmployees],
+      employees: [...projectData.employees, ...selectedIds],
     });
   };
 
@@ -136,6 +144,7 @@ const CreateProject = () => {
         } else {
           console.error("Failed to create project");
           console.log(response.data.message);
+          toast.success(response.data.message);
         }
       })
       .catch((error) => {
@@ -158,7 +167,9 @@ const CreateProject = () => {
         m="4"
       >
         <h1 className="text-2xl font-semibold">Add Project</h1>
-        <p className="font-light mb-4">Fill the below form to add a new project</p>
+        <p className="font-light mb-4">
+          Fill the below form to add a new project
+        </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
             <FormControl id="projectName" isRequired>
@@ -166,44 +177,47 @@ const CreateProject = () => {
               <Input name="projectName" onChange={handleChange} />
             </FormControl>
             <FormControl id="client_id" isRequired>
-              <FormLabel>Client Name</FormLabel>
+              <FormLabel>Brand Name</FormLabel>
               <Select
                 onChange={handleClientChange}
                 size="md"
-                placeholder="Select client"
+                placeholder="Select Brand"
                 isRequired
               >
                 {clients.map((client) => (
                   <option key={client.client_id} value={client.client_id}>
-                    {client.clientName}
+                    {client.brandName}
                   </option>
                 ))}
               </Select>
             </FormControl>
-            <FormControl id="progress" isRequired>
-              <FormLabel>Progress</FormLabel>
-              <Input name="progress" onChange={handleChange} />
+            {selectedClient && (
+              <>
+                <FormLabel>Client Name:-{selectedClient.clientName}</FormLabel>
+                <FormLabel>
+                  Client Company:-{selectedClient.companyName}
+                </FormLabel>
+              </>
+            )}
+
+            <FormControl id="priority" isRequired>
+              <FormLabel>Priority</FormLabel>
+              <Select
+                name="priority"
+                onChange={handleChange}
+                placeholder="Select priority"
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </Select>
             </FormControl>
-            <FormControl id="billingType" isRequired>
-              <FormLabel>Billing Type</FormLabel>
-              <Input name="billingType" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="status" isRequired>
-              <FormLabel>Status</FormLabel>
-              <Input name="status" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="totalRate" isRequired>
-              <FormLabel>Total Rate</FormLabel>
-              <Input name="totalRate" onChange={handleChange} />
-            </FormControl>
+
             <FormControl id="description" isRequired>
               <FormLabel>Description</FormLabel>
               <Input name="description" onChange={handleChange} />
             </FormControl>
-            <FormControl id="estimatedHours" isRequired>
-              <FormLabel>Estimated Hours</FormLabel>
-              <Input name="estimatedHours" onChange={handleChange} />
-            </FormControl>
+
             <FormControl mb="4">
               <FormLabel>Start Date</FormLabel>
               <DatePicker
@@ -216,7 +230,7 @@ const CreateProject = () => {
             <FormControl mb="4">
               <FormLabel>End Date</FormLabel>
               <DatePicker
-                selected={projectData.endDate}
+                selected={projectData.deadline}
                 onChange={handleEndDateChange}
                 dateFormat="MM/dd/yyyy"
                 placeholderText="Pick Date"
@@ -231,20 +245,20 @@ const CreateProject = () => {
                 isRequired
               >
                 {tags.map((tag) => (
-                  <option key={tag} value={tag}>
+                  <option key={tag._id} value={tag.tag_id}>
                     {tag.tagName}
                   </option>
                 ))}
               </Select>
               {projectData.tags.map((tag) => (
                 <Tag
-                  key={tag.id}
+                  key={tag._id}
                   size="md"
                   borderRadius="full"
                   variant="solid"
                   colorScheme="blue"
                 >
-                  <TagLabel>{tag.tagName}</TagLabel>
+                  <TagLabel>{getTagNameById(tag)}</TagLabel>
                   <TagCloseButton onClick={() => removeTagById(tag)} />
                 </Tag>
               ))}
@@ -258,23 +272,20 @@ const CreateProject = () => {
                 isRequired
               >
                 {employees.map((employee) => (
-                  <option
-                    key={employee}
-                    value={employee}
-                  >
+                  <option key={employee._id} value={employee.employee_id}>
                     {employee.name}
                   </option>
                 ))}
               </Select>
               {projectData.employees.map((tag) => (
                 <Tag
-                  key={tag.id}
+                  key={tag._id}
                   size="md"
                   borderRadius="full"
                   variant="solid"
                   colorScheme="blue"
                 >
-                  <TagLabel>{tag.employeeName}</TagLabel>
+                  <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
                   <TagCloseButton onClick={() => removeEmployeeById(tag)} />
                 </Tag>
               ))}
