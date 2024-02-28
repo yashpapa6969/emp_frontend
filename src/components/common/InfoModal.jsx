@@ -258,7 +258,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Tags </Text>
                 {data.tags.map((tag, index) => (
                   <Text key={index}>{tag.tagName}</Text>
-                  
                 ))}
 
                 <Text fontWeight="bold">Employee </Text>

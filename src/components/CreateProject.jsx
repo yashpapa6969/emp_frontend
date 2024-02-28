@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Button,
+  Text,
   FormControl,
   FormLabel,
   Input,
@@ -30,7 +31,7 @@ const CreateProject = () => {
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
-  const [selectedClient,setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
   const getEmployeeNameById = (id) => {
     const employee = employees.find((employee) => employee.employee_id === id);
     return employee ? employee.name : "Unknown Employee";
@@ -40,11 +41,10 @@ const CreateProject = () => {
     return tag ? tag.tagName : "Unknown Tag";
   };
 
-
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
       )
       .then((response) => {
         setTags(response.data);
@@ -55,7 +55,7 @@ const CreateProject = () => {
 
     axios
       .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
       )
       .then((response) => {
         setClients(response.data);
@@ -65,10 +65,11 @@ const CreateProject = () => {
       });
 
     fetch(
-      `${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`
+      "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
     )
       .then((response) => response.json())
-      .then((data) => {setEmployees(data)
+      .then((data) => {
+        setEmployees(data);
       });
   }, []);
 
@@ -88,12 +89,19 @@ const CreateProject = () => {
       (client) => client.client_id === clientId
     );
     setSelectedClient(selectedClient);
-    
-    setProjectData({ ...projectData, client_id: clientId,brandName:selectedClient.brandName });
+
+    setProjectData({
+      ...projectData,
+      client_id: clientId,
+      brandName: selectedClient.brandName,
+    });
   };
 
   const handleTagChange = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+    const selectedTags = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setProjectData({
       ...projectData,
       tags: [...projectData.tags, ...selectedTags],
@@ -130,7 +138,7 @@ const CreateProject = () => {
     e.preventDefault();
     axios
       .post(
-        `${import.meta.env.VITE_API_BASE}/api/admin/createProject`,
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/createProject",
         projectData,
         {
           headers: {

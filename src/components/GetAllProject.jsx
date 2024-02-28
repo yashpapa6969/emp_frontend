@@ -14,7 +14,6 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
-import { Empty } from "antd";
 
 const CreateProjectButton = ({ onOpen }) => {
   return (
@@ -44,7 +43,7 @@ const GetAllProject = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+          "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllProjects"
         );
         setProjects(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
@@ -75,11 +74,7 @@ const GetAllProject = () => {
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
         <CreateProjectButton onOpen={onOpen} />
         {projects.length === 0 ? (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
-            <span>
-              No Projects Assigned
-            </span>
-          } />
+          <p className="text-red-500 text-lg">No Projects Assigned</p>
         ) : (
           <TableContainer
             searchText={searchText}
@@ -91,9 +86,9 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Deadline</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Priority</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">BrandName</Th>
+                <Th fontWeight="bold">Deadline</Th>
+                <Th fontWeight="bold">Priority</Th>
+                <Th fontWeight="bold">BrandName</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -103,9 +98,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">{project.deadline}</Td>
-                      <Td className="md:table-cell hidden">{project.priority}</Td>
-                      <Td className="md:table-cell hidden">{project.brandName}</Td>
+                      <Td>{project.deadline}</Td>
+                      <Td>{project.priority}</Td>
+                      <Td>{project.brandName}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -120,9 +115,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">{project.deadline}</Td>
-                      <Td className="md:table-cell hidden">{project.priority}</Td>
-                      <Td className="md:table-cell hidden">{project.brandName}</Td>
+                      <Td>{project.deadline}</Td>
+                      <Td>{project.priority}</Td>
+                      <Td>{project.brandName}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
