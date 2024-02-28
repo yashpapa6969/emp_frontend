@@ -86,9 +86,9 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold">Progress</Th>
-                <Th fontWeight="bold">Billing Type</Th>
-                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold">Deadline</Th>
+                <Th fontWeight="bold">Priority</Th>
+                <Th fontWeight="bold">BrandName</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -98,9 +98,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td>{project.progress}</Td>
-                      <Td>{project.billingType}</Td>
-                      <Td>{project.status}</Td>
+                      <Td>{project.deadline}</Td>
+                      <Td>{project.priority}</Td>
+                      <Td>{project.brandName}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -115,9 +115,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td>{project.progress}</Td>
-                      <Td>{project.billingType}</Td>
-                      <Td>{project.status}</Td>
+                      <Td>{project.deadline}</Td>
+                      <Td>{project.priority}</Td>
+                      <Td>{project.brandName}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"

@@ -96,8 +96,8 @@ const GetAllLead = () => {
             <Thead bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
-                <Th fontWeight="bold">Enquiry Date</Th>
-                <Th fontWeight="bold">Source</Th>
+                <Th fontWeight="bold">Company Name</Th>
+                <Th fontWeight="bold">Status</Th>
                 <Th fontWeight="bold">Brand Name</Th>
                 <Th fontWeight="bold">Status</Th>
                 <Th fontWeight="bold">Action</Th>
@@ -108,8 +108,8 @@ const GetAllLead = () => {
                 ? filteredClients.map((client, index) => (
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
-                      <Td>{client.enquiryDate}</Td>
-                      <Td>{client.source}</Td>
+                      <Td>{client.companyName}</Td>
+                      <Td>{client.status}</Td>
                       <Td>{client.brandName}</Td>
                       <Td>
                         {client.status === 0 && "Raw"}
@@ -165,8 +165,8 @@ const GetAllLead = () => {
                 : clients.map((client, index) => (
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
-                      <Td>{client.enquiryDate}</Td>
-                      <Td>{client.source}</Td>
+                      <Td>{client.companyName}</Td>
+                      <Td>{client.status}</Td>
                       <Td>{client.brandName}</Td>
                       <Td>
                         {client.status === 0 && "Raw"}

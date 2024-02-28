@@ -16,37 +16,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
 import { setClientId } from "../../store/slice/ClientSlice";
 import { setProjectId } from "../../store/slice/ProjectSlice";
-import { selectEmployeeIds,clearEmployeeIds,setEmployeeId,clearEmployeeId } from "../../store/slice/EmployeeSlice";
-import { useEffect,useState } from "react";
+import {
+  selectEmployeeIds,
+  clearEmployeeIds,
+  setEmployeeId,
+  clearEmployeeId,
+} from "../../store/slice/EmployeeSlice";
+import { useEffect, useState } from "react";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   const dispatch = useDispatch();
-    
- useEffect(() => {
-   if (modalFor === "project" && data?.employees) {
-     const employeeIds = data.employees;
-     employeeIds.forEach((id) => {
-       dispatch(addEmployeeId(id));
-     });
-   }
-   if (modalFor === "task" && data?.employee_id) {
-     const employeeId = data.employee_id;
-     const p = data.project_id;
-     const c = data.client_id;
-     dispatch(setEmployeeId(employeeId));
-     dispatch(setClientId(c));
-     dispatch(setProjectId(p));
-   }
 
-   if (modalFor === "project" && data && data.client_id) {
-     const clientId = data.client_id;
-     dispatch(setClientId(clientId));
-   }
- }, [modalFor, data, dispatch]);
+  useEffect(() => {
+    if (modalFor === "project" && data?.employees) {
+      const employeeIds = data.employees;
+      employeeIds.forEach((id) => {
+        dispatch(addEmployeeId(id));
+      });
+    }
+    if (modalFor === "task" && data?.employee_id) {
+      const employeeId = data.employee_id;
+      const p = data.project_id;
+      const c = data.client_id;
+      dispatch(setEmployeeId(employeeId));
+      dispatch(setClientId(c));
+      dispatch(setProjectId(p));
+    }
 
-
-
- 
+    if (modalFor === "project" && data && data.client_id) {
+      const clientId = data.client_id;
+      dispatch(setClientId(clientId));
+    }
+  }, [modalFor, data, dispatch]);
 
   if (modalFor === "manager")
     return (
@@ -199,7 +200,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.additionalInformation}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Text>{data.client_id}</Text>
-              
+
                 <Text fontWeight="bold">Files Provided: </Text>
                 {data.multipleFiles && data.multipleFiles.length > 0 ? (
                   data.multipleFiles.map((file, index) => (
@@ -225,8 +226,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       </Modal>
     );
   if (modalFor === "project") {
-   
-
     return (
       <Modal
         onClose={onClose}
@@ -243,28 +242,25 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
               <div>
                 <Text fontWeight="bold">Project Name: </Text>
                 <Text>{data.projectName}</Text>
+                <Text fontWeight="bold">Brand Name: </Text>
+                <Text>{data.brandName}</Text>
+                <Text fontWeight="bold">Priority: </Text>
+                <Text>{data.priority}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
                 <Link to={`/GetClient`}>
                   <Button>Get Client details</Button>
                 </Link>
-                <Text fontWeight="bold">progress: </Text>
-                <Text>{data.progress}</Text>
-                <Text fontWeight="bold">Billing Type: </Text>
-                <Text>{data.billingType}</Text>
-                <Text fontWeight="bold">Status </Text>
-                <Text>{data.status}</Text>
-                <Text fontWeight="bold">Total Rate: </Text>
-                <Text>{data.totalRate}</Text>
-                <Text fontWeight="bold">Estimated Hours: </Text>
-                <Text>{data.estimatedHours}</Text>
+
                 <Text fontWeight="bold">Start Date </Text>
                 <Text>{data.startDate}</Text>
                 <Text fontWeight="bold">End date </Text>
                 <Text>{data.endDate}</Text>
                 <Text fontWeight="bold">Tags </Text>
                 {data.tags.map((tag, index) => (
-                  <Text key={index}>{tag}</Text>
+                  <Text key={index}>{tag.tagName}</Text>
+                  
                 ))}
+
                 <Text fontWeight="bold">Employee </Text>
 
                 <Link to={`/GetEmp`}>
@@ -306,16 +302,56 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.enquiryDate}</Text>
                 <Text fontWeight="bold">Source: </Text>
                 <Text>{data.source}</Text>
+                <Text fontWeight="bold">Company Name </Text>
+                <Text>{data.companyName}</Text>
+                <Text fontWeight="bold">Source: </Text>
+                <ul>
+                  {data.source.map((req, index) => (
+                    <li key={index}>{req}</li>
+                  ))}
+                </ul>
+                <Text fontWeight="bold">Gender </Text>
+                <Text>{data.gender}</Text>
+                <Text fontWeight="bold">GST Number </Text>
+                <Text>{data.gstNo}</Text>
+                <Text fontWeight="bold">Title </Text>
+                <Text>{data.title}</Text>
                 <Text fontWeight="bold">Brand Name </Text>
                 <Text>{data.brandName}</Text>
                 <Text fontWeight="bold">Client Name </Text>
                 <Text>{data.clientName}</Text>
-                <Text fontWeight="bold">Phone Number: </Text>
+                <Text fontWeight="bold">Website </Text>
+                <Text>{data.website}</Text>
+                <Text fontWeight="bold">Phone Number1: </Text>
                 <Text>{data.phone1}</Text>
+                <Text fontWeight="bold">Phone Number2: </Text>
+                <Text>{data.phone2}</Text>
                 <Text fontWeight="bold">Email: </Text>
                 <Text>{data.email1}</Text>
+                <Text fontWeight="bold">Email 2: </Text>
+                <Text>{data.email2}</Text>
                 <Text fontWeight="bold">Status: </Text>
                 <Text>{data.status}</Text>
+                <Text fontWeight="bold">Business Address: </Text>
+                <Text>{data.businessAddress}</Text>
+                <Text fontWeight="bold">Billing Address: </Text>
+                <Text>{data.billingAddress}</Text>
+                <Text fontWeight="bold">City </Text>
+                <Text>{data.city}</Text>
+                <Text fontWeight="bold">State </Text>
+                <Text>{data.state}</Text>
+                <Text fontWeight="bold">Pincode </Text>
+                <Text>{data.pincode}</Text>
+                <Text fontWeight="bold">Country </Text>
+                <Text>{data.country}</Text>
+                <Text fontWeight="bold">Additional Information </Text>
+                <Text>{data.additionalInformation}</Text>
+                <Text fontWeight="bold">Requirements: </Text>
+                <ul>
+                  {data.requirement.map((req, index) => (
+                    <li key={index}>{req}</li>
+                  ))}
+                </ul>
                 <Text fontWeight="bold">Single File: </Text>
                 <Image
                   src={data.singleFile}
