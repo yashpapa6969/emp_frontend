@@ -47,7 +47,9 @@ const CreateEmp = () => {
       setLoadingManagers(true);
       axios
         .get(
-          `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllManagersbyDepartment/${formData.department}`
+          `${
+            import.meta.env.VITE_API_BASE
+          }/api/admin/getAllManagersbyDepartment/${formData.department}`
         )
 
         .then((response) => {

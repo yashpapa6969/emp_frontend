@@ -37,20 +37,20 @@ const InfoBoxByID = ({ modalFor }) => {
        let fetchedData = [];
        if (modalFor === "employee" && employeeId) {
          const employeeResponse = await axios.get(
-           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${employeeId}`
+           `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
          );
          fetchedData.push(employeeResponse.data);
        } else if (modalFor === "employee" && employeeIds.length > 0) {
          const promises = employeeIds.map((id) =>
            axios.get(
-             `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
+             `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${id}`
            )
          );
          const responses = await Promise.all(promises);
          fetchedData = responses.map((res) => res.data);
        } else if (modalFor === "client" && clientId) {
          const response = await axios.get(
-           `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getClientDetails/${clientId}`
+           `${import.meta.env.VITE_API_BASE}/api/admin/getClientDetails/${clientId}`
          );
          fetchedData.push(response.data);
        }

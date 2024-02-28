@@ -13,8 +13,7 @@ const UserInfo = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${user.employee_id}`
-        );
+          `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${user.employee_id}`);
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

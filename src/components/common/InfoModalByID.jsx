@@ -23,11 +23,11 @@ const InfoModalByID = ({ modalFor, id, onClose, isOpen }) => {
         // Fetch data based on the modalFor prop
         if (modalFor === "employee") {
           response = await axios.get(
-            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getEmployeeByID/${id}`
+            `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${id}`
           ); // Example endpoint for fetching employee data
         } else if (modalFor === "client") {
           response = await axios.get(
-            `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/clientsByID/${id}`
+            `${import.meta.env.VITE_API_BASE}/api/clientsByID/${id}`
           ); // Example endpoint for fetching client data
         }
         setData(response.data);

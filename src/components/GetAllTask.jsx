@@ -49,7 +49,7 @@ const GetAllTask = () => {
   const handleStatusChange = async (leadId, statusNo) => {
     try {
       await axios.get(
-        `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/updateTaskStatus/${leadId}/${statusNo}`
+        `${import.meta.env.VITE_API_BASE}/api/admin/updateTaskStatus/${leadId}/${statusNo}`
       );
       // Fetch data again after updating status
       const response = await axios.get(

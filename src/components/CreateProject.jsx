@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Button,
+  Text,
   FormControl,
   FormLabel,
   Input,
@@ -30,7 +31,7 @@ const CreateProject = () => {
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
-  const [selectedClient,setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(null);
   const getEmployeeNameById = (id) => {
     const employee = employees.find((employee) => employee.employee_id === id);
     return employee ? employee.name : "Unknown Employee";
@@ -40,12 +41,9 @@ const CreateProject = () => {
     return tag ? tag.tagName : "Unknown Tag";
   };
 
-
   useEffect(() => {
     axios
-      .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`
-      )
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`)
       .then((response) => {
         setTags(response.data);
       })
@@ -54,9 +52,7 @@ const CreateProject = () => {
       });
 
     axios
-      .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
-      )
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`)
       .then((response) => {
         setClients(response.data);
       })
@@ -64,11 +60,10 @@ const CreateProject = () => {
         console.error("Error fetching clients:", error);
       });
 
-    fetch(
-      `${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`
-    )
+    fetch(`${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`)
       .then((response) => response.json())
-      .then((data) => {setEmployees(data)
+      .then((data) => {
+        setEmployees(data);
       });
   }, []);
 
@@ -88,12 +83,19 @@ const CreateProject = () => {
       (client) => client.client_id === clientId
     );
     setSelectedClient(selectedClient);
-    
-    setProjectData({ ...projectData, client_id: clientId,brandName:selectedClient.brandName });
+
+    setProjectData({
+      ...projectData,
+      client_id: clientId,
+      brandName: selectedClient.brandName,
+    });
   };
 
   const handleTagChange = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
+    const selectedTags = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setProjectData({
       ...projectData,
       tags: [...projectData.tags, ...selectedTags],

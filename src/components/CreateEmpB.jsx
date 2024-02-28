@@ -44,13 +44,11 @@ const CreateEmpB = ({ onClose }) => {
     if (formData.department !== "") {
       setLoadingManagers(true);
       axios
-        .get(
-          `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllManagersbyDepartment/${formData.department}`
-        )
+        .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllManagersbyDepartment/${formData.department}`)
 
         .then((response) => {
           if (response.data.length === 0) {
-            setManagers([]); 
+            setManagers([]);
           }
           setManagers(response.data);
           setLoadingManagers(false);
