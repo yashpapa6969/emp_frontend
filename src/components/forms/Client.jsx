@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DatePicker from "react-datepicker";
+import { DatePicker } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 

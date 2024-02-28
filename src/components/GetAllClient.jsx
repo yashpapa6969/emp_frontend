@@ -76,12 +76,15 @@ const GetAllClient = () => {
     onOpen();
   };
 
+  console.log(clients)
+
   return (
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Client Information</h1>
         <CreateClientButton />
         <TableContainer
+          formFor="client"
           searchText={searchText}
           setSearchText={setSearchText}
           setFilteredData={setFilteredClients}

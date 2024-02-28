@@ -9,13 +9,20 @@ interface Props {
     setSearchText: Dispatch<SetStateAction<string>>;
     setFilteredData: Dispatch<SetStateAction<Array<any>>>;
     data: Array<any>;
+    formFor?: string;
 }
 
-const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data }: Props) => {
+const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor }: Props) => {
     const handleSearch = (e) => {
         setSearchText(e.target.value);
         if (searchText != '') {
             setFilteredData(data.filter((elem) => {
+                if (formFor === "client") {
+                    return elem.clientName.toLowerCase().includes(searchText.toLowerCase());
+                }
+                if (formFor === "brand") {
+                    return elem.brandName.toLowerCase().includes(searchText.toLowerCase());
+                }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
         }

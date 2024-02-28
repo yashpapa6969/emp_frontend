@@ -14,6 +14,7 @@ import { GoPersonFill, GoPlus } from 'react-icons/go';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { FaTty, FaDiagramProject } from 'react-icons/fa6';
 import { MdOutlineAddTask } from "react-icons/md";
+import { GrTask } from 'react-icons/gr';
 
 interface Props {
     showSidebar: boolean;
@@ -45,10 +46,10 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <IoPeopleSharp size={20} /> Client Information
             </Link>
             <Link to="/getAllLead" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
-                <FaTty size={20} />Lead Information
+                <FaTty size={20} /> Lead Information
             </Link>
-            <Link to="/getAllTask" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
-                <FaTty size={20} />Task Information
+            <Link to="/getAllTask" className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
+                <GrTask size={20} /> Task Information
             </Link>
             <Accordion defaultIndex={[0]} allowToggle>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>

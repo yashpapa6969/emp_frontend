@@ -88,28 +88,22 @@ const Lead = () => {
                     <TabList>
                         <Tab>Personal Information</Tab>
                         <Tab>Address Information</Tab>
+                        <Tab>Business Information</Tab>
+                        <Tab>Additional Information</Tab>
                     </TabList>
 
                     <TabPanels>
                         <TabPanel>
-                            <div className="flex gap-3">
+                            <div className="flex gap-3 mb-3">
                                 <FormControl id="source" isRequired>
                                     <FormLabel>Source</FormLabel>
                                     <Input name="source" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="brandName" isRequired >
-                                    <FormLabel>Brand Name</FormLabel>
-                                    <Input name="brandName" onChange={handleChange} />
-                                </FormControl>
                             </div>
                             <div className="flex gap-3">
-                                <FormControl id="firstName" isRequired>
-                                    <FormLabel>First Name</FormLabel>
-                                    <Input name="firstName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="lastName" isRequired>
-                                    <FormLabel>Last Name</FormLabel>
-                                    <Input name="lastName" onChange={handleChange} />
+                                <FormControl id="clientName" isRequired>
+                                    <FormLabel>Client Name</FormLabel>
+                                    <Input name="clientName" onChange={handleChange} />
                                 </FormControl>
                                 <FormControl id="phone1" isRequired>
                                     <FormLabel>Phone Number 1</FormLabel>
@@ -135,13 +129,13 @@ const Lead = () => {
                         </TabPanel>
                         <TabPanel>
                             <div className="flex gap-3">
-                                <FormControl id="businessAddress" isRequired>
-                                    <FormLabel>Business Address</FormLabel>
-                                    <Input name="businessAddress" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="city" isRequired>
-                                    <FormLabel>City</FormLabel>
-                                    <Input name="city" onChange={handleChange} />
+                                <FormControl id="country" isRequired>
+                                    <FormLabel>Country</FormLabel>
+                                    <CountryDropdown
+                                        name="country"
+                                        value={selectedCountry}
+                                        onChange={(e) => handleSelectChange(setSelectedCountry, "country", e)}
+                                        className="border-[0.375px] rounded-md h-[2rem]" />
                                 </FormControl>
                                 <FormControl id="state" isRequired>
                                     <FormLabel>State</FormLabel>
@@ -152,32 +146,40 @@ const Lead = () => {
                                         onChange={(e) => handleSelectChange(setSelectedState, "state", e)}
                                         className="border-[0.375px] rounded-md h-[2rem] max-w-24" />
                                 </FormControl>
+                                <FormControl id="city" isRequired>
+                                    <FormLabel>City</FormLabel>
+                                    <Input name="city" onChange={handleChange} />
+                                </FormControl>
                                 <FormControl id="pincode" isRequired>
                                     <FormLabel>Pincode</FormLabel>
                                     <Input name="pincode" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="country" isRequired>
-                                    <FormLabel>Country</FormLabel>
-                                    <CountryDropdown
-                                        name="country"
-                                        value={selectedCountry}
-                                        onChange={(e) => handleSelectChange(setSelectedCountry, "country", e)}
-                                        className="border-[0.375px] rounded-md h-[2rem]" />
+                            </div>
+                        </TabPanel>
+                        <TabPanel>
+                            <FormControl id="brandName" mb={3} isRequired >
+                                <FormLabel>Brand Name</FormLabel>
+                                <Input name="brandName" onChange={handleChange} />
+                            </FormControl>
+                            <FormControl id="businessAddress" isRequired>
+                                <FormLabel>Business Address</FormLabel>
+                                <Input name="businessAddress" onChange={handleChange} />
+                            </FormControl>
+                        </TabPanel>
+                        <TabPanel>
+                            <div className="flex gap-3">
+                                <FormControl id="requirement">
+                                    <FormLabel>Requirement</FormLabel>
+                                    <Input name="requirement" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="additionalInformation">
+                                    <FormLabel>Additional Information</FormLabel>
+                                    <Input name="additionalInformation" onChange={handleChange} />
                                 </FormControl>
                             </div>
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
-                <div className="flex gap-3">
-                    <FormControl id="requirement">
-                        <FormLabel>Requirement</FormLabel>
-                        <Input name="requirement" onChange={handleChange} />
-                    </FormControl>
-                    <FormControl id="additionalInformation">
-                        <FormLabel>Additional Information</FormLabel>
-                        <Input name="additionalInformation" onChange={handleChange} />
-                    </FormControl>
-                </div>
 
                 <Button type="submit" colorScheme="purple">
                     Create Lead

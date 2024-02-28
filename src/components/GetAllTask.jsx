@@ -16,7 +16,6 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
-import InfoModalByID from "./common/InfoModalByID";
 
 const GetAllTask = () => {
   const [clients, setClients] = useState([]);
@@ -73,6 +72,7 @@ const handleMoreInfo = (client) => {
           </Button>
         </Link>
         <TableContainer
+          formFor="brand"
           searchText={searchText}
           setSearchText={setSearchText}
           setFilteredData={setFilteredClients}
@@ -91,7 +91,7 @@ const handleMoreInfo = (client) => {
           <Tbody>
             {searchText !== ""
               ? filteredClients.map((client, index) => (
-                  <Tr key={client._id}>
+                  <Tr key={client._id} className={`${client.priority.toLowerCase() === "urgent" && "bg-red-400"} ${client.priority.toLowerCase() === "high" && "bg-orange-300"} ${client.priority.toLowerCase() === "medium" && "bg-blue-300"} ${client.priority.toLowerCase() === "low" && "bg-gray-300"}`}>
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
                     <Td>{client.priority}</Td>
@@ -148,7 +148,7 @@ const handleMoreInfo = (client) => {
                   </Tr>
                 ))
               : clients.map((client, index) => (
-                  <Tr key={client._id}>
+                  <Tr key={client._id} className={`${client.priority.toLowerCase() === "urgent" && "bg-red-400"} ${client.priority.toLowerCase() === "high" && "bg-orange-300"} ${client.priority.toLowerCase() === "medium" && "bg-blue-300"} ${client.priority.toLowerCase() === "low" && "bg-gray-300"}`}>
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
                     <Td>{client.priority}</Td>

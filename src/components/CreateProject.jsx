@@ -35,37 +35,37 @@ const CreateProject = () => {
   });
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
-   const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState([]);
 
-   useEffect(() => {
-     axios
-       .get(
-         "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
-       )
-       .then((response) => {
-         setTags(response.data);
-       })
-       .catch((error) => {
-         console.error("Error fetching clients:", error);
-       });
+  useEffect(() => {
+    axios
+      .get(
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllTags"
+      )
+      .then((response) => {
+        setTags(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching clients:", error);
+      });
 
-     axios
-       .get(
-         "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
-       )
-       .then((response) => {
-         setClients(response.data);
-       })
-       .catch((error) => {
-         console.error("Error fetching clients:", error);
-       });
+    axios
+      .get(
+        "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllClients"
+      )
+      .then((response) => {
+        setClients(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching clients:", error);
+      });
 
-     fetch(
-       "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
-     )
-       .then((response) => response.json())
-       .then((data) => setEmployees(data));
-   }, []);
+    fetch(
+      "https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllEmployees"
+    )
+      .then((response) => response.json())
+      .then((data) => setEmployees(data));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,47 +77,47 @@ const CreateProject = () => {
   const handleEndDateChange = (date) => {
     setProjectData({ ...projectData, endDate: date });
   };
-   const handleClientChange = (e) => {
-     const clientId = e.target.value;
-     setProjectData({ ...projectData, client_id: clientId });
-   };
+  const handleClientChange = (e) => {
+    const clientId = e.target.value;
+    setProjectData({ ...projectData, client_id: clientId });
+  };
 
-const handleTagChange = (e) => {
-  const selectedTags = Array.from(e.target.selectedOptions, (option) => ({
-    id: option.value,
-    tagName: option.label,
-  }));
-  setProjectData({
-    ...projectData,
-    tags: [...projectData.tags, ...selectedTags],
-  });
-};
-const removeTagById = (tagToRemove) => {
-  setProjectData({
-    ...projectData,
-    tags: projectData.tags.filter((tag) => tag !== tagToRemove),
-  });
-};
+  const handleTagChange = (e) => {
+    const selectedTags = Array.from(e.target.selectedOptions, (option) => ({
+      id: option.value,
+      tagName: option.label,
+    }));
+    setProjectData({
+      ...projectData,
+      tags: [...projectData.tags, ...selectedTags],
+    });
+  };
+  const removeTagById = (tagToRemove) => {
+    setProjectData({
+      ...projectData,
+      tags: projectData.tags.filter((tag) => tag !== tagToRemove),
+    });
+  };
 
-const handleEmployeeChange = (e) => {
-  const selectedEmployees = Array.from(e.target.selectedOptions, (option) => ({
-    id: option.value,
-    employeeName: option.label,
-  }));
-  setProjectData({
-    ...projectData,
-    employees: [...projectData.employees, ...selectedEmployees],
-  });
-};
+  const handleEmployeeChange = (e) => {
+    const selectedEmployees = Array.from(e.target.selectedOptions, (option) => ({
+      id: option.value,
+      employeeName: option.label,
+    }));
+    setProjectData({
+      ...projectData,
+      employees: [...projectData.employees, ...selectedEmployees],
+    });
+  };
 
-const removeEmployeeById = (employeeIdToRemove) => {
-  setProjectData({
-    ...projectData,
-    employees: projectData.employees.filter(
-      (employeeId) => employeeId !== employeeIdToRemove
-    ),
-  });
-};
+  const removeEmployeeById = (employeeIdToRemove) => {
+    setProjectData({
+      ...projectData,
+      employees: projectData.employees.filter(
+        (employeeId) => employeeId !== employeeIdToRemove
+      ),
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -151,23 +151,16 @@ const removeEmployeeById = (employeeIdToRemove) => {
     <>
       <ToastContainer />
       <Box
-        maxW="xl"
         mx="auto"
         borderWidth="1px"
         borderRadius="lg"
         p="4"
         boxShadow="lg"
-        mt="4"
+        m="4"
       >
+        <h1 className="text-2xl font-semibold">Add Project</h1>
+        <p className="font-light mb-4">Fill the below form to add a new project</p>
         <form onSubmit={handleSubmit}>
-          <Text
-            textColor="black"
-            fontSize="3xl"
-            fontWeight="extrabold"
-            textAlign="center"
-          >
-            Add Project
-          </Text>
           <VStack spacing={4} align="stretch">
             <FormControl id="projectName" isRequired>
               <FormLabel>Project Name</FormLabel>
