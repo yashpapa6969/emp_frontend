@@ -14,6 +14,7 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
+import { Empty } from "antd";
 
 const CreateProjectButton = ({ onOpen }) => {
   return (
@@ -74,7 +75,11 @@ const GetAllProject = () => {
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
         <CreateProjectButton onOpen={onOpen} />
         {projects.length === 0 ? (
-          <p className="text-red-500 text-lg">No Projects Assigned</p>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Projects Assigned
+            </span>
+          } />
         ) : (
           <TableContainer
             searchText={searchText}
@@ -86,9 +91,9 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold">Progress</Th>
-                <Th fontWeight="bold">Billing Type</Th>
-                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Progress</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Billing Type</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -98,9 +103,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td>{project.progress}</Td>
-                      <Td>{project.billingType}</Td>
-                      <Td>{project.status}</Td>
+                      <Td className="md:table-cell hidden">{project.progress}</Td>
+                      <Td className="md:table-cell hidden">{project.billingType}</Td>
+                      <Td className="md:table-cell hidden">{project.status}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -115,9 +120,9 @@ const GetAllProject = () => {
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
                       <Td>{project.projectName}</Td>
-                      <Td>{project.progress}</Td>
-                      <Td>{project.billingType}</Td>
-                      <Td>{project.status}</Td>
+                      <Td className="md:table-cell hidden">{project.progress}</Td>
+                      <Td className="md:table-cell hidden">{project.billingType}</Td>
+                      <Td className="md:table-cell hidden">{project.status}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"

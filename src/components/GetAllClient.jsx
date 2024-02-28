@@ -20,6 +20,7 @@ import CreateClientB from "./CreateClientB";
 import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
+import { Empty } from "antd";
 
 const CreateClientButton = ({ onOpen }) => {
   return (
@@ -79,6 +80,15 @@ const GetAllClient = () => {
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Client Information</h1>
         <CreateClientButton onOpen={onOpen} />
+
+        {clients.length === 0 && (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Clients Available
+            </span>
+          } />
+        )}
+
         <TableContainer
           formFor="client"
           searchText={searchText}
@@ -90,9 +100,9 @@ const GetAllClient = () => {
             <Tr>
               <Th fontWeight="bold">S. No.</Th>
               <Th fontWeight="bold">Client Name</Th>
-              <Th fontWeight="bold">Brand Name</Th>
-              <Th fontWeight="bold">Phone No.</Th>
-              <Th fontWeight="bold">Enqury Date</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Phone No.</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Enqury Date</Th>
               <Th fontWeight="bold">Action</Th>
             </Tr>
           </Thead>
@@ -102,9 +112,9 @@ const GetAllClient = () => {
                   <Tr key={client._id}>
                     <Td>{index + 1}</Td>
                     <Td>{client.clientName}</Td>
-                    <Td>{client.brandName}</Td>
-                    <Td>{client.phone1}</Td>
-                    <Td>{client.enquiryDate}</Td>
+                    <Td className="md:table-cell hidden">{client.brandName}</Td>
+                    <Td className="md:table-cell hidden">{client.phone1}</Td>
+                    <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
                     <Td>
                       <Button
                         colorScheme="purple"
@@ -119,9 +129,9 @@ const GetAllClient = () => {
                   <Tr key={client._id}>
                     <Td>{index + 1}</Td>
                     <Td>{client.clientName}</Td>
-                    <Td>{client.brandName}</Td>
-                    <Td>{client.phone1}</Td>
-                    <Td>{client.enquiryDate}</Td>
+                    <Td className="md:table-cell hidden">{client.brandName}</Td>
+                    <Td className="md:table-cell hidden">{client.phone1}</Td>
+                    <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
                     <Td>
                       <Button
                         colorScheme="purple"

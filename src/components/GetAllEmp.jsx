@@ -6,20 +6,14 @@ import {
   Th,
   Td,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   useDisclosure,
   Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
-import CreateEmpB from "./CreateEmpB";
 import { GoPlus } from "react-icons/go";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
+import { Empty } from "antd";
 
 const CreateEmployeeButton = ({ onOpen }) => {
   return (
@@ -80,7 +74,11 @@ const GetAllEmp = () => {
         <h1 className="text-4xl font-bold mb-4">Employee Information</h1>
         <CreateEmployeeButton onOpen={onOpen} />
         {employee.length === 0 ? (
-          <p className="text-red-500 text-lg">No Employee data</p>
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Employee Data
+            </span>
+          } />
         ) : (
           <TableContainer
             searchText={searchText}
@@ -92,9 +90,9 @@ const GetAllEmp = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Name</Th>
-                <Th fontWeight="bold">Position</Th>
-                <Th fontWeight="bold">Department</Th>
-                <Th fontWeight="bold">Joining Date</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Position</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Department</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Joining Date</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -104,9 +102,9 @@ const GetAllEmp = () => {
                     <Tr key={emp._id}>
                       <Td>{index + 1}</Td>
                       <Td>{emp.name}</Td>
-                      <Td>{emp.position}</Td>
-                      <Td>{emp.department}</Td>
-                      <Td>{emp.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">{emp.position}</Td>
+                      <Td className="md:table-cell hidden">{emp.department}</Td>
+                      <Td className="md:table-cell hidden">{emp.joiningDate}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -121,9 +119,9 @@ const GetAllEmp = () => {
                     <Tr key={emp._id}>
                       <Td>{index + 1}</Td>
                       <Td>{emp.name}</Td>
-                      <Td>{emp.position}</Td>
-                      <Td>{emp.department}</Td>
-                      <Td>{emp.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">{emp.position}</Td>
+                      <Td className="md:table-cell hidden">{emp.department}</Td>
+                      <Td className="md:table-cell hidden">{emp.joiningDate}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"

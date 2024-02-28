@@ -17,6 +17,7 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
+import { Empty } from "antd";
 
 const GetAllTask = () => {
   const [clients, setClients] = useState([]);
@@ -83,6 +84,15 @@ const GetAllTask = () => {
             <GoPlus /> Add a Task
           </Button>
         </Link>
+
+        {clients.length === 0 && (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+            <span>
+              No Tasks Assigned
+            </span>
+          } />
+        )}
+
         <TableContainer
           formFor="brand"
           searchText={searchText}
@@ -94,9 +104,9 @@ const GetAllTask = () => {
             <Tr>
               <Th fontWeight="bold">S. No.</Th>
               <Th fontWeight="bold">Brand Name</Th>
-              <Th fontWeight="bold">Priority</Th>
-              <Th fontWeight="bold">Status</Th>
-              <Th fontWeight="bold">Update Status</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Priority</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">Update Status</Th>
               <Th fontWeight="bold">Action</Th>
             </Tr>
           </Thead>
@@ -119,9 +129,9 @@ const GetAllTask = () => {
                   >
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
-                    <Td>{client.priority}</Td>
-                    <Td>{client.status}</Td>
-                    <Td>
+                    <Td className="md:table-cell hidden">{client.priority}</Td>
+                    <Td className="md:table-cell hidden">{client.status}</Td>
+                    <Td className="md:table-cell hidden">
                       {client.status === 0 && "Not Started"}
                       {client.status === 1 && "Working"}
                       {client.status === 2 && "Awaited Feedback"}
@@ -189,9 +199,9 @@ const GetAllTask = () => {
                   >
                     <Td>{index + 1}</Td>
                     <Td>{client.brandName}</Td>
-                    <Td>{client.priority}</Td>
-                    <Td>{client.status}</Td>
-                    <Td>
+                    <Td className="md:table-cell hidden">{client.priority}</Td>
+                    <Td className="md:table-cell hidden">{client.status}</Td>
+                    <Td className="md:table-cell hidden">
                       {client.status === 0 && "Not Started"}
                       {client.status === 1 && "Working"}
                       {client.status === 2 && "Awaited Feedback"}

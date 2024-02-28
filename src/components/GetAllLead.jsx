@@ -17,7 +17,7 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
-import InfoModalByID from "./common/InfoModalByID";
+import { Empty } from "antd";
 
 const GetAllLead = () => {
   const [clients, setClients] = useState([]);
@@ -85,7 +85,11 @@ const GetAllLead = () => {
           </Button>
         </Link>
         {clients.length === 0 ? (
-          <p className="text-red-500 text-lg">No Lead Available</p>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+              <span>
+                No Leads Available
+              </span>
+            } />
         ) : (
           <TableContainer
             searchText={searchText}
@@ -97,9 +101,9 @@ const GetAllLead = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Enquiry Date</Th>
-                <Th fontWeight="bold">Source</Th>
-                <Th fontWeight="bold">Brand Name</Th>
-                <Th fontWeight="bold">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Source</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -109,9 +113,9 @@ const GetAllLead = () => {
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
                       <Td>{client.enquiryDate}</Td>
-                      <Td>{client.source}</Td>
-                      <Td>{client.brandName}</Td>
-                      <Td>
+                      <Td className="md:table-cell hidden">{client.source}</Td>
+                      <Td className="md:table-cell hidden">{client.brandName}</Td>
+                      <Td className="md:table-cell hidden">
                         {client.status === 0 && "Raw"}
                         {client.status === 1 && "In-Progress"}
                         {client.status === 2 && "Converted"}
@@ -166,9 +170,9 @@ const GetAllLead = () => {
                     <Tr key={client._id}>
                       <Td>{index + 1}</Td>
                       <Td>{client.enquiryDate}</Td>
-                      <Td>{client.source}</Td>
-                      <Td>{client.brandName}</Td>
-                      <Td>
+                      <Td className="md:table-cell hidden">{client.source}</Td>
+                      <Td className="md:table-cell hidden">{client.brandName}</Td>
+                      <Td className="md:table-cell hidden">
                         {client.status === 0 && "Raw"}
                         {client.status === 1 && "In-Progress"}
                         {client.status === 2 && "Converted"}
