@@ -128,9 +128,10 @@ const Lead = () => {
         const formData = new FormData();
 
         Object.entries(projectData).forEach(([key, value]) => {
+          if (value !== "") {
             formData.append(key, value);
+          }
         });
-
         axios
             .post(`${import.meta.env.VITE_API_BASE}/api/admin/createLead`, formData, {
                 headers: {
@@ -152,425 +153,438 @@ const Lead = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <FormControl id="enquiryDate" isRequired>
-                <FormLabel>Enquiry Date</FormLabel>
-                <MyDatePicker
-                    selected={projectData.enquiryDate}
-                    onChange={(date) =>
-                        setProjectData({ ...projectData, enquiryDate: date })
-                    }
-                    defaultValue={moment()}
-                    format={"DD/MM/YYYY"}
-                />
-            </FormControl>
-            <div className="hidden md:block">
-                <Tabs>
-                    <TabList>
-                        <Tab>Personal Information</Tab>
-                        <Tab>Address Information</Tab>
-                        <Tab>Billing Information</Tab>
-                        <Tab>Additional Information</Tab>
-                        <Tab>Files Information</Tab>
-                    </TabList>
+      <form onSubmit={handleSubmit}>
+        <FormControl id="enquiryDate" isRequired>
+          <FormLabel>Enquiry Date</FormLabel>
+          <MyDatePicker
+            selected={projectData.enquiryDate}
+            onChange={(date) =>
+              setProjectData({ ...projectData, enquiryDate: date })
+            }
+            defaultValue={moment()}
+            format={"DD/MM/YYYY"}
+          />
+        </FormControl>
+        <div className="hidden md:block">
+          <Tabs>
+            <TabList>
+              <Tab>Personal Information</Tab>
+              <Tab>Address Information</Tab>
+              <Tab>Billing Information</Tab>
+              <Tab>Additional Information</Tab>
+              <Tab>Files Information</Tab>
+            </TabList>
 
-                    <TabPanels>
-                        <TabPanel>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="title" isRequired>
-                                    <FormLabel>Title</FormLabel>
-                                    <Input name="title" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="clientName" isRequired>
-                                    <FormLabel>Client Name</FormLabel>
-                                    <Input name="clientName" onChange={handleChange} isRequired />
-                                </FormControl>
-                                <FormControl id="gender" isRequired>
-                                    <FormLabel>Gender</FormLabel>
-                                    <Select
-                                        name="gender"
-                                        onChange={handleChange}
-                                        placeholder="Select gender"
-                                    >
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </Select>
-                                </FormControl>
-                                <FormControl id="tags" isRequired>
-                                    <FormLabel>Source</FormLabel>
-                                    <Flex>
-                                        <SelectSource selectSourceValue={selectSourceValue} setSelectSourceValue={setSelectSourceValue} />
-                                    </Flex>
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="phone1" isRequired>
-                                    <FormLabel>Phone Number 1</FormLabel>
-                                    <Input name="phone1" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="phone2">
-                                    <FormLabel>Phone Number 2</FormLabel>
-                                    <Input name="phone2" onChange={handleChange} />
-                                </FormControl>
-                            </div>
+            <TabPanels>
+              <TabPanel>
+                <div className="flex gap-3 mb-3">
+                  <FormControl id="title" isRequired>
+                    <FormLabel>Title</FormLabel>
+                    <Select
+                      name="title"
+                      onChange={handleChange}
+                      placeholder="Select Title"
+                    >
+                      <option value="Mr.">Mr.</option>
+                      <option value="Mrs.">Mrs.</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl id="clientName" isRequired>
+                    <FormLabel>Client Name</FormLabel>
+                    <Input
+                      name="clientName"
+                      onChange={handleChange}
+                      isRequired
+                    />
+                  </FormControl>
+                  <FormControl id="gender" isRequired>
+                    <FormLabel>Gender</FormLabel>
+                    <Select
+                      name="gender"
+                      onChange={handleChange}
+                      placeholder="Select gender"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl id="tags" isRequired>
+                    <FormLabel>Source</FormLabel>
+                    <Flex>
+                      <SelectSource
+                        selectSourceValue={selectSourceValue}
+                        setSelectSourceValue={setSelectSourceValue}
+                      />
+                    </Flex>
+                  </FormControl>
+                </div>
+                <div className="flex gap-3 mb-3">
+                  <FormControl id="phone1" isRequired>
+                    <FormLabel>Phone Number 1</FormLabel>
+                    <Input name="phone1" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="phone2">
+                    <FormLabel>Phone Number 2</FormLabel>
+                    <Input name="phone2" onChange={handleChange} />
+                  </FormControl>
+                </div>
 
-                            <div className="flex gap-3">
-                                <FormControl id="email1">
-                                    <FormLabel>Email 1</FormLabel>
-                                    <Input name="email1" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="email2">
-                                    <FormLabel>Email 2</FormLabel>
-                                    <Input name="email2" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="website">
-                                    <FormLabel>Website</FormLabel>
-                                    <Input name="website" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="flex gap-3 mb-3 flex-col md:flex-row">
-                                <FormControl id="country">
-                                    <FormLabel>Country</FormLabel>
-                                    <CountryDropdown
-                                        name="country"
-                                        value={selectedCountry}
-                                        onChange={(e) =>
-                                            handleSelectChange(setSelectedCountry, "country", e)
-                                        }
-                                        className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
-                                    />
-                                </FormControl>
-                                <FormControl id="state">
-                                    <FormLabel>State</FormLabel>
-                                    <RegionDropdown
-                                        country={selectedCountry}
-                                        name="state"
-                                        value={selectedState}
-                                        onChange={(e) =>
-                                            handleSelectChange(setSelectedState, "state", e)
-                                        }
-                                        className="border-[0.375px] rounded-md h-[2rem] max-w-24"
-                                    />
-                                </FormControl>
-                                <FormControl id="city">
-                                    <FormLabel>City</FormLabel>
-                                    <Input name="city" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="pincode" isRequired>
-                                    <FormLabel>Pincode</FormLabel>
-                                    <Input name="pincode" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <FormControl id="businessAddress" className="w-1/2">
-                                <FormLabel>Business Address</FormLabel>
-                                <Input
-                                    name="businessAddress"
-                                    onChange={handleChange}
-                                    className="h-32"
-                                />
-                            </FormControl>
-                        </TabPanel>
+                <div className="flex gap-3">
+                  <FormControl id="email1">
+                    <FormLabel>Email 1</FormLabel>
+                    <Input name="email1" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="email2">
+                    <FormLabel>Email 2</FormLabel>
+                    <Input name="email2" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="website">
+                    <FormLabel>Website</FormLabel>
+                    <Input name="website" onChange={handleChange} />
+                  </FormControl>
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="flex gap-3 mb-3 flex-col md:flex-row">
+                  <FormControl id="country">
+                    <FormLabel>Country</FormLabel>
+                    <CountryDropdown
+                      name="country"
+                      value={selectedCountry}
+                      onChange={(e) =>
+                        handleSelectChange(setSelectedCountry, "country", e)
+                      }
+                      className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
+                    />
+                  </FormControl>
+                  <FormControl id="state">
+                    <FormLabel>State</FormLabel>
+                    <RegionDropdown
+                      country={selectedCountry}
+                      name="state"
+                      value={selectedState}
+                      onChange={(e) =>
+                        handleSelectChange(setSelectedState, "state", e)
+                      }
+                      className="border-[0.375px] rounded-md h-[2rem] max-w-24"
+                    />
+                  </FormControl>
+                  <FormControl id="city">
+                    <FormLabel>City</FormLabel>
+                    <Input name="city" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="pincode" isRequired>
+                    <FormLabel>Pincode</FormLabel>
+                    <Input name="pincode" onChange={handleChange} />
+                  </FormControl>
+                </div>
+                <FormControl id="businessAddress" className="w-1/2">
+                  <FormLabel>Business Address</FormLabel>
+                  <Input
+                    name="businessAddress"
+                    onChange={handleChange}
+                    className="h-32"
+                  />
+                </FormControl>
+              </TabPanel>
 
-                        <TabPanel>
-                            <div className="flex gap-3">
-                                <FormControl id="brandName" mb={3} isRequired>
-                                    <FormLabel>Brand Name</FormLabel>
-                                    <Input name="brandName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="companyName" mb={3} isRequired>
-                                    <FormLabel>Company Name</FormLabel>
-                                    <Input name="companyName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="gst" mb={3}>
-                                    <FormLabel>GST</FormLabel>
-                                    <Input name="gst" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <FormControl id="billingAddress" isRequired className="w-1/2">
-                                <FormLabel>Billing Address</FormLabel>
-                                <Input
-                                    name="billingAddress"
-                                    onChange={handleChange}
-                                    className="h-32"
-                                />
-                            </FormControl>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="flex flex-col gap-3">
-                                <FormControl id="requirement" className="w-1/2">
-                                    <FormLabel>Requirement</FormLabel>
-                                    <Input
-                                        name="requirement"
-                                        onChange={handleChange}
-                                        className="h-16"
-                                    />
-                                </FormControl>
-                                <FormControl id="additionalInformation" className="w-1/2">
-                                    <FormLabel>Additional Information</FormLabel>
-                                    <Input
-                                        name="additionalInformation"
-                                        onChange={handleChange}
-                                        className="h-16"
-                                    />
-                                </FormControl>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="flex gap-3">
-                                {/* Display single file */}
-                                {projectData.singleFile && (
-                                    <div>
-                                        <p>Single File: {projectData.singleFile.name}</p>
-                                        <Button onClick={handleDeleteSingleFile}>Delete</Button>
-                                    </div>
-                                )}
-                                <FormControl mb="4">
-                                    <FormLabel>Single File</FormLabel>
-                                    <Input type="file" onChange={handleSingleFileChange} />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3">
-                                {/* Display multiple files */}
-                                {projectData.multipleFiles.map((file, index) => (
-                                    <div key={index}>
-                                        <p>
-                                            File {index + 1}: {file.name}
-                                        </p>
-                                        <Button onClick={() => handleDeleteMultipleFile(index)}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                ))}
-                                <FormControl mb="4">
-                                    <FormLabel>Multiple Files</FormLabel>
-                                    <Input
-                                        type="file"
-                                        multiple
-                                        onChange={handleMultipleFilesChange}
-                                    />
-                                </FormControl>
-                            </div>
-                            <Button type="submit" colorScheme="purple" className="mt-5">
-                                Create Lead
-                            </Button>
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-            </div>
+              <TabPanel>
+                <div className="flex gap-3">
+                  <FormControl id="brandName" mb={3} isRequired>
+                    <FormLabel>Brand Name</FormLabel>
+                    <Input name="brandName" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="companyName" mb={3} isRequired>
+                    <FormLabel>Company Name</FormLabel>
+                    <Input name="companyName" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="gst" mb={3}>
+                    <FormLabel>GST</FormLabel>
+                    <Input name="gst" onChange={handleChange} />
+                  </FormControl>
+                </div>
+                <FormControl id="billingAddress" isRequired className="w-1/2">
+                  <FormLabel>Billing Address</FormLabel>
+                  <Input
+                    name="billingAddress"
+                    onChange={handleChange}
+                    className="h-32"
+                  />
+                </FormControl>
+              </TabPanel>
+              <TabPanel>
+                <div className="flex flex-col gap-3">
+                  <FormControl id="requirement" className="w-1/2">
+                    <FormLabel>Requirement</FormLabel>
+                    <Input
+                      name="requirement"
+                      onChange={handleChange}
+                      className="h-16"
+                    />
+                  </FormControl>
+                  <FormControl id="additionalInformation" className="w-1/2">
+                    <FormLabel>Additional Information</FormLabel>
+                    <Input
+                      name="additionalInformation"
+                      onChange={handleChange}
+                      className="h-16"
+                    />
+                  </FormControl>
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="flex gap-3">
+                  {/* Display single file */}
+                  {projectData.singleFile && (
+                    <div>
+                      <p>Single File: {projectData.singleFile.name}</p>
+                      <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                    </div>
+                  )}
+                  <FormControl mb="4">
+                    <FormLabel>Single File</FormLabel>
+                    <Input type="file" onChange={handleSingleFileChange} />
+                  </FormControl>
+                </div>
+                <div className="flex gap-3">
+                  {/* Display multiple files */}
+                  {projectData.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
+                  <FormControl mb="4">
+                    <FormLabel>Multiple Files</FormLabel>
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={handleMultipleFilesChange}
+                    />
+                  </FormControl>
+                </div>
+                <Button type="submit" colorScheme="purple" className="mt-5">
+                  Create Lead
+                </Button>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </div>
 
-            <div className="block md:hidden">
-                <Tabs>
-                    <TabList>
-                        <Tab>Personal Information</Tab>
-                        <Tab>Other Information</Tab>
-                    </TabList>
+        <div className="block md:hidden">
+          <Tabs>
+            <TabList>
+              <Tab>Personal Information</Tab>
+              <Tab>Other Information</Tab>
+            </TabList>
 
-                    <TabPanels>
-                        <TabPanel>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="clientName" isRequired>
-                                    <FormLabel>Client Name</FormLabel>
-                                    <Input name="clientName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="phone1" isRequired>
-                                    <FormLabel>Phone Number 1</FormLabel>
-                                    <Input name="phone1" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="phone2" isRequired>
-                                    <FormLabel>Phone Number 2</FormLabel>
-                                    <Input name="phone2" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="tags" isRequired>
-                                    <FormLabel>Source</FormLabel>
-                                    <Select
-                                        onChange={handleTagChange}
-                                        size="md"
-                                        placeholder="Select Source"
-                                        isRequired
-                                    >
-                                        {tags.map((tag) => (
-                                            <option key={tag._id} value={tag.source_tag_id}>
+            <TabPanels>
+              <TabPanel>
+                <div className="flex gap-3 mb-3">
+                  <FormControl id="clientName" isRequired>
+                    <FormLabel>Client Name</FormLabel>
+                    <Input name="clientName" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="phone1" isRequired>
+                    <FormLabel>Phone Number 1</FormLabel>
+                    <Input name="phone1" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="phone2" isRequired>
+                    <FormLabel>Phone Number 2</FormLabel>
+                    <Input name="phone2" onChange={handleChange} />
+                  </FormControl>
+                </div>
+                <div className="flex gap-3 mb-3">
+                  <FormControl id="tags" isRequired>
+                    <FormLabel>Source</FormLabel>
+                    <Select
+                      onChange={handleTagChange}
+                      size="md"
+                      placeholder="Select Source"
+                      isRequired
+                    >
+                      {tags.map((tag) => (
+                        <option key={tag._id} value={tag.source_tag_id}>
+                          {tag.sourceTagName}
+                        </option>
+                      ))}
+                    </Select>
 
-                                                {tag.sourceTagName}
-                                            </option>
-                                        ))}
-                                    </Select>
+                    {projectData.source.map((tag) => (
+                      <Tag
+                        key={tag._id}
+                        size="md"
+                        borderRadius="full"
+                        variant="solid"
+                        colorScheme="blue"
+                      >
+                        <TagLabel>{tag}</TagLabel>
+                        <TagCloseButton onClick={() => removeTagById(tag)} />
+                      </Tag>
+                    ))}
+                  </FormControl>
+                  <FormControl id="title">
+                    <FormLabel>Title</FormLabel>
+                    <Input name="title" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="gender">
+                    <FormLabel>Gender</FormLabel>
+                    <Select
+                      name="gender"
+                      onChange={handleChange}
+                      placeholder="Select gender"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                    </Select>
+                  </FormControl>
+                </div>
 
-                                    {projectData.source.map((tag) => (
-                                        <Tag
-                                            key={tag._id}
-                                            size="md"
-                                            borderRadius="full"
-                                            variant="solid"
-                                            colorScheme="blue"
-                                        >
-                                            <TagLabel>{tag}</TagLabel>
-                                            <TagCloseButton onClick={() => removeTagById(tag)} />
-                                        </Tag>
-                                    ))}
-                                </FormControl>
-                                <FormControl id="title">
-                                    <FormLabel>Title</FormLabel>
-                                    <Input name="title" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="gender">
-                                    <FormLabel>Gender</FormLabel>
-                                    <Select
-                                        name="gender"
-                                        onChange={handleChange}
-                                        placeholder="Select gender"
-                                    >
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </Select>
-                                </FormControl>
-                            </div>
-
-                            <div className="flex gap-3">
-                                <FormControl id="email1">
-                                    <FormLabel>Email 1</FormLabel>
-                                    <Input name="email1" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="email2">
-                                    <FormLabel>Email 2</FormLabel>
-                                    <Input name="email2" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="website">
-                                    <FormLabel>Website</FormLabel>
-                                    <Input name="website" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                        </TabPanel>
-                        <TabPanel>
-                            <div className="flex gap-3 mb-3 flex-col md:flex-row">
-                                <FormControl id="country">
-                                    <FormLabel>Country</FormLabel>
-                                    <CountryDropdown
-                                        name="country"
-                                        value={selectedCountry}
-                                        onChange={(e) =>
-                                            handleSelectChange(setSelectedCountry, "country", e)
-                                        }
-                                        className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
-                                    />
-                                </FormControl>
-                                <FormControl id="state">
-                                    <FormLabel>State</FormLabel>
-                                    <RegionDropdown
-                                        country={selectedCountry}
-                                        name="state"
-                                        value={selectedState}
-                                        onChange={(e) =>
-                                            handleSelectChange(setSelectedState, "state", e)
-                                        }
-                                        className="border-[0.375px] rounded-md h-[2rem] max-w-24"
-                                    />
-                                </FormControl>
-                                <FormControl id="city">
-                                    <FormLabel>City</FormLabel>
-                                    <Input name="city" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="pincode" isRequired>
-                                    <FormLabel>Pincode</FormLabel>
-                                    <Input name="pincode" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <FormControl id="businessAddress" className="w-1/2">
-                                <FormLabel>Business Address</FormLabel>
-                                <Input
-                                    name="businessAddress"
-                                    onChange={handleChange}
-                                    className="h-32"
-                                />
-                            </FormControl>
-                            <div className="flex gap-3">
-                                <FormControl id="brandName" mb={3} isRequired>
-                                    <FormLabel>Brand Name</FormLabel>
-                                    <Input name="brandName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="companyName" mb={3} isRequired>
-                                    <FormLabel>Company Name</FormLabel>
-                                    <Input name="companyName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="gst" mb={3}>
-                                    <FormLabel>GST</FormLabel>
-                                    <Input name="gst" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <FormControl id="billingAddress" isRequired className="w-1/2">
-                                <FormLabel>Billing Address</FormLabel>
-                                <Input
-                                    name="billingAddress"
-                                    onChange={handleChange}
-                                    className="h-32"
-                                />
-                            </FormControl>
-                            <div className="flex flex-col gap-3">
-                                <FormControl id="requirement" className="w-1/2">
-                                    <FormLabel>Requirement</FormLabel>
-                                    <Input
-                                        name="requirement"
-                                        onChange={handleChange}
-                                        className="h-16"
-                                    />
-                                </FormControl>
-                                <FormControl id="additionalInformation" className="w-1/2">
-                                    <FormLabel>Additional Information</FormLabel>
-                                    <Input
-                                        name="additionalInformation"
-                                        onChange={handleChange}
-                                        className="h-16"
-                                    />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3">
-                                {/* Display single file */}
-                                {projectData.singleFile && (
-                                    <div>
-                                        <p>Single File: {projectData.singleFile.name}</p>
-                                        <Button onClick={handleDeleteSingleFile}>Delete</Button>
-                                    </div>
-                                )}
-                                <FormControl mb="4">
-                                    <FormLabel>Single File</FormLabel>
-                                    <Input type="file" onChange={handleSingleFileChange} />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3">
-                                {/* Display multiple files */}
-                                {projectData.multipleFiles.map((file, index) => (
-                                    <div key={index}>
-                                        <p>
-                                            File {index + 1}: {file.name}
-                                        </p>
-                                        <Button onClick={() => handleDeleteMultipleFile(index)}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                ))}
-                                <FormControl mb="4">
-                                    <FormLabel>Multiple Files</FormLabel>
-                                    <Input
-                                        type="file"
-                                        multiple
-                                        onChange={handleMultipleFilesChange}
-                                    />
-                                </FormControl>
-                            </div>
-                            <Button type="submit" colorScheme="purple" className="mt-5">
-                                Create Lead
-                            </Button>
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-            </div>
-        </form>
+                <div className="flex gap-3">
+                  <FormControl id="email1">
+                    <FormLabel>Email 1</FormLabel>
+                    <Input name="email1" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="email2">
+                    <FormLabel>Email 2</FormLabel>
+                    <Input name="email2" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="website">
+                    <FormLabel>Website</FormLabel>
+                    <Input name="website" onChange={handleChange} />
+                  </FormControl>
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="flex gap-3 mb-3 flex-col md:flex-row">
+                  <FormControl id="country">
+                    <FormLabel>Country</FormLabel>
+                    <CountryDropdown
+                      name="country"
+                      value={selectedCountry}
+                      onChange={(e) =>
+                        handleSelectChange(setSelectedCountry, "country", e)
+                      }
+                      className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
+                    />
+                  </FormControl>
+                  <FormControl id="state">
+                    <FormLabel>State</FormLabel>
+                    <RegionDropdown
+                      country={selectedCountry}
+                      name="state"
+                      value={selectedState}
+                      onChange={(e) =>
+                        handleSelectChange(setSelectedState, "state", e)
+                      }
+                      className="border-[0.375px] rounded-md h-[2rem] max-w-24"
+                    />
+                  </FormControl>
+                  <FormControl id="city">
+                    <FormLabel>City</FormLabel>
+                    <Input name="city" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="pincode" isRequired>
+                    <FormLabel>Pincode</FormLabel>
+                    <Input name="pincode" onChange={handleChange} />
+                  </FormControl>
+                </div>
+                <FormControl id="businessAddress" className="w-1/2">
+                  <FormLabel>Business Address</FormLabel>
+                  <Input
+                    name="businessAddress"
+                    onChange={handleChange}
+                    className="h-32"
+                  />
+                </FormControl>
+                <div className="flex gap-3">
+                  <FormControl id="brandName" mb={3} isRequired>
+                    <FormLabel>Brand Name</FormLabel>
+                    <Input name="brandName" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="companyName" mb={3} isRequired>
+                    <FormLabel>Company Name</FormLabel>
+                    <Input name="companyName" onChange={handleChange} />
+                  </FormControl>
+                  <FormControl id="gst" mb={3}>
+                    <FormLabel>GST</FormLabel>
+                    <Input name="gst" onChange={handleChange} />
+                  </FormControl>
+                </div>
+                <FormControl id="billingAddress" isRequired className="w-1/2">
+                  <FormLabel>Billing Address</FormLabel>
+                  <Input
+                    name="billingAddress"
+                    onChange={handleChange}
+                    className="h-32"
+                  />
+                </FormControl>
+                <div className="flex flex-col gap-3">
+                  <FormControl id="requirement" className="w-1/2">
+                    <FormLabel>Requirement</FormLabel>
+                    <Input
+                      name="requirement"
+                      onChange={handleChange}
+                      className="h-16"
+                    />
+                  </FormControl>
+                  <FormControl id="additionalInformation" className="w-1/2">
+                    <FormLabel>Additional Information</FormLabel>
+                    <Input
+                      name="additionalInformation"
+                      onChange={handleChange}
+                      className="h-16"
+                    />
+                  </FormControl>
+                </div>
+                <div className="flex gap-3">
+                  {/* Display single file */}
+                  {projectData.singleFile && (
+                    <div>
+                      <p>Single File: {projectData.singleFile.name}</p>
+                      <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                    </div>
+                  )}
+                  <FormControl mb="4">
+                    <FormLabel>Single File</FormLabel>
+                    <Input type="file" onChange={handleSingleFileChange} />
+                  </FormControl>
+                </div>
+                <div className="flex gap-3">
+                  {/* Display multiple files */}
+                  {projectData.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
+                  <FormControl mb="4">
+                    <FormLabel>Multiple Files</FormLabel>
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={handleMultipleFilesChange}
+                    />
+                  </FormControl>
+                </div>
+                <Button type="submit" colorScheme="purple" className="mt-5">
+                  Create Lead
+                </Button>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </div>
+      </form>
     );
 };
 

@@ -13,8 +13,7 @@ import {
   TagCloseButton,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import MyDatePicker from "./common/MyDatePicker";
 import axios from "axios";
 
 const CreateProject = () => {
@@ -229,7 +228,7 @@ const CreateProject = () => {
 
             <FormControl mb="4">
               <FormLabel>Start Date</FormLabel>
-              <DatePicker
+              <MyDatePicker
                 selected={projectData.startDate}
                 onChange={handleStartDateChange}
                 format={"DD/MM/YYYY"}
@@ -238,7 +237,7 @@ const CreateProject = () => {
             </FormControl>
             <FormControl mb="4">
               <FormLabel>End Date</FormLabel>
-              <DatePicker
+              <MyDatePicker
                 selected={projectData.deadline}
                 onChange={handleEndDateChange}
                 format={"DD/MM/YYYY"}
