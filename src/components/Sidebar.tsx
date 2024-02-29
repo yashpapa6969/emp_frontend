@@ -30,7 +30,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
     }
 
     return (
-        <div className='h-screen w-[300px] bg-[#1E293B] text-white sticky top-0'>
+        <div className='md:h-screen h-full w-[300px] bg-[#1E293B] text-white md:sticky top-0'>
             <Link to="/home" onClick={handleNavClose} className="w-full h-[70px] bg-[#172032] flex items-center gap-3 p-4 text-lg md:text-2xl">
                 <img src='/logo.png' alt='logo' className='h-6' /> ADSVERSIFY
             </Link>
