@@ -232,7 +232,7 @@ const CreateProject = () => {
               <DatePicker
                 selected={projectData.startDate}
                 onChange={handleStartDateChange}
-                dateFormat="MM/dd/yyyy"
+                format={"DD/MM/YYYY"}
                 placeholderText="Pick Date"
               />
             </FormControl>
@@ -241,7 +241,7 @@ const CreateProject = () => {
               <DatePicker
                 selected={projectData.deadline}
                 onChange={handleEndDateChange}
-                dateFormat="MM/dd/yyyy"
+                format={"DD/MM/YYYY"}
                 placeholderText="Pick Date"
               />
             </FormControl>

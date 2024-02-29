@@ -13,6 +13,7 @@ import { DatePicker, Tag } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
+import MyDatePicker from "../common/MyDatePicker";
 
 const TagRender = ({ label, closable, onClose }) => {
     const onPreventMouseDown = (event) => {
@@ -112,13 +113,13 @@ const Client = () => {
         <form onSubmit={handleSubmit}>
             <FormControl mb="4">
                 <FormLabel>Enquiry Date</FormLabel>
-                <DatePicker
+                <MyDatePicker
                     selected={formData.enquiryDate}
                     onChange={(date) =>
                         setFormData({ ...formData, enquiryDate: date })
                     }
-                    dateFormat="MM/dd/yyyy"
                     defaultValue={moment()}
+                    format={"DD/MM/YYYY"}
                 />
             </FormControl>
             <FormControl id="sources" mb={4}>

@@ -111,7 +111,7 @@ const CreateEmpB = ({ onClose }) => {
             <DatePicker
               selected={formData.dob}
               onChange={handleDateChange}
-              dateFormat="MM/dd/yyyy"
+              format={"DD/MM/YYYY"}
               placeholderText="Add date"
             />
           </FormControl>
@@ -172,7 +172,7 @@ const CreateEmpB = ({ onClose }) => {
             <DatePicker
               selected={formData.joiningDate}
               onChange={handleJoiningDateChange}
-              dateFormat="MM/dd/yyyy"
+              format={"DD/MM/YYYY"}
               placeholderText="Add date"
             />
           </FormControl>
