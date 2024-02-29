@@ -70,6 +70,7 @@ const Lead = () => {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [tags, setTags] = useState([]);
+    const [sources, setSources] = useState([]);
     const [tabsForPhone, setTabsForPhone] = useState(false);
 
     const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
@@ -98,7 +99,7 @@ const Lead = () => {
             .catch((error) => {
                 console.error("Error fetching clients:", error);
             });
-    });
+    }, []);
 
     const handleTagChange = (e) => {
         const selectedTags = Array.from(
@@ -179,15 +180,32 @@ const Lead = () => {
         if (windowWidth <= 560) setTabsForPhone(true);
     }, [])
 
-    const handleAddSource = () => {
-        setSourceAddBtnClick(!sourceAddBtnClick);
+    async function fetchSourceTags() {
         try {
-            axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
-                { sourceTagName: selectSourceValue }
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
+            );
+            setSources(response.data);
         } catch (error) {
-            console.log(error)
+            console.error("Error fetching data:", error);
         }
     }
+
+    useEffect(() => {
+        fetchSourceTags();
+    }, [])
+
+    const handleAddSource = async () => {
+        setSourceAddBtnClick(!sourceAddBtnClick);
+        try {
+            selectSourceValue.map((value) => {
+                axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: value })
+                .then(() => { fetchSourceTags() })
+            });
+        } catch (error) {
+            console.error("Error adding tag:", error);
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -238,12 +256,13 @@ const Lead = () => {
                                             style={{
                                                 width: '100%',
                                             }}
-                                            options={tags.map((item) => ({
+                                            options={sources.map((item) => ({
                                                 label: item.sourceTagName,
                                                 value: item.sourceTagName,
                                             }))}
                                             value={selectSourceValue}
                                             onChange={setSelectSourceValue}
+                                            placeholder="Please select"
                                         />
                                         <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
                                     </Flex>
