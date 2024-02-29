@@ -80,19 +80,20 @@ const Client = () => {
         });
     };
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
-                );
-                setSources(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
+    async function fetchSourceTags() {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
+            );
+            setSources(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-        fetchData();
-    })
+    }
+
+    useEffect(() => {
+        fetchSourceTags();
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -124,21 +125,18 @@ const Client = () => {
     };
 
     const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
-    const handleAddSource = (e) => {
-        e.preventDefault();
+
+    const handleAddSource = async () => {
         setSourceAddBtnClick(!sourceAddBtnClick);
-
-        console.log(selectSourceValue)
-
         try {
             selectSourceValue.map((value) => {
                 axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: value })
             });
-            console.log("Done")
+            fetchSourceTags();
         } catch (error) {
-            console.log(error)
+            console.error("Error adding tag:", error);
         }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit}>
