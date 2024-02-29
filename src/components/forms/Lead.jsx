@@ -233,20 +233,26 @@ const Lead = () => {
                     <TabPanels>
                         <TabPanel>
                             <div className="flex gap-3 mb-3">
+                                <FormControl id="title" isRequired>
+                                    <FormLabel>Title</FormLabel>
+                                    <Input name="title" onChange={handleChange} />
+                                </FormControl>
                                 <FormControl id="clientName" isRequired>
                                     <FormLabel>Client Name</FormLabel>
-                                    <Input name="clientName" onChange={handleChange} />
+                                    <Input name="clientName" onChange={handleChange} isRequired />
                                 </FormControl>
-                                <FormControl id="phone1" isRequired>
-                                    <FormLabel>Phone Number 1</FormLabel>
-                                    <Input name="phone1" onChange={handleChange} />
+                                <FormControl id="gender" isRequired>
+                                    <FormLabel>Gender</FormLabel>
+                                    <Select
+                                        name="gender"
+                                        onChange={handleChange}
+                                        placeholder="Select gender"
+                                    >
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+                                    </Select>
                                 </FormControl>
-                                <FormControl id="phone2">
-                                    <FormLabel>Phone Number 2</FormLabel>
-                                    <Input name="phone2" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3 mb-3">
                                 <FormControl id="tags" isRequired>
                                     <FormLabel>Source</FormLabel>
                                     <Flex>
@@ -267,21 +273,15 @@ const Lead = () => {
                                         <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
                                     </Flex>
                                 </FormControl>
-                                <FormControl id="title">
-                                    <FormLabel>Title</FormLabel>
-                                    <Input name="title" onChange={handleChange} />
+                            </div>
+                            <div className="flex gap-3 mb-3">
+                                <FormControl id="phone1" isRequired>
+                                    <FormLabel>Phone Number 1</FormLabel>
+                                    <Input name="phone1" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="gender">
-                                    <FormLabel>Gender</FormLabel>
-                                    <Select
-                                        name="gender"
-                                        onChange={handleChange}
-                                        placeholder="Select gender"
-                                    >
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </Select>
+                                <FormControl id="phone2">
+                                    <FormLabel>Phone Number 2</FormLabel>
+                                    <Input name="phone2" onChange={handleChange} />
                                 </FormControl>
                             </div>
 
@@ -449,7 +449,7 @@ const Lead = () => {
                                     <FormLabel>Phone Number 1</FormLabel>
                                     <Input name="phone1" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="phone2">
+                                <FormControl id="phone2" isRequired>
                                     <FormLabel>Phone Number 2</FormLabel>
                                     <Input name="phone2" onChange={handleChange} />
                                 </FormControl>
