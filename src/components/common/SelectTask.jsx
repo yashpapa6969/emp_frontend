@@ -23,7 +23,7 @@ const TagRender = ({ label, closable, onClose }) => {
     );
 };
 
-const SelectSource = ({ selectSourceValue, setSelectSourceValue }) => {
+const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
     const toast = useToast();
     const [items, setItems] = useState([]);
     const [name, setName] = useState('');
@@ -110,4 +110,4 @@ const SelectSource = ({ selectSourceValue, setSelectSourceValue }) => {
         />
     );
 };
-export default SelectSource;
+export default SelectTask;
