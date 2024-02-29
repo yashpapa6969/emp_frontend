@@ -54,7 +54,7 @@ const SelectTag = ({ selectTagValue, setSelectTagValue }) => {
                 fetchSourceTags();
                 toast({
                     title: "Success",
-                    description: "Added a new card",
+                    description: "Added a new tag",
                     status: "success",
                     duration: 5000,
                     isClosable: true,
