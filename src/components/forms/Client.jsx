@@ -124,11 +124,17 @@ const Client = () => {
     };
 
     const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
-    const handleAddSource = () => {
+    const handleAddSource = (e) => {
+        e.preventDefault();
         setSourceAddBtnClick(!sourceAddBtnClick);
+
+        console.log(selectSourceValue)
+
         try {
-            axios.post`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
-                { sourceTagName: selectSourceValue }
+            selectSourceValue.map((value) => {
+                axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: value })
+            });
+            console.log("Done")
         } catch (error) {
             console.log(error)
         }
@@ -162,6 +168,11 @@ const Client = () => {
                         }))}
                         value={selectSourceValue}
                         onChange={setSelectSourceValue}
+                        placeholder="Please select"
+                        // options={[
+                        //     { value: "google", label: "google" },
+                        //     { value: "amazon", label: "amazon" },
+                        // ]}
                         className="max-w-[400px]"
                     />
                     <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
