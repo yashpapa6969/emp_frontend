@@ -9,11 +9,10 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DatePicker, Select, Tag } from "antd"
+import { DatePicker, Tag } from "antd"
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
-import { PiPlus } from "react-icons/pi";
-import { IoMdCheckmark } from "react-icons/io";
+import SelectSource from "../common/SelectSource";
 
 const TagRender = ({ label, closable, onClose }) => {
     const onPreventMouseDown = (event) => {
@@ -36,7 +35,6 @@ const TagRender = ({ label, closable, onClose }) => {
 };
 
 const Client = () => {
-    const [sources, setSources] = useState([]);
     const [selectSourceValue, setSelectSourceValue] = useState([]);
 
     const [formData, setFormData] = useState({
@@ -80,23 +78,9 @@ const Client = () => {
         });
     };
 
-    async function fetchSourceTags() {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
-            );
-            setSources(response.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
-    useEffect(() => {
-        fetchSourceTags();
-    }, [])
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        setFormData({ ...formData, source: selectSourceValue });
 
         const formDataToSend = new FormData();
         formDataToSend.append("enquiryDate", formData.enquiryDate);
@@ -124,20 +108,6 @@ const Client = () => {
             });
     };
 
-    const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
-
-    const handleAddSource = async () => {
-        setSourceAddBtnClick(!sourceAddBtnClick);
-        try {
-            selectSourceValue.map((value) => {
-                axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: value })
-            });
-            fetchSourceTags();
-        } catch (error) {
-            console.error("Error adding tag:", error);
-        }
-    };
-
     return (
         <form onSubmit={handleSubmit}>
             <FormControl mb="4">
@@ -154,26 +124,7 @@ const Client = () => {
             <FormControl id="sources" mb={4}>
                 <FormLabel>Source</FormLabel>
                 <Flex>
-                    <Select
-                        mode="multiple"
-                        tagRender={TagRender}
-                        style={{
-                            width: '100%',
-                        }}
-                        options={sources.map((item) => ({
-                            label: item.sourceTagName,
-                            value: item.sourceTagName,
-                        }))}
-                        value={selectSourceValue}
-                        onChange={setSelectSourceValue}
-                        placeholder="Please select"
-                        // options={[
-                        //     { value: "google", label: "google" },
-                        //     { value: "amazon", label: "amazon" },
-                        // ]}
-                        className="max-w-[400px]"
-                    />
-                    <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
+                    <SelectSource selectSourceValue={selectSourceValue} setSelectSourceValue={setSelectSourceValue} />
                 </Flex>
             </FormControl>
             <FormControl mb="4">
