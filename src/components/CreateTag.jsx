@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import {
   Box,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Tag } from "antd";
 import { FaTrash } from "react-icons/fa6";
-import SelectTag from "./common/SelectTag";
 
 const CreateTag = () => {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
-
-  const [selectTagValue, setSelectTagValue] = useState([]);
 
   useEffect(() => {
     fetchTags();
@@ -44,16 +43,15 @@ const CreateTag = () => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-start gap-2 w-[400px]">
-        {/* <Input
+      <div className="flex justify-start gap-2 max-w-[400px]">
+        <Input
           placeholder="Enter new tag"
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
         />
         <Button px={6} colorScheme="blue" onClick={handleAddTag}>
           Add Tag
-        </Button> */}
-        <SelectTag selectTagValue={selectTagValue} setSelectTagValue={setSelectTagValue} />
+        </Button>
       </div>
       <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"} minH={"sm"}>
         {tags.map((tag) => (
