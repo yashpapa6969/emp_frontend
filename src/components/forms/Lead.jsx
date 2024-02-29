@@ -15,32 +15,11 @@ import {
 } from "@chakra-ui/react";
 import { DatePicker, Input, Select } from "antd";
 import axios from "axios";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { IoMdCheckmark } from "react-icons/io";
-import { PiPlus } from "react-icons/pi";
-
-const TagRender = ({ label, value, closable, onClose }) => {
-    const onPreventMouseDown = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-    return (
-        <Tag
-            color={value}
-            onMouseDown={onPreventMouseDown}
-            closable={closable}
-            onClose={onClose}
-            style={{
-                marginRight: 3,
-            }}
-        >
-            {label}
-        </Tag>
-    );
-};
+import SelectSource from "../common/SelectSource";
 
 const Lead = () => {
     const [projectData, setProjectData] = useState({
@@ -70,10 +49,6 @@ const Lead = () => {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [tags, setTags] = useState([]);
-    const [sources, setSources] = useState([]);
-    const [tabsForPhone, setTabsForPhone] = useState(false);
-
-    const [sourceAddBtnClick, setSourceAddBtnClick] = useState(false);
     const [selectSourceValue, setSelectSourceValue] = useState([]);
 
     const removeTagById = (tagToRemove) => {
@@ -175,38 +150,6 @@ const Lead = () => {
             });
     };
 
-    useLayoutEffect(() => {
-        const windowWidth = window.innerWidth;
-        if (windowWidth <= 560) setTabsForPhone(true);
-    }, [])
-
-    async function fetchSourceTags() {
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
-            );
-            setSources(response.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
-    useEffect(() => {
-        fetchSourceTags();
-    }, [])
-
-    const handleAddSource = async () => {
-        setSourceAddBtnClick(!sourceAddBtnClick);
-        try {
-            selectSourceValue.map((value) => {
-                axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: value })
-                .then(() => { fetchSourceTags() })
-            });
-        } catch (error) {
-            console.error("Error adding tag:", error);
-        }
-    };
-
     return (
         <form onSubmit={handleSubmit}>
             <FormControl id="enquiryDate" isRequired>
@@ -233,45 +176,15 @@ const Lead = () => {
                     <TabPanels>
                         <TabPanel>
                             <div className="flex gap-3 mb-3">
-                                <FormControl id="clientName" isRequired>
-                                    <FormLabel>Client Name</FormLabel>
-                                    <Input name="clientName" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="phone1" isRequired>
-                                    <FormLabel>Phone Number 1</FormLabel>
-                                    <Input name="phone1" onChange={handleChange} />
-                                </FormControl>
-                                <FormControl id="phone2">
-                                    <FormLabel>Phone Number 2</FormLabel>
-                                    <Input name="phone2" onChange={handleChange} />
-                                </FormControl>
-                            </div>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="tags" isRequired>
-                                    <FormLabel>Source</FormLabel>
-                                    <Flex>
-                                        <Select
-                                            mode="multiple"
-                                            tagRender={TagRender}
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                            options={sources.map((item) => ({
-                                                label: item.sourceTagName,
-                                                value: item.sourceTagName,
-                                            }))}
-                                            value={selectSourceValue}
-                                            onChange={setSelectSourceValue}
-                                            placeholder="Please select"
-                                        />
-                                        <Button onClick={handleAddSource} className="h-10"> {sourceAddBtnClick ? <IoMdCheckmark color="green" /> : <PiPlus />} </Button>
-                                    </Flex>
-                                </FormControl>
-                                <FormControl id="title">
+                                <FormControl id="title" isRequired>
                                     <FormLabel>Title</FormLabel>
                                     <Input name="title" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="gender">
+                                <FormControl id="clientName" isRequired>
+                                    <FormLabel>Client Name</FormLabel>
+                                    <Input name="clientName" onChange={handleChange} isRequired />
+                                </FormControl>
+                                <FormControl id="gender" isRequired>
                                     <FormLabel>Gender</FormLabel>
                                     <Select
                                         name="gender"
@@ -282,6 +195,22 @@ const Lead = () => {
                                         <option value="Female">Female</option>
                                         <option value="Others">Others</option>
                                     </Select>
+                                </FormControl>
+                                <FormControl id="tags" isRequired>
+                                    <FormLabel>Source</FormLabel>
+                                    <Flex>
+                                        <SelectSource selectSourceValue={selectSourceValue} setSelectSourceValue={setSelectSourceValue} />
+                                    </Flex>
+                                </FormControl>
+                            </div>
+                            <div className="flex gap-3 mb-3">
+                                <FormControl id="phone1" isRequired>
+                                    <FormLabel>Phone Number 1</FormLabel>
+                                    <Input name="phone1" onChange={handleChange} />
+                                </FormControl>
+                                <FormControl id="phone2">
+                                    <FormLabel>Phone Number 2</FormLabel>
+                                    <Input name="phone2" onChange={handleChange} />
                                 </FormControl>
                             </div>
 
@@ -449,7 +378,7 @@ const Lead = () => {
                                     <FormLabel>Phone Number 1</FormLabel>
                                     <Input name="phone1" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="phone2">
+                                <FormControl id="phone2" isRequired>
                                     <FormLabel>Phone Number 2</FormLabel>
                                     <Input name="phone2" onChange={handleChange} />
                                 </FormControl>
