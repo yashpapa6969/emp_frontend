@@ -131,7 +131,7 @@ const CreateEmp = () => {
             <DatePicker
               selected={formData.dob}
               onChange={handleDateChange}
-              dateFormat="MM/dd/yyyy"
+              format={"DD/MM/YYYY"}
               placeholderText="Pick Date"
             />
           </FormControl>
@@ -192,7 +192,7 @@ const CreateEmp = () => {
             <DatePicker
               selected={formData.joiningDate}
               onChange={handleJoiningDateChange}
-              dateFormat="MM/dd/yyyy"
+              format={"DD/MM/YYYY"}
               placeholderText="Pick Date"
             />
           </FormControl>

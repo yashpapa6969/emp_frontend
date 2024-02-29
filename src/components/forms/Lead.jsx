@@ -20,6 +20,7 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
+import MyDatePicker from "../common/MyDatePicker";
 
 const Lead = () => {
     const [projectData, setProjectData] = useState({
@@ -154,13 +155,13 @@ const Lead = () => {
         <form onSubmit={handleSubmit}>
             <FormControl id="enquiryDate" isRequired>
                 <FormLabel>Enquiry Date</FormLabel>
-                <DatePicker
+                <MyDatePicker
                     selected={projectData.enquiryDate}
                     onChange={(date) =>
                         setProjectData({ ...projectData, enquiryDate: date })
                     }
-                    dateFormat="MM/dd/yyyy"
                     defaultValue={moment()}
+                    format={"DD/MM/YYYY"}
                 />
             </FormControl>
             <div className="hidden md:block">

@@ -58,7 +58,6 @@ const GetAllTask = () => {
       setClients(response.data);
     } catch (error) {
       console.error("Error updating status:", error);
-      alert(error.response.data.message);
     }
   };
 

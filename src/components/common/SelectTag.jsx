@@ -23,7 +23,7 @@ const TagRender = ({ label, closable, onClose }) => {
     );
 };
 
-const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
+const SelectTag = ({ selectTagValue, setSelectTagValue }) => {
     const toast = useToast();
     const [items, setItems] = useState([]);
     const [name, setName] = useState('');
@@ -35,7 +35,7 @@ const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
     async function fetchSourceTags() {
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`
+                `${import.meta.env.VITE_API_BASE}/api/admin/getAllTags`
             );
             setItems(response.data);
         } catch (error) {
@@ -49,7 +49,7 @@ const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
 
     const handleAddSource = (e) => {
         e.preventDefault();
-        axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: name })
+        axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/addTag`, { sourceTagName: name })
             .then(() => {
                 fetchSourceTags();
                 toast({
@@ -73,8 +73,8 @@ const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
             style={{
                 width: 300,
             }}
-            value={selectSourceValue}
-            onChange={setSelectSourceValue}
+            value={selectTagValue}
+            onChange={setSelectTagValue}
             placeholder="Choose a value"
             dropdownRender={(menu) => (
                 <>
@@ -103,11 +103,11 @@ const SelectTask = ({ selectSourceValue, setSelectSourceValue }) => {
                 </>
             )}
             options={items.map((item) => ({
-                key: `item-${item.source_tag_id}`,
-                label: item.sourceTagName,
-                value: item.sourceTagName,
+                key: `item-${item.tag_id}`,
+                label: item.tagName,
+                value: item.tagName,
             }))}
         />
     );
 };
-export default SelectTask;
+export default SelectTag;
