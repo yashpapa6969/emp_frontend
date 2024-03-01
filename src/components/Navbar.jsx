@@ -1,4 +1,4 @@
-import { Avatar } from '@chakra-ui/react'
+import { Avatar, IconButton } from '@chakra-ui/react'
 import {
   Menu,
   MenuButton,
@@ -15,7 +15,11 @@ import { Link } from "react-router-dom";
 
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoIosLogOut, IoMdHome } from "react-icons/io";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon, EditIcon, ExternalLinkIcon, HamburgerIcon, PlusSquareIcon, RepeatIcon } from "@chakra-ui/icons";
+import { IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
+import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
+import { MdOutlineAddTask } from 'react-icons/md';
+import { LuNewspaper } from 'react-icons/lu';
 
 const Navbar = ({ showSidebar, setShowSidebar }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -32,7 +36,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
     <>
       <div className="w-full h-[70px] bg-[#172032] flex items-center justify-between px-4">
         <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
-        <div className="flex gap-2 items-center justify-center">
+        <div className="flex gap-4 items-center justify-center">
           <Menu>
             <MenuButton righticon={<ChevronDownIcon />}>
               <Avatar size='sm' name={user.name} />
@@ -46,11 +50,43 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               </MenuItem>
               <MenuDivider />
               <MenuGroup title='Profile'>
-                <MenuItem>
-                  <Link to="/home" className="flex gap-2 items-center w-full"><IoMdHome /> Dashboard</Link>
+                <MenuItem icon={<IoMdHome size={18} />}>
+                  Dashboard
                 </MenuItem>
-                <MenuItem>
-                  <div className="flex gap-2 items-center w-full" onClick={handleLogout}><IoIosLogOut /> Logout</div>
+                <MenuItem icon={<IoIosLogOut size={16} />}>
+                  Logout
+                </MenuItem>
+              </MenuGroup>
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label='Options'
+              icon={<AddIcon />}
+            />
+            <MenuList>
+              <MenuGroup title='Quick Create'>
+                <MenuItem icon={<IoPersonAddOutline size={16} />}>
+                  <Link to={"/createEmp"} className='w-full'>Employee</Link>
+                </MenuItem>
+                <MenuItem icon={<LiaProjectDiagramSolid size={18} />}>
+                  <Link to={"/createProject"} className='w-full'>Project</Link>
+                </MenuItem>
+                <MenuItem icon={<IoPeopleOutline size={18} />}>
+                  <Link to={"/createClient"} className='w-full'>Client</Link>
+                </MenuItem>
+                <MenuItem icon={<LiaTtySolid />}>
+                  <Link to={"/createLead"} className='w-full'>Lead</Link>
+                </MenuItem>
+                <MenuItem icon={<MdOutlineAddTask size={18} />}>
+                  <Link to={"/createTask"} className='w-full'>Task</Link>
+                </MenuItem>
+                <MenuItem icon={<IoPricetagOutline />}>
+                  <Link to={"/createTag"} className='w-full'>Tag</Link>
+                </MenuItem>
+                <MenuItem icon={<LuNewspaper />}>
+                  <Link to={"/createSlip"} className='w-full'>Slip</Link>
                 </MenuItem>
               </MenuGroup>
             </MenuList>
