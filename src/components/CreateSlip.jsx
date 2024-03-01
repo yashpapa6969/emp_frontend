@@ -68,34 +68,47 @@ const CreateSlip = () => {
 
 
 
-  const handleSubmit = (e) => {
+   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
         projectData,
         {
+          responseType: 'blob', // Important: This tells Axios to expect a binary response instead of JSON
           headers: {
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
+        // Create a Blob from the PDF Stream
+        const file = new Blob([response.data], { type: 'application/pdf' });
+        // Build a URL from the file
+        const fileURL = URL.createObjectURL(file);
+        // Create a temp <a> tag to trigger download
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', 'salary_slip.pdf'); // or any other extension
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+  
         if (response.status === 200) {
-          toast.success(response.data.message);
+          toast.success('Salary slip downloaded successfully.');
         } else {
-          console.error("Failed to create Slip");
-          console.log(response.data.message);
-          toast.success(response.data.message);
+          console.error("Failed to download slip");
+          toast.error('Failed to download slip.');
         }
       })
       .catch((error) => {
         console.error("Error:", error);
-       if (error.response.data.error) toast.error(error.response.data.error);
-        if (error.response.data.error) toast.error(error.response.data.message);
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.error || error.response.data.message);
+        }
       });
   };
-
+  
   return (
     <>
       <ToastContainer />

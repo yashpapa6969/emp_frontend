@@ -18,7 +18,7 @@ import { Empty } from "antd";
 
 const CreateProjectButton = ({ onOpen }) => {
   return (
-    <Link to="/CreateProject">
+    <Link to="/createSlip">
       <Button
         colorScheme="blue"
         onClick={onOpen}
@@ -26,7 +26,7 @@ const CreateProjectButton = ({ onOpen }) => {
         mb="2"
         className="flex gap-2 items-center"
       >
-        <GoPlus /> Add a Project
+        <GoPlus /> Create Slip
       </Button>
     </Link>
   );

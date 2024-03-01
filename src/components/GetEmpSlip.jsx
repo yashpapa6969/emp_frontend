@@ -29,7 +29,7 @@ const GetEmpSlip = ({ modalFor }) => {
         setLoading(true);
         setError(null);
         const response = await axios.get(
-          `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/getAllSlipsByEmployee/${employeeId}`
+          `${import.meta.env.VITE_API_BASE}/api/admin/getAllSlipsByEmployee/${employeeId}`
         );
         setData(response.data);
       } catch (error) {
