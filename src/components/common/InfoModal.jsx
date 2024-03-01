@@ -454,6 +454,11 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Link to={`/GetEmp`}>
                   <Button>Get EMP details</Button>
                 </Link>
+                <Text fontWeight="bold">Slip History of Employee:</Text>
+
+                <Link to={`/GetEmpSlip`}>
+                  <Button>Get Slip details</Button>
+                </Link>
                 <Text fontWeight="bold">Basic Pay: </Text>
                 <Text>{data.basicPay}</Text>
                 <Text fontWeight="bold">Travel Pay: </Text>

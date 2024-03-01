@@ -24,6 +24,7 @@ import CreateTask from "./components/CreateTask";
 import GetAllTask from "./components/GetAllTask";
 import GetAllSlip from "./components/GetAllSlip";
 import CreateSlip from "./components/CreateSlip";
+import GetEmpSlip from "./components/GetEmpSlip";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -107,7 +108,7 @@ function App() {
             path="/getAllSlip"
             element={
               <AppLayout
-                activeSideabarLink={"getAllClient"}
+                activeSideabarLink={"getAllSlip"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllSlip />
@@ -140,7 +141,7 @@ function App() {
             path="/createSlip"
             element={
               <AppLayout
-                activeSideabarLink={"CreateEmp"}
+                activeSideabarLink={"CreateSlip"}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateSlip />
@@ -228,7 +229,7 @@ function App() {
             path="/GetEmp"
             element={
               <AppLayout
-                activeSideabarLink={"CreateProject"}
+                activeSideabarLink={""}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <InfoBoxByID modalFor="employee" />
@@ -236,10 +237,21 @@ function App() {
             }
           />
           <Route
+            path="/GetEmpSlip"
+            element={
+              <AppLayout
+                activeSideabarLink={""}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetEmpSlip></GetEmpSlip>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/GetClient"
             element={
               <AppLayout
-                activeSideabarLink={"CreateProject"}
+                activeSideabarLink={""}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <InfoBoxByID modalFor="client" />

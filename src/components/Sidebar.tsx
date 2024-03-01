@@ -56,7 +56,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/getAllTask" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
                 <GrTask size={20} /> Task Information
             </Link>
-            <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
+            <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' && 'bg-gray-500'}`}>
                 <GrTask size={20} /> Slip Information
             </Link>
             <Accordion defaultIndex={[0]} allowToggle>
@@ -86,7 +86,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         <Link to="/createTag" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
                             <IoPricetagOutline /> Tag
                         </Link>
-                        <Link to="/createSlip" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateTag' && 'bg-gray-500'}`}>
+                        <Link to="/createSlip" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateSlip' && 'bg-gray-500'}`}>
                             <IoPricetagOutline /> Slip
                         </Link>
                     </AccordionPanel>

@@ -90,6 +90,7 @@ const GetAllSlip = () => {
             <Thead bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold">Employee name</Th>
                 <Th fontWeight="bold">Basic Pay</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   Travel Pay
@@ -108,12 +109,12 @@ const GetAllSlip = () => {
                 ? filteredProjects.map((project, index) => (
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
+                      <Td>{index + 1}</Td>
                       <Td>{project.basicPay}</Td>
                       <Td className="md:table-cell hidden">
                         {project.travelPay}
                       </Td>
                       <Td className="md:table-cell hidden">{project.bonus}</Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"
@@ -127,12 +128,12 @@ const GetAllSlip = () => {
                 : projects.map((project, index) => (
                     <Tr key={project._id}>
                       <Td>{index + 1}</Td>
+                      <Td>{index + 1}</Td>
                       <Td>{project.basicPay}</Td>
                       <Td className="md:table-cell hidden">
                         {project.travelPay}
                       </Td>
                       <Td className="md:table-cell hidden">{project.bonus}</Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
                       <Td>
                         <Button
                           colorScheme="purple"

@@ -25,7 +25,6 @@ const InfoBoxByID = ({ modalFor }) => {
   const employeeIds = useSelector(selectEmployeeIds);
   const clientId = useSelector(selectClientId);
   const employeeId = useSelector(selectEmployeeId);
-  console.log(employeeId);
   const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
  
@@ -41,7 +40,6 @@ const InfoBoxByID = ({ modalFor }) => {
            `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
          );
          fetchedData.push(employeeResponse.data);
-         console.log(employeeResponse.data);
        } else if (modalFor === "employee" && employeeIds.length > 0) {
          const promises = employeeIds.map((id) =>
            axios.get(
@@ -84,7 +82,7 @@ const InfoBoxByID = ({ modalFor }) => {
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4} borderColor={borderColor}>
-      <Heading size="md" mb={4}>
+      <Heading size="lg" mb={4}>
         {modalFor === "employee"
           ? "Employee Information"
           : "Client Information"}
