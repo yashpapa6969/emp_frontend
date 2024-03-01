@@ -139,7 +139,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   <Text><b>Pan no.: </b> {data.panNumber || "Not defined"}</Text>
                 </div>
                 <Text fontWeight="bold">Guardian details: </Text>
-                {data?.guardianDetails?.map((item) => (
+                {data?.guardianDetails && data.guardianDetails.map && data.guardianDetails.map((item) => (
                   <>
                     <Text>Name: {item.guardianName || "Not defined"}</Text>
                     <Text>Contact: {item.guardianContactNo || "Not defined"}</Text>
@@ -161,9 +161,9 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   <Text><b>Contact no.: </b> {data.contactNo || "Not defined"}</Text>
                 </div>
                 <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Permissions</h1>
-                {data?.bankDetails && data.bankDetails.length > 0 ? (
-                  data.bankDetails.map((bd, index) => (
-                    <Text key={index}>{bd}</Text>
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
                   ))
                 ) : (
                   <Text color="red">No permissions</Text>
@@ -423,10 +423,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   ))}
                 </ul>
                 <Text fontWeight="bold">Single File: </Text>
-                <Image
-                  src={data.singleFile}
-                  alt={`Single File, url:- ${data.singleFile}`}
-                />
+                <a href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}>{`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}</a>
                 <Text fontWeight="bold">Multiple Files: </Text>
                 {data.multipleFiles.map((file, index) => (
                   <div key={index}>
