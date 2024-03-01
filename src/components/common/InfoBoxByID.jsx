@@ -25,6 +25,7 @@ const InfoBoxByID = ({ modalFor }) => {
   const employeeIds = useSelector(selectEmployeeIds);
   const clientId = useSelector(selectClientId);
   const employeeId = useSelector(selectEmployeeId);
+  console.log(employeeId);
   const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
  
@@ -40,6 +41,7 @@ const InfoBoxByID = ({ modalFor }) => {
            `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
          );
          fetchedData.push(employeeResponse.data);
+         console.log(employeeResponse.data);
        } else if (modalFor === "employee" && employeeIds.length > 0) {
          const promises = employeeIds.map((id) =>
            axios.get(
@@ -58,9 +60,11 @@ const InfoBoxByID = ({ modalFor }) => {
        setLoading(false);
        if (modalFor === "employee") {
          dispatch(clearEmployeeIds());
-         dispatch(clearEmployeeId());       
+         dispatch(clearEmployeeId());      
+          dispatch(clearClientId()); 
        } else if (modalFor === "client") {
          dispatch(clearClientId());
+         
        }
      } catch (error) {
        setError(error.response.data.message);
@@ -89,17 +93,33 @@ const InfoBoxByID = ({ modalFor }) => {
       {error && <Text color="red.500">{error}</Text>}
       {!loading && !error && (
         <VStack align="start" spacing={2}>
-          {data.map((item, index) => (
-            <Box key={index}>
-              {Object.entries(item).map(([key, value]) => (
-                <div key={key}>
-                  <Text fontWeight="bold">{key}:</Text>
-                  <Text>{value}</Text>
-                </div>
-              ))}
-              <Divider mt={2} />
-            </Box>
-          ))}
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
+              <Box key={index}>
+                {Object.entries(item).map(([key, value]) => (
+                  <div key={key}>
+                    <Text fontWeight="bold">{key}:</Text>
+                    {value && typeof value === "object" ? (
+                      // If the value is an object, iterate over its properties
+                      Object.entries(value).map(([subKey, subValue]) => (
+                        <div key={subKey}>
+                          <Text>
+                            {subKey}: {subValue}
+                          </Text>
+                        </div>
+                      ))
+                    ) : (
+                      // If the value is not an object, simply render it
+                      <Text>{value}</Text>
+                    )}
+                  </div>
+                ))}
+                <Divider mt={2} />
+              </Box>
+            ))
+          ) : (
+            <Text>No data available</Text>
+          )}
         </VStack>
       )}
     </Box>

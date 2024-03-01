@@ -34,6 +34,10 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         dispatch(addEmployeeId(id));
       });
     }
+     if (modalFor === "slip" && data?.employee_id) {
+       const employeeId = data.employee_id;
+       dispatch(setEmployeeId(employeeId));
+     }
     if (modalFor === "task" && data?.employee_id) {
       const employeeId = data.employee_id;
       const p = data.project_id;
@@ -430,6 +434,60 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
+  if (modalFor === "slip") {
+    return (
+      <Modal
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Slip Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <div>
+                <Text fontWeight="bold">Employee:</Text>
+
+                <Link to={`/GetEmp`}>
+                  <Button>Get EMP details</Button>
+                </Link>
+                <Text fontWeight="bold">Basic Pay: </Text>
+                <Text>{data.basicPay}</Text>
+                <Text fontWeight="bold">Travel Pay: </Text>
+                <Text>{data.travelPay}</Text>
+                <Text fontWeight="bold">Bonus: </Text>
+                <Text>{data.bonus}</Text>
+                <Text fontWeight="bold">Paid Leave: </Text>
+                <Text>{data.paidLeave}</Text>
+                <Text fontWeight="bold">Total Income: </Text>
+                <Text>{data.totalIncome}</Text>
+                <Text fontWeight="bold">TDS: </Text>
+                <Text>{data.tds}</Text>
+                <Text fontWeight="bold">Total Leaves: </Text>
+                <Text>{data.totalLeaves}</Text>
+                <Text fontWeight="bold">Advance Salary</Text>
+                <Text>{data.advanceSalary}</Text>
+                <Text fontWeight="bold">Total Deductions: </Text>
+                <Text>{data.totalDeductions}</Text>
+                <Text fontWeight="bold">Net Salary: </Text>
+                <Text>{data.netSalary}</Text>
+                <Text fontWeight="bold">Slip ID: </Text>
+                <Text>{data.slip_id}</Text>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
 };
 
 export default InfoModal;

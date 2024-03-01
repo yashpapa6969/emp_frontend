@@ -22,6 +22,8 @@ import GetAllLead from "./components/GetAllLead";
 import CreateTag from "./components/CreateTag";
 import CreateTask from "./components/CreateTask";
 import GetAllTask from "./components/GetAllTask";
+import GetAllSlip from "./components/GetAllSlip";
+import CreateSlip from "./components/CreateSlip";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -102,6 +104,17 @@ function App() {
             }
           />
           <Route
+            path="/getAllSlip"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllSlip />
+              </AppLayout>
+            }
+          />
+          <Route
             path="/getAllTodo"
             element={
               <AppLayout
@@ -120,6 +133,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateEmp />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createSlip"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateEmp"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateSlip />
               </AppLayout>
             }
           />
