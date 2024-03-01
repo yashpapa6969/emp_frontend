@@ -15,6 +15,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import MyDatePicker from "./common/MyDatePicker";
 import axios from "axios";
+import SelectTag from "./common/SelectTag";
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
@@ -31,6 +32,7 @@ const CreateProject = () => {
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
+  const [selctedTagValue, setSelctedTagValue] = useState([]);
   const getEmployeeNameById = (id) => {
     const employee = employees.find((employee) => employee.employee_id === id);
     return employee ? employee.name : "Unknown Employee";
@@ -246,7 +248,8 @@ const CreateProject = () => {
             </FormControl>
             <FormControl id="tags" isRequired>
               <FormLabel>Tags</FormLabel>
-              <Select
+              <SelectTag selectTagValue={selctedTagValue} setSelectTagValue={setSelctedTagValue} />
+              {/* <Select
                 onChange={handleTagChange}
                 size="md"
                 placeholder="Select tags"
@@ -257,7 +260,7 @@ const CreateProject = () => {
                     {tag.tagName}
                   </option>
                 ))}
-              </Select>
+              </Select> */}
               {projectData.tags.map((tag) => (
                 <Tag
                   key={tag._id}

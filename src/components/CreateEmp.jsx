@@ -32,7 +32,7 @@ const CreateEmp = () => {
         <h1 className="text-2xl font-semibold">Add Employee</h1>
         <p className="font-light mb-4">Fill the below form to add a new employee</p>
         
-      <Emp></Emp>
+        <Emp />
       </Box>
     </>
   );

@@ -360,7 +360,7 @@ const Emp = () => {
 
           <TabPanels>
             <TabPanel>
-              <div className="flex gap-3 mb-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="clientName" isRequired>
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
@@ -389,7 +389,7 @@ const Emp = () => {
                 </FormControl>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col gap-3">
                 <FormControl id="email1">
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
@@ -446,21 +446,21 @@ const Emp = () => {
                   className="h-32"
                 />
               </FormControl>
-              <div className="flex gap-3">
-                <FormControl id="brandName" mb={3} isRequired>
+              <div className="flex flex-col mt-3 gap-3">
+                <FormControl id="brandName" isRequired>
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName" mb={3} isRequired>
+                <FormControl id="companyName" isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="gst" mb={3}>
+                <FormControl id="gst">
                   <FormLabel>GST</FormLabel>
                   <Input name="gst" onChange={handleChange} />
                 </FormControl>
               </div>
-              <FormControl id="billingAddress" isRequired className="w-1/2">
+              <FormControl id="billingAddress" isRequired className="w-1/2 mt-3">
                 <FormLabel>Billing Address</FormLabel>
                 <Input
                   name="billingAddress"
@@ -468,7 +468,7 @@ const Emp = () => {
                   className="h-32"
                 />
               </FormControl>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 mt-3">
                 <FormControl id="requirement" className="w-1/2">
                   <FormLabel>Requirement</FormLabel>
                   <Input
