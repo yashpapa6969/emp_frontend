@@ -10,6 +10,7 @@ import {
   Text,
   useDisclosure,
   Image,
+  Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,10 +35,10 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         dispatch(addEmployeeId(id));
       });
     }
-     if (modalFor === "slip" && data?.employee_id) {
-       const employeeId = data.employee_id;
-       dispatch(setEmployeeId(employeeId));
-     }
+    if (modalFor === "slip" && data?.employee_id) {
+      const employeeId = data.employee_id;
+      dispatch(setEmployeeId(employeeId));
+    }
     if (modalFor === "task" && data?.employee_id) {
       const employeeId = data.employee_id;
       const p = data.project_id;
@@ -56,6 +57,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "manager")
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -107,6 +110,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "employee")
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -119,7 +124,59 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text fontWeight="bold">Name: </Text>
+                <Text><b>Id: </b> {data.manager_id}</Text>
+                <Text><b>Probation period: </b> {data.probationPeriod || "Not defined"}</Text>
+                <Text><b>Leaving date: </b> {data.leavingDate || "Not defined"}</Text>
+                <h1 className="mt-3 text-xl font-semibold mb-2 text-gray-500">Personal Information</h1>
+                <div className="flex flex-col md:flex-row justify-between">
+                  <Text><b>Name: </b> {data.title} {data.name || "Not defined"}</Text>
+                  <Text><b>Gender: </b> {data.gender || "Not defined"}</Text>
+                  <Text><b>DOB: </b> {data.dob || "Not defined"}</Text>
+                  <Text><b>Joining date: </b> {data.joiningDate || "Not defined"}</Text>
+                </div>
+                <div className="flex flex-col md:flex-row md:gap-[100px]">
+                  <Text><b>Aadhar no.: </b> {data.aadharNumber || "Not defined"}</Text>
+                  <Text><b>Pan no.: </b> {data.panNumber || "Not defined"}</Text>
+                </div>
+                <Text fontWeight="bold">Guardian details: </Text>
+                {data?.guardianDetails && data.guardianDetails.map && data.guardianDetails.map((item) => (
+                  <>
+                    <Text>Name: {item.guardianName || "Not defined"}</Text>
+                    <Text>Contact: {item.guardianContactNo || "Not defined"}</Text>
+                  </>
+                )) || "Null"}
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Position details</h1>
+                <div className="flex max-w-[700px] flex-col md:flex-row justify-between">
+                  <Text><b>Position: </b> {data.position || "Not defined"}</Text>
+                  <Text><b>Designation: </b> {data.designation || "Not defined"}</Text>
+                  <Text><b>Department: </b> {data.department || "Not defined"}</Text>
+                </div>
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Contact details</h1>
+                <div>
+                  <Text fontWeight="bold">Permanent Address: </Text>
+                  <Text>{data.permanentAddress || "Not defined"}</Text>
+                  <Text fontWeight="bold">Corespondance Address: </Text>
+                  <Text>{data.correspondenceAddress || "Not defined"}</Text>
+                  <Text><b>Email: </b> {data.email || "Not defined"}</Text>
+                  <Text><b>Contact no.: </b> {data.contactNo || "Not defined"}</Text>
+                </div>
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Permissions</h1>
+                {data?.permissions && data.permissions.length > 0 ? (
+                  data.permissions.map((permission, index) => (
+                    <Text key={index}>{permission}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-slate-600">Bank details</h1>
+                {data?.bankDetails && data.bankDetails.length > 0 ? (
+                  data.bankDetails.map((bd, index) => (
+                    <Text key={index}>{bd}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
+                {/* <Text fontWeight="bold">Name: </Text>
                 <Text>{data.name}</Text>
                 <Text fontWeight="bold">Email: </Text>
                 <Text>{data.email}</Text>
@@ -142,7 +199,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   ))
                 ) : (
                   <Text color="red">No permissions</Text>
-                )}
+                )} */}
               </div>
             )}
           </ModalBody>
@@ -158,6 +215,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "client")
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -170,8 +229,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text fontWeight="bold">Client Name: </Text>
-                <Text>{data.clientName}</Text>
+              <Text><b>Client Anniversary: </b> {data.clientAnniversary || "Not defined"}</Text>
+              <Text><b>Company Anniversary: </b> {data.companyAnniversary || "Not defined"}</Text>
+                <div className="flex my-3 flex-col md:flex-row justify-between">
+                  <Text><b>Name: </b> {data.clientName || "Not defined"}</Text>
+                  <Text><b>Birthday: </b> {data.clientBirthday || "Not defined"}</Text>
+                  <Text><b>Work start date: </b> {data.workStartDate || "Not defined"}</Text>
+                </div>
                 <Text fontWeight="bold">Brand Name: </Text>
                 <Text>{data.brandName}</Text>
                 <Text fontWeight="bold">Company Name: </Text>
@@ -232,6 +296,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "project") {
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -286,9 +352,12 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       </Modal>
     );
   }
+
   if (modalFor === "lead")
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -303,8 +372,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
               <div>
                 <Text fontWeight="bold">Enquiry Date: </Text>
                 <Text>{data.enquiryDate}</Text>
-                <Text fontWeight="bold">Source: </Text>
-                <Text>{data.source}</Text>
                 <Text fontWeight="bold">Company Name </Text>
                 <Text>{data.companyName}</Text>
                 <Text fontWeight="bold">Source: </Text>
@@ -356,10 +423,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   ))}
                 </ul>
                 <Text fontWeight="bold">Single File: </Text>
-                <Image
-                  src={data.singleFile}
-                  alt={`Single File, url:- ${data.singleFile}`}
-                />
+                <a href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}>{`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}</a>
                 <Text fontWeight="bold">Multiple Files: </Text>
                 {data.multipleFiles.map((file, index) => (
                   <div key={index}>
@@ -385,6 +449,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "task")
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
@@ -437,6 +503,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   if (modalFor === "slip") {
     return (
       <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"

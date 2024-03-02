@@ -10,11 +10,12 @@ import {
 } from '@chakra-ui/react';
 import { IoMdHome, IoMdPerson } from 'react-icons/io';
 import { IoPeopleOutline, IoPeopleSharp, IoPersonAddOutline, IoPricetagOutline } from "react-icons/io5";
-import { GoPersonFill, GoPlus } from 'react-icons/go';
+import { GoPersonFill } from 'react-icons/go';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { FaTty, FaDiagramProject } from 'react-icons/fa6';
 import { MdOutlineAddTask } from "react-icons/md";
 import { GrTask } from 'react-icons/gr';
+import { LuNewspaper } from "react-icons/lu";
 
 interface Props {
     showSidebar: boolean;
@@ -57,7 +58,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <GrTask size={20} /> Task Information
             </Link>
             <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' && 'bg-gray-500'}`}>
-                <GrTask size={20} /> Slip Information
+                <LuNewspaper size={18} /> Slip Information
             </Link>
             <Accordion defaultIndex={[0]} allowToggle>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
@@ -87,7 +88,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                             <IoPricetagOutline /> Tag
                         </Link>
                         <Link to="/createSlip" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateSlip' && 'bg-gray-500'}`}>
-                            <IoPricetagOutline /> Slip
+                            <LuNewspaper /> Slip
                         </Link>
                     </AccordionPanel>
                 </AccordionItem>

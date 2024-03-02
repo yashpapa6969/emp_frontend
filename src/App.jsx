@@ -25,6 +25,7 @@ import GetAllTask from "./components/GetAllTask";
 import GetAllSlip from "./components/GetAllSlip";
 import CreateSlip from "./components/CreateSlip";
 import GetEmpSlip from "./components/GetEmpSlip";
+import KanbanBoard from "./components/KanbanBoard"
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -57,6 +58,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <UserInfo />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/kanban"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllManager"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <KanbanBoard />
               </AppLayout>
             }
           />
