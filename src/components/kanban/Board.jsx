@@ -32,9 +32,9 @@ const Board = ({ data }) => {
 };
 
 const statusData = [
-    { id: 0, name: "Raw", column: "raw", headingColor: "text-violet-500" },
-    { id: 1, name: "In progress", column: "in-progress", headingColor: "text-green-500" },
-    { id: 2, name: "Converted", column: "converted", headingColor: "text-blue-400" },
+    { id: 0, name: "Raw", column: "raw", headingColor: "text-red-400" },
+    { id: 1, name: "In progress", column: "in-progress", headingColor: "text-green-400" },
+    { id: 2, name: "Converted", column: "converted", headingColor: "text-purple-400" },
     { id: 3, name: "Lost", column: "lost", headingColor: "text-blue-400" },
 ]
 
@@ -151,7 +151,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                     }`}
             >
                 {filteredCards.map((c) => {
-                    return <Card key={c._id} card={c} handleDragStart={handleDragStart} />;
+                    return <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />;
                 })}
                 <DropIndicator beforeId={null} column={column} />
                 <AddCard column={column} setCards={setCards} />
@@ -160,18 +160,21 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     );
 };
 
-const Card = ({ card, handleDragStart }) => {
+const Card = ({ card, column, handleDragStart }) => {
     return (
         <>
-            <DropIndicator beforeId={card._id} column={card.status} />
+            <DropIndicator beforeId={card._id} column={column} />
             <motion.div
                 layout
                 layoutId={card._id}
                 draggable="true"
                 onDragStart={(e) => handleDragStart(e, { ...card })}
-                className="cursor-grab rounded border border-cyan-700 bg-cyan-500 p-3 active:cursor-grabbing"
+                className={`cursor-grab rounded border p-3 active:cursor-grabbing ${column === "raw" ? "bg-red-400" : column === "in-progress" ? "bg-green-400" : column === "converted" ? "bg-purple-400" : "bg-blue-400" }`}
             >
-                <p className="text-sm text-neutral-100">{card.status} {card.title}</p>
+                <h2 className="text-lg">{card.title}</h2>
+                <p className="text-sm">
+                    {card.status}
+                </p>
             </motion.div>
         </>
     );
