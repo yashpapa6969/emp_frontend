@@ -26,7 +26,7 @@ const Board = ({ data }) => {
                     setCards={setCards}
                 />
             ))}
-            <BurnBarrel setCards={setCards} />
+            {/* <BurnBarrel setCards={setCards} /> */}
         </div>
     );
 };
