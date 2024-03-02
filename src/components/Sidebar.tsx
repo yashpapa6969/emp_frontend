@@ -16,6 +16,7 @@ import { FaTty, FaDiagramProject } from 'react-icons/fa6';
 import { MdOutlineAddTask } from "react-icons/md";
 import { GrTask } from 'react-icons/gr';
 import { LuNewspaper } from "react-icons/lu";
+import { RiDragDropFill } from 'react-icons/ri';
 
 interface Props {
     showSidebar: boolean;
@@ -39,28 +40,42 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/home" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
                 <IoMdHome size={20} /> Dashboard
             </Link>
-            <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
-                <GoPersonFill /> Manager Information
+            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' && 'bg-gray-500'}`}>
+                <RiDragDropFill size={20} /> Manage Leads
             </Link>
-            <Link to="/getAllEmp" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
-                <IoMdPerson size={20} /> Employee Information
-            </Link>
-            <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
-                <FaDiagramProject size={20} />Project Information
-            </Link>
-            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
-                <IoPeopleSharp size={20} /> Client Information
-            </Link>
-            <Link to="/getAllLead" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
-                <FaTty size={20} /> Lead Information
-            </Link>
-            <Link to="/getAllTask" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
-                <GrTask size={20} /> Task Information
-            </Link>
-            <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' && 'bg-gray-500'}`}>
-                <LuNewspaper size={18} /> Slip Information
-            </Link>
+
             <Accordion defaultIndex={[0]} allowToggle>
+                <AccordionItem border="none" shadow="none" bg={"#172032"}>
+                    <AccordionButton _expanded={{ bg: '#172032' }}>
+                        <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
+                            Information
+                        </Box>
+                        <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel>
+                        <Link to="/getAllManager" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
+                            <GoPersonFill /> Manager
+                        </Link>
+                        <Link to="/getAllEmp" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
+                            <IoMdPerson size={20} /> Employee
+                        </Link>
+                        <Link to="/getAllProject" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
+                            <FaDiagramProject size={20} />Project
+                        </Link>
+                        <Link to="/getAllClient" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
+                            <IoPeopleSharp size={20} /> Client
+                        </Link>
+                        <Link to="/getAllLead" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
+                            <FaTty size={20} /> Lead
+                        </Link>
+                        <Link to="/getAllTask" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
+                            <GrTask size={20} /> Task
+                        </Link>
+                        <Link to="/getAllSlip" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' && 'bg-gray-500'}`}>
+                            <LuNewspaper size={18} /> Slip
+                        </Link>
+                    </AccordionPanel>
+                </AccordionItem>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
                     <AccordionButton _expanded={{ bg: '#172032' }}>
                         <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
