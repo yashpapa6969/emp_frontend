@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaFire, FaPlus, FaTrash } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export const CustomKanban = ({ data }) => {
     return (
@@ -24,7 +25,7 @@ const Board = ({ data }) => {
             />
             <Column
                 title="In progress"
-                column="In-Progress"
+                column="in-progress"
                 headingColor="text-green-500"
                 cards={cards}
                 setCards={setCards}
@@ -39,7 +40,7 @@ const Board = ({ data }) => {
             <Column
                 title="Lost"
                 column="lost"
-                headingColor="text-yellow-500"
+                headingColor="text-blue-400"
                 cards={cards}
                 setCards={setCards}
             />
@@ -48,11 +49,34 @@ const Board = ({ data }) => {
     );
 };
 
-const Column = ({ title, headingColor, cards, column, setCards }) => {
+const statusData = [
+    { id: 0, name: "Raw", column: "raw" },
+    { id: 1, name: "In progress", column: "in-progress" },
+    { id: 2, name: "Converted", column: "converted" },
+    { id: 3, name: "Lost", column: "lost" },
+]
+
+const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     const [active, setActive] = useState(false);
 
     const handleDragStart = (e, card) => {
-        e.dataTransfer.setData("cardId", card.id);
+        e.dataTransfer.setData("cardId", card._id);
+    };
+
+    const handleStatusChange = async (leadId, statusNo) => {
+        try {
+            await axios.get(
+                `${import.meta.env.VITE_API_BASE}/api/admin/updateLeadStatus/${leadId}/${statusNo}`
+            );
+            // Fetch data again after updating status
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
+            );
+            setCards(response.data);
+        } catch (error) {
+            console.error("Error updating status:", error);
+            alert(error.response.data.message);
+        }
     };
 
     const handleDragEnd = (e) => {
@@ -61,33 +85,11 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
         setActive(false);
         clearHighlights();
 
-        const indicators = getIndicators();
-        const { element } = getNearestIndicator(e, indicators);
+        const selectedStatus = statusData.filter((e) => e.column?.toLowerCase() === column?.toLowerCase())[0];
+        const selectedCard = cards.filter((e) => e._id === cardId)[0];
+        // console.log(selectedCard.lead_id)
 
-        const before = element.dataset.before || "-1";
-
-        if (before !== cardId) {
-            let copy = [...cards];
-
-            let cardToTransfer = copy.find((c) => c.id === cardId);
-            if (!cardToTransfer) return;
-            cardToTransfer = { ...cardToTransfer, column };
-
-            copy = copy.filter((c) => c.id !== cardId);
-
-            const moveToBack = before === "-1";
-
-            if (moveToBack) {
-                copy.push(cardToTransfer);
-            } else {
-                const insertAtIndex = copy.findIndex((el) => el.id === before);
-                if (insertAtIndex === undefined) return;
-
-                copy.splice(insertAtIndex, 0, cardToTransfer);
-            }
-
-            setCards(copy);
-        }
+        handleStatusChange(selectedCard.lead_id, selectedStatus.column);
     };
 
     const handleDragOver = (e) => {
@@ -166,7 +168,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
                     }`}
             >
                 {filteredCards.map((c) => {
-                    return <Card key={c.id} cardData={c} handleDragStart={handleDragStart} />;
+                    return <Card key={c._id} card={c} handleDragStart={handleDragStart} />;
                 })}
                 <DropIndicator beforeId={null} column={column} />
                 <AddCard column={column} setCards={setCards} />
@@ -175,18 +177,18 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
     );
 };
 
-const Card = ({ cardData, handleDragStart }) => {
+const Card = ({ card, handleDragStart }) => {
     return (
         <>
-            <DropIndicator beforeId={cardData._id} column={cardData.status.toLowerCase()} />
+            <DropIndicator beforeId={card._id} column={card.status} />
             <motion.div
                 layout
-                layoutId={cardData._id}
+                layoutId={card._id}
                 draggable="true"
-                onDragStart={(e) => handleDragStart(e, cardData)}
+                onDragStart={(e) => handleDragStart(e, { ...card })}
                 className="cursor-grab rounded border border-cyan-700 bg-cyan-500 p-3 active:cursor-grabbing"
             >
-                <p className="text-sm text-neutral-100">{cardData.title}</p>
+                <p className="text-sm text-neutral-100">{card.status} {card.title}</p>
             </motion.div>
         </>
     );
@@ -228,8 +230,8 @@ const BurnBarrel = ({ setCards }) => {
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${active
-                    ? "border-red-800 bg-red-800/20 text-red-500"
-                    : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
+                ? "border-red-800 bg-red-800/20 text-red-500"
+                : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
                 }`}
         >
             {active ? <FaFire className="animate-bounce" /> : <FaTrash />}
@@ -296,3 +298,33 @@ const AddCard = ({ column, setCards }) => {
         </>
     );
 };
+
+const DEFAULT_CARDS = [
+    // BACKLOG
+    { title: "Look into render bug in dashboard", id: "1", column: "backlog" },
+    { title: "SOX compliance checklist", id: "2", column: "backlog" },
+    { title: "[SPIKE] Migrate to Azure", id: "3", column: "backlog" },
+    { title: "Document Notifications service", id: "4", column: "backlog" },
+    // TODO
+    {
+        title: "Research DB options for new microservice",
+        id: "5",
+        column: "todo",
+    },
+    { title: "Postmortem for outage", id: "6", column: "todo" },
+    { title: "Sync with product on Q3 roadmap", id: "7", column: "todo" },
+
+    // DOING
+    {
+        title: "Refactor context providers to use Zustand",
+        id: "8",
+        column: "doing",
+    },
+    { title: "Add logging to daily CRON", id: "9", column: "doing" },
+    // DONE
+    {
+        title: "Set up DD dashboards for Lambda listener",
+        id: "10",
+        column: "done",
+    },
+];

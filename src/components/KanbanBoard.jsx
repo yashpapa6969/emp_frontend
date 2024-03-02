@@ -23,8 +23,6 @@ const KanbanBoard = () => {
         fetchLeads();
     }, [])
 
-    console.log(leads)
-
     if (loading) return <>Loading...</>
 
     return (
