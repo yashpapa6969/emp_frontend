@@ -16,44 +16,26 @@ const Board = ({ data }) => {
 
     return (
         <div className="flex h-full w-full gap-3 overflow-scroll p-12">
-            <Column
-                title="Raw"
-                column="raw"
-                headingColor="text-violet-500"
-                cards={cards}
-                setCards={setCards}
-            />
-            <Column
-                title="In progress"
-                column="in-progress"
-                headingColor="text-green-500"
-                cards={cards}
-                setCards={setCards}
-            />
-            <Column
-                title="Converted"
-                column="converted"
-                headingColor="text-blue-400"
-                cards={cards}
-                setCards={setCards}
-            />
-            <Column
-                title="Lost"
-                column="lost"
-                headingColor="text-blue-400"
-                cards={cards}
-                setCards={setCards}
-            />
+            {statusData.map((item) => (
+                <Column
+                    key={`col-${item.column}`}
+                    title={item.name}
+                    column={item.column}
+                    headingColor={item.headingColor}
+                    cards={cards}
+                    setCards={setCards}
+                />
+            ))}
             <BurnBarrel setCards={setCards} />
         </div>
     );
 };
 
 const statusData = [
-    { id: 0, name: "Raw", column: "raw" },
-    { id: 1, name: "In progress", column: "in-progress" },
-    { id: 2, name: "Converted", column: "converted" },
-    { id: 3, name: "Lost", column: "lost" },
+    { id: 0, name: "Raw", column: "raw", headingColor: "text-violet-500" },
+    { id: 1, name: "In progress", column: "in-progress", headingColor: "text-green-500" },
+    { id: 2, name: "Converted", column: "converted", headingColor: "text-blue-400" },
+    { id: 3, name: "Lost", column: "lost", headingColor: "text-blue-400" },
 ]
 
 const Column = ({ title, headingColor, cards, column, setCards, data }) => {
@@ -88,8 +70,9 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
         const selectedStatus = statusData.filter((e) => e.column?.toLowerCase() === column?.toLowerCase())[0];
         const selectedCard = cards.filter((e) => e._id === cardId)[0];
         // console.log(selectedCard.lead_id)
+        console.log(selectedStatus);
 
-        handleStatusChange(selectedCard.lead_id, selectedStatus.column);
+        handleStatusChange(selectedCard.lead_id, selectedStatus.id);
     };
 
     const handleDragOver = (e) => {
