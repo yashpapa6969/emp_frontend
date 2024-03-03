@@ -1,17 +1,7 @@
-import { useState, useEffect } from "react";
-
 import {
   Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Text,
-  Flex
 } from "@chakra-ui/react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Emp from "./forms/Emp";
 
 const CreateEmp = () => {

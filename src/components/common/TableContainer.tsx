@@ -29,6 +29,9 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 if (formFor === "lead") {
                     return elem.companyName.toLowerCase().includes(searchText.toLowerCase());
                 }
+                if (formFor === "slip") {
+                    return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
+                }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
         }

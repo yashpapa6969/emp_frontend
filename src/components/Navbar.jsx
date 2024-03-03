@@ -59,7 +59,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               </MenuGroup>
             </MenuList>
           </Menu>
-          <Menu>
+          {/* <Menu>
             <MenuButton
               as={IconButton}
               aria-label='Options'
@@ -94,7 +94,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
                 </MenuItem>
               </MenuGroup>
             </MenuList>
-          </Menu>
+          </Menu> */}
         </div>
       </div>
     </>

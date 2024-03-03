@@ -17,6 +17,7 @@ import { MdOutlineAddTask } from "react-icons/md";
 import { GrTask } from 'react-icons/gr';
 import { LuNewspaper } from "react-icons/lu";
 import { RiDragDropFill } from 'react-icons/ri';
+import { HiDocumentDuplicate, HiOutlineDocumentDuplicate } from 'react-icons/hi2';
 
 interface Props {
     showSidebar: boolean;
@@ -34,7 +35,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
     }
 
     useEffect(() => {
-        if (["CreateEmp", "CreateProject", "CreateClient",
+        if (["CreateEmp", "CreateProject", "CreateClient","CreateInvoice",
             "createLead", "CreateTask", "CreateTag", "CreateSlip"].includes(activeLink)) setAccordianIndex([1])
         else setAccordianIndex([0]);
     }, [activeLink])
@@ -52,10 +53,10 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <RiDragDropFill size={20} /> Manage Leads
             </Link>
 
-            <Accordion index={accordianIndex}>
+            <Accordion index={accordianIndex} mt={4}>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
                     <AccordionButton _expanded={{ bg: '#172032' }} onClick={() => setAccordianIndex([0])}>
-                        <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
+                        <Box className='p-2 flex gap-1 items-center text-gray-300 text-sm' as="span" flex='1' textAlign='left'>
                             Information
                         </Box>
                         <AccordionIcon />
@@ -63,6 +64,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                     <AccordionPanel>
                         <Link to="/getAllManager" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
                             <GoPersonFill /> Manager
+                        </Link>
+                        <Link to="/getAllInvoice" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllInvoice' && 'bg-gray-500'}`}>
+                            <HiDocumentDuplicate /> Invoice
                         </Link>
                         <Link to="/getAllEmp" onClick={handleNavClose} className={`flex mb-[8px] items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
                             <IoMdPerson size={20} /> Employee
@@ -86,7 +90,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 </AccordionItem>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
                     <AccordionButton _expanded={{ bg: '#172032' }} onClick={() => setAccordianIndex([1])}>
-                        <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
+                        <Box className='p-2 flex gap-1 items-center text-gray-300 text-sm' as="span" flex='1' textAlign='left'>
                             Create
                         </Box>
                         <AccordionIcon />
@@ -97,6 +101,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         </Link>
                         <Link to="/createProject" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateProject' && 'bg-gray-500'}`}>
                             <LiaProjectDiagramSolid size={18} /> Project
+                        </Link>
+                        <Link to="/CreateInvoice" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateInvoice' && 'bg-gray-500'}`}>
+                            <HiOutlineDocumentDuplicate size={18} /> Invoice
                         </Link>
                         <Link to="/createClient" onClick={handleNavClose} className={`flex items-center gap-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'CreateClient' && 'bg-gray-500'}`}>
                             <IoPeopleOutline size={18} />Client
