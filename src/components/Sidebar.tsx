@@ -54,7 +54,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
 
             <Accordion index={accordianIndex}>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
-                    <AccordionButton _expanded={{ bg: '#172032' }}>
+                    <AccordionButton _expanded={{ bg: '#172032' }} onClick={() => setAccordianIndex([0])}>
                         <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
                             Information
                         </Box>
@@ -85,7 +85,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                     </AccordionPanel>
                 </AccordionItem>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
-                    <AccordionButton _expanded={{ bg: '#172032' }}>
+                    <AccordionButton _expanded={{ bg: '#172032' }} onClick={() => setAccordianIndex([1])}>
                         <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>
                             Create
                         </Box>

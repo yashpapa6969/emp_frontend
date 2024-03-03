@@ -148,7 +148,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                 onDrop={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`h-[calc(100%-40px)] overflow-y-scroll w-full transition-colors ${active ? "bg-gray-200" : "bg-neutral-800/0"
+                className={`h-[calc(100%-40px)] overflow-x-hidden overflow-y-hidden ${filteredCards.length > 0 && "overflow-y-scroll"} w-full transition-colors ${active ? "bg-gray-200" : "bg-neutral-800/0"
                     }`}
             >
                 {filteredCards.length === 0 ?
