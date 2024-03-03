@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {
     Accordion,
@@ -26,10 +26,18 @@ interface Props {
 }
 
 const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Props) => {
+    const [accordianIndex, setAccordianIndex] = useState([0]);
+
     const handleNavClose = () => {
         const windowWidth = window.innerWidth;
         if (windowWidth <= 640) setShowSidebar(false);
     }
+
+    useEffect(() => {
+        if (["CreateEmp", "CreateProject", "CreateClient",
+            "createLead", "CreateTask", "CreateTag", "CreateSlip"].includes(activeLink)) setAccordianIndex([1])
+        else setAccordianIndex([0]);
+    }, [activeLink])
 
     return (
         <div className='md:h-screen h-full w-[300px] bg-[#1E293B] text-white md:sticky top-0'>
@@ -44,7 +52,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <RiDragDropFill size={20} /> Manage Leads
             </Link>
 
-            <Accordion defaultIndex={[0]} allowToggle>
+            <Accordion index={accordianIndex}>
                 <AccordionItem border="none" shadow="none" bg={"#172032"}>
                     <AccordionButton _expanded={{ bg: '#172032' }}>
                         <Box className='p-2 flex gap-1 items-center' as="span" flex='1' textAlign='left'>

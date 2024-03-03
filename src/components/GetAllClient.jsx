@@ -6,37 +6,15 @@ import {
   Th,
   Td,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   useDisclosure,
   Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
-import CreateClientB from "./CreateClientB";
 import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
-
-const CreateClientButton = ({ onOpen }) => {
-  return (
-    <>
-      <Button
-        colorScheme="blue"
-        onClick={onOpen}
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Add a client
-      </Button>
-    </>
-  );
-};
+import { Link } from "react-router-dom";
 
 const GetAllClient = () => {
   const [clients, setClients] = useState([]);
@@ -79,7 +57,16 @@ const GetAllClient = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Client Information</h1>
-        <CreateClientButton onOpen={onOpen} />
+        <Link to="/CreateClient">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Client
+          </Button>
+        </Link>
 
         {clients.length === 0 && (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={

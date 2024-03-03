@@ -10,26 +10,11 @@ import {
   Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
 import axios from "axios";
-import { GoPlus } from "react-icons/go";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
-
-const CreateEmployeeButton = ({ onOpen }) => {
-  return (
-    <>
-      <Button
-        colorScheme="blue"
-        onClick={onOpen}
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Create Employee
-      </Button>
-    </>
-  );
-};
+import { Link } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
 
 const GetAllEmp = () => {
   const [employee, setEmployees] = useState([]);
@@ -72,7 +57,16 @@ const GetAllEmp = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-4xl font-bold mb-4">Employee Information</h1>
-        <CreateEmployeeButton onOpen={onOpen} />
+        <Link to="/CreateEmp">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add an Employee
+          </Button>
+        </Link>
         {employee.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
             <span>
