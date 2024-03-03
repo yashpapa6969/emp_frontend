@@ -50,10 +50,10 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               </MenuItem>
               <MenuDivider />
               <MenuGroup title='Profile'>
-                <MenuItem icon={<IoMdHome size={18} />}>
-                  Dashboard
-                </MenuItem>
-                <MenuItem icon={<IoIosLogOut size={16} />}>
+              <MenuItem>
+                <Link to="/home" className='w-full flex gap-3 items-center'><IoMdHome size={16} /> Dashboard</Link>
+              </MenuItem>
+                <MenuItem icon={<IoIosLogOut size={16} />} onClick={handleLogout}>
                   Logout
                 </MenuItem>
               </MenuGroup>
@@ -64,29 +64,33 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               as={IconButton}
               aria-label='Options'
               icon={<AddIcon />}
+              rounded={"full"}
+              colorScheme='purple'
+              bg={"purple.700"}
+              size={"sm"}
             />
             <MenuList>
               <MenuGroup title='Quick Create'>
-                <MenuItem icon={<IoPersonAddOutline size={16} />}>
-                  <Link to={"/createEmp"} className='w-full'>Employee</Link>
+                <MenuItem>
+                  <Link to={"/createEmp"} className='w-full flex items-center gap-3'><IoPersonAddOutline size={16} /> Employee</Link>
                 </MenuItem>
-                <MenuItem icon={<LiaProjectDiagramSolid size={18} />}>
-                  <Link to={"/createProject"} className='w-full'>Project</Link>
+                <MenuItem>
+                  <Link to={"/createProject"} className='w-full flex items-center gap-3'><LiaProjectDiagramSolid size={18} /> Project</Link>
                 </MenuItem>
-                <MenuItem icon={<IoPeopleOutline size={18} />}>
-                  <Link to={"/createClient"} className='w-full'>Client</Link>
+                <MenuItem>
+                  <Link to={"/createClient"} className='w-full flex items-center gap-3'><IoPeopleOutline size={18} /> Client</Link>
                 </MenuItem>
-                <MenuItem icon={<LiaTtySolid />}>
-                  <Link to={"/createLead"} className='w-full'>Lead</Link>
+                <MenuItem>
+                  <Link to={"/createLead"} className='w-full flex items-center gap-3'><LiaTtySolid /> Lead</Link>
                 </MenuItem>
-                <MenuItem icon={<MdOutlineAddTask size={18} />}>
-                  <Link to={"/createTask"} className='w-full'>Task</Link>
+                <MenuItem>
+                  <Link to={"/createTask"} className='w-full flex items-center gap-3'><MdOutlineAddTask size={18} /> Task</Link>
                 </MenuItem>
-                <MenuItem icon={<IoPricetagOutline />}>
-                  <Link to={"/createTag"} className='w-full'>Tag</Link>
+                <MenuItem>
+                  <Link to={"/createTag"} className='w-full flex items-center gap-3'><IoPricetagOutline /> Tag</Link>
                 </MenuItem>
-                <MenuItem icon={<LuNewspaper />}>
-                  <Link to={"/createSlip"} className='w-full'>Slip</Link>
+                <MenuItem>
+                  <Link to={"/createSlip"} className='w-full flex items-center gap-3'><LuNewspaper /> Slip</Link>
                 </MenuItem>
               </MenuGroup>
             </MenuList>

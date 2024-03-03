@@ -272,8 +272,8 @@ const Emp = () => {
                     value={projectData.manager_id}
                   >
                     <option value="">Select Manager</option>
-                    {managers.map((manager) => (
-                      <option key={manager.id} value={manager.id}>
+                    {managers.map((manager, index) => (
+                      <option key={`manager-${index}`} value={manager.id}>
                         {manager.name}
                       </option>
                     ))}

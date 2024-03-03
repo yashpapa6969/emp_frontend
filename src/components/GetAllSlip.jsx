@@ -39,6 +39,7 @@ const GetAllSlip = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,10 +48,10 @@ const GetAllSlip = () => {
           `${import.meta.env.VITE_API_BASE}/api/admin/getAllSlips`
         );
         setProjects(response.data);
-        setIsLoading(false); 
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     }
     fetchData();
@@ -60,6 +61,38 @@ const GetAllSlip = () => {
     setSelectedProject(project);
     onOpen();
   };
+
+  async function axiosDownloadFile(url, fileName) {
+    setDownloading(true);
+    return axios({
+      url,
+      method: 'GET',
+      responseType: 'blob',
+    })
+      .then(response => {
+        const href = window.URL.createObjectURL(response.data);
+
+        const anchorElement = document.createElement('a');
+
+        anchorElement.href = href;
+        anchorElement.download = fileName;
+
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
+
+        document.body.removeChild(anchorElement);
+        window.URL.revokeObjectURL(href);
+        setDownloading(false);
+      })
+      .catch(error => {
+        console.log('error: ', error);
+      });
+  }
+
+  const handleDownload = (id) => {
+    const url = `${import.meta.env.VITE_API_BASE}/api/admin/downloadSalarySlip/${id}`;
+    axiosDownloadFile(url, `${id}.pdf`)
+  }
 
   if (isLoading) {
     return (
@@ -95,11 +128,10 @@ const GetAllSlip = () => {
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   Travel Pay
                 </Th>
-             
+
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   Bonus
                 </Th>
-               
 
                 <Th fontWeight="bold">Action</Th>
               </Tr>
@@ -107,43 +139,46 @@ const GetAllSlip = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.basicPay}</Td>
-                      <Td className="md:table-cell hidden">
-                        {project.travelPay}
-                      </Td>
-                      <Td className="md:table-cell hidden">{project.bonus}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.basicPay}</Td>
+                    <Td className="md:table-cell hidden">
+                      {project.travelPay}
+                    </Td>
+                    <Td className="md:table-cell hidden">{project.bonus}</Td>
+                    <Td>
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : projects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.basicPay}</Td>
-                      <Td className="md:table-cell hidden">
-                        {project.travelPay}
-                      </Td>
-                      <Td className="md:table-cell hidden">{project.bonus}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.basicPay}</Td>
+                    <Td className="md:table-cell hidden">
+                      {project.travelPay}
+                    </Td>
+                    <Td className="md:table-cell hidden">{project.bonus}</Td>
+                    <Td className="flex gap-2">
+                      <Button
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                      <Button colorScheme="purple" onClick={() => handleDownload(project.slip_id)}>Download
+                        {/* {downloading && <Spinner ml={3} size={"sm"} color="gray.200" />} */}
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}

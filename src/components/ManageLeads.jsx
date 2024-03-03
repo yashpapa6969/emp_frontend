@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CustomKanban } from "./kanban/Board";
+import { Spinner } from "@chakra-ui/react";
 
-const KanbanBoard = () => {
+const ManageLeads = () => {
     const [leads, setLeads] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -23,16 +24,17 @@ const KanbanBoard = () => {
         fetchLeads();
     }, [])
 
-    if (loading) return <>Loading...</>
+    if (loading) return (
+        <div className="flex items-center justify-center h-screen">
+            <Spinner size="xl" color="purple.500" />
+        </div>
+    )
 
     return (
         <div>
-            {/* {leads.map((lead, index) => (
-                <p key={`lead-${index}`}>{lead.clientName}</p>
-            ))} */}
             <CustomKanban data={leads} />
         </div>
     )
 }
 
-export default KanbanBoard
+export default ManageLeads;

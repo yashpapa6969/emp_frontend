@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaFire, FaPlus, FaTrash } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { Empty, Tag } from "antd";
 
 export const CustomKanban = ({ data }) => {
     return (
@@ -15,7 +16,7 @@ const Board = ({ data }) => {
     const [cards, setCards] = useState(data);
 
     return (
-        <div className="flex h-full w-full gap-3 overflow-scroll p-12">
+        <div className="flex h-full w-full gap-3 p-12">
             {statusData.map((item) => (
                 <Column
                     key={`col-${item.column}`}
@@ -26,7 +27,7 @@ const Board = ({ data }) => {
                     setCards={setCards}
                 />
             ))}
-            <BurnBarrel setCards={setCards} />
+            {/* <BurnBarrel setCards={setCards} /> */}
         </div>
     );
 };
@@ -42,7 +43,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     const [active, setActive] = useState(false);
 
     const handleDragStart = (e, card) => {
-        e.dataTransfer.setData("cardId", card._id);
+        e.dataTransfer.setData("cardId", card?._id);
     };
 
     const handleStatusChange = async (leadId, statusNo) => {
@@ -69,10 +70,10 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
 
         const selectedStatus = statusData.filter((e) => e.column?.toLowerCase() === column?.toLowerCase())[0];
         const selectedCard = cards.filter((e) => e._id === cardId)[0];
-        // console.log(selectedCard.lead_id)
+        // console.log(selectedCard?.lead_id)
         console.log(selectedStatus);
 
-        handleStatusChange(selectedCard.lead_id, selectedStatus.id);
+        handleStatusChange(selectedCard?.lead_id, selectedStatus.id);
     };
 
     const handleDragOver = (e) => {
@@ -136,7 +137,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     const filteredCards = cards.filter((c) => c.status.toLowerCase() === column.toLowerCase());
 
     return (
-        <div className="w-56 shrink-0">
+        <div className="w-full bg-gray-100 rounded-md p-4 h-[500px]">
             <div className="mb-3 flex items-center justify-between">
                 <h3 className={`font-medium ${headingColor}`}>{title}</h3>
                 <span className="rounded text-sm text-neutral-400">
@@ -147,34 +148,48 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                 onDrop={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`h-full w-full transition-colors ${active ? "bg-gray-200" : "bg-neutral-800/0"
+                className={`h-[calc(100%-40px)] overflow-x-hidden overflow-y-hidden ${filteredCards.length > 0 && "overflow-y-scroll"} w-full transition-colors ${active ? "bg-gray-200" : "bg-neutral-800/0"
                     }`}
             >
-                {filteredCards.map((c) => {
-                    return <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />;
-                })}
+                {filteredCards.length === 0 ?
+                    <Empty
+                        className="h-full flex flex-col items-center justify-center"
+                        description={
+                            <h3 className="font-semibold text-gray-500 text-md capitalize">No leads {column}</h3>
+                        }
+                    >
+                    </Empty>
+                    : filteredCards.map((c) => {
+                        return <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />;
+                    })}
                 <DropIndicator beforeId={null} column={column} />
-                <AddCard column={column} setCards={setCards} />
+                {/* <AddCard column={column} setCards={setCards} /> */}
             </div>
         </div>
     );
 };
 
 const Card = ({ card, column, handleDragStart }) => {
+    console.log(card)
     return (
         <>
-            <DropIndicator beforeId={card._id} column={column} />
+            <DropIndicator beforeId={card?._id} column={column} />
             <motion.div
                 layout
-                layoutId={card._id}
+                layoutId={card?._id}
                 draggable="true"
                 onDragStart={(e) => handleDragStart(e, { ...card })}
-                className={`cursor-grab rounded border p-3 active:cursor-grabbing ${column === "raw" ? "bg-red-400" : column === "in-progress" ? "bg-green-400" : column === "converted" ? "bg-purple-400" : "bg-blue-400" }`}
+                className={`cursor-grab rounded border p-3 active:cursor-grabbing bg-white`}
+            // ${column === "raw" ? "bg-red-400" : column === "in-progress" ? "bg-green-400" : column === "converted" ? "bg-purple-400" : "bg-blue-400" }
             >
-                <h2 className="text-lg">{card.title}</h2>
-                <p className="text-sm">
-                    {card.status}
-                </p>
+                <h2 className="text-lg capitalize">{card?.title && card?.title} {card?.clientName}</h2>
+                <div className="flex gap-2 flex-wrap mt-4">
+                    {card?.country && <Tag color="orange">Location: {card?.city && card?.city}, {card?.country}</Tag>}
+                    {card?.brandName && <Tag color="green">Brand: {card?.brandName}</Tag>}
+                    {card?.companyName && <Tag color="gold">Company: {card?.companyName}</Tag>}
+                    {card?.enquiryDate && <Tag color="purple">Enq date: {card?.enquiryDate}</Tag>}
+                    {card?.website && <Tag color="cyan">{card?.website}</Tag>}
+                </div>
             </motion.div>
         </>
     );
