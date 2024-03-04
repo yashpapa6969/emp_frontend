@@ -165,7 +165,7 @@ const Client = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormControl id="enquiryDate" isRequired>
+            { /* <FormControl id="enquiryDate" isRequired>
                 <FormLabel>Enquiry Date</FormLabel>
                 <MyDatePicker
                     selected={projectData.enquiryDate}
@@ -176,6 +176,7 @@ const Client = () => {
                     format={"DD/MM/YYYY"}
                 />
             </FormControl>
+                */}
             <div className="hidden md:block">
                 <Tabs>
                     <TabList>
