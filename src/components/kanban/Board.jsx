@@ -161,10 +161,14 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                         }
                     >
                     </Empty>
-                    : filteredCards.map((c) => {
-                        return <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />;
-                    })}
-                <DropIndicator beforeId={null} column={column} />
+                    : (
+                        <div className={`${column === "converted" ? "grid gap-3 grid-cols-5 itesta" : ""}`}>
+                            {filteredCards.map((c) => (
+                                <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />
+                            ))}
+                        </div>
+                    )}
+                    <DropIndicator beforeId={null} column={column} />
                 {/* <AddCard column={column} setCards={setCards} /> */}
             </div>
         </div>
@@ -174,7 +178,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
 const Card = ({ card, column, handleDragStart }) => {
     console.log(card)
     return (
-        <>
+        <div>
             <DropIndicator beforeId={card?._id} column={column} />
             <motion.div
                 layout
@@ -193,7 +197,7 @@ const Card = ({ card, column, handleDragStart }) => {
                     {card?.website && <Tag color="cyan">{card?.website}</Tag>}
                 </div>
             </motion.div>
-        </>
+        </div>
     );
 };
 

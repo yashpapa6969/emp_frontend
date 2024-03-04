@@ -36,7 +36,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
 
   const currentDate = new Date();
   const dateString = `${currentDate.getDate()}-${currentDate.getMonth()}-${currentDate.getFullYear()}`
-  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
 
   return (
     <>
