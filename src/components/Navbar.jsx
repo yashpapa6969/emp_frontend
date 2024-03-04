@@ -33,11 +33,19 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
     dispatch(logout());
     navigate("/login");
   };
+
+  const currentDate = new Date();
+  const dateString = `${currentDate.getDate()}-${currentDate.getMonth()}-${currentDate.getFullYear()}`
+  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+
   return (
     <>
       <div className="w-full h-[70px] bg-[#172032] flex items-center justify-between px-4">
         <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
         <div className="flex gap-4 items-center justify-center">
+          <div className='text-white'>
+            {dateString} {timeString}
+          </div>
           <Menu>
             <MenuButton righticon={<ChevronDownIcon />}>
               <Avatar size='sm' name={user.name} />
