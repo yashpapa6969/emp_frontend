@@ -126,80 +126,85 @@ const CreateTask = () => {
             <p className="font-light mb-4">Fill the below form to add a new task</p>
 
             <form onSubmit={handleSubmit}>
+                <div className="flex gap-3 mb-3">
+                    <FormControl maxWidth={200}>
+                        <FormLabel>Brand Name</FormLabel>
+                        <Select value={selectedBrandName} onChange={handleBrandChange}>
+                            <option disabled value="">
+                                Select Brand
+                            </option>
+                            {brandNames.map((brand) => (
+                                <option key={brand._id} value={brand.brandName}>
+                                    {brand.brandName}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl maxWidth={200}>
+                        <FormLabel>Project</FormLabel>
+                        <Select value={selectedProject} onChange={handleProjectChange}>
+                            <option disabled value="">
+                                Select Project
+                            </option>
+                            {projects.map((project) => (
+                                <option key={project._id} value={project.project_id}>
+                                    {project.projectName}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl maxWidth={200}>
+                        <FormLabel>Employee</FormLabel>
+                        <Select
+                            value={selectedEmployee}
+                            onChange={(e) => setSelectedEmployee(e.target.value)}
+                        >
+                            <option disabled value="">
+                                Select Employee
+                            </option>
+                            {employees.map((employeeId) => (
+                                <option key={employeeId} value={employeeId}>
+                                    {employeeId}
+                                </option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </div>
+
                 <FormControl>
-                    <FormLabel>Brand Name</FormLabel>
-                    <Select value={selectedBrandName} onChange={handleBrandChange}>
-                        <option disabled value="">
-                            Select Brand
-                        </option>
-                        {brandNames.map((brand) => (
-                            <option key={brand._id} value={brand.brandName}>
-                                {brand.brandName}
-                            </option>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl mt={4}>
-                    <FormLabel>Project</FormLabel>
-                    <Select value={selectedProject} onChange={handleProjectChange}>
-                        <option disabled value="">
-                            Select Project
-                        </option>
-                        {projects.map((project) => (
-                            <option key={project._id} value={project.project_id}>
-                                {project.projectName}
-                            </option>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl mt={4}>
-                    <FormLabel>Employee</FormLabel>
-                    <Select
-                        value={selectedEmployee}
-                        onChange={(e) => setSelectedEmployee(e.target.value)}
-                    >
-                        <option disabled value="">
-                            Select Employee
-                        </option>
-                        {employees.map((employeeId) => (
-                            <option key={employeeId} value={employeeId}>
-                                {employeeId}
-                            </option>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl mt={4}>
                     <FormLabel>Description</FormLabel>
                     <Textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </FormControl>
-                <FormControl mt={4}>
-                    <FormLabel>Priority</FormLabel>
-                    <Select
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
-                    >
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                    </Select>
-                </FormControl>
 
-                <FormControl mt={4}>
-                    <FormLabel>Status</FormLabel>
-                    <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option value="Not Started">Not Started</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                    </Select>
-                </FormControl>
+                <div className="flex gap-2 my-3">
+                    <FormControl maxWidth={150}>
+                        <FormLabel>Priority</FormLabel>
+                        <Select
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value)}
+                        >
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </Select>
+                    </FormControl>
 
-                <FormControl mt={4}>
+                    <FormControl maxWidth={200}>
+                        <FormLabel>Status</FormLabel>
+                        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <option value="Not Started">Not Started</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </Select>
+                    </FormControl>
+                </div>
+
+                <FormControl>
                     <FormLabel>Start Date</FormLabel>
                     <DatePicker
                         selected={startDate}
@@ -207,7 +212,7 @@ const CreateTask = () => {
                     />
                 </FormControl>
 
-                <FormControl mt={4}>
+                <FormControl>
                     <FormLabel>Deadline</FormLabel>
                     <DatePicker
                         selected={deadline}

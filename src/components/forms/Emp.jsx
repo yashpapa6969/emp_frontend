@@ -182,11 +182,11 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-3">
-                <FormControl id="employeeName" isRequired>
+                <FormControl className="w-[200px]" id="employeeName" isRequired>
                   <FormLabel>Employee Name</FormLabel>
                   <Input name="name" onChange={handleChange} isRequired />
                 </FormControl>
-                <FormControl id="title" isRequired>
+                <FormControl className="w-[100px]" id="title" isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select
                     name="title"
@@ -197,7 +197,7 @@ const Emp = () => {
                     <option value="Mrs.">Mrs.</option>
                   </Select>
                 </FormControl>
-                <FormControl id="gender">
+                <FormControl className="w-[100px]" id="gender">
                   <FormLabel>Gender</FormLabel>
                   <Select
                     name="gender"

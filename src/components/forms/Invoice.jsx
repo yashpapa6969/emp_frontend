@@ -1,37 +1,54 @@
 import { Button, Flex, FormControl, FormLabel, Input, Textarea } from '@chakra-ui/react'
 import MyDatePicker from '../common/MyDatePicker'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { TimePicker, DatePicker } from 'antd';
 import SelectProduct from '../common/SelectProduct';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import SelectClient from '../common/SelectClient';
 
 const Invoice = () => {
     const [selectProductValue, setSelectProductValue] = useState({});
+    const [selectedSource, setSelectedSource] = useState({});
+    const [serviceDescription, setServiceDescription] = useState("");
+    const [unitPrice, setUnitPrice] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [clients, setClients] = useState({});
     const [invoiceData, setInvoiceData] = useState({
         services: {
             product: "",
             serviceDescription: "",
             duration: "",
             quantity: 0,
-            unitPrice: 0,
+            unitPrice: unitPrice,
             startDate: "",
             endDate: ""
         },
         client_id: "",
         gst: 0,
-        date1: "",
-        time1: "",
+        date1: moment().format("DD-MM-YYYY"),
+        time1: moment().format("hh:mm:ss"),
     });
-    const [serviceDescription, setServiceDescription] = useState("");
-    const [unitPrice, setUnitPrice] = useState(0);
-    const [quantity, setQuantity] = useState(0);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE}/api/admin/getProductDetails/${selectProductValue}`);
+            setSelectedSource(res.data);
+            setUnitPrice(selectedSource.unitPrice)
+        }
+        fetchProduct();
+        console.log(selectedSource)
+    }, [])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const productData = await axios.get(`${import.meta.env.VITE_API_BASE}/api/admin/getProductDetails/${selectProductValue}`);
         setInvoiceData({
-            ...invoiceData, services: {
+            ...invoiceData,
+            client_id: `${clients}`,
+            services: {
                 product: productData.data.product,
                 serviceDescription: serviceDescription,
                 duration: "",
@@ -41,9 +58,10 @@ const Invoice = () => {
                 endDate: ""
             }
         })
-        console.log(invoiceData)
 
         const formData = new FormData();
+        console.log(invoiceData)
+        console.log(formData)
 
         Object.entries(invoiceData).forEach(([key, value]) => {
             if (value !== "") {
@@ -80,20 +98,22 @@ const Invoice = () => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="flex gap-3">
-                <FormControl id="date1" isRequired>
+                <FormControl id="date1" width={150} isRequired>
                     <FormLabel>Invoice Date</FormLabel>
                     <MyDatePicker
                         selected={invoiceData.date1}
                         onChange={(date) =>
-                            setInvoiceData({ ...invoiceData, date1: date })
+                            setInvoiceData({ ...invoiceData, date1: `${date.toDate()}` })
                         }
                         defaultValue={moment()}
                         format={"DD/MM/YYYY"}
                     />
                 </FormControl>
-                <FormControl id="time1" isRequired>
+                <FormControl id="time1" width={150} isRequired>
                     <FormLabel>Enquiry Date</FormLabel>
                     <TimePicker
+                        selected={invoiceData.time1}
+                        onChange={(time) => setInvoiceData({ ...invoiceData, time1: `${time}` })}
                         defaultValue={moment()}
                         format={"hh:mm:ss"}
                         disabled />
@@ -101,8 +121,8 @@ const Invoice = () => {
             </div>
             <div className="flex gap-3 mt-3">
                 <FormControl id="client_id" isRequired>
-                    <FormLabel>Client ID</FormLabel>
-                    <Input name="client_id" onChange={handleChange} isRequired />
+                    <FormLabel>Client Name</FormLabel>
+                    <SelectClient selectSourceValue={clients} setSelectSourceValue={setClients} />
                 </FormControl>
             </div>
             <div className="flex gap-3 mt-3">
@@ -125,7 +145,7 @@ const Invoice = () => {
             </div>
             <div className="flex gap-3 mt-3">
                 <FormControl id="tags" isRequired>
-                    <FormLabel>Source</FormLabel>
+                    <FormLabel>Product</FormLabel>
                     <Flex>
                         <SelectProduct
                             selectSourceValue={selectProductValue}

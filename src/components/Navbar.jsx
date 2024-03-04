@@ -15,11 +15,12 @@ import { Link } from "react-router-dom";
 
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoIosLogOut, IoMdHome } from "react-icons/io";
-import { AddIcon, ChevronDownIcon, EditIcon, ExternalLinkIcon, HamburgerIcon, PlusSquareIcon, RepeatIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon} from "@chakra-ui/icons";
 import { IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { MdOutlineAddTask } from 'react-icons/md';
 import { LuNewspaper } from 'react-icons/lu';
+import { HiOutlineDocumentDuplicate } from 'react-icons/hi2';
 
 const Navbar = ({ showSidebar, setShowSidebar }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -59,7 +60,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               </MenuGroup>
             </MenuList>
           </Menu>
-          {/* <Menu>
+          <Menu>
             <MenuButton
               as={IconButton}
               aria-label='Options'
@@ -73,6 +74,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               <MenuGroup title='Quick Create'>
                 <MenuItem>
                   <Link to={"/createEmp"} className='w-full flex items-center gap-3'><IoPersonAddOutline size={16} /> Employee</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to={"/createInvoice"} className='w-full flex items-center gap-3'><HiOutlineDocumentDuplicate size={16} /> Invoice</Link>
                 </MenuItem>
                 <MenuItem>
                   <Link to={"/createProject"} className='w-full flex items-center gap-3'><LiaProjectDiagramSolid size={18} /> Project</Link>
@@ -94,7 +98,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
                 </MenuItem>
               </MenuGroup>
             </MenuList>
-          </Menu> */}
+          </Menu>
         </div>
       </div>
     </>

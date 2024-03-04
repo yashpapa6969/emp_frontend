@@ -58,7 +58,7 @@ const SelectProduct = ({ selectSourceValue, setSelectSourceValue }) => {
                 fetchSourceTags();
                 toast({
                     title: "Success",
-                    description: "Added a new source tag",
+                    description: "Added a new product tag",
                     status: "success",
                     duration: 5000,
                     isClosable: true,
@@ -95,7 +95,7 @@ const SelectProduct = ({ selectSourceValue, setSelectSourceValue }) => {
                             onKeyDown={(e) => e.stopPropagation()}
                         />
                         <Input
-                        type='number'
+                            type='number'
                             placeholder="Price"
                             ref={inputRef}
                             value={price}
