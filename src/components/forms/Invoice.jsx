@@ -2,7 +2,7 @@ import { Button, Flex, FormControl, FormLabel, Input, Textarea } from '@chakra-u
 import MyDatePicker from '../common/MyDatePicker'
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { TimePicker, DatePicker } from 'antd';
+import { TimePicker } from 'antd';
 import SelectProduct from '../common/SelectProduct';
 import axios from 'axios';
 import { toast } from 'react-toastify';
