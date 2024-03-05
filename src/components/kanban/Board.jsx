@@ -162,7 +162,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                     >
                     </Empty>
                     : (
-                        <div className={`${column === "converted" ? "grid gap-3 grid-cols-5 itesta" : ""}`}>
+                        <div className={`${column === "converted" ? "grid gap-3 grid-cols-3 itesta" : ""}`}>
                             {filteredCards.map((c) => (
                                 <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />
                             ))}

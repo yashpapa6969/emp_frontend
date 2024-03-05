@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoIosLogOut, IoMdHome } from "react-icons/io";
-import { AddIcon, ChevronDownIcon} from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { MdOutlineAddTask } from 'react-icons/md';
@@ -35,39 +35,14 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
   };
 
   const currentDate = new Date();
-  const dateString = `${currentDate.getDate()}-${currentDate.getMonth()}-${currentDate.getFullYear()}`
+  const dateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
   const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
 
   return (
     <>
       <div className="w-full h-[70px] bg-[#172032] flex items-center justify-between px-4">
-        <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
-        <div className="flex gap-4 items-center justify-center">
-          <div className='text-white'>
-            {dateString} {timeString}
-          </div>
-          <Menu>
-            <MenuButton righticon={<ChevronDownIcon />}>
-              <Avatar size='sm' name={user.name} />
-            </MenuButton>
-            <MenuList>
-              <MenuItem>
-                <Link to="/UserInfo" className='w-full'>My Profile</Link>
-              </MenuItem>
-              <MenuItem>
-                <Link to="/getAllTodo" className='w-full'>To do List</Link>
-              </MenuItem>
-              <MenuDivider />
-              <MenuGroup title='Profile'>
-              <MenuItem>
-                <Link to="/home" className='w-full flex gap-3 items-center'><IoMdHome size={16} /> Dashboard</Link>
-              </MenuItem>
-                <MenuItem icon={<IoIosLogOut size={16} />} onClick={handleLogout}>
-                  Logout
-                </MenuItem>
-              </MenuGroup>
-            </MenuList>
-          </Menu>
+        <div className="flex items-center gap-3">
+          <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
           <Menu>
             <MenuButton
               as={IconButton}
@@ -103,6 +78,33 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
                 </MenuItem>
                 <MenuItem>
                   <Link to={"/createSlip"} className='w-full flex items-center gap-3'><LuNewspaper /> Slip</Link>
+                </MenuItem>
+              </MenuGroup>
+            </MenuList>
+          </Menu>
+        </div>
+        <div className="flex gap-4 items-center justify-center">
+          <div className='text-white'>
+            {dateString} {timeString}
+          </div>
+          <Menu>
+            <MenuButton righticon={<ChevronDownIcon />}>
+              <Avatar size='sm' name={user.name} />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <Link to="/UserInfo" className='w-full'>My Profile</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to="/getAllTodo" className='w-full'>To do List</Link>
+              </MenuItem>
+              <MenuDivider />
+              <MenuGroup title='Profile'>
+                <MenuItem>
+                  <Link to="/home" className='w-full flex gap-3 items-center'><IoMdHome size={16} /> Dashboard</Link>
+                </MenuItem>
+                <MenuItem icon={<IoIosLogOut size={16} />} onClick={handleLogout}>
+                  Logout
                 </MenuItem>
               </MenuGroup>
             </MenuList>
