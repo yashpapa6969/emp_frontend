@@ -6,19 +6,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   VStack,
-  Tag,
-  TagLabel,
-  TagCloseButton,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
-import MyDatePicker from "./common/MyDatePicker";
 import axios from "axios";
-import SelectTag from "./common/SelectTag";
 
 const CreateSlip = () => {
-     const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
+  const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
   const [projectData, setProjectData] = useState({
     employee_id: "",
     basicPay: "",
@@ -31,7 +25,6 @@ const CreateSlip = () => {
   });
   const [tags, setTags] = useState([]);
   const [employee, setEmployee] = useState([]);
-  const [clients, setClients] = useState([]);
   const getEmployeeNameById = (id) => {
     const employee = employees.find((employee) => employee.employee_id === id);
     return employee ? employee.name : "Unknown Employee";
@@ -56,19 +49,19 @@ const CreateSlip = () => {
     const { name, value } = e.target;
     setProjectData({ ...projectData, [name]: value });
   };
-   const handleSelectManager = (event) => {
-     const selectedEmployeeId = event.target.value;
-     const selectedEmployee = employee.find(
-       (manager) => manager.employee_id === selectedEmployeeId
-     );
-     setSelectedEmployeeInfo(selectedEmployee);
-     setProjectData({ ...projectData, employee_id: selectedEmployeeId });
-   };
+  const handleSelectManager = (event) => {
+    const selectedEmployeeId = event.target.value;
+    const selectedEmployee = employee.find(
+      (manager) => manager.employee_id === selectedEmployeeId
+    );
+    setSelectedEmployeeInfo(selectedEmployee);
+    setProjectData({ ...projectData, employee_id: selectedEmployeeId });
+  };
 
 
 
 
-   const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post(
@@ -93,7 +86,7 @@ const CreateSlip = () => {
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
-  
+
         if (response.status === 200) {
           toast.success('Salary slip downloaded successfully.');
         } else {
@@ -108,7 +101,7 @@ const CreateSlip = () => {
         }
       });
   };
-  
+
   return (
     <>
       <ToastContainer />
@@ -146,37 +139,41 @@ const CreateSlip = () => {
               </VStack>
             )}
 
-          
-            <FormControl id="basicPay" isRequired>
-              <FormLabel>Basic Pay</FormLabel>
-              <Input name="basicPay" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="travelPay" isRequired>
-              <FormLabel>Travel Pay</FormLabel>
-              <Input name="travelPay" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="Bonus" isRequired>
-              <FormLabel>Bonus</FormLabel>
-              <Input name="bonus" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="paidLeave" isRequired>
-              <FormLabel>Paid Leave</FormLabel>
-              <Input name="paidLeave" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="tds" isRequired>
-              <FormLabel>TDS</FormLabel>
-              <Input name="tds" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="totaleaves" isRequired>
-              <FormLabel>Total Leaves</FormLabel>
-              <Input name="totalLeaves" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="advanceSalary" isRequired>
+
+            <div className="flex gap-3">
+              <FormControl id="basicPay" maxWidth={200} isRequired>
+                <FormLabel>Basic Pay</FormLabel>
+                <Input name="basicPay" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="travelPay" maxWidth={200} isRequired>
+                <FormLabel>Travel Pay</FormLabel>
+                <Input name="travelPay" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="Bonus" maxWidth={200} isRequired>
+                <FormLabel>Bonus</FormLabel>
+                <Input name="bonus" onChange={handleChange} />
+              </FormControl>
+            </div>
+            <div className="flex gap-3">
+              <FormControl id="paidLeave" maxWidth={100} isRequired>
+                <FormLabel>Paid Leave</FormLabel>
+                <Input name="paidLeave" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="tds" maxWidth={100} isRequired>
+                <FormLabel>TDS</FormLabel>
+                <Input name="tds" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="totaleaves" maxWidth={150} isRequired>
+                <FormLabel>Total Leaves</FormLabel>
+                <Input name="totalLeaves" onChange={handleChange} />
+              </FormControl>
+            </div>
+            <FormControl id="advanceSalary" maxWidth={300} isRequired>
               <FormLabel>Advance Salary</FormLabel>
               <Input name="advanceSalary" onChange={handleChange} />
             </FormControl>
 
-            <Button type="submit" colorScheme="purple">
+            <Button mt={6} type="submit" colorScheme="purple">
               Create Salary Slip
             </Button>
           </VStack>

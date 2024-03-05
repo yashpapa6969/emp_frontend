@@ -26,6 +26,8 @@ import GetAllSlip from "./components/GetAllSlip";
 import CreateSlip from "./components/CreateSlip";
 import GetEmpSlip from "./components/GetEmpSlip";
 import ManageLeads from "./components/ManageLeads";
+import GetAllInvoices from "./components/GetAllInvoices";
+import CreateInvoice from "./components/CreateInvoice";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -80,6 +82,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllManager />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllInvoice"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllInvoice"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllInvoices />
               </AppLayout>
             }
           />
@@ -223,6 +236,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateTag />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createInvoice"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateInvoice"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateInvoice />
               </AppLayout>
             }
           />

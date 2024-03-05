@@ -10,20 +10,16 @@ import {
   Text,
   useDisclosure,
   Image,
-  Flex,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
 import { setClientId } from "../../store/slice/ClientSlice";
 import { setProjectId } from "../../store/slice/ProjectSlice";
 import {
-  selectEmployeeIds,
-  clearEmployeeIds,
   setEmployeeId,
-  clearEmployeeId,
 } from "../../store/slice/EmployeeSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   const dispatch = useDispatch();
@@ -229,8 +225,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-              <Text><b>Client Anniversary: </b> {data.clientAnniversary || "Not defined"}</Text>
-              <Text><b>Company Anniversary: </b> {data.companyAnniversary || "Not defined"}</Text>
+                <Text><b>Client Anniversary: </b> {data.clientAnniversary || "Not defined"}</Text>
+                <Text><b>Company Anniversary: </b> {data.companyAnniversary || "Not defined"}</Text>
                 <div className="flex my-3 flex-col md:flex-row justify-between">
                   <Text><b>Name: </b> {data.clientName || "Not defined"}</Text>
                   <Text><b>Birthday: </b> {data.clientBirthday || "Not defined"}</Text>
@@ -340,6 +336,67 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text>{data.project_id}</Text>
                 <Text fontWeight="bold">Description: </Text>
                 <Text>{data.description}</Text>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
+
+  if (modalFor === "invoice") {
+    return (
+      <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Invoice Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <div>
+                <Text>{data.client_id}</Text>
+                <Text fontWeight="bold">Gst: </Text>
+                <Text>{data.gst}</Text>
+                <Text fontWeight="bold">Invoice Id: </Text>
+                <Text>{data.invoive_id}</Text>
+                <Text fontWeight="bold">Client ID: </Text>
+                <Link to={`/GetClient`}>      {/* GetClient/${data.client_id} */}
+                  <Button>Get Client details</Button>
+                </Link>
+
+                <Text fontWeight="bold">Date </Text>
+                <Text>{data.date1}</Text>
+                <Text fontWeight="bold">Time </Text>
+                <Text>{data.time1}</Text>
+
+                <Text fontWeight="bold">Services </Text>
+
+                <Text fontWeight="bold">Invoice: </Text>
+                <Text>{data.services.product}</Text>
+                <Text fontWeight="bold">Description: </Text>
+                <Text>{data.services.serviceDescription}</Text>
+                <Text fontWeight="bold">Duration: </Text>
+                <Text>{data.services.duration}</Text>
+                <Text fontWeight="bold">Quantity: </Text>
+                <Text>{data.services.quantity}</Text>
+                <Text fontWeight="bold">Unit Price: </Text>
+                <Text>{data.services.unitPrice}</Text>
+                <Text fontWeight="bold">Start Date: </Text>
+                <Text>{data.services.startDate}</Text>
+                <Text fontWeight="bold">End Date: </Text>
+                <Text>{data.services.endDate}</Text>
               </div>
             )}
           </ModalBody>

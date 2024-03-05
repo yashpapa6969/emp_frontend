@@ -92,22 +92,22 @@ const CreateProject = () => {
     });
   };
 
- const handleTagChange = (e) => {
-   const selectedTags = Array.from(
-     e.target.selectedOptions,
-     (option) => option.value
-   );
+  const handleTagChange = (e) => {
+    const selectedTags = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
 
-   // Fetch tag names for selected tag IDs
-   const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
-   console.log(selectedTagNames)
+    // Fetch tag names for selected tag IDs
+    const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
+    console.log(selectedTagNames)
 
-   // Update projectData with tag names
-   setProjectData({
-     ...projectData,
-     tags: [...projectData.tags, ...selectedTagNames],
-   });
- };
+    // Update projectData with tag names
+    setProjectData({
+      ...projectData,
+      tags: [...projectData.tags, ...selectedTagNames],
+    });
+  };
 
   const removeTagById = (tagToRemove) => {
     setProjectData({
@@ -182,25 +182,40 @@ const CreateProject = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="projectName" isRequired>
-              <FormLabel>Project Name</FormLabel>
-              <Input name="projectName" onChange={handleChange} />
-            </FormControl>
-            <FormControl id="client_id" isRequired>
-              <FormLabel>Brand Name</FormLabel>
-              <Select
-                onChange={handleClientChange}
-                size="md"
-                placeholder="Select Brand"
-                isRequired
-              >
-                {clients.map((client) => (
-                  <option key={client.client_id} value={client.client_id}>
-                    {client.brandName}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
+            <div className="flex flex-col md:flex-row gap-3 max-w-[700px]">
+              <FormControl id="projectName" isRequired>
+                <FormLabel>Project Name</FormLabel>
+                <Input name="projectName" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="client_id" isRequired>
+                <FormLabel>Brand Name</FormLabel>
+                <Select
+                  onChange={handleClientChange}
+                  size="md"
+                  placeholder="Select Brand"
+                  isRequired
+                >
+                  {clients.map((client) => (
+                    <option key={client.client_id} value={client.client_id}>
+                      {client.brandName}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl id="priority" isRequired>
+                <FormLabel>Priority</FormLabel>
+                <Select
+                width={150}
+                  name="priority"
+                  onChange={handleChange}
+                  placeholder="Select priority"
+                >
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </Select>
+              </FormControl>
+            </div>
             {selectedClient && (
               <>
                 <FormLabel>Client Name:-{selectedClient.clientName}</FormLabel>
@@ -209,47 +224,16 @@ const CreateProject = () => {
                 </FormLabel>
               </>
             )}
-
-            <FormControl id="priority" isRequired>
-              <FormLabel>Priority</FormLabel>
-              <Select
-                name="priority"
-                onChange={handleChange}
-                placeholder="Select priority"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </Select>
-            </FormControl>
-
             <FormControl id="description" isRequired>
               <FormLabel>Description</FormLabel>
               <Input name="description" onChange={handleChange} />
             </FormControl>
 
-            <FormControl mb="4">
-              <FormLabel>Start Date</FormLabel>
-              <MyDatePicker
-                selected={projectData.startDate}
-                onChange={handleStartDateChange}
-                format={"DD/MM/YYYY"}
-                placeholderText="Pick Date"
-              />
-            </FormControl>
-            <FormControl mb="4">
-              <FormLabel>End Date</FormLabel>
-              <MyDatePicker
-                selected={projectData.deadline}
-                onChange={handleEndDateChange}
-                format={"DD/MM/YYYY"}
-                placeholderText="Pick Date"
-              />
-            </FormControl>
-            <FormControl id="tags" isRequired>
-              <FormLabel>Tags</FormLabel>
-              <SelectTag selectTagValue={selctedTagValue} setSelectTagValue={setSelctedTagValue} />
-              {/* <Select
+            <div className="flex gap-3">
+              <FormControl id="tags" isRequired>
+                <FormLabel>Tags</FormLabel>
+                <SelectTag selectTagValue={selctedTagValue} setSelectTagValue={setSelctedTagValue} />
+                {/* <Select
                 onChange={handleTagChange}
                 size="md"
                 placeholder="Select tags"
@@ -261,19 +245,39 @@ const CreateProject = () => {
                   </option>
                 ))}
               </Select> */}
-              {projectData.tags.map((tag) => (
-                <Tag
-                  key={tag._id}
-                  size="md"
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="blue"
-                >
-                  <TagLabel>{tag}</TagLabel>
-                  <TagCloseButton onClick={() => removeTagById(tag)} />
-                </Tag>
-              ))}
-            </FormControl>
+                {projectData.tags.map((tag) => (
+                  <Tag
+                    key={tag._id}
+                    size="md"
+                    borderRadius="full"
+                    variant="solid"
+                    colorScheme="blue"
+                  >
+                    <TagLabel>{tag}</TagLabel>
+                    <TagCloseButton onClick={() => removeTagById(tag)} />
+                  </Tag>
+                ))}
+              </FormControl>
+
+              <FormControl mb="4">
+                <FormLabel>Start Date</FormLabel>
+                <MyDatePicker
+                  selected={projectData.startDate}
+                  onChange={handleStartDateChange}
+                  format={"DD/MM/YYYY"}
+                  placeholderText="Pick Date"
+                />
+              </FormControl>
+              <FormControl mb="4">
+                <FormLabel>End Date</FormLabel>
+                <MyDatePicker
+                  selected={projectData.deadline}
+                  onChange={handleEndDateChange}
+                  format={"DD/MM/YYYY"}
+                  placeholderText="Pick Date"
+                />
+              </FormControl>
+            </div>
             <FormControl id="employees" isRequired>
               <FormLabel>Employees</FormLabel>
               <Select

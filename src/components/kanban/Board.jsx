@@ -6,7 +6,7 @@ import { Empty, Tag } from "antd";
 
 export const CustomKanban = ({ data }) => {
     return (
-        <div className="h-screen w-full">
+        <div className="w-full">
             <Board data={data} />
         </div>
     );
@@ -16,7 +16,7 @@ const Board = ({ data }) => {
     const [cards, setCards] = useState(data);
 
     return (
-        <div className="flex h-full w-full gap-3 p-12">
+        <div className="grid grid-cols-3 w-full gap-3 p-12">
             {statusData.map((item) => (
                 <Column
                     key={`col-${item.column}`}
@@ -35,8 +35,8 @@ const Board = ({ data }) => {
 const statusData = [
     { id: 0, name: "Raw", column: "raw", headingColor: "text-red-400" },
     { id: 1, name: "In progress", column: "in-progress", headingColor: "text-green-400" },
-    { id: 2, name: "Converted", column: "converted", headingColor: "text-purple-400" },
     { id: 3, name: "Lost", column: "lost", headingColor: "text-blue-400" },
+    { id: 2, name: "Converted", column: "converted", headingColor: "text-purple-400" },
 ]
 
 const Column = ({ title, headingColor, cards, column, setCards, data }) => {
@@ -137,7 +137,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     const filteredCards = cards.filter((c) => c.status.toLowerCase() === column.toLowerCase());
 
     return (
-        <div className="w-full bg-gray-100 rounded-md p-4 h-[500px]">
+        <div className={`w-full bg-gray-100 rounded-md p-4 h-[400px] ${column === "converted" && "col-span-3"}`}>
             <div className="mb-3 flex items-center justify-between">
                 <h3 className={`font-medium ${headingColor}`}>{title}</h3>
                 <span className="rounded text-sm text-neutral-400">
@@ -148,7 +148,9 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                 onDrop={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`h-[calc(100%-40px)] overflow-x-hidden overflow-y-hidden ${filteredCards.length > 0 && "overflow-y-scroll"} w-full transition-colors ${active ? "bg-gray-200" : "bg-neutral-800/0"
+                className={`h-[calc(100%-40px)] overflow-x-hidden overflow-y-hidden w-full transition-colors
+                    ${filteredCards.length > 0 && "overflow-y-scroll"} 
+                    ${active ? "bg-gray-200" : "bg-neutral-800/0"
                     }`}
             >
                 {filteredCards.length === 0 ?
@@ -159,10 +161,14 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                         }
                     >
                     </Empty>
-                    : filteredCards.map((c) => {
-                        return <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />;
-                    })}
-                <DropIndicator beforeId={null} column={column} />
+                    : (
+                        <div className={`${column === "converted" ? "grid gap-3 grid-cols-5 itesta" : ""}`}>
+                            {filteredCards.map((c) => (
+                                <Card key={c._id} card={c} column={column} handleDragStart={handleDragStart} />
+                            ))}
+                        </div>
+                    )}
+                    <DropIndicator beforeId={null} column={column} />
                 {/* <AddCard column={column} setCards={setCards} /> */}
             </div>
         </div>
@@ -172,7 +178,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
 const Card = ({ card, column, handleDragStart }) => {
     console.log(card)
     return (
-        <>
+        <div>
             <DropIndicator beforeId={card?._id} column={column} />
             <motion.div
                 layout
@@ -191,7 +197,7 @@ const Card = ({ card, column, handleDragStart }) => {
                     {card?.website && <Tag color="cyan">{card?.website}</Tag>}
                 </div>
             </motion.div>
-        </>
+        </div>
     );
 };
 

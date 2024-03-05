@@ -182,11 +182,11 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-3">
-                <FormControl id="employeeName" isRequired>
+                <FormControl id="employeeName" maxWidth={200} isRequired>
                   <FormLabel>Employee Name</FormLabel>
                   <Input name="name" onChange={handleChange} isRequired />
                 </FormControl>
-                <FormControl id="title" isRequired>
+                <FormControl maxWidth={110} id="title" isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select
                     name="title"
@@ -197,7 +197,7 @@ const Emp = () => {
                     <option value="Mrs.">Mrs.</option>
                   </Select>
                 </FormControl>
-                <FormControl id="gender">
+                <FormControl maxWidth={130} id="gender">
                   <FormLabel>Gender</FormLabel>
                   <Select
                     name="gender"
@@ -209,13 +209,13 @@ const Emp = () => {
                     <option value="Others">Others</option>
                   </Select>
                 </FormControl>
-                <FormControl id="contactNo" isRequired>
+                <FormControl id="contactNo" maxWidth={200} isRequired>
                   <FormLabel>Contact Number</FormLabel>
                   <Input name="contactNo" onChange={handleChange} isRequired />
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="dob" isRequired>
+                <FormControl id="dob" maxWidth={150} isRequired>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     selected={projectData.dob}
@@ -225,11 +225,11 @@ const Emp = () => {
                     format={"DD/MM/YYYY"}
                   />
                 </FormControl>
-                <FormControl id="position" isRequired>
+                <FormControl id="position" maxWidth={200} isRequired>
                   <FormLabel>Position</FormLabel>
                   <Input name="position" onChange={handleChange} isRequired />
                 </FormControl>
-                <FormControl id="designation" isRequired>
+                <FormControl id="designation" maxWidth={200} isRequired>
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
@@ -240,22 +240,22 @@ const Emp = () => {
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="department" isRequired>
+                <FormControl id="department" maxWidth={200} isRequired>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="email">
+                <FormControl id="email" maxWidth={200}>
                   <FormLabel>Email</FormLabel>
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="password">
+                <FormControl id="password" maxWidth={200}>
                   <FormLabel>password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3">
-                <FormControl id="joiningDate" isRequired>
+                <FormControl id="joiningDate" maxWidth={200} isRequired>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     selected={projectData.dob}

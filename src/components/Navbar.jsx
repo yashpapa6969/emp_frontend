@@ -15,11 +15,12 @@ import { Link } from "react-router-dom";
 
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoIosLogOut, IoMdHome } from "react-icons/io";
-import { AddIcon, ChevronDownIcon, EditIcon, ExternalLinkIcon, HamburgerIcon, PlusSquareIcon, RepeatIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon} from "@chakra-ui/icons";
 import { IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { MdOutlineAddTask } from 'react-icons/md';
 import { LuNewspaper } from 'react-icons/lu';
+import { HiOutlineDocumentDuplicate } from 'react-icons/hi2';
 
 const Navbar = ({ showSidebar, setShowSidebar }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -32,11 +33,19 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
     dispatch(logout());
     navigate("/login");
   };
+
+  const currentDate = new Date();
+  const dateString = `${currentDate.getDate()}-${currentDate.getMonth()}-${currentDate.getFullYear()}`
+  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
+
   return (
     <>
       <div className="w-full h-[70px] bg-[#172032] flex items-center justify-between px-4">
         <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
         <div className="flex gap-4 items-center justify-center">
+          <div className='text-white'>
+            {dateString} {timeString}
+          </div>
           <Menu>
             <MenuButton righticon={<ChevronDownIcon />}>
               <Avatar size='sm' name={user.name} />
@@ -73,6 +82,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               <MenuGroup title='Quick Create'>
                 <MenuItem>
                   <Link to={"/createEmp"} className='w-full flex items-center gap-3'><IoPersonAddOutline size={16} /> Employee</Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link to={"/createInvoice"} className='w-full flex items-center gap-3'><HiOutlineDocumentDuplicate size={16} /> Invoice</Link>
                 </MenuItem>
                 <MenuItem>
                   <Link to={"/createProject"} className='w-full flex items-center gap-3'><LiaProjectDiagramSolid size={18} /> Project</Link>

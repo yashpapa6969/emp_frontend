@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
+import SelectTag from "../common/SelectTag";
 
 const Lead = () => {
     const [projectData, setProjectData] = useState({
@@ -51,6 +52,7 @@ const Lead = () => {
     const [selectedState, setSelectedState] = useState("");
     const [tags, setTags] = useState([]);
     const [selectSourceValue, setSelectSourceValue] = useState([]);
+    const [selectedTagValue, setSelectedTagValue] = useState([]);
 
     const removeTagById = (tagToRemove) => {
         setProjectData({
@@ -178,7 +180,7 @@ const Lead = () => {
             <TabPanels>
               <TabPanel>
                 <div className="flex gap-3 mb-3">
-                  <FormControl id="title" isRequired>
+                  <FormControl id="title" maxWidth={110} isRequired>
                     <FormLabel>Title</FormLabel>
                     <Select
                       name="title"
@@ -189,7 +191,7 @@ const Lead = () => {
                       <option value="Mrs.">Mrs.</option>
                     </Select>
                   </FormControl>
-                  <FormControl id="clientName" isRequired>
+                  <FormControl id="clientName" maxWidth={200} isRequired>
                     <FormLabel>Client Name</FormLabel>
                     <Input
                       name="clientName"
@@ -197,7 +199,7 @@ const Lead = () => {
                       isRequired
                     />
                   </FormControl>
-                  <FormControl id="gender" isRequired>
+                  <FormControl id="gender" maxWidth={130} isRequired>
                     <FormLabel>Gender</FormLabel>
                     <Select
                       name="gender"
@@ -220,26 +222,26 @@ const Lead = () => {
                   </FormControl>
                 </div>
                 <div className="flex gap-3 mb-3">
-                  <FormControl id="phone1" isRequired>
+                  <FormControl id="phone1" maxWidth={200} isRequired>
                     <FormLabel>Phone Number 1</FormLabel>
                     <Input name="phone1" onChange={handleChange} />
                   </FormControl>
-                  <FormControl id="phone2">
+                  <FormControl id="phone2" maxWidth={200}>
                     <FormLabel>Phone Number 2</FormLabel>
                     <Input name="phone2" onChange={handleChange} />
                   </FormControl>
                 </div>
 
                 <div className="flex gap-3">
-                  <FormControl id="email1">
+                  <FormControl id="email1" maxWidth={200}>
                     <FormLabel>Email 1</FormLabel>
                     <Input name="email1" onChange={handleChange} />
                   </FormControl>
-                  <FormControl id="email2">
+                  <FormControl id="email2" maxWidth={200}>
                     <FormLabel>Email 2</FormLabel>
                     <Input name="email2" onChange={handleChange} />
                   </FormControl>
-                  <FormControl id="website">
+                  <FormControl id="website" maxWidth={200}>
                     <FormLabel>Website</FormLabel>
                     <Input name="website" onChange={handleChange} />
                   </FormControl>
@@ -317,11 +319,12 @@ const Lead = () => {
                 <div className="flex flex-col gap-3">
                   <FormControl id="requirement" className="w-1/2">
                     <FormLabel>Requirement</FormLabel>
-                    <Input
+                    {/* <Input
                       name="requirement"
                       onChange={handleChange}
                       className="h-16"
-                    />
+                    /> */}
+                    <SelectTag selectTagValue={selectedTagValue} setSelectTagValue={setSelectedTagValue} />
                   </FormControl>
                   <FormControl id="additionalInformation" className="w-1/2">
                     <FormLabel>Additional Information</FormLabel>

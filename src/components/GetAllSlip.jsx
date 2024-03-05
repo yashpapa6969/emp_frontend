@@ -15,22 +15,7 @@ import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
-
-const CreateProjectButton = ({ onOpen }) => {
-  return (
-    <Link to="/createSlip">
-      <Button
-        colorScheme="blue"
-        onClick={onOpen}
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Create Slip
-      </Button>
-    </Link>
-  );
-};
+import { DownloadIcon } from "@chakra-ui/icons";
 
 const GetAllSlip = () => {
   const [projects, setProjects] = useState([]);
@@ -39,7 +24,7 @@ const GetAllSlip = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [downloading, setDownloading] = useState(false);
+  const [downloading, setDownloading] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -89,9 +74,10 @@ const GetAllSlip = () => {
       });
   }
 
-  const handleDownload = (id) => {
+  const handleDownload = (id, index) => {
     const url = `${import.meta.env.VITE_API_BASE}/api/admin/downloadSalarySlip/${id}`;
-    axiosDownloadFile(url, `${id}.pdf`)
+    axiosDownloadFile(url, `${id}.pdf`);
+    setDownloading(index);
   }
 
   if (isLoading) {
@@ -106,7 +92,19 @@ const GetAllSlip = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Slip Information</h1>
-        <CreateProjectButton onOpen={onOpen} />
+
+        <Link to="/createSlip">
+          <Button
+            colorScheme="blue"
+            onClick={onOpen}
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Create Slip
+          </Button>
+        </Link>
+
         {projects.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -114,7 +112,7 @@ const GetAllSlip = () => {
           />
         ) : (
           <TableContainer
-            formFor="project"
+            formFor="slip"
             searchText={searchText}
             setSearchText={setSearchText}
             setFilteredData={setFilteredProjects}
@@ -122,7 +120,7 @@ const GetAllSlip = () => {
           >
             <Thead bg={"#F1F5F9"}>
               <Tr>
-                <Th fontWeight="bold">S. No.</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">S. No.</Th>
                 <Th fontWeight="bold">Employee name</Th>
                 <Th fontWeight="bold">Basic Pay</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
@@ -140,41 +138,50 @@ const GetAllSlip = () => {
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
                   <Tr key={project._id}>
-                    <Td>{index + 1}</Td>
+                    <Td className="md:table-cell hidden">{index + 1}</Td>
                     <Td>{index + 1}</Td>
                     <Td>{project.basicPay}</Td>
                     <Td className="md:table-cell hidden">
                       {project.travelPay}
                     </Td>
                     <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td>
+                    <Td className="flex gap-2 flex-col md:flex-row">
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >
                         More Info
+                      </Button>
+                      <Button
+                        size={"sm"} variant={"outline"} isLoading={index === downloading} colorScheme="purple"
+                        onClick={() => handleDownload(project.slip_id, index)}>
+                        <DownloadIcon />
                       </Button>
                     </Td>
                   </Tr>
                 ))
                 : projects.map((project, index) => (
                   <Tr key={project._id}>
-                    <Td>{index + 1}</Td>
+                    <Td className="md:table-cell hidden">{index + 1}</Td>
                     <Td>{index + 1}</Td>
                     <Td>{project.basicPay}</Td>
                     <Td className="md:table-cell hidden">
                       {project.travelPay}
                     </Td>
                     <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td className="flex gap-2">
+                    <Td className="flex gap-2 flex-col md:flex-row">
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >
                         More Info
                       </Button>
-                      <Button colorScheme="purple" onClick={() => handleDownload(project.slip_id)}>Download
-                        {/* {downloading && <Spinner ml={3} size={"sm"} color="gray.200" />} */}
+                      <Button
+                        size={"sm"} variant={"outline"} isLoading={index === downloading} colorScheme="purple"
+                        onClick={() => handleDownload(project.slip_id, index)}>
+                        <DownloadIcon />
                       </Button>
                     </Td>
                   </Tr>

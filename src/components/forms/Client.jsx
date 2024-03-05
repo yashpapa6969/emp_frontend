@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
+import SelectTag from "../common/SelectTag";
 
 const Client = () => {
     const singleFileRef = useRef();
@@ -56,6 +57,7 @@ const Client = () => {
     const [selectedState, setSelectedState] = useState("");
     const [tags, setTags] = useState([]);
     const [selectSourceValue, setSelectSourceValue] = useState([]);
+    const [selectedTagValue, setSelectedTagValue] = useState([])
 
     const removeTagById = (tagToRemove) => {
         setProjectData({
@@ -165,7 +167,7 @@ const Client = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormControl id="enquiryDate" isRequired>
+            { /* <FormControl id="enquiryDate" isRequired>
                 <FormLabel>Enquiry Date</FormLabel>
                 <MyDatePicker
                     selected={projectData.enquiryDate}
@@ -176,6 +178,7 @@ const Client = () => {
                     format={"DD/MM/YYYY"}
                 />
             </FormControl>
+                */}
             <div className="hidden md:block">
                 <Tabs>
                     <TabList>
@@ -189,15 +192,15 @@ const Client = () => {
                     <TabPanels>
                         <TabPanel>
                             <div className="flex gap-3 mb-3">
-                                <FormControl id="clientName" isRequired>
+                                <FormControl id="clientName" maxWidth={200} isRequired>
                                     <FormLabel>Client Name</FormLabel>
                                     <Input name="clientName" onChange={handleChange} isRequired />
                                 </FormControl>
-                                <FormControl id="brandName" isRequired>
+                                <FormControl id="brandName" maxWidth={200} isRequired>
                                     <FormLabel>Brand Name</FormLabel>
                                     <Input name="brandName" onChange={handleChange} isRequired />
                                 </FormControl>
-                                <FormControl id="companyName" isRequired>
+                                <FormControl id="companyName" maxWidth={200} isRequired>
                                     <FormLabel>Company Name</FormLabel>
                                     <Input
                                         name="companyName"
@@ -205,37 +208,37 @@ const Client = () => {
                                         isRequired
                                     />
                                 </FormControl>
-                                <FormControl id="tags" isRequired>
-                                    <FormLabel>Source</FormLabel>
-                                    <Flex>
-                                        <SelectSource
-                                            selectSourceValue={selectSourceValue}
-                                            setSelectSourceValue={setSelectSourceValue}
-                                        />
-                                    </Flex>
-                                </FormControl>
                             </div>
-                            <div className="flex gap-3 mb-3">
-                                <FormControl id="phone1" isRequired>
+                            <FormControl id="tags" isRequired>
+                                <FormLabel>Source</FormLabel>
+                                <Flex>
+                                    <SelectSource
+                                        selectSourceValue={selectSourceValue}
+                                        setSelectSourceValue={setSelectSourceValue}
+                                    />
+                                </Flex>
+                            </FormControl>
+                            <div className="flex gap-3 my-3">
+                                <FormControl id="phone1" maxWidth={200} isRequired>
                                     <FormLabel>Phone Number 1</FormLabel>
                                     <Input name="phone1" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="phone2">
+                                <FormControl id="phone2" maxWidth={200}>
                                     <FormLabel>Phone Number 2</FormLabel>
                                     <Input name="phone2" onChange={handleChange} />
                                 </FormControl>
                             </div>
 
-                            <div className="flex gap-3">
-                                <FormControl id="email1">
+                            <div className="flex gap-3 mb-3">
+                                <FormControl id="email1" maxWidth={200}>
                                     <FormLabel>Email 1</FormLabel>
                                     <Input name="email1" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="email2">
+                                <FormControl id="email2" maxWidth={200}>
                                     <FormLabel>Email 2</FormLabel>
                                     <Input name="email2" onChange={handleChange} />
                                 </FormControl>
-                                <FormControl id="website">
+                                <FormControl id="website" maxWidth={200}>
                                     <FormLabel>Website</FormLabel>
                                     <Input name="website" onChange={handleChange} />
                                 </FormControl>
@@ -299,7 +302,7 @@ const Client = () => {
 
                         <TabPanel>
                             <div className="flex gap-3">
-                                <FormControl id="clientBirthday">
+                                <FormControl id="clientBirthday" maxWidth={150}>
                                     <FormLabel>Client Birthday</FormLabel>
                                     <MyDatePicker
                                         selected={projectData.clientBirthday}
@@ -309,7 +312,7 @@ const Client = () => {
                                         format={"DD/MM/YYYY"}
                                     />
                                 </FormControl>
-                                <FormControl id="clientAnniversary">
+                                <FormControl id="clientAnniversary" maxWidth={150}>
                                     <FormLabel>Client Anniversary</FormLabel>
                                     <MyDatePicker
                                         selected={projectData.clientAnniversary}
@@ -341,11 +344,12 @@ const Client = () => {
                             <div className="flex flex-col gap-3">
                                 <FormControl id="requirement" className="w-1/2">
                                     <FormLabel>Requirement</FormLabel>
-                                    <Input
+                                    {/* <Input
                                         name="requirement"
                                         onChange={handleChange}
                                         className="h-16"
-                                    />
+                                    /> */}
+                                    <SelectTag selectTagValue={selectedTagValue} setSelectTagValue={setSelectedTagValue} />
                                 </FormControl>
                                 <FormControl id="additionalInformation" className="w-1/2">
                                     <FormLabel>Additional Information</FormLabel>
