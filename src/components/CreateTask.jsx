@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import MyDatePicker from "./common/MyDatePicker";
 
 const CreateTask = () => {
     const [brandNames, setBrandNames] = useState([]);
@@ -114,117 +115,125 @@ const CreateTask = () => {
     };
 
     return (
-        <Box
-            mx="auto"
-            borderWidth="1px"
-            borderRadius="lg"
-            p="4"
-            boxShadow="lg"
-            m="4"
-        >
-            <h1 className="text-2xl font-semibold">Add Task</h1>
-            <p className="font-light mb-4">Fill the below form to add a new task</p>
+      <Box
+        mx="auto"
+        borderWidth="1px"
+        borderRadius="lg"
+        p="4"
+        boxShadow="lg"
+        m="4"
+      >
+        <h1 className="text-2xl font-semibold">Add Task</h1>
+        <p className="font-light mb-4">Fill the below form to add a new task</p>
 
-            <form onSubmit={handleSubmit}>
-                <div className="flex gap-3 mb-3">
-                    <FormControl maxWidth={200}>
-                        <FormLabel>Brand Name</FormLabel>
-                        <Select value={selectedBrandName} onChange={handleBrandChange}>
-                            <option disabled value="">
-                                Select Brand
-                            </option>
-                            {brandNames.map((brand) => (
-                                <option key={brand._id} value={brand.brandName}>
-                                    {brand.brandName}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
+        <form onSubmit={handleSubmit}>
+          <div className="flex gap-3 mb-3">
+            <FormControl>
+              <FormLabel>Brand Name</FormLabel>
+              <Select value={selectedBrandName} onChange={handleBrandChange}>
+                <option disabled value="">
+                  Select Brand
+                </option>
+                {brandNames.map((brand) => (
+                  <option key={brand._id} value={brand.brandName}>
+                    {brand.brandName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
-                    <FormControl maxWidth={200}>
-                        <FormLabel>Project</FormLabel>
-                        <Select value={selectedProject} onChange={handleProjectChange}>
-                            <option disabled value="">
-                                Select Project
-                            </option>
-                            {projects.map((project) => (
-                                <option key={project._id} value={project.project_id}>
-                                    {project.projectName}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
+            <FormControl>
+              <FormLabel>Project</FormLabel>
+              <Select value={selectedProject} onChange={handleProjectChange}>
+                <option disabled value="">
+                  Select Project
+                </option>
+                {projects.map((project) => (
+                  <option key={project._id} value={project.project_id}>
+                    {project.projectName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
 
-                    <FormControl maxWidth={200}>
-                        <FormLabel>Employee</FormLabel>
-                        <Select
-                            value={selectedEmployee}
-                            onChange={(e) => setSelectedEmployee(e.target.value)}
-                        >
-                            <option disabled value="">
-                                Select Employee
-                            </option>
-                            {employees.map((employeeId) => (
-                                <option key={employeeId} value={employeeId}>
-                                    {employeeId}
-                                </option>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </div>
+            <FormControl>
+              <FormLabel>Employee</FormLabel>
+              <Select
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee(e.target.value)}
+              >
+                <option disabled value="">
+                  Select Employee
+                </option>
+                {employees.map((employeeId) => (
+                  <option key={employeeId} value={employeeId}>
+                    {employeeId}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
 
-                <FormControl>
-                    <FormLabel>Description</FormLabel>
-                    <Textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </FormControl>
+          <FormControl>
+            <FormLabel>Description</FormLabel>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </FormControl>
 
-                <div className="flex gap-2 my-3">
-                    <FormControl maxWidth={150}>
-                        <FormLabel>Priority</FormLabel>
-                        <Select
-                            value={priority}
-                            onChange={(e) => setPriority(e.target.value)}
-                        >
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </Select>
-                    </FormControl>
+          <div className="flex gap-2 my-3">
+            <FormControl>
+              <FormLabel>Priority</FormLabel>
+              <Select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </Select>
+            </FormControl>
 
-                    <FormControl maxWidth={200}>
-                        <FormLabel>Status</FormLabel>
-                        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                            <option value="Not Started">Not Started</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                        </Select>
-                    </FormControl>
-                </div>
+            <FormControl>
+              <FormLabel>Status</FormLabel>
+              <Select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="flex gap-2 my-3">
+            <FormControl maxWidth={150}>
+              <FormLabel>Start Date</FormLabel>
+              <MyDatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+            </FormControl>
 
-                <FormControl>
-                    <FormLabel>Start Date</FormLabel>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                    />
-                </FormControl>
+            <FormControl>
+              <FormLabel>Deadline</FormLabel>
+              <MyDatePicker
+                selected={deadline}
+                onChange={(date) => setDeadline(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+            </FormControl>
+          </div>
 
-                <FormControl>
-                    <FormLabel>Deadline</FormLabel>
-                    <DatePicker
-                        selected={deadline}
-                        onChange={(date) => setDeadline(date)}
-                    />
-                </FormControl>
-
-                <Button mt={4} width={"full"} colorScheme="purple" type="submit">
-                    Add Task
-                </Button>
-            </form>
-        </Box>
+          <Button mt={4} width={"full"} colorScheme="purple" type="submit">
+            Add Task
+          </Button>
+        </form>
+      </Box>
     );
 };
 

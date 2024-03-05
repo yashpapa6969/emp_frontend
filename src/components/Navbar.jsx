@@ -34,9 +34,13 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
     navigate("/login");
   };
 
-  const currentDate = new Date();
-  const dateString = `${currentDate.getDate()}-${currentDate.getMonth()}-${currentDate.getFullYear()}`
-  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
+const currentDate = new Date();
+const istOffset = 5.5 * 60 * 60 * 1000; 
+const istDate = new Date(currentDate.getTime() + istOffset);
+
+const dateString = `${istDate.getDate()}-${istDate.getMonth()}-${istDate.getFullYear()}`;
+const timeString = `${istDate.getHours()}:${istDate.getMinutes()}`;
+
 
   return (
     <>
