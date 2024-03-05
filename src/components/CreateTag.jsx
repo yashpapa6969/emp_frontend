@@ -138,7 +138,7 @@ const CreateTag = () => {
       <h1 className="text-lg font-semibold mt-8 mb-4">Tag</h1>
       <div className="flex justify-start gap-2 max-w-[400px]">
         <Input
-          placeholder="Enter new tag"
+          placeholder="Enter new Tag"
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
         />
@@ -161,12 +161,12 @@ const CreateTag = () => {
       <h1 className="text-lg font-semibold mt-10 mb-4">Product</h1>
       <div className="flex justify-start gap-2 max-w-[400px]">
         <Input
-          placeholder="Enter new product"
+          placeholder="Enter New product"
           value={newProduct}
           onChange={(e) => setNewProduct(e.target.value)}
         />
         <Input
-          placeholder="Enter new product"
+          placeholder="Unit price"
           value={newProductPrice}
           onChange={(e) => setNewProductPrice(e.target.value)}
         />
@@ -189,7 +189,7 @@ const CreateTag = () => {
       <h1 className="text-lg font-semibold mt-10 mb-4">Source</h1>
       <div className="flex justify-start gap-2 max-w-[400px]">
         <Input
-          placeholder="Enter new product"
+          placeholder="Enter New Source"
           value={newSource}
           onChange={(e) => setNewSource(e.target.value)}
         />

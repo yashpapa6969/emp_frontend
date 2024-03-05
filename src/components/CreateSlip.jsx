@@ -140,35 +140,35 @@ const CreateSlip = () => {
             )}
 
 
-            <div className="flex gap-3">
-              <FormControl id="basicPay" maxWidth={200} isRequired>
+            <div className="flex flex-col md:flex-row gap-3">
+              <FormControl id="basicPay"  isRequired>
                 <FormLabel>Basic Pay</FormLabel>
                 <Input name="basicPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="travelPay" maxWidth={200} isRequired>
+              <FormControl id="travelPay" isRequired>
                 <FormLabel>Travel Pay</FormLabel>
                 <Input name="travelPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="Bonus" maxWidth={200} isRequired>
+              <FormControl id="Bonus"  isRequired>
                 <FormLabel>Bonus</FormLabel>
                 <Input name="bonus" onChange={handleChange} />
               </FormControl>
             </div>
             <div className="flex gap-3">
-              <FormControl id="paidLeave" maxWidth={100} isRequired>
+              <FormControl id="paidLeave" isRequired>
                 <FormLabel>Paid Leave</FormLabel>
                 <Input name="paidLeave" onChange={handleChange} />
               </FormControl>
-              <FormControl id="tds" maxWidth={100} isRequired>
+              <FormControl id="tds"  isRequired>
                 <FormLabel>TDS</FormLabel>
                 <Input name="tds" onChange={handleChange} />
               </FormControl>
-              <FormControl id="totaleaves" maxWidth={150} isRequired>
+              <FormControl id="totaleaves"  isRequired>
                 <FormLabel>Total Leaves</FormLabel>
                 <Input name="totalLeaves" onChange={handleChange} />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={300} isRequired>
+            <FormControl id="advanceSalary" maxWidth={400} isRequired>
               <FormLabel>Advance Salary</FormLabel>
               <Input name="advanceSalary" onChange={handleChange} />
             </FormControl>

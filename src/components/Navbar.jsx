@@ -37,6 +37,12 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
   const currentDate = new Date();
   const dateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
   const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
+  // const istOffset = 5.5 * 60 * 60 * 1000;
+  // const istDate = new Date(currentDate.getTime() + istOffset);
+
+  // const dateString = `${istDate.getDate()}-${istDate.getMonth()}-${istDate.getFullYear()}`;
+  // const timeString = `${istDate.getHours()}:${istDate.getMinutes()}`;
+
 
   return (
     <>

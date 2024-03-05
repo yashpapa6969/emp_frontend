@@ -96,84 +96,110 @@ const Invoice = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="flex gap-3">
-                <FormControl id="date1" width={150} isRequired>
-                    <FormLabel>Invoice Date</FormLabel>
-                    <MyDatePicker
-                        selected={invoiceData.date1}
-                        onChange={(date) =>
-                            setInvoiceData({ ...invoiceData, date1: `${date.toDate()}` })
-                        }
-                        defaultValue={moment()}
-                        format={"DD/MM/YYYY"}
-                    />
-                </FormControl>
-                <FormControl id="time1" width={150} isRequired>
-                    <FormLabel>Enquiry Date</FormLabel>
-                    <TimePicker
-                        selected={invoiceData.time1}
-                        onChange={(time) => setInvoiceData({ ...invoiceData, time1: `${time}` })}
-                        defaultValue={moment()}
-                        format={"hh:mm:ss"}
-                        disabled />
-                </FormControl>
-            </div>
-            <div className="flex gap-3 mt-3">
-                <FormControl id="client_id" isRequired>
-                    <FormLabel>Client Name</FormLabel>
-                    <SelectClient selectSourceValue={clients} setSelectSourceValue={setClients} />
-                </FormControl>
-            </div>
-            <div className="flex gap-3 mt-3">
-                <FormControl id="gst" isRequired>
-                    <FormLabel>Gst</FormLabel>
-                    <Input name="gst" onChange={handleChange} isRequired />
-                </FormControl>
-                <FormControl id="unitPrice" isRequired>
-                    <FormLabel>Unit Price</FormLabel>
-                    <Input value={unitPrice} onChange={(e) => setUnitPrice(e.target.value)} isRequired />
-                </FormControl>
-                <FormControl id="quantity" isRequired>
-                    <FormLabel>Quantity</FormLabel>
-                    <Input value={quantity} onChange={(e) => setQuantity(e.target.value)} isRequired />
-                </FormControl>
-            </div>
-            <div className='mt-3'>
-                <FormLabel>Service Description</FormLabel>
-                <Textarea value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} />
-            </div>
-            <div className="flex gap-3 mt-3">
-                <FormControl id="tags" isRequired>
-                    <FormLabel>Product</FormLabel>
-                    <Flex>
-                        <SelectProduct
-                            selectSourceValue={selectProductValue}
-                            setSelectSourceValue={setSelectProductValue}
-                        />
-                    </Flex>
-                </FormControl>
-                <FormControl id="startDate">
-                    <FormLabel>Start Date</FormLabel>
-                    <MyDatePicker
-                        format={"DD/MM/YYYY"}
-                        onChange={(date) => { setInvoiceData({ ...invoiceData, services: { ...invoiceData.services, startDate: date } }) }}
-                    />
-                </FormControl>
-                <FormControl id="endDate">
-                    <FormLabel>End Date</FormLabel>
-                    <MyDatePicker
-                        format={"DD/MM/YYYY"}
-                        onChange={(date) => { setInvoiceData({ ...invoiceData, services: { ...invoiceData.services, endDate: date } }) }}
-                    />
-                </FormControl>
-            </div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex gap-3">
+          <FormControl id="date1" isRequired>
+            <FormLabel>Invoice Date</FormLabel>
+            <MyDatePicker
+              selected={invoiceData.date1}
+              onChange={(date) =>
+                setInvoiceData({ ...invoiceData, date1: `${date.toDate()}` })
+              }
+              defaultValue={moment()}
+              format={"DD/MM/YYYY"}
+            />
+          </FormControl>
+          <FormControl id="time1" isRequired>
+            <FormLabel>Enquiry Date</FormLabel>
+            <TimePicker
+              selected={invoiceData.time1}
+              onChange={(time) =>
+                setInvoiceData({ ...invoiceData, time1: `${time}` })
+              }
+              defaultValue={moment()}
+              format={"hh:mm:ss"}
+              disabled
+            />
+          </FormControl>
+          <FormControl id="client_id" isRequired maxWidth={300}>
+            <FormLabel>Client Name</FormLabel>
+            <SelectClient
+              selectSourceValue={clients}
+              setSelectSourceValue={setClients}
+            />
+          </FormControl>
+        </div>
+        <div className="flex gap-3 mt-3">
+          <FormControl id="gst" isRequired>
+            <FormLabel>Gst</FormLabel>
+            <Input name="gst" onChange={handleChange} isRequired />
+          </FormControl>
+          <FormControl id="unitPrice" isRequired>
+            <FormLabel>Unit Price</FormLabel>
+            <Input
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(e.target.value)}
+              isRequired
+            />
+          </FormControl>
+          <FormControl id="quantity" isRequired>
+            <FormLabel>Quantity</FormLabel>
+            <Input
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              isRequired
+            />
+          </FormControl>
+        </div>
+        <div className="mt-3">
+          <FormLabel>Service Description</FormLabel>
+          <Input
+            className="h-16"
+            value={serviceDescription}
+            onChange={(e) => setServiceDescription(e.target.value)}
+          />
+        </div>
+        <div className="flex gap-3 mt-3">
+          <FormControl id="tags"  isRequired>
+            <FormLabel>Product</FormLabel>
+            <Flex>
+              <SelectProduct
+                selectSourceValue={selectProductValue}
+                setSelectSourceValue={setSelectProductValue}
+              />
+            </Flex>
+          </FormControl>
+          <FormControl id="startDate">
+            <FormLabel>Start Date</FormLabel>
+            <MyDatePicker
+              format={"DD/MM/YYYY"}
+              onChange={(date) => {
+                setInvoiceData({
+                  ...invoiceData,
+                  services: { ...invoiceData.services, startDate: date },
+                });
+              }}
+            />
+          </FormControl>
+          <FormControl id="endDate">
+            <FormLabel>End Date</FormLabel>
+            <MyDatePicker
+              format={"DD/MM/YYYY"}
+              onChange={(date) => {
+                setInvoiceData({
+                  ...invoiceData,
+                  services: { ...invoiceData.services, endDate: date },
+                });
+              }}
+            />
+          </FormControl>
+        </div>
 
-            <Button type="submit" colorScheme="purple" className="mt-5">
-                Create Invoice
-            </Button>
-        </form>
-    )
+        <Button type="submit" colorScheme="purple" className="mt-5">
+          Create Invoice
+        </Button>
+      </form>
+    );
 }
 
 export default Invoice

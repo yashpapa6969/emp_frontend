@@ -100,7 +100,7 @@ const CreateProject = () => {
 
     // Fetch tag names for selected tag IDs
     const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
-    console.log(selectedTagNames)
+    console.log(selectedTagNames);
 
     // Update projectData with tag names
     setProjectData({
@@ -182,7 +182,7 @@ const CreateProject = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <div className="flex flex-col md:flex-row gap-3 max-w-[700px]">
+            <div className="flex flex-col md:flex-row gap-4">
               <FormControl id="projectName" isRequired>
                 <FormLabel>Project Name</FormLabel>
                 <Input name="projectName" onChange={handleChange} />
@@ -205,7 +205,7 @@ const CreateProject = () => {
               <FormControl id="priority" isRequired>
                 <FormLabel>Priority</FormLabel>
                 <Select
-                width={150}
+                  width={300}
                   name="priority"
                   onChange={handleChange}
                   placeholder="Select priority"
@@ -215,24 +215,12 @@ const CreateProject = () => {
                   <option value="High">High</option>
                 </Select>
               </FormControl>
-            </div>
-            {selectedClient && (
-              <>
-                <FormLabel>Client Name:-{selectedClient.clientName}</FormLabel>
-                <FormLabel>
-                  Client Company:-{selectedClient.companyName}
-                </FormLabel>
-              </>
-            )}
-            <FormControl id="description" isRequired>
-              <FormLabel>Description</FormLabel>
-              <Input name="description" onChange={handleChange} />
-            </FormControl>
-
-            <div className="flex gap-3">
               <FormControl id="tags" isRequired>
                 <FormLabel>Tags</FormLabel>
-                <SelectTag selectTagValue={selctedTagValue} setSelectTagValue={setSelctedTagValue} />
+                <SelectTag
+                  selectTagValue={selctedTagValue}
+                  setSelectTagValue={setSelctedTagValue}
+                />
                 {/* <Select
                 onChange={handleTagChange}
                 size="md"
@@ -258,7 +246,25 @@ const CreateProject = () => {
                   </Tag>
                 ))}
               </FormControl>
+            </div>
+            {selectedClient && (
+              <>
+                <FormLabel>Client Name:-{selectedClient.clientName}</FormLabel>
+                <FormLabel>
+                  Client Company:-{selectedClient.companyName}
+                </FormLabel>
+              </>
+            )}
+            <FormControl id="description" isRequired>
+              <FormLabel>Description</FormLabel>
+              <Input
+                name="description"
+                onChange={handleChange}
+                className="h-40"
+              />
+            </FormControl>
 
+            <div className="flex gap-2">
               <FormControl mb="4">
                 <FormLabel>Start Date</FormLabel>
                 <MyDatePicker
