@@ -95,51 +95,53 @@ const Invoice = () => {
     setServices(updatedServices);
   };
 
-  const handleSubmit = async () => {
-    const requestData = {
-      client_id: selectedClient.client_id,
-      gst: parseInt(selectedGst),
-      services: services.map((service) => ({
-        product: service.product.product,
-        serviceDescription: service.serviceDescription,
-        duration: service.duration,
-        quantity: service.quantity,
-        unitPrice: service.product.unitPrice,
-        startDate: service.startDate.toISOString(),
-        endDate: service.endDate.toISOString(),
-      })),
-    };
+ const handleSubmit = async () => {
+   const requestData = {
+     client_id: selectedClient.client_id,
+     gst: parseInt(selectedGst),
+     services: services.map((service) => ({
+       product: service.product.product,
+       serviceDescription: service.serviceDescription,
+       duration: service.duration,
+       quantity: service.quantity,
+       unitPrice: service.product.unitPrice,
+       startDate: service.startDate.toISOString(),
+       endDate: service.endDate.toISOString(),
+     })),
+   };
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE}/api/admin/createInvoice`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
-        const file = new Blob([response.data], { type: 'application/pdf' });
-        const fileURL = URL.createObjectURL(file);
-        const link = document.createElement('a');
-        link.href = fileURL;
-        link.setAttribute('download', 'invoice_slip.pdf'); 
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
+   try {
+     const response = await fetch(
+       `${import.meta.env.VITE_API_BASE}/api/admin/createInvoice`,
+       {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(requestData),
+       }
+     );
 
-        if (response.status === 200) {
-          toast.success('Invoice Slip is downloaded successfully.');
-        } else {
-          console.error("Failed to download Invoice slip");
-          toast.error('Failed to download Invoice slip.');
-        }
-    } catch (error) {
-      console.error("Error creating invoice:", error);
-    }
-  };
+     if (!response.ok) {
+       throw new Error("Failed to download Invoice slip");
+     }
+
+     const pdfBlob = await response.blob();
+     const fileURL = URL.createObjectURL(pdfBlob);
+     const link = document.createElement("a");
+     link.href = fileURL;
+     link.setAttribute("download", "invoice_slip.pdf");
+     document.body.appendChild(link);
+     link.click();
+     link.parentNode.removeChild(link);
+
+     toast.success("Invoice Slip is downloaded successfully.");
+   } catch (error) {
+     console.error("Error creating invoice:", error);
+     toast.error("Failed to download Invoice slip.");
+   }
+ };
+
 
   return (
     <Stack spacing={4}>

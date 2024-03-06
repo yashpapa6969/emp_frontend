@@ -28,6 +28,7 @@ import GetEmpSlip from "./components/GetEmpSlip";
 import ManageLeads from "./components/ManageLeads";
 import GetAllInvoices from "./components/GetAllInvoices";
 import CreateInvoice from "./components/CreateInvoice";
+import GetProject from "./components/GetProject";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -280,6 +281,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetEmpSlip></GetEmpSlip>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/GetProject"
+            element={
+              <AppLayout
+                activeSideabarLink={""}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetProject></GetProject>
               </AppLayout>
             }
           />

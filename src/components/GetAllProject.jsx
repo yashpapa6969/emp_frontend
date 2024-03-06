@@ -92,8 +92,8 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Progress</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Billing Type</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Priority</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
@@ -104,8 +104,8 @@ const GetAllProject = () => {
                   <Tr key={project._id}>
                     <Td>{index + 1}</Td>
                     <Td>{project.projectName}</Td>
-                    <Td className="md:table-cell hidden">{project.progress}</Td>
-                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.priority}</Td>
+                    <Td className="md:table-cell hidden">{project.brandName}</Td>
                     <Td className="md:table-cell hidden">{project.status}</Td>
                     <Td>
                       <Button
@@ -121,8 +121,8 @@ const GetAllProject = () => {
                   <Tr key={project._id}>
                     <Td>{index + 1}</Td>
                     <Td>{project.projectName}</Td>
-                    <Td className="md:table-cell hidden">{project.progress}</Td>
-                    <Td className="md:table-cell hidden">{project.billingType}</Td>
+                    <Td className="md:table-cell hidden">{project.priority}</Td>
+                    <Td className="md:table-cell hidden">{project.brandName}</Td>
                     <Td className="md:table-cell hidden">{project.status}</Td>
                     <Td>
                       <Button

@@ -23,6 +23,7 @@ const InfoBoxByID = ({ modalFor }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const employeeIds = useSelector(selectEmployeeIds);
+  console.log(employeeIds);
   const clientId = useSelector(selectClientId);
   const employeeId = useSelector(selectEmployeeId);
   const dispatch = useDispatch();
@@ -62,11 +63,16 @@ const InfoBoxByID = ({ modalFor }) => {
           dispatch(clearClientId()); 
        } else if (modalFor === "client") {
          dispatch(clearClientId());
+          dispatch(clearEmployeeIds());
+          dispatch(clearEmployeeId());  
          
        }
      } catch (error) {
        setError(error.response.data.message);
        setLoading(false);
+        dispatch(clearEmployeeIds());
+        dispatch(clearEmployeeId());  
+        dispatch(clearClientId()); 
      }
    };
 
@@ -98,7 +104,6 @@ const InfoBoxByID = ({ modalFor }) => {
                   <div key={key}>
                     <Text fontWeight="bold">{key}:</Text>
                     {value && typeof value === "object" ? (
-                      // If the value is an object, iterate over its properties
                       Object.entries(value).map(([subKey, subValue]) => (
                         <div key={subKey}>
                           <Text>
@@ -107,7 +112,6 @@ const InfoBoxByID = ({ modalFor }) => {
                         </div>
                       ))
                     ) : (
-                      // If the value is not an object, simply render it
                       <Text>{value}</Text>
                     )}
                   </div>
