@@ -127,7 +127,7 @@ const CreateTask = () => {
         <p className="font-light mb-4">Fill the below form to add a new task</p>
 
         <form onSubmit={handleSubmit}>
-          <div className="flex gap-3 mb-3">
+          <div className="flex flex-col md:flex-row gap-3 mb-3">
             <FormControl>
               <FormLabel>Brand Name</FormLabel>
               <Select value={selectedBrandName} onChange={handleBrandChange}>

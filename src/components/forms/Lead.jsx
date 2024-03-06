@@ -384,7 +384,7 @@ const Lead = () => {
 
           <TabPanels>
             <TabPanel>
-              <div className="flex gap-3 mb-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="clientName" isRequired>
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
@@ -445,7 +445,7 @@ const Lead = () => {
                 </FormControl>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col gap-3">
                 <FormControl id="email1">
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
@@ -502,7 +502,7 @@ const Lead = () => {
                   className="h-32"
                 />
               </FormControl>
-              <div className="flex gap-3">
+              <div className="flex flex-col mt-3 gap-3">
                 <FormControl id="brandName" mb={3} isRequired>
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
@@ -524,7 +524,7 @@ const Lead = () => {
                   className="h-32"
                 />
               </FormControl>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col mt-3 gap-3">
                 <FormControl id="requirement" className="w-1/2">
                   <FormLabel>Requirement</FormLabel>
                   <Input
