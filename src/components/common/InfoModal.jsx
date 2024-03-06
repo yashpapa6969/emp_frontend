@@ -30,11 +30,10 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       employeeIds.forEach((id) => {
         dispatch(addEmployeeId(id));
       });
-      console.log(employeeIds);
     }
     if (modalFor === "slip" && data?.employee_id) {
       const employeeId = data.employee_id;
-      dispatch(setEmployeeId(employeeId));
+      dispatch(addEmployeeId(employeeId));
     }
     if (modalFor === "invoice" && data?.client_id) {
       const clientId = data.client_id;
@@ -44,7 +43,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       const employeeId = data.employee_id;
       const p = data.project_id;
       const c = data.client_id;
-      dispatch(setEmployeeId(employeeId));
+      dispatch(addEmployeeId(employeeId));
       dispatch(setClientId(c));
       dispatch(setProjectId(p));
     }

@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
-import { selectProjectId,clearProjectId } from "../store/slice/ProjectSlice";
+import {
+  selectProjectId,
+  clearProjectId,
+} from "../../store/slice/ProjectSlice";
 import {
   Box,
   Heading,
