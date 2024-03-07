@@ -19,17 +19,17 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
+import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
-import moment from "moment";
 
 const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
-    title: "",
-    gender: "",
+    title:"",
+    gender:"",
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
@@ -62,7 +62,7 @@ const Client = () => {
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
-
+  
   };
   useEffect(() => {
     setProjectData((prev) => ({
@@ -71,7 +71,7 @@ const Client = () => {
       requirement: selectedTagValue,
     }));
   }, [selectSourceValue, selectedTagValue]);
-
+  
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -151,8 +151,8 @@ const Client = () => {
         formData.append(key, value);
       }
     });
-
-
+    
+    
 
     axios
       .post(
@@ -187,6 +187,7 @@ const Client = () => {
                     onChange={(date) =>
                         setProjectData({ ...projectData, enquiryDate: date })
                     }
+                    defaultValue={moment()}
                     format={"DD/MM/YYYY"}
                 />
             </FormControl>
@@ -278,15 +279,12 @@ const Client = () => {
                 <FormControl id="companyAnniversary">
                   <FormLabel>Work Start Date</FormLabel>
                   <MyDatePicker
-                    className="mb-1"
                     selected={projectData.workStartDate}
                     onChange={(date) =>
                       setProjectData({ ...projectData, workStartDate: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
-                  <br />
-                  {projectData?.workStartDate?._d && <>{`${projectData?.workStartDate?._d}`.slice(4, 16)}</>}
                 </FormControl>
               </div>
             </TabPanel>
@@ -339,41 +337,38 @@ const Client = () => {
                 <FormControl id="clientBirthday">
                   <FormLabel>Client Birthday</FormLabel>
                   <MyDatePicker
-                    className="mb-1"
                     selected={projectData.clientBirthday}
                     onChange={(date) =>
                       setProjectData({ ...projectData, clientBirthday: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
-                  <br />
-                  {projectData?.clientBirthday?._d && <>{`${projectData?.clientBirthday?._d}`.slice(4, 16)}</>}
                 </FormControl>
                 <FormControl id="clientAnniversary">
                   <FormLabel>Client Anniversary</FormLabel>
                   <MyDatePicker
-                    className="mb-1"
                     selected={projectData.clientAnniversary}
                     onChange={(date) =>
-                      setProjectData({ ...projectData, clientAnniversary: date })
+                      setProjectData({
+                        ...projectData,
+                        clientAnniversary: date,
+                      })
                     }
                     format={"DD/MM/YYYY"}
                   />
-                  <br />
-                  {projectData?.clientAnniversary?._d && <>{`${projectData?.clientAnniversary?._d}`.slice(4, 16)}</>}
                 </FormControl>
                 <FormControl id="companyAnniversary">
                   <FormLabel>Company Anniversary</FormLabel>
                   <MyDatePicker
-                    className="mb-1"
                     selected={projectData.companyAnniversary}
                     onChange={(date) =>
-                      setProjectData({ ...projectData, companyAnniversary: date })
+                      setProjectData({
+                        ...projectData,
+                        companyAnniversary: date,
+                      })
                     }
                     format={"DD/MM/YYYY"}
                   />
-                  <br />
-                  {projectData?.companyAnniversary?._d && <>{`${projectData?.companyAnniversary?._d}`.slice(4, 16)}</>}
                 </FormControl>
               </div>
             </TabPanel>
@@ -525,18 +520,6 @@ const Client = () => {
                   <FormLabel>Website</FormLabel>
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
-              </div>
-              <div>
-                <MyDatePicker
-                  className="mb-1"
-                  selected={projectData.workStartDate}
-                  onChange={(date) =>
-                    setProjectData({ ...projectData, workStartDate: date })
-                  }
-                  format={"DD/MM/YYYY"}
-                />
-                <br />
-                {projectData?.workStartDate?._d && <>{`${projectData?.workStartDate?._d}`.slice(4, 16)}</>}
               </div>
             </TabPanel>
             <TabPanel>
