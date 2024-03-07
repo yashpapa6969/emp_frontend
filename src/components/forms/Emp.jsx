@@ -7,19 +7,11 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  // Select,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  Flex,
 } from "@chakra-ui/react";
-import { DatePicker, Input, Select } from "antd";
+import { Input, Select } from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
-import moment from "moment";
-import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 
 const Emp = () => {
@@ -54,18 +46,17 @@ const Emp = () => {
     },
   });
 
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
   const [tags, setTags] = useState([]);
   const [managers, setManagers] = useState([]);
-  const [selectSourceValue, setSelectSourceValue] = useState([]);
 
-  const removeTagById = (tagToRemove) => {
-    setProjectData({
-      ...projectData,
-      source: projectData.source.filter((tag) => tag !== tagToRemove),
-    });
-  };
+  const joiningDate = `${projectData?.joiningDate?._d}`.slice(4, 15);
+
+  // const removeTagById = (tagToRemove) => {
+  //   setProjectData({
+  //     ...projectData,
+  //     source: projectData.source.filter((tag) => tag !== tagToRemove),
+  //   });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProjectData({ ...projectData, [name]: value });
@@ -85,47 +76,47 @@ const Emp = () => {
       });
   }, []);
 
-  const handleTagChange = (e) => {
-    const selectedTags = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
+  // const handleTagChange = (e) => {
+  //   const selectedTags = Array.from(
+  //     e.target.selectedOptions,
+  //     (option) => option.value
+  //   );
 
-    // Fetch tag names for selected tag IDs
-    const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
-    console.log(selectedTagNames);
+  //   // Fetch tag names for selected tag IDs
+  //   const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
+  //   console.log(selectedTagNames);
 
-    // Update projectData with tag names
-    setProjectData({
-      ...projectData,
-      source: [...projectData.source, ...selectedTagNames],
-    });
-  };
-  const handleSelectChange = (setSelected, name, value) => {
-    setSelected(value);
-    setProjectData({ ...projectData, [name]: value });
-  };
-  const handleSingleFileChange = (e) => {
-    setProjectData({ ...projectData, singleFile: e.target.files[0] });
-  };
+  //   // Update projectData with tag names
+  //   setProjectData({
+  //     ...projectData,
+  //     source: [...projectData.source, ...selectedTagNames],
+  //   });
+  // };
+  // const handleSelectChange = (setSelected, name, value) => {
+  //   setSelected(value);
+  //   setProjectData({ ...projectData, [name]: value });
+  // };
+  // const handleSingleFileChange = (e) => {
+  //   setProjectData({ ...projectData, singleFile: e.target.files[0] });
+  // };
 
-  const handleMultipleFilesChange = (e) => {
-    const files = Array.from(e.target.files);
-    setProjectData({
-      ...projectData,
-      multipleFiles: [...projectData.multipleFiles, ...files],
-    });
-  };
+  // const handleMultipleFilesChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setProjectData({
+  //     ...projectData,
+  //     multipleFiles: [...projectData.multipleFiles, ...files],
+  //   });
+  // };
 
-  const handleDeleteSingleFile = () => {
-    setProjectData({ ...projectData, singleFile: null });
-  };
+  // const handleDeleteSingleFile = () => {
+  //   setProjectData({ ...projectData, singleFile: null });
+  // };
 
-  const handleDeleteMultipleFile = (index) => {
-    const updatedFiles = [...projectData.multipleFiles];
-    updatedFiles.splice(index, 1);
-    setProjectData({ ...projectData, multipleFiles: updatedFiles });
-  };
+  // const handleDeleteMultipleFile = (index) => {
+  //   const updatedFiles = [...projectData.multipleFiles];
+  //   updatedFiles.splice(index, 1);
+  //   setProjectData({ ...projectData, multipleFiles: updatedFiles });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -217,12 +208,15 @@ const Emp = () => {
                 <FormControl id="dob" maxWidth={150} isRequired>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
+                    className="mb-1"
                     selected={projectData.dob}
                     onChange={(date) =>
                       setProjectData({ ...projectData, dob: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
+                  <br />
+                  {projectData?.dob?._d && <>{`${projectData?.dob?._d}`.slice(4, 16)}</>}
                 </FormControl>
               </div>
 
@@ -260,12 +254,15 @@ const Emp = () => {
                 <FormControl id="joiningDate" maxWidth={300} isRequired>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
-                    selected={projectData.dob}
+                    className="mb-1"
+                    selected={projectData.joiningDate}
                     onChange={(date) =>
                       setProjectData({ ...projectData, joiningDate: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
+                  <br />
+                  {projectData?.joiningDate?._d && <>{joiningDate}</>}
                 </FormControl>
                 <FormControl id="manager_id">
                   <FormLabel>Assigned Manager</FormLabel>
@@ -409,6 +406,7 @@ const Emp = () => {
                     }
                     format={"DD/MM/YYYY"}
                   />
+                  {projectData?.dob?._d && <>{`${projectData?.dob?._d}`}</>}
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
@@ -457,12 +455,13 @@ const Emp = () => {
                 <FormControl id="joiningDate" maxWidth={300} isRequired>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
-                    selected={projectData.dob}
+                    selected={projectData.joiningDate}
                     onChange={(date) =>
                       setProjectData({ ...projectData, joiningDate: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
+                  {projectData?.joiningDate?._d && <>{joiningDate}</>}
                 </FormControl>
                 <FormControl id="manager_id">
                   <FormLabel>Assigned Manager</FormLabel>

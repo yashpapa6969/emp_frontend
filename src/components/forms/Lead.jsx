@@ -13,7 +13,7 @@ import {
   TagCloseButton,
   Flex,
 } from "@chakra-ui/react";
-import { DatePicker, Input, Select } from "antd";
+import { Input, Select } from "antd";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -156,6 +156,7 @@ const Lead = () => {
       <FormControl id="enquiryDate" isRequired>
         <FormLabel>Enquiry Date</FormLabel>
         <MyDatePicker
+          className="mb-1"
           selected={projectData.enquiryDate}
           onChange={(date) =>
             setProjectData({ ...projectData, enquiryDate: date })
@@ -163,6 +164,8 @@ const Lead = () => {
           defaultValue={moment()}
           format={"DD/MM/YYYY"}
         />
+        <br />
+        {projectData?.enquiryDate?._d && <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>}
       </FormControl>
       <div className="hidden md:block">
         <Tabs>

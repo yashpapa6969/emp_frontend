@@ -268,20 +268,26 @@ const CreateProject = () => {
               <FormControl mb="4">
                 <FormLabel>Start Date</FormLabel>
                 <MyDatePicker
+                  className="mb-1"
                   selected={projectData.startDate}
                   onChange={handleStartDateChange}
                   format={"DD/MM/YYYY"}
                   placeholderText="Pick Date"
                 />
+                <br />
+                {projectData?.startDate?._d && <>{`${projectData?.startDate?._d}`.slice(4, 16)}</>}
               </FormControl>
               <FormControl mb="4">
                 <FormLabel>End Date</FormLabel>
                 <MyDatePicker
+                  className="mb-1"
                   selected={projectData.deadline}
                   onChange={handleEndDateChange}
                   format={"DD/MM/YYYY"}
                   placeholderText="Pick Date"
                 />
+                <br />
+                {projectData?.deadline?._d && <>{`${projectData?.deadline?._d}`.slice(4, 16)}</>}
               </FormControl>
             </div>
             <FormControl id="employees" isRequired>
