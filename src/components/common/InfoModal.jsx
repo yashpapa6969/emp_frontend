@@ -298,139 +298,121 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div>
-                {data.clientAnniversary && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {data.clientName && (
                   <Text>
-                    <b>Client Anniversary: </b> {data.clientAnniversary}
+                    <b>Name: </b> {data.clientName}
                   </Text>
                 )}
-                {data.companyAnniversary && (
+                {data.clientBirthday && (
                   <Text>
-                    <b>Company Anniversary: </b> {data.companyAnniversary}
+                    <b>Birthday: </b> {data.clientBirthday}
                   </Text>
                 )}
-                <div className="flex my-3 flex-col md:flex-row justify-between">
-                  {data.clientName && (
-                    <Text>
-                      <b>Name: </b> {data.clientName}
-                    </Text>
-                  )}
-                  {data.clientBirthday && (
-                    <Text>
-                      <b>Birthday: </b> {data.clientBirthday}
-                    </Text>
-                  )}
-                  {data.workStartDate && (
-                    <Text>
-                      <b>Work start date: </b> {data.workStartDate}
-                    </Text>
-                  )}
-                </div>
+                {data.workStartDate && (
+                  <Text>
+                    <b>Work start date: </b> {data.workStartDate}
+                  </Text>
+                )}
                 {data.brandName && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Brand Name: </Text>
                     <Text>{data.brandName}</Text>
-                  </>
+                  </div>
                 )}
                 {data.companyName && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Company Name: </Text>
                     <Text>{data.companyName}</Text>
-                  </>
+                  </div>
                 )}
                 {data.email1 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Email1: </Text>
                     <Text>{data.email1}</Text>
-                  </>
+                  </div>
                 )}
                 {data.email2 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Email2: </Text>
                     <Text>{data.email2}</Text>
-                  </>
+                  </div>
                 )}
                 {data.phone1 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Phone1: </Text>
                     <Text>{data.phone1}</Text>
-                  </>
+                  </div>
                 )}
                 {data.phone2 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Phone2: </Text>
                     <Text>{data.phone2}</Text>
-                  </>
+                  </div>
                 )}
                 {data.enquiryDate && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Enquiry Date: </Text>
                     <Text>{data.enquiryDate}</Text>
-                  </>
+                  </div>
                 )}
                 {data.website && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Website: </Text>
                     <Text>{data.website}</Text>
-                  </>
+                  </div>
                 )}
                 {data.buisnessAddress && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Business Address: </Text>
-                    <Text>{data.buisnessAddress}</Text>
-                  </>
+                    <Text>{data.businessAddress}</Text>
+                  </div>
                 )}
                 {data.city && (
-                  <>
-                    <Text fontWeight="bold">City: </Text>
+                  <div>
+                    <Text fontWeight="bold">Cinty: </Text>
                     <Text>{data.city}</Text>
-                  </>
+                  </div>
                 )}
                 {data.state && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">State: </Text>
                     <Text>{data.state}</Text>
-                  </>
+                  </div>
                 )}
                 {data.pincode && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Pincode: </Text>
                     <Text>{data.pincode}</Text>
-                  </>
+                  </div>
                 )}
                 {data.country && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Country: </Text>
                     <Text>{data.country}</Text>
-                  </>
+                  </div>
                 )}
                 {data.requirement && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Requirement: </Text>
                     <Text>{data.requirement}</Text>
-                  </>
+                  </div>
                 )}
                 {data.additionalInformation && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Additional Information: </Text>
                     <Text>{data.additionalInformation}</Text>
-                  </>
-                )}
-                {data.client_id && (
-                  <>
-                    <Text fontWeight="bold">Client ID: </Text>
-                    <Text>{data.client_id}</Text>
-                  </>
+                  </div>
                 )}
                 {data.source && data.source.length > 0 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Source:</Text>
                     <ul>
                       {data.source.map((item, index) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>
-                  </>
+                  </div>
                 )}
                 {Array.isArray(data.multipleFiles) &&
                   data.multipleFiles.length > 0 ? (
@@ -486,62 +468,58 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             <ModalHeader>Project Information</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <div>
-                <Text fontWeight="bold">Client Details: </Text>
-                <Link to={`/GetClient`}>
-                  <Button>Get Client details</Button>
-                </Link>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Text fontWeight="bold" mb={2}>Client Details: </Text>
+                  <Link to={`/GetClient`}>
+                    <Button>Get Client details</Button>
+                  </Link>
+                </div>
 
                 {data.projectName && ( // Check if projectName exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">Project Name: </Text>
                     <Text>{data.projectName}</Text>
-                  </>
+                  </div>
                 )}
                 {data.brandName && ( // Check if brandName exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">Brand Name: </Text>
                     <Text>{data.brandName}</Text>
-                  </>
+                  </div>
                 )}
                 {data.priority && ( // Check if priority exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">Priority: </Text>
                     <Text>{data.priority}</Text>
-                  </>
+                  </div>
                 )}
                 {data.startDate && ( // Check if startDate exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">Start Date: </Text>
                     <Text>{data.startDate}</Text>
-                  </>
+                  </div>
                 )}
                 {data.deadline && ( // Check if deadline exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">End Date: </Text>
                     <Text>{data.deadline}</Text>
-                  </>
+                  </div>
                 )}
                 {data.tags &&
                   data.tags.length > 0 && ( // Check if tags exist and have length greater than 0
-                    <>
+                    <div>
                       <Text fontWeight="bold">Tags: </Text>
                       {data.tags.map((tag, index) => (
                         <Text key={index}>{tag.tagName}</Text>
                       ))}
-                    </>
+                    </div>
                   )}
-                {data.project_id && ( // Check if project_id exists
-                  <>
-                    <Text fontWeight="bold">Project ID: </Text>
-                    <Text>{data.project_id}</Text>
-                  </>
-                )}
                 {data.description && ( // Check if description exists
-                  <>
+                  <div>
                     <Text fontWeight="bold">Description: </Text>
                     <Text>{data.description}</Text>
-                  </>
+                  </div>
                 )}
               </div>
               <Text fontWeight="bold">Emp Details: </Text>
@@ -637,7 +615,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {data.enquiryDate && (
                   <div>
                     <Text fontWeight="bold">Enquiry Date: </Text>
@@ -689,13 +667,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 {data.email1 && (
                   <div>
                     <Text fontWeight="bold">Email 1: </Text>
-                    <Text fontSize="18px" textTransform={"capitalize"}>{data.email1}</Text>
+                    <Text fontSize="18px">{data.email1}</Text>
                   </div>
                 )}
                 {data.email2 && (
                   <div>
                     <Text fontWeight="bold">Email 2: </Text>
-                    <Text fontSize="18px" textTransform={"capitalize"}>{data.email2}</Text>
+                    <Text fontSize="18px">{data.email2}</Text>
                   </div>
                 )}
                 {data.status && (
@@ -731,7 +709,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 {data.pincode && (
                   <div>
                     <Text fontWeight="bold">Pincode: </Text>
-                    <Text fontSize="18px" textTransform={"capitalize"}>{data.pincode}</Text>
+                    <Text fontSize="18px">{data.pincode}</Text>
                   </div>
                 )}
                 {data.country && (
@@ -743,7 +721,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 {data.website && (
                   <div>
                     <Text fontWeight="bold">Website: </Text>
-                    <Text fontSize="18px" textTransform={"capitalize"}>{data.website}</Text>
+                    <Text fontSize="18px">{data.website}</Text>
                   </div>
                 )}
                 {data.status && (
