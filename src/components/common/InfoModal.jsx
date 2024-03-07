@@ -33,13 +33,17 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
     }
     if (modalFor === "slip" && data?.employee_id) {
       const employeeId = data.employee_id;
-      dispatch(setEmployeeId(employeeId));
+      dispatch(addEmployeeId(employeeId));
+    }
+    if (modalFor === "invoice" && data?.client_id) {
+      const clientId = data.client_id;
+      dispatch(setClientId(clientId));
     }
     if (modalFor === "task" && data?.employee_id) {
       const employeeId = data.employee_id;
       const p = data.project_id;
       const c = data.client_id;
-      dispatch(setEmployeeId(employeeId));
+      dispatch(addEmployeeId(employeeId));
       dispatch(setClientId(c));
       dispatch(setProjectId(p));
     }
@@ -66,32 +70,44 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div>
-                <Text fontWeight="bold">Name: </Text>
-                <Text>{data.name}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{data.email}</Text>
-                <Text fontWeight="bold">Position: </Text>
-                <Text>{data.position}</Text>
-                <Text fontWeight="bold">Department: </Text>
-                <Text>{data.department}</Text>
-                <Text fontWeight="bold">Date Of Birth: </Text>
-                <Text>{data.dob}</Text>
-                <Text fontWeight="bold">Joining Date: </Text>
-                <Text>{data.joiningDate}</Text>
-                <Text fontWeight="bold">Employee ID: </Text>
-                <Text>{data.employee_id}</Text>
+              <>
+                <div className="flex flex-col md:flex-row gap-3 w-full">
+                  <div className="md:w-1/3 w-full mb-4">
+                    <Text fontWeight="bold">Name: </Text>
+                    <Text fontSize={"24px"} textTransform={"capitalize"}>{data.name}</Text>
+                  </div>
+                  <div className="md:w-1/3 w-full">
+                    <Text fontWeight="bold">Position: </Text>
+                    <Text fontSize={"24px"} textTransform={"capitalize"}>{data.position}</Text>
+                  </div>
+                  <div className="md:w-1/3 w-full">
+                    <Text fontWeight="bold">Department: </Text>
+                    <Text fontSize={"24px"} textTransform={"capitalize"}>{data.department}</Text>
+                  </div>
+                </div>
                 <Text fontWeight="bold">Manager ID: </Text>
-                <Text>{data.manager_id}</Text>
-                <Text fontWeight="bold">Permissions:</Text>
-                {data?.permissions && data.permissions.length > 0 ? (
+                <Text mb={4}>{data.manager_id}</Text>
+                <Text fontWeight="bold">Email: </Text>
+                <Text fontSize={"18px"} mb={4}>{data.email}</Text>
+                <div className="flex flex-col md:flex-row md:gap-[150px] gap-4 w-full">
+                  <div>
+                    <Text fontWeight="bold">Date Of Birth: </Text>
+                    <Text fontSize={"18px"}>{data.dob}</Text>
+                  </div>
+                  <div>
+                    <Text fontWeight="bold">Joining Date: </Text>
+                    <Text fontSize={"18px"}>{data.joiningDate}</Text>
+                  </div>
+                </div>
+                {/* <Text fontWeight="bold">Permissions:</Text> */}
+                {/* {data?.permissions && data.permissions.length > 0 ? (
                   data.permissions.map((permission, index) => (
                     <Text key={index}>{permission}</Text>
                   ))
                 ) : (
                   <Text color="red">No permissions</Text>
-                )}
-              </div>
+                )} */}
+              </>
             )}
           </ModalBody>
           <ModalFooter>
@@ -120,75 +136,123 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text><b>Id: </b> {data.manager_id}</Text>
-                <Text><b>Probation period: </b> {data.probationPeriod || "Not defined"}</Text>
-                <Text><b>Leaving date: </b> {data.leavingDate || "Not defined"}</Text>
-                <h1 className="mt-3 text-xl font-semibold mb-2 text-gray-500">Personal Information</h1>
+                <Text>
+                  <b>Id: </b> {data.manager_id}
+                </Text>
+                {data.probationPeriod && (
+                  <Text>
+                    <b>Probation period: </b> {data.probationPeriod}
+                  </Text>
+                )}
+                {data.leavingDate && (
+                  <Text>
+                    <b>Leaving date: </b> {data.leavingDate}
+                  </Text>
+                )}
+                <h1 className="mt-3 text-xl font-semibold mb-2 text-gray-500">
+                  Personal Information
+                </h1>
                 <div className="flex flex-col md:flex-row justify-between">
-                  <Text><b>Name: </b> {data.title} {data.name || "Not defined"}</Text>
-                  <Text><b>Gender: </b> {data.gender || "Not defined"}</Text>
-                  <Text><b>DOB: </b> {data.dob || "Not defined"}</Text>
-                  <Text><b>Joining date: </b> {data.joiningDate || "Not defined"}</Text>
+                  <Text>
+                    <b>Name: </b> {data.title} {data.name}
+                  </Text>
+                  {data.gender && (
+                    <Text>
+                      <b>Gender: </b> {data.gender}
+                    </Text>
+                  )}
+                  {data.dob && (
+                    <Text>
+                      <b>DOB: </b> {data.dob}
+                    </Text>
+                  )}
+                  {data.joiningDate && (
+                    <Text>
+                      <b>Joining date: </b> {data.joiningDate}
+                    </Text>
+                  )}
+                  {data.type && (
+                    <Text>
+                      <b>Type: </b> {data.type}
+                    </Text>
+                  )}
                 </div>
                 <div className="flex flex-col md:flex-row md:gap-[100px]">
-                  <Text><b>Aadhar no.: </b> {data.aadharNumber || "Not defined"}</Text>
-                  <Text><b>Pan no.: </b> {data.panNumber || "Not defined"}</Text>
+                  {data.aadharNumber && (
+                    <Text>
+                      <b>Aadhar no.: </b> {data.aadharNumber}
+                    </Text>
+                  )}
+                  {data.panNumber && (
+                    <Text>
+                      <b>Pan no.: </b> {data.panNumber}{console.log(data)}
+                    </Text>
+                  )}
+
                 </div>
                 <Text fontWeight="bold">Guardian details: </Text>
-                {data?.guardianDetails && data.guardianDetails.map && data.guardianDetails.map((item) => (
-                  <>
-                    <Text>Name: {item.guardianName || "Not defined"}</Text>
-                    <Text>Contact: {item.guardianContactNo || "Not defined"}</Text>
-                  </>
-                )) || "Null"}
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Position details</h1>
+                {data?.guardianDetails &&
+                  data.guardianDetails.map &&
+                  data.guardianDetails.map((item, index) => (
+                    <div key={index}>
+                      {item.guardianName && (
+                        <Text>Name: {item.guardianName}</Text>
+                      )}
+                      {item.guardianContactNo && (
+                        <Text>Contact: {item.guardianContactNo}</Text>
+                      )}
+                    </div>
+                  ))}
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
+                  Position details
+                </h1>
                 <div className="flex max-w-[700px] flex-col md:flex-row justify-between">
-                  <Text><b>Position: </b> {data.position || "Not defined"}</Text>
-                  <Text><b>Designation: </b> {data.designation || "Not defined"}</Text>
-                  <Text><b>Department: </b> {data.department || "Not defined"}</Text>
+                  {data.position && (
+                    <Text>
+                      <b>Position: </b> {data.position}
+                    </Text>
+                  )}
+                  {data.designation && (
+                    <Text>
+                      <b>Designation: </b> {data.designation}
+                    </Text>
+                  )}
+                  {data.department && (
+                    <Text>
+                      <b>Department: </b> {data.department}
+                    </Text>
+                  )}
                 </div>
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Contact details</h1>
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
+                  Contact details
+                </h1>
                 <div>
-                  <Text fontWeight="bold">Permanent Address: </Text>
-                  <Text>{data.permanentAddress || "Not defined"}</Text>
-                  <Text fontWeight="bold">Corespondance Address: </Text>
-                  <Text>{data.correspondenceAddress || "Not defined"}</Text>
-                  <Text><b>Email: </b> {data.email || "Not defined"}</Text>
-                  <Text><b>Contact no.: </b> {data.contactNo || "Not defined"}</Text>
+                  {data.permanentAddress && (
+                    <Text fontWeight="bold">Permanent Address: </Text>
+                  )}
+                  {data.permanentAddress && (
+                    <Text>{data.permanentAddress}</Text>
+                  )}
+                  {data.correspondenceAddress && (
+                    <Text fontWeight="bold">Corespondance Address: </Text>
+                  )}
+                  {data.correspondenceAddress && (
+                    <Text>{data.correspondenceAddress}</Text>
+                  )}
+                  {data.email && (
+                    <Text>
+                      <b>Email: </b> {data.email}
+                    </Text>
+                  )}
+                  {data.contactNo && (
+                    <Text>
+                      <b>Contact no.: </b> {data.contactNo}
+                    </Text>
+                  )}
                 </div>
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">Permissions</h1>
-                {data?.permissions && data.permissions.length > 0 ? (
-                  data.permissions.map((permission, index) => (
-                    <Text key={index}>{permission}</Text>
-                  ))
-                ) : (
-                  <Text color="red">No permissions</Text>
-                )}
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-slate-600">Bank details</h1>
-                {data?.bankDetails && data.bankDetails.length > 0 ? (
-                  data.bankDetails.map((bd, index) => (
-                    <Text key={index}>{bd}</Text>
-                  ))
-                ) : (
-                  <Text color="red">No permissions</Text>
-                )}
-                {/* <Text fontWeight="bold">Name: </Text>
-                <Text>{data.name}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{data.email}</Text>
-                <Text fontWeight="bold">Position: </Text>
-                <Text>{data.position}</Text>
-                <Text fontWeight="bold">Date Of Birth: </Text>
-                <Text>{data.dob}</Text>
-                <Text fontWeight="bold">Department: </Text>
-                <Text>{data.department}</Text>
-                <Text fontWeight="bold">Joining Date: </Text>
-                <Text>{data.joiningDate}</Text>
-                <Text fontWeight="bold">Employee ID: </Text>
-                <Text>{data.employee_id}</Text>
-                <Text fontWeight="bold">Manager ID: </Text>
-                <Text>{data.manager_id}</Text>
-                <Text fontWeight="bold">Permissions:</Text>
+                {/* <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
+                  Permissions
+                </h1>
                 {data?.permissions && data.permissions.length > 0 ? (
                   data.permissions.map((permission, index) => (
                     <Text key={index}>{permission}</Text>
@@ -196,6 +260,16 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 ) : (
                   <Text color="red">No permissions</Text>
                 )} */}
+                <h1 className="mt-4 text-xl font-semibold mb-2 text-slate-600">
+                  Bank details
+                </h1>
+                {data?.bankDetails && data.bankDetails.length > 0 ? (
+                  data.bankDetails.map((bd, index) => (
+                    <Text key={index}>{bd}</Text>
+                  ))
+                ) : (
+                  <Text color="red">No permissions</Text>
+                )}
               </div>
             )}
           </ModalBody>
@@ -225,58 +299,165 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text><b>Client Anniversary: </b> {data.clientAnniversary || "Not defined"}</Text>
-                <Text><b>Company Anniversary: </b> {data.companyAnniversary || "Not defined"}</Text>
+                {data.clientAnniversary && (
+                  <Text>
+                    <b>Client Anniversary: </b> {data.clientAnniversary}
+                  </Text>
+                )}
+                {data.companyAnniversary && (
+                  <Text>
+                    <b>Company Anniversary: </b> {data.companyAnniversary}
+                  </Text>
+                )}
                 <div className="flex my-3 flex-col md:flex-row justify-between">
-                  <Text><b>Name: </b> {data.clientName || "Not defined"}</Text>
-                  <Text><b>Birthday: </b> {data.clientBirthday || "Not defined"}</Text>
-                  <Text><b>Work start date: </b> {data.workStartDate || "Not defined"}</Text>
+                  {data.clientName && (
+                    <Text>
+                      <b>Name: </b> {data.clientName}
+                    </Text>
+                  )}
+                  {data.clientBirthday && (
+                    <Text>
+                      <b>Birthday: </b> {data.clientBirthday}
+                    </Text>
+                  )}
+                  {data.workStartDate && (
+                    <Text>
+                      <b>Work start date: </b> {data.workStartDate}
+                    </Text>
+                  )}
                 </div>
-                <Text fontWeight="bold">Brand Name: </Text>
-                <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Company Name: </Text>
-                <Text>{data.companyName}</Text>
-                <Text fontWeight="bold">Email1: </Text>
-                <Text>{data.email1}</Text>
-                <Text fontWeight="bold">Email2: </Text>
-                <Text>{data.email2}</Text>
-                <Text fontWeight="bold">Phone1: </Text>
-                <Text>{data.phone1}</Text>
-                <Text fontWeight="bold">Phone2: </Text>
-                <Text>{data.phone2}</Text>
-                <Text fontWeight="bold">Enquiry Date: </Text>
-                <Text>{data.enquiryDate}</Text>
-                <Text fontWeight="bold">Website: </Text>
-                <Text>{data.website}</Text>
-                <Text fontWeight="bold">Business Address: </Text>
-                <Text>{data.buisnessAddress}</Text>
-                <Text fontWeight="bold">City: </Text>
-                <Text>{data.city}</Text>
-                <Text fontWeight="bold">State: </Text>
-                <Text>{data.state}</Text>
-                <Text fontWeight="bold">Pincode: </Text>
-                <Text>{data.pincode}</Text>
-                <Text fontWeight="bold">Country: </Text>
-                <Text>{data.country}</Text>
-                <Text fontWeight="bold">Requirement: </Text>
-                <Text>{data.requirement}</Text>
-                <Text fontWeight="bold">Additional Information: </Text>
-                <Text>{data.additionalInformation}</Text>
-                <Text fontWeight="bold">Client ID: </Text>
-                <Text>{data.client_id}</Text>
-
-                <Text fontWeight="bold">Files Provided: </Text>
-                {data.multipleFiles && data.multipleFiles.length > 0 ? (
-                  data.multipleFiles.map((file, index) => (
-                    <div key={index}>
-                      <Image
-                        src={file}
-                        alt={`File ${index + 1}, url:- ${file}`}
-                      />
-                    </div>
-                  ))
+                {data.brandName && (
+                  <>
+                    <Text fontWeight="bold">Brand Name: </Text>
+                    <Text>{data.brandName}</Text>
+                  </>
+                )}
+                {data.companyName && (
+                  <>
+                    <Text fontWeight="bold">Company Name: </Text>
+                    <Text>{data.companyName}</Text>
+                  </>
+                )}
+                {data.email1 && (
+                  <>
+                    <Text fontWeight="bold">Email1: </Text>
+                    <Text>{data.email1}</Text>
+                  </>
+                )}
+                {data.email2 && (
+                  <>
+                    <Text fontWeight="bold">Email2: </Text>
+                    <Text>{data.email2}</Text>
+                  </>
+                )}
+                {data.phone1 && (
+                  <>
+                    <Text fontWeight="bold">Phone1: </Text>
+                    <Text>{data.phone1}</Text>
+                  </>
+                )}
+                {data.phone2 && (
+                  <>
+                    <Text fontWeight="bold">Phone2: </Text>
+                    <Text>{data.phone2}</Text>
+                  </>
+                )}
+                {data.enquiryDate && (
+                  <>
+                    <Text fontWeight="bold">Enquiry Date: </Text>
+                    <Text>{data.enquiryDate}</Text>
+                  </>
+                )}
+                {data.website && (
+                  <>
+                    <Text fontWeight="bold">Website: </Text>
+                    <Text>{data.website}</Text>
+                  </>
+                )}
+                {data.buisnessAddress && (
+                  <>
+                    <Text fontWeight="bold">Business Address: </Text>
+                    <Text>{data.buisnessAddress}</Text>
+                  </>
+                )}
+                {data.city && (
+                  <>
+                    <Text fontWeight="bold">City: </Text>
+                    <Text>{data.city}</Text>
+                  </>
+                )}
+                {data.state && (
+                  <>
+                    <Text fontWeight="bold">State: </Text>
+                    <Text>{data.state}</Text>
+                  </>
+                )}
+                {data.pincode && (
+                  <>
+                    <Text fontWeight="bold">Pincode: </Text>
+                    <Text>{data.pincode}</Text>
+                  </>
+                )}
+                {data.country && (
+                  <>
+                    <Text fontWeight="bold">Country: </Text>
+                    <Text>{data.country}</Text>
+                  </>
+                )}
+                {data.requirement && (
+                  <>
+                    <Text fontWeight="bold">Requirement: </Text>
+                    <Text>{data.requirement}</Text>
+                  </>
+                )}
+                {data.additionalInformation && (
+                  <>
+                    <Text fontWeight="bold">Additional Information: </Text>
+                    <Text>{data.additionalInformation}</Text>
+                  </>
+                )}
+                {data.client_id && (
+                  <>
+                    <Text fontWeight="bold">Client ID: </Text>
+                    <Text>{data.client_id}</Text>
+                  </>
+                )}
+                {data.source && data.source.length > 0 && (
+                  <>
+                    <Text fontWeight="bold">Source:</Text>
+                    <ul>
+                      {data.source.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {Array.isArray(data.multipleFiles) &&
+                  data.multipleFiles.length > 0 ? (
+                  <div>
+                    <Text fontWeight="bold">Files Provided: </Text>
+                    {data.multipleFiles.map((file, index) => (
+                      <div key={index}>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
+                            }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          display="inline-block"
+                          mr={2}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View File {index + 1}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <Text style={{ color: "red" }}>No Files found</Text>
+                  <Text fontWeight="bold">No files provided</Text>
                 )}
               </div>
             )}
@@ -300,51 +481,81 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         isCentered
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Project Information</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {data && (
+        {data && ( // Check if data exists
+          <ModalContent>
+            <ModalHeader>Project Information</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
               <div>
-                <Text fontWeight="bold">Project Name: </Text>
-                <Text>{data.projectName}</Text>
-                <Text fontWeight="bold">Brand Name: </Text>
-                <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Priority: </Text>
-                <Text>{data.priority}</Text>
-                <Text fontWeight="bold">Client ID: </Text>
+                <Text fontWeight="bold">Client Details: </Text>
                 <Link to={`/GetClient`}>
                   <Button>Get Client details</Button>
                 </Link>
 
-                <Text fontWeight="bold">Start Date </Text>
-                <Text>{data.startDate}</Text>
-                <Text fontWeight="bold">End date </Text>
-                <Text>{data.endDate}</Text>
-                <Text fontWeight="bold">Tags </Text>
-                {data.tags.map((tag, index) => (
-                  <Text key={index}>{tag.tagName}</Text>
-                ))}
-
-                <Text fontWeight="bold">Employee </Text>
-
-                <Link to={`/GetEmp`}>
-                  <Button>Get EMP details</Button>
-                </Link>
-
-                <Text fontWeight="bold">Project ID: </Text>
-                <Text>{data.project_id}</Text>
-                <Text fontWeight="bold">Description: </Text>
-                <Text>{data.description}</Text>
+                {data.projectName && ( // Check if projectName exists
+                  <>
+                    <Text fontWeight="bold">Project Name: </Text>
+                    <Text>{data.projectName}</Text>
+                  </>
+                )}
+                {data.brandName && ( // Check if brandName exists
+                  <>
+                    <Text fontWeight="bold">Brand Name: </Text>
+                    <Text>{data.brandName}</Text>
+                  </>
+                )}
+                {data.priority && ( // Check if priority exists
+                  <>
+                    <Text fontWeight="bold">Priority: </Text>
+                    <Text>{data.priority}</Text>
+                  </>
+                )}
+                {data.startDate && ( // Check if startDate exists
+                  <>
+                    <Text fontWeight="bold">Start Date: </Text>
+                    <Text>{data.startDate}</Text>
+                  </>
+                )}
+                {data.deadline && ( // Check if deadline exists
+                  <>
+                    <Text fontWeight="bold">End Date: </Text>
+                    <Text>{data.deadline}</Text>
+                  </>
+                )}
+                {data.tags &&
+                  data.tags.length > 0 && ( // Check if tags exist and have length greater than 0
+                    <>
+                      <Text fontWeight="bold">Tags: </Text>
+                      {data.tags.map((tag, index) => (
+                        <Text key={index}>{tag.tagName}</Text>
+                      ))}
+                    </>
+                  )}
+                {data.project_id && ( // Check if project_id exists
+                  <>
+                    <Text fontWeight="bold">Project ID: </Text>
+                    <Text>{data.project_id}</Text>
+                  </>
+                )}
+                {data.description && ( // Check if description exists
+                  <>
+                    <Text fontWeight="bold">Description: </Text>
+                    <Text>{data.description}</Text>
+                  </>
+                )}
               </div>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="purple" onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
+              <Text fontWeight="bold">Emp Details: </Text>
+              <Link to={`/GetEmp`}>
+                <Button>Get Emp details</Button>
+              </Link>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="purple" onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        )}
       </Modal>
     );
   }
@@ -366,13 +577,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text>{data.client_id}</Text>
-                <Text fontWeight="bold">Gst: </Text>
-                <Text>{data.gst}</Text>
-                <Text fontWeight="bold">Invoice Id: </Text>
-                <Text>{data.invoive_id}</Text>
                 <Text fontWeight="bold">Client ID: </Text>
-                <Link to={`/GetClient`}>      {/* GetClient/${data.client_id} */}
+                <Link to={`/GetClient`}>
                   <Button>Get Client details</Button>
                 </Link>
 
@@ -381,22 +587,27 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <Text fontWeight="bold">Time </Text>
                 <Text>{data.time1}</Text>
 
-                <Text fontWeight="bold">Services </Text>
-
-                <Text fontWeight="bold">Invoice: </Text>
-                <Text>{data.services.product}</Text>
-                <Text fontWeight="bold">Description: </Text>
-                <Text>{data.services.serviceDescription}</Text>
-                <Text fontWeight="bold">Duration: </Text>
-                <Text>{data.services.duration}</Text>
-                <Text fontWeight="bold">Quantity: </Text>
-                <Text>{data.services.quantity}</Text>
-                <Text fontWeight="bold">Unit Price: </Text>
-                <Text>{data.services.unitPrice}</Text>
-                <Text fontWeight="bold">Start Date: </Text>
-                <Text>{data.services.startDate}</Text>
-                <Text fontWeight="bold">End Date: </Text>
-                <Text>{data.services.endDate}</Text>
+                {data.services && (<>
+                  <Text fontWeight="bold">Services </Text>
+                  {data.services.map((service, index) => (
+                    <div key={index}>
+                      <Text fontWeight="bold">Invoice: </Text>
+                      <Text>{service.product}</Text>
+                      <Text fontWeight="bold">Description: </Text>
+                      <Text>{service.serviceDescription}</Text>
+                      <Text fontWeight="bold">Duration: </Text>
+                      <Text>{service.duration}</Text>
+                      <Text fontWeight="bold">Quantity: </Text>
+                      <Text>{service.quantity}</Text>
+                      <Text fontWeight="bold">Unit Price: </Text>
+                      <Text>{service.unitPrice}</Text>
+                      <Text fontWeight="bold">Start Date: </Text>
+                      <Text>{service.startDate}</Text>
+                      <Text fontWeight="bold">End Date: </Text>
+                      <Text>{service.endDate}</Text>
+                    </div>
+                  ))}
+                </>)}
               </div>
             )}
           </ModalBody>
@@ -427,71 +638,204 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalBody>
             {data && (
               <div>
-                <Text fontWeight="bold">Enquiry Date: </Text>
-                <Text>{data.enquiryDate}</Text>
-                <Text fontWeight="bold">Company Name </Text>
-                <Text>{data.companyName}</Text>
-                <Text fontWeight="bold">Source: </Text>
-                <ul>
-                  {data.source.map((req, index) => (
-                    <li key={index}>{req}</li>
-                  ))}
-                </ul>
-                <Text fontWeight="bold">Gender </Text>
-                <Text>{data.gender}</Text>
-                <Text fontWeight="bold">GST Number </Text>
-                <Text>{data.gstNo}</Text>
-                <Text fontWeight="bold">Title </Text>
-                <Text>{data.title}</Text>
-                <Text fontWeight="bold">Brand Name </Text>
-                <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Client Name </Text>
-                <Text>{data.clientName}</Text>
-                <Text fontWeight="bold">Website </Text>
-                <Text>{data.website}</Text>
-                <Text fontWeight="bold">Phone Number1: </Text>
-                <Text>{data.phone1}</Text>
-                <Text fontWeight="bold">Phone Number2: </Text>
-                <Text>{data.phone2}</Text>
-                <Text fontWeight="bold">Email: </Text>
-                <Text>{data.email1}</Text>
-                <Text fontWeight="bold">Email 2: </Text>
-                <Text>{data.email2}</Text>
-                <Text fontWeight="bold">Status: </Text>
-                <Text>{data.status}</Text>
-                <Text fontWeight="bold">Business Address: </Text>
-                <Text>{data.businessAddress}</Text>
-                <Text fontWeight="bold">Billing Address: </Text>
-                <Text>{data.billingAddress}</Text>
-                <Text fontWeight="bold">City </Text>
-                <Text>{data.city}</Text>
-                <Text fontWeight="bold">State </Text>
-                <Text>{data.state}</Text>
-                <Text fontWeight="bold">Pincode </Text>
-                <Text>{data.pincode}</Text>
-                <Text fontWeight="bold">Country </Text>
-                <Text>{data.country}</Text>
-                <Text fontWeight="bold">Additional Information </Text>
-                <Text>{data.additionalInformation}</Text>
-                <Text fontWeight="bold">Requirements: </Text>
-                <ul>
-                  {data.requirement.map((req, index) => (
-                    <li key={index}>{req}</li>
-                  ))}
-                </ul>
-                <Text fontWeight="bold">Single File: </Text>
-                <a href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}>{`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split('/')[4]}`}</a>
-                <Text fontWeight="bold">Multiple Files: </Text>
-                {data.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <Image
-                      src={file}
-                      alt={`File ${index + 1}, url:- ${file}`}
-                    />
+                {data.enquiryDate && (
+                  <>
+                    <Text fontWeight="bold">Enquiry Date: </Text>
+                    <Text>{data.enquiryDate}</Text>
+                  </>
+                )}
+                {data.companyName && (
+                  <>
+                    <Text fontWeight="bold">Company Name: </Text>
+                    <Text>{data.companyName}</Text>
+                  </>
+                )}
+                {data.gender && (
+                  <>
+                    <Text fontWeight="bold">Gender: </Text>
+                    <Text>{data.gender}</Text>
+                  </>
+                )}
+                {data.title && (
+                  <>
+                    <Text fontWeight="bold">Title: </Text>
+                    <Text>{data.title}</Text>
+                  </>
+                )}
+                {data.brandName && (
+                  <>
+                    <Text fontWeight="bold">Brand Name: </Text>
+                    <Text>{data.brandName}</Text>
+                  </>
+                )}
+                {data.clientName && (
+                  <>
+                    <Text fontWeight="bold">Client Name: </Text>
+                    <Text>{data.clientName}</Text>
+                  </>
+                )}
+                {data.phone1 && (
+                  <>
+                    <Text fontWeight="bold">Phone Number 1: </Text>
+                    <Text>{data.phone1}</Text>
+                  </>
+                )}
+                {data.phone2 && (
+                  <>
+                    <Text fontWeight="bold">Phone Number 2: </Text>
+                    <Text>{data.phone2}</Text>
+                  </>
+                )}
+                {data.email1 && (
+                  <>
+                    <Text fontWeight="bold">Email 1: </Text>
+                    <Text>{data.email1}</Text>
+                  </>
+                )}
+                {data.email2 && (
+                  <>
+                    <Text fontWeight="bold">Email 2: </Text>
+                    <Text>{data.email2}</Text>
+                  </>
+                )}
+                {data.status && (
+                  <>
+                    <Text fontWeight="bold">Status: </Text>
+                    <Text>{data.status}</Text>
+                  </>
+                )}
+                {data.businessAddress && (
+                  <>
+                    <Text fontWeight="bold">Business Address: </Text>
+                    <Text>{data.businessAddress}</Text>
+                  </>
+                )}
+                {data.billingAddress && (
+                  <>
+                    <Text fontWeight="bold">Billing Address: </Text>
+                    <Text>{data.billingAddress}</Text>
+                  </>
+                )}
+                {data.city && (
+                  <>
+                    <Text fontWeight="bold">City: </Text>
+                    <Text>{data.city}</Text>
+                  </>
+                )}
+                {data.state && (
+                  <>
+                    <Text fontWeight="bold">State: </Text>
+                    <Text>{data.state}</Text>
+                  </>
+                )}
+                {data.pincode && (
+                  <>
+                    <Text fontWeight="bold">Pincode: </Text>
+                    <Text>{data.pincode}</Text>
+                  </>
+                )}
+                {data.country && (
+                  <>
+                    <Text fontWeight="bold">Country: </Text>
+                    <Text>{data.country}</Text>
+                  </>
+                )}
+                {data.website && (
+                  <>
+                    <Text fontWeight="bold">Website: </Text>
+                    <Text>{data.website}</Text>
+                  </>
+                )}
+                {data.status && (
+                  <>
+                    <Text fontWeight="bold">Status: </Text>
+                    <Text>{data.status}</Text>
+                  </>
+                )}
+                {data.additionalInformation && (
+                  <>
+                    <Text fontWeight="bold">Additional Information: </Text>
+                    <Text>{data.additionalInformation}</Text>
+                  </>
+                )}
+                {data.sourceInformation && (
+                  <>
+                    <Text fontWeight="bold">Source Information: </Text>
+                    <Text>{data.sourceInformation}</Text>
+                  </>
+                )}
+                {data.source && data.source.length > 0 && (
+                  <>
+                    <Text fontWeight="bold">Source:</Text>
+                    <ul>
+                      {data.source.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {data.requirement && data.requirement.length > 0 && (
+                  <>
+                    <Text fontWeight="bold">Requirements: </Text>
+                    <ul>
+                      {data.requirement.map((req, index) => (
+                        <li key={index}>{req}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {data.singleFile && (
+                  <>
+                    <Text fontWeight="bold">Single File: </Text>
+                    <Button
+                      as="a"
+                      href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split("/")[4]
+                        }`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      textDecoration="none"
+                      _hover={{ textDecoration: "none" }}
+                      mb={2}
+                      variant="solid"
+                    >
+                      View Single File
+                    </Button>
+                  </>
+                )}
+                {Array.isArray(data.multipleFiles) &&
+                  data.multipleFiles.length > 0 ? (
+                  <div>
+                    <Text fontWeight="bold">Files Provided: </Text>
+                    {data.multipleFiles.map((file, index) => (
+                      <div key={index}>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
+                            }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          display="inline-block"
+                          mr={2}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View File {index + 1}
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-                <Text fontWeight="bold">Lead ID: </Text>
-                <Text>{data.lead_id}</Text>
+                ) : (
+                  <Text fontWeight="bold">No files provided</Text>
+                )}
+
+                {data.lead_id && (
+                  <>
+                    <Text fontWeight="bold">Lead ID: </Text>
+                    <Text>{data.lead_id}</Text>
+                  </>
+                )}
               </div>
             )}
           </ModalBody>
@@ -503,6 +847,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
+
   if (modalFor === "task")
     return (
       <Modal

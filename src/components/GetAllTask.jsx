@@ -136,7 +136,7 @@ const GetAllTask = () => {
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
+                        <MenuButton size={"sm"} as={Button} colorScheme="purple">
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -173,6 +173,7 @@ const GetAllTask = () => {
                     </Td>
                     <Td>
                       <Button
+                      size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >
@@ -206,7 +207,7 @@ const GetAllTask = () => {
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
+                        <MenuButton size={"sm"} as={Button} colorScheme="purple">
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -243,6 +244,7 @@ const GetAllTask = () => {
                     </Td>
                     <Td>
                       <Button
+                      size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >

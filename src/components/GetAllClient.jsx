@@ -96,39 +96,41 @@ const GetAllClient = () => {
           <Tbody>
             {searchText !== ""
               ? filteredClients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.clientName}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">{client.phone1}</Td>
-                    <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                <Tr key={client._id}>
+                  <Td>{index + 1}</Td>
+                  <Td>{client.clientName}</Td>
+                  <Td className="md:table-cell hidden">{client.brandName}</Td>
+                  <Td className="md:table-cell hidden">{client.phone1}</Td>
+                  <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(client)}
+                    >
+                      More Info
+                    </Button>
+                  </Td>
+                </Tr>
+              ))
               : clients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.clientName}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">{client.phone1}</Td>
-                    <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
-                    <Td>
-                      <Button
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                <Tr key={client._id}>
+                  <Td>{index + 1}</Td>
+                  <Td>{client.clientName}</Td>
+                  <Td className="md:table-cell hidden">{client.brandName}</Td>
+                  <Td className="md:table-cell hidden">{client.phone1}</Td>
+                  <Td className="md:table-cell hidden">{client.enquiryDate}</Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(client)}
+                    >
+                      More Info
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
           </Tbody>
         </TableContainer>
       </div>

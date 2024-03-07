@@ -71,6 +71,7 @@ const GetAllSlip = () => {
       })
       .catch(error => {
         console.log('error: ', error);
+          setDownloading(false);
       });
   }
 

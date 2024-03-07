@@ -28,6 +28,9 @@ import GetEmpSlip from "./components/GetEmpSlip";
 import ManageLeads from "./components/ManageLeads";
 import GetAllInvoices from "./components/GetAllInvoices";
 import CreateInvoice from "./components/CreateInvoice";
+import GetProject from "./components/common/InfoBoxProject";
+import InfoBoxClient from "./components/common/InfoBoxClient";
+import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -35,7 +38,7 @@ function App() {
   //   window.location.reload();
   // };
 
-  const [activeSideabarLink, setActiveSideabarLink] = useState('');
+  const [activeSideabarLink, setActiveSideabarLink] = useState("");
 
   return (
     <Routes>
@@ -268,7 +271,7 @@ function App() {
                 activeSideabarLink={""}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
-                <InfoBoxByID modalFor="employee" />
+                <InfoBoxEmployee></InfoBoxEmployee>
               </AppLayout>
             }
           />
@@ -284,13 +287,24 @@ function App() {
             }
           />
           <Route
+            path="/GetProject"
+            element={
+              <AppLayout
+                activeSideabarLink={""}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetProject></GetProject>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/GetClient"
             element={
               <AppLayout
                 activeSideabarLink={""}
                 setActiveSideabarLink={setActiveSideabarLink}
               >
-                <InfoBoxByID modalFor="client" />
+                <InfoBoxClient></InfoBoxClient>
               </AppLayout>
             }
           />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import {
@@ -14,72 +14,76 @@ import {
   Text,
   Spinner,
   VStack,
+  Divider,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Tag } from "antd";
 
 const InfoBoxByID = ({ modalFor }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const employeeIds = useSelector(selectEmployeeIds);
+  console.log(employeeIds);
   const clientId = useSelector(selectClientId);
   const employeeId = useSelector(selectEmployeeId);
   const dispatch = useDispatch();
   const borderColor = useColorModeValue("gray.200", "gray.700");
+ 
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let fetchedData = [];
-        if (modalFor === "employee" && employeeId) {
-          const employeeResponse = await axios.get(
-            `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
-          );
-          fetchedData.push(employeeResponse.data);
-        } else if (modalFor === "employee" && employeeIds.length > 0) {
-          const promises = employeeIds.map((id) =>
-            axios.get(
-              `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${id}`
-            )
-          );
-          const responses = await Promise.all(promises);
-          fetchedData = responses.map((res) => res.data);
-        } else if (modalFor === "client" && clientId) {
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_BASE}/api/admin/getClientDetails/${clientId}`
-          );
-          fetchedData.push(response.data);
-        }
-        setData(fetchedData[0]);
-        setLoading(false);
-        if (modalFor === "employee") {
+ useEffect(() => {
+   const fetchData = async () => {
+     setLoading(true);
+     setError(null);
+     try {
+       let fetchedData = [];
+       if (modalFor === "employee" && employeeId) {
+         const employeeResponse = await axios.get(
+           `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
+         );
+         fetchedData.push(employeeResponse.data);
+       } else if (modalFor === "employee" && employeeIds.length > 0) {
+         const promises = employeeIds.map((id) =>
+           axios.get(
+             `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${id}`
+           )
+         );
+         const responses = await Promise.all(promises);
+         fetchedData = responses.map((res) => res.data);
+       } else if (modalFor === "client" && clientId) {
+         const response = await axios.get(
+           `${import.meta.env.VITE_API_BASE}/api/admin/getClientDetails/${clientId}`
+         );
+         fetchedData.push(response.data);
+       }
+       setData(fetchedData);
+       setLoading(false);
+       if (modalFor === "employee") {
+         dispatch(clearEmployeeIds());
+         dispatch(clearEmployeeId());      
+          dispatch(clearClientId()); 
+       } else if (modalFor === "client") {
+         dispatch(clearClientId());
           dispatch(clearEmployeeIds());
-          dispatch(clearEmployeeId());
-          dispatch(clearClientId());
-        } else if (modalFor === "client") {
-          dispatch(clearClientId());
+          dispatch(clearEmployeeId());  
+         
+       }
+     } catch (error) {
+       setError(error.response.data.message);
+       setLoading(false);
+        dispatch(clearEmployeeIds());
+        dispatch(clearEmployeeId());  
+        dispatch(clearClientId()); 
+     }
+   };
 
-        }
-      } catch (error) {
-        setError(error.response.data.message);
-        setLoading(false);
-      }
-    };
-
-    if (
-      (modalFor === "employee" && employeeIds.length > 0) ||
-      (modalFor === "client" && clientId) ||
-      (modalFor === "employee" && employeeId)
-    ) {
-      fetchData();
-    }
-  }, []);
-
-  console.log(data)
+   if (
+     (modalFor === "employee" && employeeIds.length > 0) ||
+     (modalFor === "client" && clientId) ||
+     (modalFor === "employee" && employeeId)
+   ) {
+     fetchData();
+   }
+ }, []);
 
 
   return (
@@ -92,69 +96,70 @@ const InfoBoxByID = ({ modalFor }) => {
       {loading && <Spinner />}
       {error && <Text color="red.500">{error}</Text>}
       {!loading && !error && (
-        <VStack align="start" spacing={2} mx={4} mt={6}>
-          {data ? (
-            <div className="grid grid-cols-2 gap-3">
-              {data.clientName && (<>
+        <VStack align="start" spacing={2}>
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
+            <div key={`item-${index}`} className="grid grid-cols-2 gap-3 w-full">
+              {item.clientName && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Client Name:</Text>
-                <Text>{data.clientName}</Text>
+                <Text>{item.clientName}</Text>
               </>)}
-              {data.companyName && (<>
+              {item.companyName && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Company Name:</Text>
-                <Text>{data.companyName}</Text>
+                <Text>{item.companyName}</Text>
               </>)}
-              {data.enquiryDate && (<>
+              {item.enquiryDate && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Enquiry Date:</Text>
-                <Text>{data.enquiryDate}</Text>
+                <Text>{item.enquiryDate}</Text>
               </>)}
-              {data.brandName && (<>
+              {item.brandName && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Brand Name:</Text>
-                <Text>{data.brandName}</Text>
+                <Text>{item.brandName}</Text>
               </>)}
-              {data.requirement && data.requirement.length > 0 && (<>
+              {item.requirement && item.requirement.length > 0 && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Requirement:</Text>
-                <div className="flex gap-2">{data.requirement.map((el, index) => <Tag key={`req-${index}`} color="magenta">{el}</Tag>)}</div>
+                <div className="flex gap-2">{item.requirement.map((el, index) => <Tag key={`req-${index}`} color="magenta">{el}</Tag>)}</div>
               </>)}
-              {data.source && (<>
+              {item.source && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Source:</Text>
-                <div className="flex gap-2">{data.source.map((el, index) => <Tag key={`req-${index}`} color="geekblue">{el}</Tag>)}</div>
+                <div className="flex gap-2">{item.source.map((el, index) => <Tag key={`req-${index}`} color="geekblue">{el}</Tag>)}</div>
               </>)}
-              {data.businessAddress && (<>
+              {item.businessAddress && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Business Address:</Text>
-                <Text>{data.businessAddress}</Text>
+                <Text>{item.businessAddress}</Text>
               </>)}
-              {data.city && (<>
+              {item.city && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">City:</Text>
-                <Text>{data.city}</Text>
+                <Text>{item.city}</Text>
               </>)}
-              {data.state && (<>
+              {item.state && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">State:</Text>
-                <Text>{data.state}</Text>
+                <Text>{item.state}</Text>
               </>)}
-              {data.country && (<>
+              {item.country && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Country:</Text>
-                <Text>{data.country}</Text>
+                <Text>{item.country}</Text>
               </>)}
-              {data.pincode && (<>
+              {item.pincode && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Pin Code:</Text>
-                <Text>{data.pincode}</Text>
+                <Text>{item.pincode}</Text>
               </>)}
-              {(data.email1 || data.email2) && (<>
+              {(item.email1 || item.email2) && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Emails:</Text>
-                <Text>{data.email1} {data.email2 && `(AND) ${data.email2}`}</Text>
+                <Text>{item.email1} {item.email2 && `(AND) ${item.email2}`}</Text>
               </>)}
-              {(data.phone1 || data.phone2) && (<>
+              {(item.phone1 || item.phone2) && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Phones:</Text>
-                <Text>{data.phone1} {data.phone2 && `(AND) ${data.phone2}`}</Text>
+                <Text>{item.phone1} {item.phone2 && `(AND) ${item.phone2}`}</Text>
               </>)}
-              {data.website && (<>
+              {item.website && (<>
                 <Text fontWeight={"bold"} className="min-w-[150px]">Website:</Text>
-                <Text>{data.website}</Text>
+                <Text>{item.website}</Text>
               </>)}
             </div>
-          ) : (
+            ))) :
             <Text>No data available</Text>
-          )}
+          }
         </VStack>
       )}
     </Box>
