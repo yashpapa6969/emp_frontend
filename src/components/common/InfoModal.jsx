@@ -637,155 +637,155 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {data.enquiryDate && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Enquiry Date: </Text>
-                    <Text>{data.enquiryDate}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.enquiryDate}</Text>
+                  </div>
                 )}
                 {data.companyName && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Company Name: </Text>
-                    <Text>{data.companyName}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.companyName}</Text>
+                  </div>
                 )}
                 {data.gender && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Gender: </Text>
-                    <Text>{data.gender}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.gender}</Text>
+                  </div>
                 )}
                 {data.title && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Title: </Text>
-                    <Text>{data.title}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.title}</Text>
+                  </div>
                 )}
                 {data.brandName && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Brand Name: </Text>
-                    <Text>{data.brandName}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.brandName}</Text>
+                  </div>
                 )}
                 {data.clientName && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Client Name: </Text>
-                    <Text>{data.clientName}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.clientName}</Text>
+                  </div>
                 )}
                 {data.phone1 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Phone Number 1: </Text>
-                    <Text>{data.phone1}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.phone1}</Text>
+                  </div>
                 )}
                 {data.phone2 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Phone Number 2: </Text>
-                    <Text>{data.phone2}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.phone2}</Text>
+                  </div>
                 )}
                 {data.email1 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Email 1: </Text>
-                    <Text>{data.email1}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.email1}</Text>
+                  </div>
                 )}
                 {data.email2 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Email 2: </Text>
-                    <Text>{data.email2}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.email2}</Text>
+                  </div>
                 )}
                 {data.status && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Status: </Text>
-                    <Text>{data.status}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.status}</Text>
+                  </div>
                 )}
                 {data.businessAddress && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Business Address: </Text>
-                    <Text>{data.businessAddress}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.businessAddress}</Text>
+                  </div>
                 )}
                 {data.billingAddress && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Billing Address: </Text>
-                    <Text>{data.billingAddress}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.billingAddress}</Text>
+                  </div>
                 )}
                 {data.city && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">City: </Text>
-                    <Text>{data.city}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.city}</Text>
+                  </div>
                 )}
                 {data.state && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">State: </Text>
-                    <Text>{data.state}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.state}</Text>
+                  </div>
                 )}
                 {data.pincode && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Pincode: </Text>
-                    <Text>{data.pincode}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.pincode}</Text>
+                  </div>
                 )}
                 {data.country && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Country: </Text>
-                    <Text>{data.country}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.country}</Text>
+                  </div>
                 )}
                 {data.website && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Website: </Text>
-                    <Text>{data.website}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.website}</Text>
+                  </div>
                 )}
                 {data.status && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Status: </Text>
-                    <Text>{data.status}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.status}</Text>
+                  </div>
                 )}
                 {data.additionalInformation && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Additional Information: </Text>
-                    <Text>{data.additionalInformation}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.additionalInformation}</Text>
+                  </div>
                 )}
                 {data.sourceInformation && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Source Information: </Text>
-                    <Text>{data.sourceInformation}</Text>
-                  </>
+                    <Text fontSize="18px" textTransform={"capitalize"}>{data.sourceInformation}</Text>
+                  </div>
                 )}
                 {data.source && data.source.length > 0 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Source:</Text>
                     <ul>
                       {data.source.map((item, index) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>
-                  </>
+                  </div>
                 )}
                 {data.requirement && data.requirement.length > 0 && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Requirements: </Text>
                     <ul>
                       {data.requirement.map((req, index) => (
                         <li key={index}>{req}</li>
                       ))}
                     </ul>
-                  </>
+                  </div>
                 )}
                 {data.singleFile && (
-                  <>
+                  <div>
                     <Text fontWeight="bold">Single File: </Text>
                     <Button
                       as="a"
@@ -800,7 +800,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                     >
                       View Single File
                     </Button>
-                  </>
+                  </div>
                 )}
                 {Array.isArray(data.multipleFiles) &&
                   data.multipleFiles.length > 0 ? (
@@ -828,13 +828,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   </div>
                 ) : (
                   <Text fontWeight="bold">No files provided</Text>
-                )}
-
-                {data.lead_id && (
-                  <>
-                    <Text fontWeight="bold">Lead ID: </Text>
-                    <Text>{data.lead_id}</Text>
-                  </>
                 )}
               </div>
             )}
