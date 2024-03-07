@@ -12,7 +12,7 @@ import {
   TagLabel,
   TagCloseButton,
   Flex,
-  Input
+  Input,
 } from "@chakra-ui/react";
 import { Select } from "antd";
 import axios from "axios";
@@ -22,15 +22,18 @@ import { toast } from "react-toastify";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
+import moment from "moment";
 
 const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
+    title: "",
+    gender: "",
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
-    WorkStartDate: "",
+    workStartDate: "",
     source: [],
     companyName: "",
     clientName: "",
@@ -47,7 +50,6 @@ const Client = () => {
     country: "",
     requirement: "",
     additionalInformation: "",
-    status: "",
     singleFile: null,
     multipleFiles: [],
   });
@@ -56,7 +58,19 @@ const Client = () => {
   const [selectedState, setSelectedState] = useState("");
   const [tags, setTags] = useState([]);
   const [selectSourceValue, setSelectSourceValue] = useState([]);
-  const [selectedTagValue, setSelectedTagValue] = useState([])
+  const [selectedTagValue, setSelectedTagValue] = useState([]);
+
+  const handleSelectOption = (name, value) => {
+    setProjectData({ ...projectData, [name]: value });
+
+  };
+  useEffect(() => {
+    setProjectData((prev) => ({
+      ...prev,
+      source: selectSourceValue,
+      requirement: selectedTagValue,
+    }));
+  }, [selectSourceValue, selectedTagValue]);
 
   const removeTagById = (tagToRemove) => {
     setProjectData({
@@ -72,16 +86,6 @@ const Client = () => {
     const tag = tags.find((tag) => tag.source_tag_id === id);
     return tag ? tag.sourceTagName : "Unknown Tag";
   };
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_BASE}/api/admin/sourceGetAllTags`)
-      .then((response) => {
-        setTags(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching clients:", error);
-      });
-  }, []);
 
   const handleTagChange = (e) => {
     const selectedTags = Array.from(
@@ -128,16 +132,27 @@ const Client = () => {
   };
 
   const handleSubmit = (e) => {
+    console.log("davin");
     e.preventDefault();
 
     const formData = new FormData();
 
-    // Filter out entries with empty string values
     Object.entries(projectData).forEach(([key, value]) => {
-      if (value !== "") {
+      if (key === "source" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+        value.forEach((sourceItem, index) => {
+          formData.append(`${key}[${index}]`, sourceItem);
+        });
+      }
+      else if (key === "requirement" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+        value.forEach((sourceItem, index) => {
+          formData.append(`${key}[${index}]`, sourceItem);
+        });
+      } else if (value !== "") { // For all other non-empty values
         formData.append(key, value);
       }
     });
+
+
 
     axios
       .post(
@@ -163,7 +178,6 @@ const Client = () => {
       });
   };
 
-
   return (
     <form onSubmit={handleSubmit}>
       {/* <FormControl id="enquiryDate" isRequired>
@@ -173,7 +187,6 @@ const Client = () => {
                     onChange={(date) =>
                         setProjectData({ ...projectData, enquiryDate: date })
                     }
-                    defaultValue={moment()}
                     format={"DD/MM/YYYY"}
                 />
             </FormControl>
@@ -191,34 +204,44 @@ const Client = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-2">
-                <FormControl id="clientName" isRequired>
+                <FormControl id="title" maxWidth={130} isRequired>
+                  <FormLabel>Title</FormLabel>
+                  <Select
+                    placeholder="Select Title"
+                    onChange={(value) => handleSelectOption("title", value)}
+                  >
+                    <Select.Option value="Mr.">Mr.</Select.Option>
+                    <Select.Option value="Mrs.">Mrs.</Select.Option>
+                  </Select>
+                </FormControl>
+                <FormControl id="clientName">
                   <FormLabel>Client Name</FormLabel>
-                  <Input
-                    name="clientName"
-                    onChange={handleChange}
-                    isRequired
-                  />
+                  <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="brandName" isRequired>
+                <FormControl id="gender" maxWidth={150}>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    name="gender"
+                    onChange={(value) => handleSelectOption("gender", value)}
+                    placeholder="Select gender"
+                  >
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
+                  </Select>
+                </FormControl>
+                <FormControl id="brandName">
                   <FormLabel>Brand Name</FormLabel>
-                  <Input
-                    name="brandName"
-                    onChange={handleChange}
-                    isRequired
-                  />
-                </FormControl>
-                <FormControl id="companyName" isRequired>
-                  <FormLabel>Company Name</FormLabel>
-                  <Input
-                    name="companyName"
-                    onChange={handleChange}
-                    isRequired
-                  />
+                  <Input name="brandName" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 my-3">
-                <FormControl id="tags" isRequired>
+                <FormControl id="tags">
+                  <FormControl id="companyName">
+                    <FormLabel>Company Name</FormLabel>
+                    <Input name="companyName" onChange={handleChange} />
+                  </FormControl>
                   <FormLabel>Source</FormLabel>
                   <Flex>
                     <SelectSource
@@ -227,18 +250,18 @@ const Client = () => {
                     />
                   </Flex>
                 </FormControl>
-                <FormControl id="phone1" isRequired>
+                <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone2" >
+                <FormControl id="phone2">
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="email1" >
+                <FormControl id="email1">
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
                 </FormControl>
@@ -246,13 +269,13 @@ const Client = () => {
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="website" >
+                <FormControl id="website">
                   <FormLabel>Website</FormLabel>
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
               <div className="flex gap-3">
-                <FormControl id="companyAnniversary" isRequired>
+                <FormControl id="companyAnniversary">
                   <FormLabel>Work Start Date</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -296,7 +319,7 @@ const Client = () => {
                   <FormLabel>City</FormLabel>
                   <Input name="city" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="pincode" isRequired>
+                <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
                   <Input name="pincode" onChange={handleChange} />
                 </FormControl>
@@ -313,10 +336,10 @@ const Client = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="clientBirthday" >
+                <FormControl id="clientBirthday">
                   <FormLabel>Client Birthday</FormLabel>
                   <MyDatePicker
-                  className="mb-1"
+                    className="mb-1"
                     selected={projectData.clientBirthday}
                     onChange={(date) =>
                       setProjectData({ ...projectData, clientBirthday: date })
@@ -326,16 +349,13 @@ const Client = () => {
                   <br />
                   {projectData?.clientBirthday?._d && <>{`${projectData?.clientBirthday?._d}`.slice(4, 16)}</>}
                 </FormControl>
-                <FormControl id="clientAnniversary" >
+                <FormControl id="clientAnniversary">
                   <FormLabel>Client Anniversary</FormLabel>
                   <MyDatePicker
-                  className="mb-1"
+                    className="mb-1"
                     selected={projectData.clientAnniversary}
                     onChange={(date) =>
-                      setProjectData({
-                        ...projectData,
-                        clientAnniversary: date,
-                      })
+                      setProjectData({ ...projectData, clientAnniversary: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
@@ -345,13 +365,10 @@ const Client = () => {
                 <FormControl id="companyAnniversary">
                   <FormLabel>Company Anniversary</FormLabel>
                   <MyDatePicker
-                  className="mb-1"
+                    className="mb-1"
                     selected={projectData.companyAnniversary}
                     onChange={(date) =>
-                      setProjectData({
-                        ...projectData,
-                        companyAnniversary: date,
-                      })
+                      setProjectData({ ...projectData, companyAnniversary: date })
                     }
                     format={"DD/MM/YYYY"}
                   />
@@ -383,14 +400,9 @@ const Client = () => {
                   />
                 </FormControl>
               </div>
-              <FormControl id="status">
-                <FormLabel>Status</FormLabel>
-                <Input name="status" onChange={handleChange} />
-              </FormControl>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3">
-                {/* Display single file */}
                 {projectData.singleFile && (
                   <div>
                     <p>Single File: {projectData.singleFile.name}</p>
@@ -445,27 +457,26 @@ const Client = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="clientName" isRequired>
+                <FormControl id="clientName">
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone1" isRequired>
+                <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone2" isRequired>
+                <FormControl id="phone2">
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="tags" isRequired>
+                <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Select
                     onChange={handleTagChange}
                     size="md"
                     placeholder="Select Source"
-                    isRequired
                   >
                     {tags.map((tag) => (
                       <option key={tag._id} value={tag.source_tag_id}>
@@ -515,6 +526,18 @@ const Client = () => {
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
+              <div>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.workStartDate}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, workStartDate: date })
+                  }
+                  format={"DD/MM/YYYY"}
+                />
+                <br />
+                {projectData?.workStartDate?._d && <>{`${projectData?.workStartDate?._d}`.slice(4, 16)}</>}
+              </div>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3 mb-3 flex-col md:flex-row">
@@ -545,7 +568,7 @@ const Client = () => {
                   <FormLabel>City</FormLabel>
                   <Input name="city" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="pincode" isRequired>
+                <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
                   <Input name="pincode" onChange={handleChange} />
                 </FormControl>
@@ -559,11 +582,11 @@ const Client = () => {
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
-                <FormControl id="brandName" mb={3} isRequired>
+                <FormControl id="brandName" mb={3}>
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName" mb={3} isRequired>
+                <FormControl id="companyName" mb={3}>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
@@ -572,7 +595,7 @@ const Client = () => {
                   <Input name="gst" onChange={handleChange} />
                 </FormControl>
               </div>
-              <FormControl id="billingAddress" isRequired className="w-1/2">
+              <FormControl id="billingAddress" className="w-1/2">
                 <FormLabel>Billing Address</FormLabel>
                 <Input
                   name="billingAddress"
