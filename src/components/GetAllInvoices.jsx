@@ -15,6 +15,7 @@ import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
+import { DownloadIcon } from "@chakra-ui/icons";
 
 const GetAllInvoices = () => {
     const [projects, setProjects] = useState([]);
@@ -22,7 +23,44 @@ const GetAllInvoices = () => {
     const [selectedProject, setSelectedProject] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [filteredProjects, setFilteredProjects] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // New state to manage loading
+    const [isLoading, setIsLoading] = useState(true);
+     const [downloading, setDownloading] = useState(null); 
+
+     async function axiosDownloadFile(url, fileName) {
+       setDownloading(true);
+       return axios({
+         url,
+         method: "GET",
+         responseType: "blob",
+       })
+         .then((response) => {
+           const href = window.URL.createObjectURL(response.data);
+
+           const anchorElement = document.createElement("a");
+
+           anchorElement.href = href;
+           anchorElement.download = fileName;
+
+           document.body.appendChild(anchorElement);
+           anchorElement.click();
+
+           document.body.removeChild(anchorElement);
+           window.URL.revokeObjectURL(href);
+           setDownloading(false);
+         })
+         .catch((error) => {
+           console.log("error: ", error);
+             setDownloading(false);
+         });
+     }
+
+     const handleDownload = (id, index) => {
+       const url = `${
+         import.meta.env.VITE_API_BASE
+       }/api/admin/downloadInvoice/${id}`;
+       axiosDownloadFile(url, `${id}.pdf`);
+       setDownloading(index);
+     };
 
     useEffect(() => {
         async function fetchData() {
@@ -121,6 +159,17 @@ const GetAllInvoices = () => {
                             >
                               More Info
                             </Button>
+                            <Button
+                              size={"sm"}
+                              variant={"outline"}
+                              isLoading={index === downloading}
+                              colorScheme="purple"
+                              onClick={() =>
+                                handleDownload(project.invoive_id, index)
+                              }
+                            >
+                              <DownloadIcon />
+                            </Button>
                           </Td>
                         </Tr>
                       ))
@@ -144,6 +193,17 @@ const GetAllInvoices = () => {
                               onClick={() => handleMoreInfo(project)}
                             >
                               More Info
+                            </Button>
+                            <Button
+                              size={"sm"}
+                              variant={"outline"}
+                              isLoading={index === downloading}
+                              colorScheme="purple"
+                              onClick={() =>
+                                handleDownload(project.invoive_id, index)
+                              }
+                            >
+                              <DownloadIcon />
                             </Button>
                           </Td>
                         </Tr>
