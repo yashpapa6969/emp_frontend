@@ -100,8 +100,6 @@ const CreateProject = () => {
 
     // Fetch tag names for selected tag IDs
     const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
-    console.log(selectedTagNames);
-
     // Update projectData with tag names
     setProjectData({
       ...projectData,
@@ -217,11 +215,8 @@ const CreateProject = () => {
               </FormControl>
               <FormControl id="tags" isRequired>
                 <FormLabel>Tags</FormLabel>
-                <SelectTag
-                  selectTagValue={selctedTagValue}
-                  setSelectTagValue={setSelctedTagValue}
-                />
-                {/* <Select
+               
+                <Select
                 onChange={handleTagChange}
                 size="md"
                 placeholder="Select tags"
@@ -232,7 +227,7 @@ const CreateProject = () => {
                     {tag.tagName}
                   </option>
                 ))}
-              </Select> */}
+              </Select> 
                 {projectData.tags.map((tag) => (
                   <Tag
                     key={tag._id}
