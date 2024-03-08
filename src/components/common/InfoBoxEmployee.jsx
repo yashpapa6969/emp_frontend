@@ -1,7 +1,7 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Card, CardBody, Divider, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectEmployeeIds,clearEmployeeIds } from "../../store/slice/EmployeeSlice";
+import { selectEmployeeIds, clearEmployeeIds } from "../../store/slice/EmployeeSlice";
 
 const InfoBoxEmployee = () => {
   const employeeIds = useSelector(selectEmployeeIds);
@@ -14,8 +14,7 @@ const InfoBoxEmployee = () => {
         try {
           const requests = employeeIds.map(async (employeeId) => {
             const response = await fetch(
-              `${
-                import.meta.env.VITE_API_BASE
+              `${import.meta.env.VITE_API_BASE
               }/api/admin/getEmployeeByID/${employeeId}`
             );
             return response.json();
@@ -33,64 +32,73 @@ const InfoBoxEmployee = () => {
   }, [employeeIds, dispatch]);
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="4">
+    <Box overflow="hidden" p="4">
       {employeeDetails.length > 0 ? (
         <>
           {employeeDetails.map((employee, index) => (
-            <Box key={index} mb="4">
-              <Text fontWeight="bold">Employee ID: {employee.employee_id}</Text>
-              {employee.guardianDetails && (
-                <Box mt="2">
-                  <Text fontWeight="bold">Guardian Details:</Text>
-                  <Text>
-                    Guardian Name: {employee.guardianDetails.guardianName}
-                  </Text>
-                  <Text>
-                    Guardian Contact No:{" "}
-                    {employee.guardianDetails.guardianContactNo}
-                  </Text>
-                </Box>
-              )}
-              {employee.bankDetails && (
-                <Box mt="2">
-                  <Text fontWeight="bold">Bank Details:</Text>
-                  <Text>Bank Name: {employee.bankDetails.bankName}</Text>
-                  <Text>
-                    Bank Account No: {employee.bankDetails.bankAccountNo}
-                  </Text>
-                  <Text>
-                    Bank IFSC Code: {employee.bankDetails.bankIfscCode}
-                  </Text>
-                  <Text>Type: {employee.bankDetails.type}</Text>
-                </Box>
-              )}
-              <Box mt="2">
-                <Text fontWeight="bold">Employee Details:</Text>
-                <Text>Name: {employee.name}</Text>
-                <Text>Gender: {employee.gender}</Text>
-                <Text>Contact No: {employee.contactNo}</Text>
-                <Text>Type: {employee.type}</Text>
-                <Text>DOB: {employee.dob}</Text>
-                <Text>Position: {employee.position}</Text>
-                <Text>Department: {employee.department}</Text>
-                <Text>Designation: {employee.designation}</Text>
-                <Text>Manager ID: {employee.manager_id}</Text>
-                <Text>Email: {employee.email}</Text>
-                <Text>Joining Date: {employee.joiningDate}</Text>
-                <Text>Probation Period: {employee.probationPeriod}</Text>
-                <Text>Leaving Date: {employee.leavingDate}</Text>
-                <Text>Aadhar Number: {employee.aadharNumber}</Text>
-                <Text>PAN Number: {employee.panNumber}</Text>
-                <Text>Permanent Address: {employee.permanentAddress}</Text>
-                <Text>
-                  Correspondence Address: {employee.correspondenceAddress}
-                </Text>
-              </Box>
-            </Box>
+            <div key={`${employee._id}-${index}`} className="w-full flex flex-col gap-3 mt-6 rounded-xl shadow-md p-4">
+              <div className="w-[40px] h-[40px] flex items-center justify-center bg-purple-500 rounded-full text-white">{index+1}</div>
+              <div className="flex gap-3 w-full">
+                {employee.name && (<Card bg={"purple.100"} className="w-1/3">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Name:
+                    </Heading>
+                    <Text fontSize={28} textTransform={"capitalize"}>{employee.name}</Text>
+                  </CardBody>
+                </Card>)}
+                {employee.position && (<Card className="w-1/3">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Position:
+                    </Heading>
+                    <Divider mb={5} />
+                    <Text fontSize={18} textTransform={"capitalize"}>{employee.position}</Text>
+                  </CardBody>
+                </Card>)}
+                {employee.department && (<Card className="w-1/3">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Department:
+                    </Heading>
+                    <Divider mb={5} />
+                    <Text fontSize={18} textTransform={"capitalize"}>{employee.department}</Text>
+                  </CardBody>
+                </Card>)}
+              </div>
+              <div className="flex flex-col md:flex-row gap-3 w-full mt-4">
+                {employee.dob && (<Card className="md:w-1/3 w-full">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Date of Birth:
+                    </Heading>
+                    <Divider mb={5} />
+                    <Text fontSize={18} textTransform={"capitalize"}>{employee.dob}</Text>
+                  </CardBody>
+                </Card>)}
+                {employee.joiningDate && (<Card className="md:w-1/3 w-full">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Joining Date:
+                    </Heading>
+                    <Divider mb={5} />
+                    <Text fontSize={18} textTransform={"capitalize"}>{employee.joiningDate}</Text>
+                  </CardBody>
+                </Card>)}
+                {employee.email && (<Card className="md:w-1/3 w-full">
+                  <CardBody>
+                    <Heading pb={4} size='xs'>
+                      Email:
+                    </Heading>
+                    <Divider mb={5} />
+                    <Text fontSize={18} textTransform={"capitalize"}>{employee.email}</Text>
+                  </CardBody>
+                </Card>)}
+              </div>
+            </div>
           ))}
-        </>
-      ) : (
-        <Text>No employee details available</Text>
+        </>) : (
+        <Text>No client details available</Text>
       )}
     </Box>
   );

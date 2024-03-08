@@ -92,6 +92,7 @@ const GetAllManagers = () => {
                       <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
                       <Td>
                         <Button
+                          size={"sm"}
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(manager)}
                         >
@@ -109,6 +110,7 @@ const GetAllManagers = () => {
                       <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
                       <Td>
                         <Button
+                          size={"sm"}
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(manager)}
                         >

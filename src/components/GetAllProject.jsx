@@ -109,6 +109,7 @@ const GetAllProject = () => {
                     <Td className="md:table-cell hidden">{project.status}</Td>
                     <Td>
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >
@@ -126,6 +127,7 @@ const GetAllProject = () => {
                     <Td className="md:table-cell hidden">{project.status}</Td>
                     <Td>
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >

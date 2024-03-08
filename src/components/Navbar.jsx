@@ -28,6 +28,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
 
+  const MonthsList = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const DaysList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+
   const handleLogout = () => {
     dispatch(clearUser());
     dispatch(logout());
@@ -35,8 +38,11 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
   };
 
   const currentDate = new Date();
-  const dateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
-  const timeString = currentDate.getHours() + ':' + currentDate.getMinutes();
+  const dateString = `${DaysList[currentDate.getDay()]}, ${currentDate.getDate()} ${MonthsList[currentDate.getMonth()]} ${currentDate.getFullYear()}`
+  const hours = currentDate.getHours() % 12;
+  const ampm = hours % 12 >= 12 ? 'pm' : 'am';
+  const minutes = currentDate.getMinutes();
+  const timeString = (hours ? hours : 12) + ':' + (minutes < 10 ? '0'+ minutes : minutes) + ampm;
   // const istOffset = 5.5 * 60 * 60 * 1000;
   // const istDate = new Date(currentDate.getTime() + istOffset);
 
@@ -91,7 +97,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
         </div>
         <div className="flex gap-4 items-center justify-center">
           <div className='text-white'>
-            {dateString} {timeString}
+            {dateString}, {timeString}
           </div>
           <Menu>
             <MenuButton righticon={<ChevronDownIcon />}>

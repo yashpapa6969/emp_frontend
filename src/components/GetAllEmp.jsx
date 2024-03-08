@@ -101,6 +101,7 @@ const GetAllEmp = () => {
                       <Td className="md:table-cell hidden">{emp.joiningDate}</Td>
                       <Td>
                         <Button
+                          size={"sm"}
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(emp)}
                         >
@@ -118,6 +119,7 @@ const GetAllEmp = () => {
                       <Td className="md:table-cell hidden">{emp.joiningDate}</Td>
                       <Td>
                         <Button
+                          size={"sm"}
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(emp)}
                         >

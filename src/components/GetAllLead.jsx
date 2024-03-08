@@ -117,7 +117,7 @@ const GetAllLead = () => {
                       {client.status === 2 && "Converted"}
                       {client.status === 3 && "Lost"}
                       <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
+                        <MenuButton size="sm" as={Button} colorScheme="purple">
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -154,6 +154,7 @@ const GetAllLead = () => {
                     </Td>
                     <Td>
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >
@@ -174,7 +175,7 @@ const GetAllLead = () => {
                       {client.status === 2 && "Converted"}
                       {client.status === 3 && "Lost"}
                       <Menu>
-                        <MenuButton as={Button} colorScheme="purple">
+                        <MenuButton size="sm" as={Button} colorScheme="purple">
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -211,6 +212,7 @@ const GetAllLead = () => {
                     </Td>
                     <Td>
                       <Button
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >

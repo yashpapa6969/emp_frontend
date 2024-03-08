@@ -154,6 +154,7 @@ const GetAllInvoices = () => {
                           <Td>
                             <Button
                               size={"sm"}
+                              mr={2}
                               colorScheme="purple"
                               onClick={() => handleMoreInfo(project)}
                             >
@@ -189,6 +190,7 @@ const GetAllInvoices = () => {
                           <Td>
                             <Button
                               size={"sm"}
+                              mr={2}
                               colorScheme="purple"
                               onClick={() => handleMoreInfo(project)}
                             >
