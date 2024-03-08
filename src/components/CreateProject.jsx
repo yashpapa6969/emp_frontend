@@ -11,6 +11,8 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
+  Card,
+  CardBody,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
 import MyDatePicker from "./common/MyDatePicker";
@@ -214,12 +216,12 @@ const CreateProject = () => {
               </FormControl>
             </div>
             {selectedClient && (
-              <>
-                <FormLabel>Client Name:-{selectedClient.clientName}</FormLabel>
-                <FormLabel>
-                  Client Company:-{selectedClient.companyName}
-                </FormLabel>
-              </>
+              <Card variant={"outline"}>
+                <CardBody>
+                  <Text textTransform={"capitalize"}>Client Name: {selectedClient.clientName}</Text>
+                  <Text>Client Company: {selectedClient.companyName}</Text>
+                </CardBody>
+              </Card>
             )}
             <FormControl id="description">
               <FormLabel>Description</FormLabel>
@@ -269,6 +271,7 @@ const CreateProject = () => {
                   </option>
                 ))}
               </Select>
+              <div className="mt-4 flex gap-2">
               {projectData.employees.map((tag) => (
                 <Tag
                   key={tag._id}
@@ -281,6 +284,7 @@ const CreateProject = () => {
                   <TagCloseButton onClick={() => removeEmployeeById(tag)} />
                 </Tag>
               ))}
+              </div>
             </FormControl>
             <Button type="submit" colorScheme="purple">
               Create Project

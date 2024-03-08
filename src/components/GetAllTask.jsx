@@ -240,7 +240,15 @@ const GetAllTask = () => {
                     </div>
                   </Td>
                   <Td className="md:table-cell hidden">{client.priority}</Td>
-                  <Td className="md:table-cell hidden">{client.status}</Td>
+                  <Td className="md:table-cell hidden">
+                    <div className="flex gap-2 items-center">
+                      {client.status === "Not Started" ? <div className="h-3 w-3 rounded-full bg-red-600" /> :
+                      (client.status === "Working" ? <div className="h-3 w-3 rounded-full bg-yellow-400" /> :
+                      (client.status === "Awaited Feedback" ? <div className="h-3 w-3 rounded-full bg-blue-600" /> :
+                      <div className="h-3 w-3 rounded-full bg-green-600" />))
+                      } {client.status}
+                    </div>
+                  </Td>
                   <Td className="md:table-cell hidden">
                     {client.status === 0 && "Not Started"}
                     {client.status === 1 && "Working"}
