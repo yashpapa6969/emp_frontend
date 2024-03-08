@@ -14,8 +14,7 @@ const InfoBoxEmployee = () => {
         try {
           const requests = employeeIds.map(async (employeeId) => {
             const response = await fetch(
-              `${import.meta.env.VITE_API_BASE
-              }/api/admin/getEmployeeByID/${employeeId}`
+              `${import.meta.env.VITE_API_BASE}/api/admin/getEmployeeByID/${employeeId}`
             );
             return response.json();
           });
