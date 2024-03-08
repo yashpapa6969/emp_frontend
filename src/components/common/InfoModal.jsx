@@ -1,5 +1,9 @@
 import {
   Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,21 +12,26 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
-  Image,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addEmployeeId } from "../../store/slice/EmployeeSlice";
 import { setClientId } from "../../store/slice/ClientSlice";
 import { setProjectId } from "../../store/slice/ProjectSlice";
-import {
-  setEmployeeId,
-} from "../../store/slice/EmployeeSlice";
 import { useEffect } from "react";
+import { Divider } from "antd";
+import { CheckCircleIcon, ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   const dispatch = useDispatch();
+  const priorityArray = ["low", "medium", "high", "urgent"];
+
+  const handleTaskDelete = () => {
+    // LOGIC TO BE WRITTEN
+  }
+  const handleChangeTaskStatus = () => {
+    // LOGIC TO BE WRITTEN
+  }
 
   useEffect(() => {
     if (modalFor === "project" && data?.employees) {
@@ -831,38 +840,74 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Task Information</ModalHeader>
+          <ModalHeader textTransform={"capitalize"}>{data?.brandName}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div>
-                <Text fontWeight="bold">BrandName </Text>
-                <Text>{data.brandName}</Text>
-                <Text fontWeight="bold">Project: </Text>
-                <Link to={`/GetProject`}>
-                  <Button>Get Project details</Button>
-                </Link>
-                <Text fontWeight="bold">Employee: </Text>
-                <Link to={`/GetEmp`}>
-                  <Button>Get EMP details</Button>
-                </Link>
-                <Text fontWeight="bold">Client: </Text>
-                <Link to={`/GetClient`}>
-                  <Button>Get Client details</Button>
-                </Link>
-                <Text fontWeight="bold">Priority </Text>
-                <Text>{data.priority}</Text>
-                <Text fontWeight="bold">Status: </Text>
-                <Text>{data.status}</Text>
-                <Text fontWeight="bold">Start Date: </Text>
-                <Text>{data.startDate}</Text>
-                <Text fontWeight="bold">Deadline: </Text>
-                <Text>{data.deadline}</Text>
-                <Text fontWeight="bold">Description: </Text>
-                <Text>{data.description}</Text>
-                <Text fontWeight="bold">Task ID: </Text>
-                <Text>{data.task_id}</Text>
-              </div>
+              <>
+                <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
+                  <h2 className="text-lg mr-2">Get:</h2>
+                  <Link to={`/GetProject`}>
+                    <Button colorScheme="green">Project details</Button>
+                  </Link>
+                  <Link to={`/GetEmp`}>
+                    <Button colorScheme="green">EMP details</Button>
+                  </Link>
+                  <Link to={`/GetClient`}>
+                    <Button colorScheme="green">Client details</Button>
+                  </Link>
+                  <Divider type="vertical" />
+                  <Menu>
+                    <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
+                      Actions
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleTaskDelete()}>
+                          <DeleteIcon mr={2} /> Delete
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleChangeTaskStatus()}>
+                          <CheckCircleIcon mr={2} /> Change Status
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+                <Divider />
+                <div className="flex gap-10">
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Task Information</h1>
+                    <Text className="text-sm font-bold text-gray-500 mt-3">Brand Name </Text>
+                    <Text className="text-lg capitalize">{data.brandName}</Text>
+                    <Text className="text-sm font-bold text-gray-500 mt-2">Task ID: </Text>
+                    <Text className="text-lg">{data.task_id}</Text>
+                    <Text className="text-sm font-bold text-gray-500 mt-2">Priority </Text>
+                    <Text className="text-lg capitalize">
+                      {priorityArray[data.priority] || data.priority}
+                      {/* <div className={`h-2 w-2 rounded-full ${data.priority === 0 && "bg-red-400"
+                        } ${data.priority === 1 && "bg-orange-300"
+                        } ${data.priority === 2 && "bg-blue-300"
+                        } ${data.priority === 3 && "bg-gray-300"
+                        }`} /> */}
+                    </Text>
+                    <Text className="text-sm font-bold text-gray-500 mt-2">Status: </Text>
+                    <Text className="text-lg capitalize">{data.status}</Text>
+                  </div>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">General Information</h1>
+                    <Text className="text-sm font-bold text-gray-500 mt-3">Start Date: </Text>
+                    <Text className="text-lg">{data.startDate}</Text>
+                    <Text className="text-sm font-bold text-gray-500 mt-2">Deadline: </Text>
+                    <Text className="text-lg">{data.deadline}</Text>
+                  </div>
+                </div>
+                <div className="w-full mt-4">
+                  <Text className="text-md font-bold text-gray-500 mt-2">Description: </Text>
+                  <Text className="text-lg">{data.description}</Text>
+                </div>
+              </>
             )}
           </ModalBody>
           <ModalFooter>

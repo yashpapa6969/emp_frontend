@@ -135,22 +135,24 @@ const GetAllTask = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {searchText !== ""
+            {searchText != ""
               ? filteredClients.map((client, index) => (
                 <Tr key={client._id}>
                   <Td>{index + 1}</Td>
                   <Td>
                     <div>
                       {client.brandName}
-                      <IoFlag
-                        size={18}
-                        className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
-                          } ${client.priority.toLowerCase() === "high" &&
-                          "text-orange-300"
-                          } ${client.priority.toLowerCase() === "medium" &&
-                          "text-blue-300"
-                          } ${client.priority.toLowerCase() === "low" && "text-gray-300"
-                          }`} />
+                      {["urgent", "high", "medium", "low"].includes(client.priority.toLowerCase()) &&
+                        <IoFlag
+                          size={18}
+                          className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
+                            } ${client.priority.toLowerCase() === "high" &&
+                            "text-orange-300"
+                            } ${client.priority.toLowerCase() === "medium" &&
+                            "text-blue-300"
+                            } ${client.priority.toLowerCase() === "low" && "text-gray-300"
+                            }`} />
+                      }
                     </div>
                   </Td>
                   <Td className="md:table-cell hidden">{client.priority}</Td>
@@ -228,24 +230,26 @@ const GetAllTask = () => {
                   <Td>
                     <div className="flex gap-2 items-center">
                       {client.brandName}
-                      <IoFlag
-                        size={18}
-                        className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
-                          } ${client.priority.toLowerCase() === "high" &&
-                          "text-orange-300"
-                          } ${client.priority.toLowerCase() === "medium" &&
-                          "text-blue-300"
-                          } ${client.priority.toLowerCase() === "low" && "text-gray-300"
-                          }`} />
+                      {["urgent", "high", "medium", "low"].includes(client.priority.toLowerCase()) &&
+                        <IoFlag
+                          size={18}
+                          className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
+                            } ${client.priority.toLowerCase() === "high" &&
+                            "text-orange-300"
+                            } ${client.priority.toLowerCase() === "medium" &&
+                            "text-blue-300"
+                            } ${client.priority.toLowerCase() === "low" && "text-gray-300"
+                            }`} />
+                      }
                     </div>
                   </Td>
                   <Td className="md:table-cell hidden">{client.priority}</Td>
                   <Td className="md:table-cell hidden">
                     <div className="flex gap-2 items-center">
                       {client.status === "Not Started" ? <div className="h-3 w-3 rounded-full bg-red-600" /> :
-                      (client.status === "Working" ? <div className="h-3 w-3 rounded-full bg-yellow-400" /> :
-                      (client.status === "Awaited Feedback" ? <div className="h-3 w-3 rounded-full bg-blue-600" /> :
-                      <div className="h-3 w-3 rounded-full bg-green-600" />))
+                        (client.status === "Working" ? <div className="h-3 w-3 rounded-full bg-yellow-400" /> :
+                          (client.status === "Awaited Feedback" ? <div className="h-3 w-3 rounded-full bg-blue-600" /> :
+                            <div className="h-3 w-3 rounded-full bg-green-600" />))
                       } {client.status}
                     </div>
                   </Td>
