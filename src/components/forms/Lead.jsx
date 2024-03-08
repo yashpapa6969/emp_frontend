@@ -44,6 +44,7 @@ const Lead = () => {
     country: "",
     requirement: "",
     additionalInformation: "",
+    sourceInformation: "",
     singleFile: null,
     multipleFiles: [],
   });
@@ -53,6 +54,13 @@ const Lead = () => {
   const [tags, setTags] = useState([]);
   const [selectSourceValue, setSelectSourceValue] = useState([]);
   const [selectedTagValue, setSelectedTagValue] = useState([]);
+  useEffect(() => {
+    setProjectData((prev) => ({
+      ...prev,
+      source: selectSourceValue,
+      requirement: selectedTagValue,
+    }));
+  }, [selectSourceValue, selectedTagValue]);
 
   const removeTagById = (tagToRemove) => {
     setProjectData({
@@ -120,6 +128,9 @@ const Lead = () => {
     updatedFiles.splice(index, 1);
     setProjectData({ ...projectData, multipleFiles: updatedFiles });
   };
+  const handleSelectOption = (name, value) => {
+    setProjectData({ ...projectData, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -127,7 +138,18 @@ const Lead = () => {
     const formData = new FormData();
 
     Object.entries(projectData).forEach(([key, value]) => {
-      if (value !== "") {
+      if (key === "source" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
+        value.forEach((sourceItem, index) => {
+          formData.append(`${key}[${index}]`, sourceItem);
+        });
+      } else if (key === "requirement" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
+        value.forEach((sourceItem, index) => {
+          formData.append(`${key}[${index}]`, sourceItem);
+        });
+      } else if (value !== "") {
+        // For all other non-empty values
         formData.append(key, value);
       }
     });
@@ -165,7 +187,9 @@ const Lead = () => {
           format={"DD/MM/YYYY"}
         />
         <br />
-        {projectData?.enquiryDate?._d && <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>}
+        {projectData?.enquiryDate?._d && (
+          <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>
+        )}
       </FormControl>
       <div className="hidden md:block">
         <Tabs>
@@ -180,34 +204,25 @@ const Lead = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-4 mb-3">
-                <FormControl id="title" maxWidth={100} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
-                    name="title"
-                    onChange={handleChange}
                     placeholder="Select Title"
+                    onChange={(value) => handleSelectOption("title", value)}
                   >
-                    <option value="Mr.">Mr.</option>
-                    <option value="Mrs.">Mrs.</option>
+                    <Select.Option value="Mr.">Mr.</Select.Option>
+                    <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="clientName" isRequired>
+                <FormControl id="clientName">
                   <FormLabel>Client Name</FormLabel>
-                  <Input name="clientName" onChange={handleChange} isRequired />
+                  <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="gender" isRequired>
-                  <FormLabel>Gender</FormLabel>
-                  <Select
-                    name="gender"
-                    onChange={handleChange}
-                    placeholder="Select gender"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
-                  </Select>
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="tags" isRequired>
+                <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Flex>
                     <SelectSource
@@ -216,9 +231,21 @@ const Lead = () => {
                     />
                   </Flex>
                 </FormControl>
+                <FormControl id="gender" maxWidth={180}>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    name="gender"
+                    onChange={(value) => handleSelectOption("gender", value)}
+                    placeholder="Select gender"
+                  >
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
+                  </Select>
+                </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="phone1" isRequired>
+                <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
@@ -272,7 +299,7 @@ const Lead = () => {
                   <FormLabel>City</FormLabel>
                   <Input name="city" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="pincode" isRequired>
+                <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
                   <Input name="pincode" onChange={handleChange} />
                 </FormControl>
@@ -302,7 +329,7 @@ const Lead = () => {
                   <Input name="gst" onChange={handleChange} />
                 </FormControl>
               </div>
-              <FormControl id="billingAddress" isRequired className="w-1/2">
+              <FormControl id="billingAddress" className="w-1/2">
                 <FormLabel>Billing Address</FormLabel>
                 <Input
                   name="billingAddress"
@@ -312,28 +339,26 @@ const Lead = () => {
               </FormControl>
             </TabPanel>
             <TabPanel>
-              <div className="flex gap-2">
-                <FormControl id="requirement" maxWidth={300}>
-                  <FormLabel>Requirement</FormLabel>
-                  {/* <Input
+              <FormControl id="requirement" maxWidth={300}>
+                <FormLabel>Requirement</FormLabel>
+                {/* <Input
                       name="requirement"
                       onChange={handleChange}
                       className="h-16"
                     /> */}
-                  <SelectTag
-                    selectTagValue={selectedTagValue}
-                    setSelectTagValue={setSelectedTagValue}
-                  />
-                </FormControl>
-                <FormControl id="additionalInformation">
-                  <FormLabel>Additional Information</FormLabel>
-                  <Input
-                    name="additionalInformation"
-                    onChange={handleChange}
-                    className="h-8"
-                  />
-                </FormControl>
-              </div>
+                <SelectTag
+                  selectTagValue={selectedTagValue}
+                  setSelectTagValue={setSelectedTagValue}
+                />
+              </FormControl>
+              <FormControl id="additionalInformation">
+                <FormLabel>Additional Information</FormLabel>
+                <Input
+                  name="additionalInformation"
+                  onChange={handleChange}
+                  className="h-16"
+                />
+              </FormControl>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3">
@@ -396,19 +421,18 @@ const Lead = () => {
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone2" isRequired>
+                <FormControl id="phone2">
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="tags" isRequired>
+                <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Select
                     onChange={handleTagChange}
                     size="md"
                     placeholder="Select Source"
-                    isRequired
                   >
                     {tags.map((tag) => (
                       <option key={tag._id} value={tag.source_tag_id}>
@@ -430,9 +454,15 @@ const Lead = () => {
                     </Tag>
                   ))}
                 </FormControl>
-                <FormControl id="title">
+                <FormControl id="title" maxWidth={130} isRequired>
                   <FormLabel>Title</FormLabel>
-                  <Input name="title" onChange={handleChange} />
+                  <Select
+                    placeholder="Select Title"
+                    onChange={(value) => handleSelectOption("title", value)}
+                  >
+                    <Select.Option value="Mr.">Mr.</Select.Option>
+                    <Select.Option value="Mrs.">Mrs.</Select.Option>
+                  </Select>
                 </FormControl>
                 <FormControl id="gender">
                   <FormLabel>Gender</FormLabel>

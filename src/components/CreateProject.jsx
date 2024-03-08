@@ -213,34 +213,7 @@ const CreateProject = () => {
                   <option value="High">High</option>
                 </Select>
               </FormControl>
-              <FormControl id="tags" isRequired>
-                <FormLabel>Tags</FormLabel>
-               
-                <Select
-                onChange={handleTagChange}
-                size="md"
-                placeholder="Select tags"
-                isRequired
-              >
-                {tags.map((tag) => (
-                  <option key={tag._id} value={tag.tag_id}>
-                    {tag.tagName}
-                  </option>
-                ))}
-              </Select> 
-                {projectData.tags.map((tag) => (
-                  <Tag
-                    key={tag._id}
-                    size="md"
-                    borderRadius="full"
-                    variant="solid"
-                    colorScheme="blue"
-                  >
-                    <TagLabel>{tag}</TagLabel>
-                    <TagCloseButton onClick={() => removeTagById(tag)} />
-                  </Tag>
-                ))}
-              </FormControl>
+             
             </div>
             {selectedClient && (
               <>

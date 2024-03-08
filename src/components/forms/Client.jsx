@@ -327,7 +327,7 @@ const Client = () => {
                 <Input
                   name="businessAddress"
                   onChange={handleChange}
-                  className="h-32"
+                  h="5rem" 
                 />
               </FormControl>
             </TabPanel>

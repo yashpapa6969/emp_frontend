@@ -11,6 +11,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import MyDatePicker from "./common/MyDatePicker";
+import { toast } from "react-toastify";
+
 
 const CreateTask = () => {
   const [brandNames, setBrandNames] = useState([]);
@@ -43,17 +45,20 @@ const CreateTask = () => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
 
-    // Fetch projects based on selected brand
-    axios
-      .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName/${selectedBrand}`
-      )
-      .then((response) => {
-        setProjects(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching projects:", error);
-      });
+   axios
+     .post(
+       `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
+       { brandName: selectedBrand }
+     )
+     .then((response) => {
+       setProjects(response.data);
+       
+     })
+     .catch((error) => {
+       console.error("Error fetching projects:", error);
+       toast.error(error.response.data.message);
+     });
+
   };
 
   const handleProjectChange = (event) => {
@@ -149,7 +154,7 @@ const CreateTask = () => {
                 Select Project
               </option>
               {projects.map((project) => (
-                <option key={project._id} value={project.project_id}>
+                <option key={project.project_id} value={project.project_id}>
                   {project.projectName}
                 </option>
               ))}
@@ -166,8 +171,8 @@ const CreateTask = () => {
                 Select Employee
               </option>
               {employees.map((employeeId) => (
-                <option key={employeeId} value={employeeId}>
-                  {employeeId}
+                <option key={employeeId._id} value={employeeId._id}>
+                  {employeeId.name}
                 </option>
               ))}
             </Select>
@@ -197,10 +202,7 @@ const CreateTask = () => {
 
           <FormControl>
             <FormLabel>Status</FormLabel>
-            <Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
+            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="Not Started">Not Started</option>
               <option value="In Progress">In Progress</option>
               <option value="Completed">Completed</option>
