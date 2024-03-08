@@ -29,6 +29,8 @@ const GetAllTask = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New state to manage loading
+  
+  const priorityArray = ["low", "medium", "high", "urgent"];
 
   useEffect(() => {
     async function fetchData() {
@@ -142,7 +144,7 @@ const GetAllTask = () => {
                   <Td>
                     <div>
                       {client.brandName}
-                      {["urgent", "high", "medium", "low"].includes(client.priority.toLowerCase()) &&
+                      {priorityArray.includes(client.priority.toLowerCase()) &&
                         <IoFlag
                           size={18}
                           className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
@@ -155,7 +157,7 @@ const GetAllTask = () => {
                       }
                     </div>
                   </Td>
-                  <Td className="md:table-cell hidden">{client.priority}</Td>
+                  <Td className="md:table-cell hidden">{priorityArray[client.priority] || client.priority}</Td>
                   <Td className="md:table-cell hidden">{client.status}</Td>
                   <Td className="md:table-cell hidden">
                     {client.status === 0 && "Not Started"}
@@ -230,7 +232,7 @@ const GetAllTask = () => {
                   <Td>
                     <div className="flex gap-2 items-center">
                       {client.brandName}
-                      {["urgent", "high", "medium", "low"].includes(client.priority.toLowerCase()) &&
+                      {priorityArray.includes(client.priority.toLowerCase()) &&
                         <IoFlag
                           size={18}
                           className={`${client.priority.toLowerCase() === "urgent" && "text-red-400"
@@ -243,7 +245,7 @@ const GetAllTask = () => {
                       }
                     </div>
                   </Td>
-                  <Td className="md:table-cell hidden">{client.priority}</Td>
+                  <Td className="md:table-cell hidden capitalize">{priorityArray[client.priority] || client.priority}</Td>
                   <Td className="md:table-cell hidden">
                     <div className="flex gap-2 items-center">
                       {client.status === "Not Started" ? <div className="h-3 w-3 rounded-full bg-red-600" /> :
