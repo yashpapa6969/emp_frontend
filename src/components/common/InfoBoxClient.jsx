@@ -1,8 +1,8 @@
-import { Box, Card, CardBody, CardHeader, Divider, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, Divider, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
-import { Segmented, Tag } from "antd";
+import { Empty, Segmented, Tag } from "antd";
 
 const InfoBoxClient = () => {
   const clientId = useSelector(selectClientId);
@@ -83,6 +83,44 @@ const InfoBoxClient = () => {
                 <div className="flex gap-2">{clientDetails.source.map((el, index) => <Tag key={`req-${index}`} color="geekblue" className="text-lg">{el}</Tag>)}</div>
               </CardBody>
             </Card>)}
+            <div className="flex gap-3">
+              {clientDetails.additionalInformation && (<Card className="w-1/3">
+                <CardBody>
+                  <Heading pb={4} size='xs'>
+                    Additional Information:
+                  </Heading>
+                  <Divider mb={5} />
+                  <Text textTransform={"capitalize"}>{clientDetails.additionalInformation}</Text>
+                </CardBody>
+              </Card>)}
+              <Card className="w-full">
+                <CardBody>
+                  <Heading pb={4} size='xs'>
+                    Multiple Files:
+                  </Heading>
+                  <Divider mb={5} />
+                  <div className="flex gap-3">
+                    {clientDetails.multipleFiles ?
+                    clientDetails.multipleFiles.map((data, index) => (
+                      <Button
+                        key={`data-${index}`}
+                        as="a"
+                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data?.split("/")[4]
+                          }`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        textDecoration="none"
+                        _hover={{ textDecoration: "none" }}
+                        mb={2}
+                        variant="solid"
+                      >
+                        View Single File
+                      </Button>
+                    )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<>No file uploaded</>} />}
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
           </>)}
           {segmentedValue === 'Business Information' && (<>
             {clientDetails.brandName && (<Card>
@@ -150,7 +188,7 @@ const InfoBoxClient = () => {
                 </Heading>
                 <Divider mb={5} />
                 <Text fontSize={18}>{clientDetails.email1}</Text>
-                {clientDetails.email2 && ( <Text fontSize={18}>{clientDetails.email2}</Text> )}
+                {clientDetails.email2 && (<Text fontSize={18}>{clientDetails.email2}</Text>)}
               </CardBody>
             </Card>)}
             {(clientDetails.phone1 || clientDetails.phone2) && (<Card>
@@ -160,17 +198,17 @@ const InfoBoxClient = () => {
                 </Heading>
                 <Divider mb={5} />
                 <Text fontSize={18}>{clientDetails.phone1}</Text>
-                {clientDetails.phone2 && ( <Text fontSize={18}>{clientDetails.phone2}</Text> )}
+                {clientDetails.phone2 && (<Text fontSize={18}>{clientDetails.phone2}</Text>)}
               </CardBody>
             </Card>)}
             {clientDetails.website && (<Card>
               <CardBody>
-                  <Heading pb={4} size='xs'>
-                    Website:
-                  </Heading>
-                  <Divider mb={5} />
-                  <Text fontSize={18}>{clientDetails.website}</Text>
-                </CardBody>
+                <Heading pb={4} size='xs'>
+                  Website:
+                </Heading>
+                <Divider mb={5} />
+                <Text fontSize={18}>{clientDetails.website}</Text>
+              </CardBody>
             </Card>)}
           </>)}
         </div>

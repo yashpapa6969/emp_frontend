@@ -16,6 +16,7 @@ import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const CreateClientButton = () => {
   return (
@@ -141,11 +142,12 @@ const GetAllClient = () => {
                       </Button>
                       <Button
                         size={"sm"}
+                        variant={"outline"}
                         colorScheme="red"
                         ml={2}
                         onClick={() => handleDeleteClient(client.client_id)}
                       >
-                        Delete
+                        <DeleteIcon />
                       </Button>
                     </Td>
                   </Tr>
@@ -169,11 +171,12 @@ const GetAllClient = () => {
                       </Button>
                       <Button
                         size={"sm"}
+                        variant={"outline"}
                         colorScheme="red"
                         ml={2}
                         onClick={() => handleDeleteClient(client.client_id)}
                       >
-                        Delete
+                        <DeleteIcon />
                       </Button>
                     </Td>
                   </Tr>

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
-  Select,
   Stack,
   Input,
   Button,
@@ -9,21 +8,24 @@ import {
   Card,
   CardBody,
   Text,
+  Select,
 } from "@chakra-ui/react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import MyDatePicker from "../common/MyDatePicker";
 import { PiArrowsLeftRightFill } from "react-icons/pi";
 import { FaPlus, FaTrashCan } from "react-icons/fa6";
+import SelectProduct from "../common/SelectProduct";
+import SelectClient from "../common/SelectClient";
 
 const Invoice = () => {
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedGst, setSelectedGst] = useState(0);
-  const [selectedProducts, setSelectedProducts] = useState([]);
   const [services, setServices] = useState([]);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [productValue, setProductValue] = useState([]);
 
   useEffect(() => {
     fetchClients();
@@ -60,13 +62,13 @@ const Invoice = () => {
     setSelectedClient(selectedClient);
   };
 
-  const handleProductSelect = (event) => {
-    const productId = event.target.value;
-    const selectedProduct = products.find(
-      (product) => product._id === productId
-    );
-    setSelectedProducts([...selectedProducts, selectedProduct]);
-  };
+  // const handleProductSelect = (event) => {
+  //   const productId = event.target.value;
+  //   const selectedProduct = products.find(
+  //     (product) => product._id === productId
+  //   );
+  //   setSelectedProducts([...selectedProducts, selectedProduct]);
+  // };
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
@@ -116,6 +118,8 @@ const Invoice = () => {
       })),
     };
 
+    console.log(requestData);
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE}/api/admin/createInvoice`,
@@ -144,7 +148,19 @@ const Invoice = () => {
       toast.success("Invoice Slip is downloaded successfully.");
     } catch (error) {
       console.error("Error creating invoice:", error);
-      toast.error("Failed to download Invoice slip.");
+      toast.error(
+        "Failed to download Invoice slip.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        }
+      );
     }
   };
 
@@ -160,6 +176,7 @@ const Invoice = () => {
             </option>
           ))}
         </Select>
+        {/* <SelectClient selectSourceValue={} setSelectSourceValue={} /> */}
       </FormControl>
       {selectedClient && (
         <Card variant={"outline"}>
@@ -181,97 +198,104 @@ const Invoice = () => {
 
 
       {services.length > 0 &&
-        <div className={`flex gap-4 w-full overflow-x-scroll pt-4 pb-8`}>
-          {services.map((service, index) => (
-            <Card key={index} rounded={"xl"} shadow={"md"} className="w-[300px]">
-              <CardBody>
+        <div className="flex items-center max-w-[900px] overflow-x-scroll pb-10 hide-scroll-bar">
+          <div
+            className="flex flex-nowrap"
+          >
+            {services.map((service, index) => (
+              <div key={`card-${index}`} className="inline-block px-3">
                 <div
-                  onClick={() => handleRemoveService(index)}
-                  className="flex items-center justify-center w-10 h-10 hover:bg-red-600 transition-all bg-red-500 text-white gap-2 rounded-full mb-4 cursor-pointer"
+                  className="w-[300px] my-4 px-4 py-6 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
                 >
-                  <FaTrashCan />
-                </div>
-
-                <FormControl maxWidth={300}>
-                  <FormLabel>Select Product</FormLabel>
-                  <Select
-                    placeholder="Select product"
-                    onChange={(e) =>
-                      handleServiceChange(index, "productId", e.target.value)
-                    }
-                    value={service.productId}
+                  <div
+                    onClick={() => handleRemoveService(index)}
+                    className="flex items-center justify-center w-10 h-10 hover:bg-red-600 transition-all bg-red-500 text-white gap-2 rounded-full mb-4 cursor-pointer"
                   >
-                    {products.map((product) => (
-                      <option key={product._id} value={product._id}>
-                        {product.product} - Unit Price - {product.unitPrice}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
+                    <FaTrashCan />
+                  </div>
 
-                <FormControl mt={4}>
-                  <FormLabel>Service Description</FormLabel>
-                  <Input
-                    value={service.serviceDescription}
-                    onChange={(e) =>
-                      handleServiceChange(
-                        index,
-                        "serviceDescription",
-                        e.target.value
-                      )
-                    }
-                  />
-                </FormControl>
-
-                <div className="flex gap-4 items-center mt-4">
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Start Date</FormLabel>
-                    <MyDatePicker
-                      selected={service.startDate}
-                      onChange={(date) =>
-                        handleServiceChange(index, "startDate", date)
-                      } // Corrected to use 'date' instead of 'startDate'
-                    />
-                  </FormControl>
-                  <PiArrowsLeftRightFill size={20} />
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Dead Line</FormLabel>
-                    <MyDatePicker
-                      selected={service.endDate}
-                      onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
-                    />
-                  </FormControl>
-                </div>
-
-                <div className="flex gap-4 items-center mt-4">
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Quantity</FormLabel>
-                    <Input
-                      type="number"
-                      value={service.quantity}
+                  <FormControl maxWidth={300}>
+                    <FormLabel>Select Product</FormLabel>
+                    <Select
+                      placeholder="Select product"
                       onChange={(e) =>
-                        handleServiceChange(index, "quantity", e.target.value)
+                        handleServiceChange(index, "productId", e.target.value)
+                      }
+                      value={service.productId}
+                    >
+                      {products.map((product) => (
+                        <option key={product._id} value={product._id}>
+                          {product.product} - Unit Price - {product.unitPrice}
+                        </option>
+                      ))}
+                    </Select>
+                    {/* <SelectProduct width={"100%"} selectSourceValue={productValue} setSelectSourceValue={setProductValue} /> */}
+                  </FormControl>
+
+                  <FormControl mt={4}>
+                    <FormLabel>Service Description</FormLabel>
+                    <Input
+                      value={service.serviceDescription}
+                      onChange={(e) =>
+                        handleServiceChange(
+                          index,
+                          "serviceDescription",
+                          e.target.value
+                        )
                       }
                     />
                   </FormControl>
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Duration</FormLabel>
-                    <Input
-                      type="text"
-                      value={service.duration}
-                      onChange={(e) =>
-                        handleServiceChange(index, "duration", e.target.value)
-                      }
-                    />
-                  </FormControl>
+
+                  <div className="flex gap-4 items-center mt-4">
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Start Date</FormLabel>
+                      <MyDatePicker
+                        selected={service.startDate}
+                        onChange={(date) =>
+                          handleServiceChange(index, "startDate", date)
+                        } // Corrected to use 'date' instead of 'startDate'
+                      />
+                    </FormControl>
+                    <PiArrowsLeftRightFill size={20} />
+                    <FormControl maxWidth={100}>
+                      <FormLabel>End Date</FormLabel>
+                      <MyDatePicker
+                        selected={service.endDate}
+                        onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="flex gap-4 items-center mt-4">
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Quantity</FormLabel>
+                      <Input
+                        type="number"
+                        value={service.quantity}
+                        onChange={(e) =>
+                          handleServiceChange(index, "quantity", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Duration</FormLabel>
+                      <Input
+                        type="text"
+                        value={service.duration}
+                        onChange={(e) =>
+                          handleServiceChange(index, "duration", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </div>
                 </div>
-              </CardBody>
-            </Card>
-          ))}
-          <div onClick={handleAddService}
-            className="border-[1px] w-[300px] transition-all hover:shadow-lg hover:bg-gray-50 rounded-lg border-gray-100 text-gray-400 flex flex-col gap-4 items-center justify-center cursor-pointer">
-            <FaPlus size={40} />
-            Add Service
+              </div>
+            ))}
+            <div onClick={handleAddService}
+              className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg hover:bg-gray-50 rounded-lg border-gray-100 text-gray-400 flex flex-col gap-4 items-center justify-center cursor-pointer">
+              <FaPlus size={40} />
+              Add Service
+            </div>
           </div>
         </div>
       }

@@ -145,11 +145,12 @@ const GetAllProject = () => {
                         </Button>
                         <Button
                           size={"sm"}
+                          variant={"outline"}
                           colorScheme="red"
                           ml={2}
                           onClick={() => handleDeleteProject(project.project_id)}
                         >
-                          delete
+                          <DeleteIcon />
                         </Button>
                       </Td>
                     </Tr>
@@ -175,11 +176,12 @@ const GetAllProject = () => {
                         </Button>
                         <Button
                           size={"sm"}
+                          variant={"outline"}
                           colorScheme="red"
                           ml={2}
                           onClick={() => handleDeleteProject(project.project_id)}
                         >
-                          delete
+                          <DeleteIcon />
                         </Button>
                       </Td>
                     </Tr>

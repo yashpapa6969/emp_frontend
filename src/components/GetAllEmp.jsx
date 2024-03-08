@@ -16,6 +16,7 @@ import { Empty } from "antd";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go"; 
 import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const GetAllEmp = () => {
   const [employees, setEmployees] = useState([]);
@@ -134,11 +135,12 @@ const GetAllEmp = () => {
                         </Button>
                         <Button
                           size={"sm"}
+                          variant={"outline"}
                           colorScheme="red"
                           ml={2}
                           onClick={() => handleDeleteEmployee(emp.employee._id)}
                         >
-                          Delete
+                          <DeleteIcon />
                         </Button>
                       </Td>
                     </Tr>
@@ -162,11 +164,12 @@ const GetAllEmp = () => {
                         </Button>
                         <Button
                           size={"sm"}
+                          variant={"outline"}
                           colorScheme="red"
                           ml={2}
-                          onClick={() => handleDeleteEmployee(emp.employee_id)}
+                          onClick={() => handleDeleteEmployee(emp.employee._id)}
                         >
-                          Delete
+                          <DeleteIcon />
                         </Button>
                       </Td>
                     </Tr>

@@ -259,7 +259,7 @@ const Emp = () => {
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="password" maxWidth={350}>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
@@ -467,7 +467,7 @@ const Emp = () => {
                 </FormControl>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="department" maxWidth={500}>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
@@ -477,12 +477,12 @@ const Emp = () => {
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="password" maxWidth={350}>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
 
-              <div className="flex gap-3 mb-3">
+              <div className="flex gap-3">
                 <FormControl id="joiningDate" maxWidth={300}>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker

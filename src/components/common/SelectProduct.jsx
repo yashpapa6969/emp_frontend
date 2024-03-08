@@ -23,7 +23,7 @@ const TagRender = ({ label, closable, onClose }) => {
     );
 };
 
-const SelectProduct = ({ selectSourceValue, setSelectSourceValue }) => {
+const SelectProduct = ({ selectSourceValue, setSelectSourceValue, width }) => {
     const toast = useToast();
     const [items, setItems] = useState([]);
     const [name, setName] = useState('');
@@ -75,7 +75,7 @@ const SelectProduct = ({ selectSourceValue, setSelectSourceValue }) => {
             mode="single"
             tagRender={TagRender}
             style={{
-                width: 300,
+                width: width ? width : 300,
             }}
             value={selectSourceValue}
             onChange={setSelectSourceValue}
