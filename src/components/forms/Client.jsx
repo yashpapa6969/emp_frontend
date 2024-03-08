@@ -33,6 +33,7 @@ const Client = () => {
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
+    sourceInformation:"",
     workStartDate: "",
     source: [],
     companyName: "",
@@ -203,8 +204,51 @@ const Client = () => {
 
           <TabPanels>
             <TabPanel>
+              <div className="flex gap-2">
+                <FormControl id="companyAnniversary" maxWidth={150}>
+                  <FormLabel>Work Start Date</FormLabel>
+                  <MyDatePicker
+                    selected={projectData.workStartDate}
+                    onChange={(date) =>
+                      setProjectData({ ...projectData, workStartDate: date })
+                    }
+                    format={"DD/MM/YYYY"}
+                  />
+                </FormControl>
+                <FormControl id="tags" maxWidth={150}>
+                  <FormLabel>Source</FormLabel>
+                  <Select
+                    onChange={handleTagChange}
+                    size="md"
+                    placeholder="Select Source"
+                  >
+                    {tags.map((tag) => (
+                      <option key={tag._id} value={tag.source_tag_id}>
+                        {tag.sourceTagName}
+                      </option>
+                    ))}
+                  </Select>
+
+                  {projectData.source.map((tag) => (
+                    <Tag
+                      key={tag._id}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton onClick={() => removeTagById(tag)} />
+                    </Tag>
+                  ))}
+                </FormControl>
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
+                </FormControl>
+              </div>
               <div className="flex gap-3 mb-2">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130} >
                   <FormLabel>Title</FormLabel>
                   <Select
                     placeholder="Select Title"
@@ -237,19 +281,6 @@ const Client = () => {
               </div>
 
               <div className="flex gap-3 my-3">
-                <FormControl id="tags">
-                  <FormControl id="companyName">
-                    <FormLabel>Company Name</FormLabel>
-                    <Input name="companyName" onChange={handleChange} />
-                  </FormControl>
-                  <FormLabel>Source</FormLabel>
-                  <Flex>
-                    <SelectSource
-                      selectSourceValue={selectSourceValue}
-                      setSelectSourceValue={setSelectSourceValue}
-                    />
-                  </Flex>
-                </FormControl>
                 <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
@@ -257,6 +288,10 @@ const Client = () => {
                 <FormControl id="phone2">
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
+                </FormControl>
+                <FormControl id="website">
+                  <FormLabel>Website</FormLabel>
+                  <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
 
@@ -268,22 +303,6 @@ const Client = () => {
                 <FormControl id="email2">
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
-                </FormControl>
-                <FormControl id="website">
-                  <FormLabel>Website</FormLabel>
-                  <Input name="website" onChange={handleChange} />
-                </FormControl>
-              </div>
-              <div className="flex gap-3">
-                <FormControl id="companyAnniversary">
-                  <FormLabel>Work Start Date</FormLabel>
-                  <MyDatePicker
-                    selected={projectData.workStartDate}
-                    onChange={(date) =>
-                      setProjectData({ ...projectData, workStartDate: date })
-                    }
-                    format={"DD/MM/YYYY"}
-                  />
                 </FormControl>
               </div>
             </TabPanel>
@@ -390,7 +409,7 @@ const Client = () => {
                   <Input
                     name="additionalInformation"
                     onChange={handleChange}
-                    className="h-16"
+                    h="5rem"
                   />
                 </FormControl>
               </div>

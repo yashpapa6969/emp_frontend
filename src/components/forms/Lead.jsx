@@ -175,7 +175,7 @@ const Lead = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl id="enquiryDate" isRequired>
+      <FormControl id="enquiryDate">
         <FormLabel>Enquiry Date</FormLabel>
         <MyDatePicker
           className="mb-1"
@@ -317,11 +317,11 @@ const Lead = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="brandName" mb={3} isRequired>
+                <FormControl id="brandName" mb={3} >
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName" mb={3} isRequired>
+                <FormControl id="companyName" mb={3}>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
@@ -414,11 +414,11 @@ const Lead = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="clientName" isRequired>
+                <FormControl id="clientName">
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone1" isRequired>
+                <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
@@ -455,7 +455,7 @@ const Lead = () => {
                     </Tag>
                   ))}
                 </FormControl>
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
                     placeholder="Select Title"
@@ -523,7 +523,7 @@ const Lead = () => {
                   <FormLabel>City</FormLabel>
                   <Input name="city" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="pincode" isRequired>
+                <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
                   <Input name="pincode" onChange={handleChange} />
                 </FormControl>
@@ -537,11 +537,11 @@ const Lead = () => {
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
-                <FormControl id="brandName" mb={3} isRequired>
+                <FormControl id="brandName" mb={3} >
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName" mb={3} isRequired>
+                <FormControl id="companyName" mb={3}>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
