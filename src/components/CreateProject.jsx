@@ -246,7 +246,7 @@ const CreateProject = () => {
                 {projectData?.startDate?._d && <>{`${projectData?.startDate?._d}`.slice(4, 16)}</>}
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>End Date</FormLabel>
+                <FormLabel>Dead line</FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.deadline}

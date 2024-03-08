@@ -235,7 +235,7 @@ const Invoice = () => {
                   </FormControl>
                   <PiArrowsLeftRightFill size={20} />
                   <FormControl maxWidth={100}>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>Dead Line</FormLabel>
                     <MyDatePicker
                       selected={service.endDate}
                       onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'

@@ -89,7 +89,6 @@ const CreateTask = () => {
       description: description,
       startDate: startDate,
       deadline: deadline,
-      status: status,
       priority: priority,
     };
     axios
@@ -187,7 +186,7 @@ const CreateTask = () => {
           />
         </FormControl>
 
-        <div className="flex gap-2 my-3">
+        <div className="flex gap-3 my-3">
           <FormControl>
             <FormLabel>Priority</FormLabel>
             <Select
@@ -199,19 +198,7 @@ const CreateTask = () => {
               <option value="Low">Low</option>
             </Select>
           </FormControl>
-
-          <FormControl>
-            <FormLabel>Status</FormLabel>
-            <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-              <option value="Not Started">Not Started</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="Completed">On Hold</option>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="flex gap-2 my-3">
-          <FormControl maxWidth={150}>
+          <FormControl maxWidth={200}>
             <FormLabel>Start Date</FormLabel>
             <MyDatePicker
               className="mb-1"
@@ -224,7 +211,7 @@ const CreateTask = () => {
             {startDate?._d && <>{`${startDate?._d}`.slice(4, 16)}</>}
           </FormControl>
 
-          <FormControl>
+          <FormControl maxWidth={200}>
             <FormLabel>Deadline</FormLabel>
             <MyDatePicker
               className="mb-1"
