@@ -16,7 +16,7 @@ import MyDatePicker from "../common/MyDatePicker";
 
 const Emp = () => {
   const [projectData, setProjectData] = useState({
-    type: "",
+    type:"",
     name: "",
     gender: "",
     contactNo: "",
@@ -52,25 +52,25 @@ const Emp = () => {
 
   const joiningDate = `${projectData?.joiningDate?._d}`.slice(4, 15);
 
+  // const removeTagById = (tagToRemove) => {
+  //   setProjectData({
+  //     ...projectData,
+  //     source: projectData.source.filter((tag) => tag !== tagToRemove),
+  //   });
+  // };
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
-    if (name.split(".")[0] === "bankDetails") {
-      setProjectData({ ...projectData, "bankDetails": { ...projectData.bankDetails, [name.split(".")[1]]: value } })
-    }
-    else if (name.split(".")[0] === "guardianDetails") {
-      setProjectData({ ...projectData, "guardianDetails": { ...projectData.guardianDetails, [name.split(".")[1]]: value } })
-    }
-    else {
-      setProjectData({ ...projectData, [name]: value });
-    }
+    
+    setProjectData({ ...projectData, [name]: value });
   };
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
   };
-  // const getTagNameById = (id) => {
-  //   const tag = tags.find((tag) => tag.source_tag_id === id);
-  //   return tag ? tag.sourceTagName : "Unknown Tag";
-  // };
+  const getTagNameById = (id) => {
+    const tag = tags.find((tag) => tag.source_tag_id === id);
+    return tag ? tag.sourceTagName : "Unknown Tag";
+  };
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_BASE}/api/admin/getManagersAllDetails`)
@@ -126,7 +126,6 @@ const Emp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(projectData);
 
     const formData = new FormData();
 
@@ -143,7 +142,7 @@ const Emp = () => {
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", 
           },
         }
       )
@@ -157,18 +156,7 @@ const Emp = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        toast.error(
-          error.response.data.message,
-          {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
+        toast.error(error.response.data.message);
       });
   };
   const handleSelectManager = (e) => {
@@ -190,7 +178,7 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-3">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
                     placeholder="Select Title"
@@ -201,9 +189,9 @@ const Emp = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl id="employeeName" isRequired>
+                <FormControl id="employeeName">
                   <FormLabel>Employee Name</FormLabel>
-                  <Input name="name" onChange={handleChange} isRequired />
+                  <Input name="name" onChange={handleChange} />
                 </FormControl>
 
                 <FormControl id="gender" maxWidth={150}>
@@ -219,11 +207,11 @@ const Emp = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl id="contactNo" isRequired>
+                <FormControl id="contactNo">
                   <FormLabel>Contact Number</FormLabel>
-                  <Input name="contactNo" onChange={handleChange} isRequired />
+                  <Input name="contactNo" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="dob" maxWidth={150} isRequired>
+                <FormControl id="dob" maxWidth={150}>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -246,24 +234,23 @@ const Emp = () => {
                     onChange={(value) => handleSelectOption("position", value)}
                     placeholder="Select Position"
                   >
-                    <Select.Option value="superadmin">Superadmin</Select.Option>
-                    <Select.Option value="admin">Admin</Select.Option>
-                    <Select.Option value="user">User</Select.Option>
-                    <Select.Option value="manager">Manager</Select.Option>
+                    <Select.Option value="0">Superadmin</Select.Option>
+                    <Select.Option value="1">Admin</Select.Option>
+                    <Select.Option value="2">User</Select.Option>
+                    <Select.Option value="3">Manager</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="designation" isRequired>
+                <FormControl id="designation">
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
                     onChange={handleChange}
-                    isRequired
                   />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="department" maxWidth={500} isRequired>
+                <FormControl id="department" maxWidth={500}>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
@@ -272,13 +259,13 @@ const Emp = () => {
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="password" maxWidth={350}>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="joiningDate" maxWidth={300} isRequired>
+                <FormControl id="joiningDate" maxWidth={300}>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -306,7 +293,7 @@ const Emp = () => {
                   </select>
                 </FormControl>
 
-                <FormControl id="type" isRequired>
+                <FormControl id="type">
                   <FormLabel>Employment Type</FormLabel>
                   <Select
                     name="type"
@@ -319,17 +306,17 @@ const Emp = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="aadharNumber" isRequired>
+                <FormControl id="aadharNumber">
                   <FormLabel>Aadhar Number</FormLabel>
-                  <Input name="aadharNumber" onChange={handleChange} isRequired />
+                  <Input name="aadharNumber" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="panNumber" isRequired>
+                <FormControl id="panNumber">
                   <FormLabel>Pan Number</FormLabel>
-                  <Input name="panNumber" onChange={handleChange} isRequired />
+                  <Input name="panNumber" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="probationPeriod" isRequired>
+                <FormControl id="probationPeriod">
                   <FormLabel>Probation Period</FormLabel>
-                  <Input name="probationPeriod" onChange={handleChange} isRequired />
+                  <Input name="probationPeriod" onChange={handleChange} />
                 </FormControl>
               </div>
             </TabPanel>
@@ -356,14 +343,14 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="guardianDetails.guardianName" isRequired>
+                <FormControl id="guardianDetails.guardianName">
                   <FormLabel>Guardian Name</FormLabel>
                   <Input
                     name="guardianDetails.guardianName"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianContactNo" isRequired>
+                <FormControl id="guardianDetails.guardianContactNo">
                   <FormLabel>Guardian Contact Number</FormLabel>
                   <Input
                     name="guardianDetails.guardianContactNo"
@@ -375,11 +362,11 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="bankDetails.bankName" isRequired>
+                <FormControl id="bankDetails.bankName">
                   <FormLabel>Bank Name </FormLabel>
                   <Input name="bankDetails.bankName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="bankDetails.bankAccountNo" isRequired>
+                <FormControl id="bankDetails.bankAccountNo">
                   <FormLabel>Bank Account Number </FormLabel>
                   <Input
                     name="bankDetails.bankAccountNo"
@@ -418,7 +405,7 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
                     placeholder="Select Title"
@@ -432,9 +419,9 @@ const Emp = () => {
                   </Select.Option>
                 </FormControl>
 
-                <FormControl id="employeeName" isRequired>
+                <FormControl id="employeeName">
                   <FormLabel>Employee Name</FormLabel>
-                  <Input name="name" onChange={handleChange} isRequired />
+                  <Input name="name" onChange={handleChange}  />
                 </FormControl>
 
                 <FormControl id="gender" maxWidth={150}>
@@ -450,11 +437,11 @@ const Emp = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl id="contactNo" isRequired>
+                <FormControl id="contactNo">
                   <FormLabel>Contact Number</FormLabel>
-                  <Input name="contactNo" onChange={handleChange} isRequired />
+                  <Input name="contactNo" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="dob" maxWidth={150} isRequired>
+                <FormControl id="dob" maxWidth={150}>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     selected={projectData.dob}
@@ -467,22 +454,21 @@ const Emp = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="position" isRequired>
+                <FormControl id="position">
                   <FormLabel>Position</FormLabel>
-                  <Input name="position" onChange={handleChange} isRequired />
+                  <Input name="position" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="designation" isRequired>
+                <FormControl id="designation">
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
                     onChange={handleChange}
-                    isRequired
                   />
                 </FormControl>
               </div>
 
-              <div className="flex flex-col gap-3">
-                <FormControl id="department" maxWidth={500} isRequired>
+              <div className="flex flex-col gap-3 mb-3">
+                <FormControl id="department" maxWidth={500}>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
@@ -491,13 +477,13 @@ const Emp = () => {
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="password" maxWidth={350}>
-                  <FormLabel>password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
 
-              <div className="flex gap-3 mb-3">
-                <FormControl id="joiningDate" maxWidth={300} isRequired>
+              <div className="flex gap-3">
+                <FormControl id="joiningDate" maxWidth={300}>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     selected={projectData.joiningDate}
@@ -542,25 +528,25 @@ const Emp = () => {
                     className="h-16"
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianName" isRequired>
+                <FormControl id="guardianDetails.guardianName">
                   <FormLabel>Guardian Name</FormLabel>
                   <Input
                     name="guardianDetails.guardianName"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianContactNo" isRequired>
+                <FormControl id="guardianDetails.guardianContactNo">
                   <FormLabel>Guardian Contact Number</FormLabel>
                   <Input
                     name="guardianDetails.guardianContactNo"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="bankDetails.bankName" isRequired>
+                <FormControl id="bankDetails.bankName">
                   <FormLabel>Bank Name </FormLabel>
                   <Input name="bankDetails.bankName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="bankDetails.bankAccountNo" isRequired>
+                <FormControl id="bankDetails.bankAccountNo">
                   <FormLabel>Bank Account Number </FormLabel>
                   <Input
                     name="bankDetails.bankAccountNo"
