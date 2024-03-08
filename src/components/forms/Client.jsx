@@ -19,7 +19,6 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
-import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
@@ -468,17 +467,11 @@ const Client = () => {
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
-                  <Select
-                    onChange={handleTagChange}
-                    size="md"
-                    placeholder="Select Source"
-                  >
-                    {tags.map((tag) => (
-                      <option key={tag._id} value={tag.source_tag_id}>
-                        {tag.sourceTagName}
-                      </option>
-                    ))}
-                  </Select>
+                    <SelectSource
+                      width={150}
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
 
                   {projectData.source.map((tag) => (
                     <Tag

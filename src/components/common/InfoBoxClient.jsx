@@ -15,8 +15,7 @@ const InfoBoxClient = () => {
       if (clientId) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_API_BASE
-            }/api/admin/getClientDetails/${clientId}`
+            `${import.meta.env.VITE_API_BASE}/api/admin/getClientDetails/${clientId}`
           );
           const data = await response.json();
           setClientDetails(data);
