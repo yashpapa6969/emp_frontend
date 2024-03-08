@@ -157,7 +157,18 @@ const Emp = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        toast.error(error.response.data.message);
+        toast.error(
+          error.response.data.message,
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
       });
   };
   const handleSelectManager = (e) => {

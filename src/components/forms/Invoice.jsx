@@ -148,7 +148,19 @@ const Invoice = () => {
       toast.success("Invoice Slip is downloaded successfully.");
     } catch (error) {
       console.error("Error creating invoice:", error);
-      toast.error("Failed to download Invoice slip.");
+      toast.error(
+        "Failed to download Invoice slip.",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        }
+      );
     }
   };
 
@@ -234,25 +246,25 @@ const Invoice = () => {
                     />
                   </FormControl>
 
-                <div className="flex gap-4 items-center mt-4">
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Start Date</FormLabel>
-                    <MyDatePicker
-                      selected={service.startDate}
-                      onChange={(date) =>
-                        handleServiceChange(index, "startDate", date)
-                      } // Corrected to use 'date' instead of 'startDate'
-                    />
-                  </FormControl>
-                  <PiArrowsLeftRightFill size={20} />
-                  <FormControl maxWidth={100}>
-                    <FormLabel>End Date</FormLabel>
-                    <MyDatePicker
-                      selected={service.endDate}
-                      onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
-                    />
-                  </FormControl>
-                </div>
+                  <div className="flex gap-4 items-center mt-4">
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Start Date</FormLabel>
+                      <MyDatePicker
+                        selected={service.startDate}
+                        onChange={(date) =>
+                          handleServiceChange(index, "startDate", date)
+                        } // Corrected to use 'date' instead of 'startDate'
+                      />
+                    </FormControl>
+                    <PiArrowsLeftRightFill size={20} />
+                    <FormControl maxWidth={100}>
+                      <FormLabel>End Date</FormLabel>
+                      <MyDatePicker
+                        selected={service.endDate}
+                        onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
+                      />
+                    </FormControl>
+                  </div>
 
                   <div className="flex gap-4 items-center mt-4">
                     <FormControl maxWidth={100}>
