@@ -223,25 +223,37 @@ const Invoice = () => {
                   />
                 </FormControl>
 
-                <div className="flex gap-4 items-center mt-4">
-                  <FormControl maxWidth={100}>
-                    <FormLabel>Start Date</FormLabel>
-                    <MyDatePicker
-                      selected={service.startDate}
-                      onChange={(date) =>
-                        handleServiceChange(index, "startDate", date)
-                      } // Corrected to use 'date' instead of 'startDate'
-                    />
-                  </FormControl>
-                  <PiArrowsLeftRightFill size={20} />
-                  <FormControl maxWidth={100}>
-                    <FormLabel>End Date</FormLabel>
-                    <MyDatePicker
-                      selected={service.endDate}
-                      onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
-                    />
-                  </FormControl>
-                </div>
+                  <div className="flex gap-4 items-center mt-4">
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Start Date</FormLabel>
+                      <MyDatePicker
+                        className="mb-1"
+                        onChange={(date) =>
+                          handleServiceChange(index, "startDate", date)
+                        } // Corrected to use 'date' instead of 'startDate'
+                        selected={service.startDate}
+                        format={"DD/MM/YYYY"}
+                        placeholderText="Pick Date"
+                      />
+                      <br />
+                      {service?.startDate?._d && <>{`${service?.startDate?._d}`.slice(4, 16)}</>}
+                    </FormControl>
+                    <PiArrowsLeftRightFill size={20} />
+                    <FormControl maxWidth={100}>
+                      <FormLabel>End Date</FormLabel>
+                      <MyDatePicker
+                        className="mb-1"
+                        onChange={(date) =>
+                          handleServiceChange(index, "endDate", date)
+                        } // Corrected to use 'date' instead of 'startDate'
+                        selected={service.endDate}
+                        format={"DD/MM/YYYY"}
+                        placeholderText="Pick Date"
+                      />
+                      <br />
+                      {service?.endDate?._d && <>{`${service?.endDate?._d}`.slice(4, 16)}</>}
+                    </FormControl>
+                  </div>
 
                 <div className="flex gap-4 items-center mt-4">
                   <FormControl maxWidth={100}>
