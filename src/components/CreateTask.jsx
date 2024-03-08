@@ -193,9 +193,12 @@ const CreateTask = () => {
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
+              <option value="" disabled>
+                Select priority
+              </option>
+              <option value="2">High</option>
+              <option value="1">Medium</option>
+              <option value="0">Low</option>
             </Select>
           </FormControl>
           <FormControl maxWidth={200}>

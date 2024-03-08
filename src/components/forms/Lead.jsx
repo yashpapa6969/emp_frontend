@@ -218,10 +218,6 @@ const Lead = () => {
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="clientName">
-                  <FormLabel>Source Information</FormLabel>
-                  <Input name="sourceInformation" onChange={handleChange} />
-                </FormControl>
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Flex>
@@ -231,6 +227,11 @@ const Lead = () => {
                     />
                   </Flex>
                 </FormControl>
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
+                </FormControl>
+
                 <FormControl id="gender" maxWidth={180}>
                   <FormLabel>Gender</FormLabel>
                   <Select
@@ -253,6 +254,10 @@ const Lead = () => {
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
+                <FormControl id="website">
+                  <FormLabel>Website</FormLabel>
+                  <Input name="website" onChange={handleChange} />
+                </FormControl>
               </div>
 
               <div className="flex gap-3">
@@ -263,10 +268,6 @@ const Lead = () => {
                 <FormControl id="email2">
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
-                </FormControl>
-                <FormControl id="website">
-                  <FormLabel>Website</FormLabel>
-                  <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
             </TabPanel>
