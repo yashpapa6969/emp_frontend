@@ -217,30 +217,12 @@ const Client = () => {
                 </FormControl>
                 <FormControl id="tags" maxWidth={150}>
                   <FormLabel>Source</FormLabel>
-                  <Select
-                    onChange={handleTagChange}
-                    size="md"
-                    placeholder="Select Source"
-                  >
-                    {tags.map((tag) => (
-                      <option key={tag._id} value={tag.source_tag_id}>
-                        {tag.sourceTagName}
-                      </option>
-                    ))}
-                  </Select>
-
-                  {projectData.source.map((tag) => (
-                    <Tag
-                      key={tag._id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                    >
-                      <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton onClick={() => removeTagById(tag)} />
-                    </Tag>
-                  ))}
+                  <Flex>
+                    <SelectSource
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
+                  </Flex>    
                 </FormControl>
                 <FormControl id="clientName">
                   <FormLabel>Source Information</FormLabel>
