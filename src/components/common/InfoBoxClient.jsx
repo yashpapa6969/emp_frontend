@@ -2,7 +2,7 @@ import { Box, Button, Card, CardBody, Divider, Heading, Text } from "@chakra-ui/
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
-import { Segmented, Tag } from "antd";
+import { Empty, Segmented, Tag } from "antd";
 
 const InfoBoxClient = () => {
   const clientId = useSelector(selectClientId);
@@ -99,13 +99,13 @@ const InfoBoxClient = () => {
                     Multiple Files:
                   </Heading>
                   <Divider mb={5} />
-                  <div>
-                    {clientDetails.multipleFiles.length > 0 ?
+                  <div className="flex gap-3">
+                    {clientDetails.multipleFiles ?
                     clientDetails.multipleFiles.map((data, index) => (
                       <Button
                         key={`data-${index}`}
                         as="a"
-                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split("/")[4]
+                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data?.split("/")[4]
                           }`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -116,11 +116,10 @@ const InfoBoxClient = () => {
                       >
                         View Single File
                       </Button>
-                    )) : <>No file uploaded</>}
+                    )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<>No file uploaded</>} />}
                   </div>
                 </CardBody>
               </Card>
-              )}
             </div>
           </>)}
           {segmentedValue === 'Business Information' && (<>

@@ -129,6 +129,7 @@ const GetAllManagers = () => {
                         <Button
                           size={"sm"}
                           colorScheme="red"
+                          variant={"outline"}
                           ml={2}
                           onClick={() =>
                             handleDeleteManager(manager.manager_id)
@@ -163,6 +164,7 @@ const GetAllManagers = () => {
                         <Button
                           size={"sm"}
                           colorScheme="red"
+                          variant={"outline"}
                           ml={2}
                           onClick={() =>
                             handleDeleteManager(manager.manager_id)

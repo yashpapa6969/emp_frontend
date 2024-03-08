@@ -263,6 +263,7 @@ const GetAllLead = () => {
                           size={"sm"}
                           variant={"outline"}
                           colorScheme="red"
+                          ml={2}
                           onClick={() => handleDeleteLead(lead.lead_id)}
                         >
                           <DeleteIcon />

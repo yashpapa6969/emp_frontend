@@ -155,7 +155,7 @@ const GetAllInvoices = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredInvoices.map((invoice, index) =>
-                    invoice.services.map((service, serviceIndex) => (
+                    invoice.services.map((service) => (
                       <Tr key={service._id}>
                         <Td>{index + 1}</Td>
                         <Td>{service.product}</Td>
@@ -166,10 +166,9 @@ const GetAllInvoices = () => {
                         <Td className="md:table-cell hidden">
                           {service.unitPrice}
                         </Td>
-                        <Td>
+                        <Td className="flex flex-col md:flex-row gap-2">
                           <Button
                             size={"sm"}
-                            mr={2}
                             colorScheme="purple"
                             onClick={() => handleMoreInfo(invoice)}
                           >
@@ -199,7 +198,7 @@ const GetAllInvoices = () => {
                     ))
                   )
                 : invoices.map((invoice, index) =>
-                    invoice.services.map((service, serviceIndex) => (
+                    invoice.services.map((service) => (
                       <Tr key={service._id}>
                         <Td>{index + 1}</Td>
                         <Td>{service.product}</Td>
@@ -210,10 +209,9 @@ const GetAllInvoices = () => {
                         <Td className="md:table-cell hidden">
                           {service.unitPrice}
                         </Td>
-                        <Td>
+                        <Td className="flex flex-col md:flex-row gap-2">
                           <Button
                             size={"sm"}
-                            mr={2}
                             colorScheme="purple"
                             onClick={() => handleMoreInfo(invoice)}
                           >
