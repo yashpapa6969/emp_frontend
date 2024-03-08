@@ -13,7 +13,8 @@ import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
-
+import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
@@ -50,6 +51,22 @@ const GetAllManagers = () => {
       </div>
     );
   }
+   const handleDeleteManager = async (projectId) => {
+     try {
+       await axios.delete(
+         `${
+           import.meta.env.VITE_API_BASE
+         }/api/admin/deleteManagerById/${projectId}`
+       );
+       toast.success("Successfully deleted Manager");
+       const response = await axios.get(
+         `${import.meta.env.VITE_API_BASE}/api/admin/getAllManagers`
+       );
+       setManagers(response.data);
+     } catch (error) {
+       console.error("Error deleting project:", error);
+     }
+   };
 
   return (
     <>
@@ -57,11 +74,10 @@ const GetAllManagers = () => {
         <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
 
         {managers.length === 0 && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
-            <span>
-              No Managers Assigned
-            </span>
-          } />
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={<span>No Managers Assigned</span>}
+          />
         )}
 
         {managers.length > 0 && (
@@ -75,9 +91,15 @@ const GetAllManagers = () => {
               <Tr>
                 <Th fontWeight="bold">Id</Th>
                 <Th fontWeight="bold">Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Position</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Department</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Joining Date</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Position
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Department
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Joining Date
+                </Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
@@ -87,9 +109,15 @@ const GetAllManagers = () => {
                     <Tr key={manager._id}>
                       <Td>{manager.manager_id}</Td>
                       <Td>{manager.name}</Td>
-                      <Td className="md:table-cell hidden">{manager.position}</Td>
-                      <Td className="md:table-cell hidden">{manager.department}</Td>
-                      <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.position}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.department}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.joiningDate}
+                      </Td>
                       <Td>
                         <Button
                           size={"sm"}
@@ -98,6 +126,16 @@ const GetAllManagers = () => {
                         >
                           More Info
                         </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() =>
+                            handleDeleteManager(manager.manager_id)
+                          }
+                        >
+                          <DeleteIcon />
+                        </Button>
                       </Td>
                     </Tr>
                   ))
@@ -105,9 +143,15 @@ const GetAllManagers = () => {
                     <Tr key={manager._id}>
                       <Td>{manager.manager_id}</Td>
                       <Td>{manager.name}</Td>
-                      <Td className="md:table-cell hidden">{manager.position}</Td>
-                      <Td className="md:table-cell hidden">{manager.department}</Td>
-                      <Td className="md:table-cell hidden">{manager.joiningDate}</Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.position}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.department}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {manager.joiningDate}
+                      </Td>
                       <Td>
                         <Button
                           size={"sm"}
@@ -115,6 +159,16 @@ const GetAllManagers = () => {
                           onClick={() => handleMoreInfo(manager)}
                         >
                           More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() =>
+                            handleDeleteManager(manager.manager_id)
+                          }
+                        >
+                          <DeleteIcon />
                         </Button>
                       </Td>
                     </Tr>

@@ -11,10 +11,12 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
-import { GoPlus } from "react-icons/go";
+import { GoPlus } from "react-icons/go"; 
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
+import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const CreateProjectButton = ({ onOpen }) => {
   return (
@@ -61,6 +63,23 @@ const GetAllProject = () => {
     onOpen();
   };
 
+  const handleDeleteProject = async (projectId) => {
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteProjectById/${projectId}`
+      );
+    toast.success("Successfully deleted Project");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+      );
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -75,11 +94,10 @@ const GetAllProject = () => {
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
         <CreateProjectButton onOpen={onOpen} />
         {projects.length === 0 ? (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
-            <span>
-              No Projects Assigned
-            </span>
-          } />
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={<span>No Projects Assigned</span>}
+          />
         ) : (
           <TableContainer
             formFor="project"
@@ -92,50 +110,80 @@ const GetAllProject = () => {
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Project Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Priority</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Priority
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Brand Name
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Status
+                </Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.projectName}</Td>
-                    <Td className="md:table-cell hidden">{project.priority}</Td>
-                    <Td className="md:table-cell hidden">{project.brandName}</Td>
-                    <Td className="md:table-cell hidden">{project.status}</Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                    <Tr key={project._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.projectName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.priority}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {project.brandName}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.status}</Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteProject(project.project_id)}
+                        >
+                          delete
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
                 : projects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.projectName}</Td>
-                    <Td className="md:table-cell hidden">{project.priority}</Td>
-                    <Td className="md:table-cell hidden">{project.brandName}</Td>
-                    <Td className="md:table-cell hidden">{project.status}</Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                    <Tr key={project._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.projectName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.priority}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {project.brandName}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.status}</Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteProject(project.project_id)}
+                        >
+                          delete
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}

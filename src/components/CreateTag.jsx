@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Input,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Input, Button, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { Tag } from "antd";
 import { FaPlus, FaTrash } from "react-icons/fa6";
@@ -44,7 +39,7 @@ const CreateTag = () => {
       );
       setProducts(response.data);
     } catch (error) {
-      console.error("Error fetching tags:", error);
+      console.error("Error fetching products:", error);
     }
   };
 
@@ -55,7 +50,7 @@ const CreateTag = () => {
       );
       setSources(response.data);
     } catch (error) {
-      console.error("Error fetching tags:", error);
+      console.error("Error fetching sources:", error);
     }
   };
 
@@ -68,13 +63,11 @@ const CreateTag = () => {
           status: "error",
           duration: 5000,
           isClosable: true,
-        })
-      }
-      else {
-        await axios.post(
-          `${import.meta.env.VITE_API_BASE}/api/admin/addTag`,
-          { tagName: newTag }
-        );
+        });
+      } else {
+        await axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/addTag`, {
+          tagName: newTag,
+        });
         setNewTag("");
         fetchTags();
       }
@@ -92,20 +85,20 @@ const CreateTag = () => {
           status: "error",
           duration: 5000,
           isClosable: true,
-        })
-      }
-      else {
+        });
+      } else {
         await axios.post(
           `${import.meta.env.VITE_API_BASE}/api/admin/addProducts`,
           { product: newProduct, unitPrice: newProductPrice }
         );
         setNewProduct("");
+        setNewProductPrice(0);
         fetchProducts();
       }
     } catch (error) {
-      console.error("Error adding tag:", error);
+      console.error("Error adding product:", error);
     }
-  }
+  };
 
   const handleAddSource = async () => {
     try {
@@ -116,9 +109,8 @@ const CreateTag = () => {
           status: "error",
           duration: 5000,
           isClosable: true,
-        })
-      }
-      else {
+        });
+      } else {
         await axios.post(
           `${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`,
           { sourceTagName: newSource }
@@ -127,10 +119,67 @@ const CreateTag = () => {
         fetchSources();
       }
     } catch (error) {
-      console.error("Error adding tag:", error);
+      console.error("Error adding source:", error);
     }
-  }
+  };
 
+  const handleDeleteTag = async (tagId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE}/api/admin/deleteTagById/${tagId}`
+      );
+      toast({
+        title: "Success",
+        description: "Successfully deleted Tag",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      fetchTags();
+    } catch (error) {
+      console.error("Error deleting tag:", error);
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteProductById/${productId}`
+      );
+       toast({
+         title: "Success",
+         description: "Successfully deleted Product",
+         status: "success",
+         duration: 5000,
+         isClosable: true,
+       });
+      fetchProducts();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const handleDeleteSource = async (sourceTagId) => {
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteSourceTagById/${sourceTagId}`
+      );
+      toast({
+        title: "Success",
+        description: "Successfully deleted Source Tag",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      fetchSources();
+    } catch (error) {
+      console.error("Error deleting source:", error);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -148,13 +197,20 @@ const CreateTag = () => {
       </div>
       <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"}>
         {tags.map((tag) => (
-          <>
-            <Tag key={tag._id} className="px-2 py-1 mb-2 bg-purple-400 border-purple-600 text-[16px] font-semibold text-white">
-              <div className="flex gap-5 items-center">
-                {tag.tagName} <div className="p-[7px] transition-all bg-purple-500 hover:bg-purple-400 rounded-full cursor-pointer"> <FaTrash size={12} /> </div>
+          <Tag
+            key={tag._id}
+            className="px-2 py-1 mb-2 bg-purple-400 border-purple-600 text-[16px] font-semibold text-white"
+          >
+            <div className="flex gap-5 items-center">
+              {tag.tagName}
+              <div
+                className="p-[7px] transition-all bg-purple-500 hover:bg-purple-400 rounded-full cursor-pointer"
+                onClick={() => handleDeleteTag(tag.tag_id)}
+              >
+                <FaTrash size={12} />
               </div>
-            </Tag>
-          </>
+            </div>
+          </Tag>
         ))}
       </Box>
 
@@ -170,19 +226,30 @@ const CreateTag = () => {
           value={newProductPrice}
           onChange={(e) => setNewProductPrice(e.target.value)}
         />
-        <Button colorScheme="cyan" variant={"outline"} onClick={handleAddProduct}>
+        <Button
+          colorScheme="cyan"
+          variant={"outline"}
+          onClick={handleAddProduct}
+        >
           <FaPlus size={36} />
         </Button>
       </div>
       <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"}>
         {products.map((product) => (
-          <>
-            <Tag key={product._id} className="px-2 py-1 mb-2 bg-cyan-400 border-cyan-600 text-[16px] font-semibold text-white">
-              <div className="flex gap-5 items-center">
-                {product.product} <div className="p-[7px] transition-all bg-cyan-500 hover:bg-cyan-400 rounded-full cursor-pointer"> <FaTrash size={12} /> </div>
+          <Tag
+            key={product._id}
+            className="px-2 py-1 mb-2 bg-cyan-400 border-cyan-600 text-[16px] font-semibold text-white"
+          >
+            <div className="flex gap-5 items-center">
+              {product.product}
+              <div
+                className="p-[7px] transition-all bg-cyan-500 hover:bg-cyan-400 rounded-full cursor-pointer"
+                onClick={() => handleDeleteProduct(product.product_id)}
+              >
+                <FaTrash size={12} />
               </div>
-            </Tag>
-          </>
+            </div>
+          </Tag>
         ))}
       </Box>
 
@@ -193,19 +260,30 @@ const CreateTag = () => {
           value={newSource}
           onChange={(e) => setNewSource(e.target.value)}
         />
-        <Button colorScheme="orange" variant={"outline"} onClick={handleAddSource}>
+        <Button
+          colorScheme="orange"
+          variant={"outline"}
+          onClick={handleAddSource}
+        >
           <FaPlus />
         </Button>
       </div>
       <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"}>
         {sources.map((source) => (
-          <>
-            <Tag key={source._id} className="px-2 py-1 mb-2 bg-orange-400 border-orange-600 text-[16px] font-semibold text-white">
-              <div className="flex gap-5 items-center">
-                {source.sourceTagName} <div className="p-[7px] transition-all bg-orange-500 hover:bg-orange-400 rounded-full cursor-pointer"> <FaTrash size={12} /> </div>
+          <Tag
+            key={source._id}
+            className="px-2 py-1 mb-2 bg-orange-400 border-orange-600 text-[16px] font-semibold text-white"
+          >
+            <div className="flex gap-5 items-center">
+              {source.sourceTagName}
+              <div
+                className="p-[7px] transition-all bg-orange-500 hover:bg-orange-400 rounded-full cursor-pointer"
+                onClick={() => handleDeleteSource(source.source_tag_id)}
+              >
+                <FaTrash size={12} />
               </div>
-            </Tag>
-          </>
+            </div>
+          </Tag>
         ))}
       </Box>
     </div>

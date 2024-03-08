@@ -16,6 +16,8 @@ import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
 import { DownloadIcon } from "@chakra-ui/icons";
+import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const GetAllSlip = () => {
   const [projects, setProjects] = useState([]);
@@ -88,6 +90,22 @@ const GetAllSlip = () => {
       </div>
     );
   }
+    const handleDeleteSlip = async (projectId) => {
+      try {
+        await axios.delete(
+          `${
+            import.meta.env.VITE_API_BASE
+          }/api/admin/deleteSlipById/${projectId}`
+        );
+        toast.success("Successfully deleted Slip");
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE}/api/admin/getAllSlips`
+        );
+        setProjects(response.data);
+      } catch (error) {
+        console.error("Error deleting project:", error);
+      }
+    };
 
   return (
     <>
@@ -121,7 +139,9 @@ const GetAllSlip = () => {
           >
             <Thead bg={"#F1F5F9"}>
               <Tr>
-                <Th fontWeight="bold" className="md:table-cell hidden">S. No.</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  S. No.
+                </Th>
                 <Th fontWeight="bold">Employee name</Th>
                 <Th fontWeight="bold">Basic Pay</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
@@ -138,55 +158,79 @@ const GetAllSlip = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td className="md:table-cell hidden">{index + 1}</Td>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.basicPay}</Td>
-                    <Td className="md:table-cell hidden">
-                      {project.travelPay}
-                    </Td>
-                    <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td className="flex gap-2 flex-col md:flex-row">
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"} variant={"outline"} isLoading={index === downloading} colorScheme="purple"
-                        onClick={() => handleDownload(project.slip_id, index)}>
-                        <DownloadIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                    <Tr key={project._id}>
+                      <Td className="md:table-cell hidden">{index + 1}</Td>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.travelPay}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.bonus}</Td>
+                      <Td className="flex gap-2 flex-col md:flex-row">
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          isLoading={index === downloading}
+                          colorScheme="purple"
+                          onClick={() => handleDownload(project.slip_id, index)}
+                        >
+                          <DownloadIcon />
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteSlip(project.slip_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
                 : projects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td className="md:table-cell hidden">{index + 1}</Td>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.basicPay}</Td>
-                    <Td className="md:table-cell hidden">
-                      {project.travelPay}
-                    </Td>
-                    <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td className="flex gap-2 flex-col md:flex-row">
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"} variant={"outline"} isLoading={index === downloading} colorScheme="purple"
-                        onClick={() => handleDownload(project.slip_id, index)}>
-                        <DownloadIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                    <Tr key={project._id}>
+                      <Td className="md:table-cell hidden">{index + 1}</Td>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.travelPay}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.bonus}</Td>
+                      <Td className="flex gap-2 flex-col md:flex-row">
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          isLoading={index === downloading}
+                          colorScheme="purple"
+                          onClick={() => handleDownload(project.slip_id, index)}
+                        >
+                          <DownloadIcon />
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteSlip(project.slip_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}

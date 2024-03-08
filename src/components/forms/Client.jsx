@@ -28,8 +28,8 @@ const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
-    title:"",
-    gender:"",
+    title: "",
+    gender: "",
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
@@ -62,7 +62,6 @@ const Client = () => {
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
-  
   };
   useEffect(() => {
     setProjectData((prev) => ({
@@ -71,7 +70,7 @@ const Client = () => {
       requirement: selectedTagValue,
     }));
   }, [selectSourceValue, selectedTagValue]);
-  
+
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -138,21 +137,21 @@ const Client = () => {
     const formData = new FormData();
 
     Object.entries(projectData).forEach(([key, value]) => {
-      if (key === "source" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+      if (key === "source" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      }
-      else if (key === "requirement" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+      } else if (key === "requirement" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      } else if (value !== "") { // For all other non-empty values
+      } else if (value !== "") {
+        // For all other non-empty values
         formData.append(key, value);
       }
     });
-    
-    
 
     axios
       .post(
@@ -327,7 +326,7 @@ const Client = () => {
                 <Input
                   name="businessAddress"
                   onChange={handleChange}
-                  h="5rem" 
+                  h="5rem"
                 />
               </FormControl>
             </TabPanel>
