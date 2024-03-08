@@ -22,28 +22,30 @@ const Emp = () => {
     title: "",
     dob: "",
     position: "",
-    designation: "",
+    designation:"",
     department: "",
     email: "",
     password: "",
     joiningDate: "",
     manager_id: "",
     probationPeriod: "",
-    leavingDate: "",
+    leavingDate: null,
+    permissions: [],
     aadharNumber: "",
     panNumber: "",
     permanentAddress: "",
     correspondenceAddress: "",
     guardianDetails: {
-      guardianName: "",
-      guardianContactNo: "",
+        guardianName: "",
+        guardianContactNo: ""
     },
     bankDetails: {
-      bankName: "",
-      bankAccountNo: "",
-      bankIfscCode: "",
-      type: "",
+        bankName: "",
+        bankAccountNo: "",
+        bankIfscCode: "",
+        type: ""
     },
+    type:""
   });
 
   const [tags, setTags] = useState([]);
@@ -59,7 +61,15 @@ const Emp = () => {
   // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProjectData({ ...projectData, [name]: value });
+    if (name.split(".")[0] === "bankDetails") {
+      setProjectData({ ...projectData, "bankDetails": { ...projectData.bankDetails, [name.split(".")[1]]: value } })
+    }
+    else if (name.split(".")[0] === "guardianDetails") {
+      setProjectData({ ...projectData, "guardianDetails": { ...projectData.guardianDetails, [name.split(".")[1]]: value } })
+    }
+    else {
+      setProjectData({ ...projectData, [name]: value });
+    }
   };
   const getTagNameById = (id) => {
     const tag = tags.find((tag) => tag.source_tag_id === id);
@@ -120,6 +130,7 @@ const Emp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(projectData)
 
     const formData = new FormData();
 

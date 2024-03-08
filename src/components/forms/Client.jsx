@@ -279,12 +279,15 @@ const Client = () => {
                 <FormControl id="companyAnniversary">
                   <FormLabel>Work Start Date</FormLabel>
                   <MyDatePicker
+                  className="mb-1"
                     selected={projectData.workStartDate}
                     onChange={(date) =>
                       setProjectData({ ...projectData, workStartDate: date })
                     }
                     format={"DD/MM/YYYY"}
-                  />
+                />
+                <br />
+                {projectData?.workStartDate?._d && <>{`${projectData?.workStartDate?._d}`.slice(4, 16)}</>}
                 </FormControl>
               </div>
             </TabPanel>
@@ -337,16 +340,20 @@ const Client = () => {
                 <FormControl id="clientBirthday">
                   <FormLabel>Client Birthday</FormLabel>
                   <MyDatePicker
+                  className="mb-1"
                     selected={projectData.clientBirthday}
                     onChange={(date) =>
                       setProjectData({ ...projectData, clientBirthday: date })
                     }
                     format={"DD/MM/YYYY"}
-                  />
+                    />
+                    <br />
+                    {projectData?.clientBirthday?._d && <>{`${projectData?.clientBirthday?._d}`.slice(4, 16)}</>}
                 </FormControl>
                 <FormControl id="clientAnniversary">
                   <FormLabel>Client Anniversary</FormLabel>
                   <MyDatePicker
+                  className="mb-1"
                     selected={projectData.clientAnniversary}
                     onChange={(date) =>
                       setProjectData({
@@ -355,11 +362,14 @@ const Client = () => {
                       })
                     }
                     format={"DD/MM/YYYY"}
-                  />
+                    />
+                    <br />
+                    {projectData?.clientAnniversary?._d && <>{`${projectData?.clientAnniversary?._d}`.slice(4, 16)}</>}
                 </FormControl>
                 <FormControl id="companyAnniversary">
                   <FormLabel>Company Anniversary</FormLabel>
                   <MyDatePicker
+                  className="mb-1"
                     selected={projectData.companyAnniversary}
                     onChange={(date) =>
                       setProjectData({
@@ -368,7 +378,9 @@ const Client = () => {
                       })
                     }
                     format={"DD/MM/YYYY"}
-                  />
+                    />
+                    <br />
+                    {projectData?.companyAnniversary?._d && <>{`${projectData?.companyAnniversary?._d}`.slice(4, 16)}</>}
                 </FormControl>
               </div>
             </TabPanel>

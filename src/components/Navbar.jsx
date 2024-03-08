@@ -39,8 +39,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
 
   const currentDate = new Date();
   const dateString = `${DaysList[currentDate.getDay()]}, ${currentDate.getDate()} ${MonthsList[currentDate.getMonth()]} ${currentDate.getFullYear()}`
-  const hours = currentDate.getHours() % 12;
-  const ampm = hours % 12 >= 12 ? 'pm' : 'am';
+  let hours = currentDate.getHours();
+  const ampm = hours > 12 ? 'pm' : 'am';
+  hours = hours % 12;
   const minutes = currentDate.getMinutes();
   const timeString = (hours ? hours : 12) + ':' + (minutes < 10 ? '0'+ minutes : minutes) + ampm;
   // const istOffset = 5.5 * 60 * 60 * 1000;
