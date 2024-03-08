@@ -17,12 +17,14 @@ import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { toast } from "react-toastify"; // Import DeleteIcon
 
 const GetAllLead = () => {
-  const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [leads, setLeads] = useState([]);
+  const [selectedLead, setSelectedLead] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const [filteredClients, setFilteredClients] = useState([]);
+  const [filteredLeads, setFilteredLeads] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // New state to manage loading
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const GetAllLead = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
         );
-        setClients(response.data);
+        setLeads(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -41,23 +43,40 @@ const GetAllLead = () => {
     fetchData();
   }, []);
 
-  const handleMoreInfo = (client) => {
-    setSelectedClient(client);
+  const handleMoreInfo = (lead) => {
+    setSelectedLead(lead);
   };
 
   const handleStatusChange = async (leadId, statusNo) => {
     try {
       await axios.get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/updateLeadStatus/${leadId}/${statusNo}`
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/updateLeadStatus/${leadId}/${statusNo}`
       );
       // Fetch data again after updating status
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
       );
-      setClients(response.data);
+      setLeads(response.data);
     } catch (error) {
       console.error("Error updating status:", error);
       alert(error.response.data.message);
+    }
+  };
+
+  const handleDeleteLead = async (leadId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE}/api/admin/deleteLeadById/${leadId}`
+      );
+      toast.success("Successfully deleted Lead")
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
+      );
+      setLeads(response.data);
+    } catch (error) {
+      console.error("Error deleting lead:", error);
     }
   };
 
@@ -83,144 +102,174 @@ const GetAllLead = () => {
             <GoPlus /> Add a Lead
           </Button>
         </Link>
-        {clients.length === 0 ? (
+        {leads.length === 0 ? (
           <p className="text-red-500 text-lg">No Lead Available</p>
         ) : (
           <TableContainer
             formFor="lead"
             searchText={searchText}
             setSearchText={setSearchText}
-            setFilteredData={setFilteredClients}
-            data={clients}
+            setFilteredData={setFilteredLeads}
+            data={leads}
           >
             <Thead bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Company Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Brand Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Status
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Brand Name
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Status
+                </Th>
                 <Th fontWeight="bold">Action</Th>
               </Tr>
             </Thead>
             <Tbody>
               {searchText !== ""
-                ? filteredClients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.companyName}</Td>
-                    <Td className="md:table-cell hidden">{client.status}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">
-                      {client.status === 0 && "Raw"}
-                      {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton size="sm" as={Button} colorScheme="purple">
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 0)
-                            }
+                ? filteredLeads.map((lead, index) => (
+                    <Tr key={lead._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{lead.companyName}</Td>
+                      <Td className="md:table-cell hidden">{lead.status}</Td>
+                      <Td className="md:table-cell hidden">{lead.brandName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {lead.status === 0 && "Raw"}
+                        {lead.status === 1 && "In-Progress"}
+                        {lead.status === 2 && "Converted"}
+                        {lead.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton
+                            size="sm"
+                            as={Button}
+                            colorScheme="purple"
                           >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 1)
-                            }
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(lead)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          onClick={() => handleDeleteLead(lead.lead_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                : leads.map((lead, index) => (
+                    <Tr key={lead._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{lead.companyName}</Td>
+                      <Td className="md:table-cell hidden">{lead.status}</Td>
+                      <Td className="md:table-cell hidden">{lead.brandName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {lead.status === 0 && "Raw"}
+                        {lead.status === 1 && "In-Progress"}
+                        {lead.status === 2 && "Converted"}
+                        {lead.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton
+                            size="sm"
+                            as={Button}
+                            colorScheme="purple"
                           >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
-                : clients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.companyName}</Td>
-                    <Td className="md:table-cell hidden">{client.status}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">
-                      {client.status === 0 && "Raw"}
-                      {client.status === 1 && "In-Progress"}
-                      {client.status === 2 && "Converted"}
-                      {client.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton size="sm" as={Button} colorScheme="purple">
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 0)
-                            }
-                          >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 1)
-                            }
-                          >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(client.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(lead)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          onClick={() => handleDeleteLead(lead.lead_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}
@@ -228,9 +277,9 @@ const GetAllLead = () => {
 
       <InfoModal
         modalFor="lead"
-        data={selectedClient}
-        onClose={() => setSelectedClient(null)}
-        isOpen={selectedClient !== null}
+        data={selectedLead}
+        onClose={() => setSelectedLead(null)}
+        isOpen={selectedLead !== null}
       />
     </>
   );

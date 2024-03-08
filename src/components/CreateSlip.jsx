@@ -141,34 +141,34 @@ const CreateSlip = () => {
 
 
             <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay"  isRequired>
+              <FormControl id="basicPay" >
                 <FormLabel>Basic Pay</FormLabel>
                 <Input name="basicPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="travelPay" isRequired>
+              <FormControl id="travelPay">
                 <FormLabel>Travel Pay</FormLabel>
                 <Input name="travelPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="Bonus"  isRequired>
+              <FormControl id="Bonus" >
                 <FormLabel>Bonus</FormLabel>
                 <Input name="bonus" onChange={handleChange} />
               </FormControl>
             </div>
             <div className="flex gap-3">
-              <FormControl id="paidLeave" isRequired>
+              <FormControl id="paidLeave" >
                 <FormLabel>Paid Leave</FormLabel>
                 <Input name="paidLeave" onChange={handleChange} />
               </FormControl>
-              <FormControl id="tds"  isRequired>
+              <FormControl id="tds" >
                 <FormLabel>TDS</FormLabel>
                 <Input name="tds" onChange={handleChange} />
               </FormControl>
-              <FormControl id="totaleaves"  isRequired>
+              <FormControl id="totaleaves">
                 <FormLabel>Total Leaves</FormLabel>
                 <Input name="totalLeaves" onChange={handleChange} />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={400} isRequired>
+            <FormControl id="advanceSalary" maxWidth={400}>
               <FormLabel>Advance Salary</FormLabel>
               <Input name="advanceSalary" onChange={handleChange} />
             </FormControl>

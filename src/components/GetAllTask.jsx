@@ -18,6 +18,9 @@ import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
+import { toast } from "react-toastify";
+import { DeleteIcon } from "@chakra-ui/icons";
+
 
 const GetAllTask = () => {
   const [clients, setClients] = useState([]);
@@ -69,6 +72,23 @@ const GetAllTask = () => {
     );
   }
 
+  const handleDeleteTask = async (projectId) => {
+    try {
+      await axios.delete(
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteTaskById/${projectId}`
+      );
+      toast.success("Successfully deleted Task");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllTasks`
+      );
+      setClients(response.data);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
   return (
     <>
       <div className="w-full p-8">
@@ -85,11 +105,10 @@ const GetAllTask = () => {
         </Link>
 
         {clients.length === 0 && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
-            <span>
-              No Tasks Assigned
-            </span>
-          } />
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={<span>No Tasks Assigned</span>}
+          />
         )}
 
         <TableContainer
@@ -103,9 +122,15 @@ const GetAllTask = () => {
             <Tr>
               <Th fontWeight="bold">S. No.</Th>
               <Th fontWeight="bold">Brand Name</Th>
-              <Th fontWeight="bold" className="md:table-cell hidden">Priority</Th>
-              <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
-              <Th fontWeight="bold" className="md:table-cell hidden">Update Status</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">
+                Priority
+              </Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">
+                Status
+              </Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">
+                Update Status
+              </Th>
               <Th fontWeight="bold">Action</Th>
             </Tr>
           </Thead>
@@ -136,7 +161,11 @@ const GetAllTask = () => {
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
-                        <MenuButton size={"sm"} as={Button} colorScheme="purple">
+                        <MenuButton
+                          size={"sm"}
+                          as={Button}
+                          colorScheme="purple"
+                        >
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -173,11 +202,19 @@ const GetAllTask = () => {
                     </Td>
                     <Td>
                       <Button
-                      size={"sm"}
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >
                         More Info
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() => handleDeleteTask(client.task_id)}
+                      >
+                        <DeleteIcon />
                       </Button>
                     </Td>
                   </Tr>
@@ -207,7 +244,11 @@ const GetAllTask = () => {
                       {client.status === 2 && "Awaited Feedback"}
                       {client.status === 3 && "Completed"}
                       <Menu>
-                        <MenuButton size={"sm"} as={Button} colorScheme="purple">
+                        <MenuButton
+                          size={"sm"}
+                          as={Button}
+                          colorScheme="purple"
+                        >
                           Change Status
                         </MenuButton>
                         <MenuList>
@@ -244,11 +285,19 @@ const GetAllTask = () => {
                     </Td>
                     <Td>
                       <Button
-                      size={"sm"}
+                        size={"sm"}
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(client)}
                       >
                         More Info
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() => handleDeleteTask(client.task_id)}
+                      >
+                        <DeleteIcon />
                       </Button>
                     </Td>
                   </Tr>

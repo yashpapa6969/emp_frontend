@@ -16,6 +16,7 @@ import MyDatePicker from "../common/MyDatePicker";
 
 const Emp = () => {
   const [projectData, setProjectData] = useState({
+    type:"",
     name: "",
     gender: "",
     contactNo: "",
@@ -60,7 +61,9 @@ const Emp = () => {
   //   });
   // };
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
+<<<<<<< HEAD
     if (name.split(".")[0] === "bankDetails") {
       setProjectData({ ...projectData, "bankDetails": { ...projectData.bankDetails, [name.split(".")[1]]: value } })
     }
@@ -70,6 +73,13 @@ const Emp = () => {
     else {
       setProjectData({ ...projectData, [name]: value });
     }
+=======
+    
+    setProjectData({ ...projectData, [name]: value });
+  };
+  const handleSelectOption = (name, value) => {
+    setProjectData({ ...projectData, [name]: value });
+>>>>>>> 7cbddc4a3bf7ec74cc2dde9e4bb630f8b2db2995
   };
   const getTagNameById = (id) => {
     const tag = tags.find((tag) => tag.source_tag_id === id);
@@ -147,7 +157,7 @@ const Emp = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", 
           },
         }
       )
@@ -165,7 +175,6 @@ const Emp = () => {
       });
   };
   const handleSelectManager = (e) => {
-    // Update selected manager ID in projectData
     const selectedManagerId = e.target.value;
     setProjectData({ ...projectData, manager_id: selectedManagerId });
   };
@@ -184,39 +193,40 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-3">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
-                    name="title"
-                    onChange={handleChange}
                     placeholder="Select Title"
+                    onChange={(value) => handleSelectOption("title", value)}
                   >
-                    <option value="Mr.">Mr.</option>
-                    <option value="Mrs.">Mrs.</option>
+                    <Select.Option value="Mr.">Mr.</Select.Option>
+                    <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="employeeName" isRequired>
+
+                <FormControl id="employeeName">
                   <FormLabel>Employee Name</FormLabel>
-                  <Input name="name" onChange={handleChange} isRequired />
+                  <Input name="name" onChange={handleChange} />
                 </FormControl>
 
                 <FormControl id="gender" maxWidth={150}>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     name="gender"
-                    onChange={handleChange}
+                    onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
                   >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="contactNo" isRequired>
+
+                <FormControl id="contactNo">
                   <FormLabel>Contact Number</FormLabel>
-                  <Input name="contactNo" onChange={handleChange} isRequired />
+                  <Input name="contactNo" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="dob" maxWidth={150} isRequired>
+                <FormControl id="dob" maxWidth={150}>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -232,22 +242,30 @@ const Emp = () => {
               </div>
 
               <div className="flex gap-2 mb-2">
-                <FormControl id="position" isRequired>
+                <FormControl id="position" maxWidth={150}>
                   <FormLabel>Position</FormLabel>
-                  <Input name="position" onChange={handleChange} isRequired />
+                  <Select
+                    name="position"
+                    onChange={(value) => handleSelectOption("position", value)}
+                    placeholder="Select Position"
+                  >
+                    <Select.Option value="0">Superadmin</Select.Option>
+                    <Select.Option value="1">Admin</Select.Option>
+                    <Select.Option value="2">User</Select.Option>
+                    <Select.Option value="3">Manager</Select.Option>
+                  </Select>
                 </FormControl>
-                <FormControl id="designation" isRequired>
+                <FormControl id="designation">
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
                     onChange={handleChange}
-                    isRequired
                   />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="department" maxWidth={500} isRequired>
+                <FormControl id="department" maxWidth={500}>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
@@ -262,7 +280,7 @@ const Emp = () => {
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="joiningDate" maxWidth={300} isRequired>
+                <FormControl id="joiningDate" maxWidth={300}>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -289,6 +307,32 @@ const Emp = () => {
                     ))}
                   </select>
                 </FormControl>
+
+                <FormControl id="type">
+                  <FormLabel>Employment Type</FormLabel>
+                  <Select
+                    name="type"
+                    onChange={(value) => handleSelectOption("type", value)}
+                    placeholder="Select Type"
+                  >
+                    <Select.Option value="Full-Time">Full-Time</Select.Option>
+                    <Select.Option value="Part-Time">Part-Time</Select.Option>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="flex gap-3 mb-3">
+                <FormControl id="aadharNumber">
+                  <FormLabel>Aadhar Number</FormLabel>
+                  <Input name="aadharNumber" onChange={handleChange} />
+                </FormControl>
+                <FormControl id="panNumber">
+                  <FormLabel>Pan Number</FormLabel>
+                  <Input name="panNumber" onChange={handleChange} />
+                </FormControl>
+                <FormControl id="probationPeriod">
+                  <FormLabel>Probation Period</FormLabel>
+                  <Input name="probationPeriod" onChange={handleChange} />
+                </FormControl>
               </div>
             </TabPanel>
             <TabPanel>
@@ -314,14 +358,14 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="guardianDetails.guardianName" isRequired>
+                <FormControl id="guardianDetails.guardianName">
                   <FormLabel>Guardian Name</FormLabel>
                   <Input
                     name="guardianDetails.guardianName"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianContactNo" isRequired>
+                <FormControl id="guardianDetails.guardianContactNo">
                   <FormLabel>Guardian Contact Number</FormLabel>
                   <Input
                     name="guardianDetails.guardianContactNo"
@@ -333,11 +377,11 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="bankDetails.bankName" isRequired>
+                <FormControl id="bankDetails.bankName">
                   <FormLabel>Bank Name </FormLabel>
                   <Input name="bankDetails.bankName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="bankDetails.bankAccountNo" isRequired>
+                <FormControl id="bankDetails.bankAccountNo">
                   <FormLabel>Bank Account Number </FormLabel>
                   <Input
                     name="bankDetails.bankAccountNo"
@@ -376,39 +420,43 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
-                    name="title"
-                    onChange={handleChange}
                     placeholder="Select Title"
-                  >
-                    <option value="Mr.">Mr.</option>
-                    <option value="Mrs.">Mrs.</option>
-                  </Select>
+                    onChange={(value) => handleSelectOption("title", value)}
+                  ></Select>
+                  <Select.Option name="title" value="Mr.">
+                    Mr.
+                  </Select.Option>
+                  <Select.Option name="title" value="Mrs.">
+                    Mrs.
+                  </Select.Option>
                 </FormControl>
-                <FormControl id="employeeName" isRequired>
+
+                <FormControl id="employeeName">
                   <FormLabel>Employee Name</FormLabel>
-                  <Input name="name" onChange={handleChange} isRequired />
+                  <Input name="name" onChange={handleChange}  />
                 </FormControl>
 
                 <FormControl id="gender" maxWidth={150}>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     name="gender"
-                    onChange={handleChange}
+                    onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
                   >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="contactNo" isRequired>
+
+                <FormControl id="contactNo">
                   <FormLabel>Contact Number</FormLabel>
-                  <Input name="contactNo" onChange={handleChange} isRequired />
+                  <Input name="contactNo" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="dob" maxWidth={150} isRequired>
+                <FormControl id="dob" maxWidth={150}>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     selected={projectData.dob}
@@ -421,34 +469,21 @@ const Emp = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="gender">
-                  <FormLabel>Gender</FormLabel>
-                  <Select
-                    name="gender"
-                    onChange={handleChange}
-                    placeholder="Select gender"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
-                  </Select>
-                </FormControl>
-                <FormControl id="position" isRequired>
+                <FormControl id="position">
                   <FormLabel>Position</FormLabel>
-                  <Input name="position" onChange={handleChange} isRequired />
+                  <Input name="position" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="designation" isRequired>
+                <FormControl id="designation">
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
                     onChange={handleChange}
-                    isRequired
                   />
                 </FormControl>
               </div>
 
               <div className="flex flex-col gap-3">
-                <FormControl id="department" maxWidth={500} isRequired>
+                <FormControl id="department" maxWidth={500}>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
@@ -463,7 +498,7 @@ const Emp = () => {
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="joiningDate" maxWidth={300} isRequired>
+                <FormControl id="joiningDate" maxWidth={300}>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     selected={projectData.joiningDate}
@@ -508,25 +543,25 @@ const Emp = () => {
                     className="h-16"
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianName" isRequired>
+                <FormControl id="guardianDetails.guardianName">
                   <FormLabel>Guardian Name</FormLabel>
                   <Input
                     name="guardianDetails.guardianName"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="guardianDetails.guardianContactNo" isRequired>
+                <FormControl id="guardianDetails.guardianContactNo">
                   <FormLabel>Guardian Contact Number</FormLabel>
                   <Input
                     name="guardianDetails.guardianContactNo"
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="bankDetails.bankName" isRequired>
+                <FormControl id="bankDetails.bankName">
                   <FormLabel>Bank Name </FormLabel>
                   <Input name="bankDetails.bankName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="bankDetails.bankAccountNo" isRequired>
+                <FormControl id="bankDetails.bankAccountNo">
                   <FormLabel>Bank Account Number </FormLabel>
                   <Input
                     name="bankDetails.bankAccountNo"

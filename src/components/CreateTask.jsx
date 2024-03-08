@@ -11,6 +11,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import MyDatePicker from "./common/MyDatePicker";
+import { toast } from "react-toastify";
+
 
 const CreateTask = () => {
   const [brandNames, setBrandNames] = useState([]);
@@ -43,17 +45,20 @@ const CreateTask = () => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
 
-    // Fetch projects based on selected brand
-    axios
-      .get(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName/${selectedBrand}`
-      )
-      .then((response) => {
-        setProjects(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching projects:", error);
-      });
+   axios
+     .post(
+       `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
+       { brandName: selectedBrand }
+     )
+     .then((response) => {
+       setProjects(response.data);
+       
+     })
+     .catch((error) => {
+       console.error("Error fetching projects:", error);
+       toast.error(error.response.data.message);
+     });
+
   };
 
   const handleProjectChange = (event) => {
@@ -84,7 +89,6 @@ const CreateTask = () => {
       description: description,
       startDate: startDate,
       deadline: deadline,
-      status: status,
       priority: priority,
     };
     axios
@@ -149,7 +153,7 @@ const CreateTask = () => {
                 Select Project
               </option>
               {projects.map((project) => (
-                <option key={project._id} value={project.project_id}>
+                <option key={project.project_id} value={project.project_id}>
                   {project.projectName}
                 </option>
               ))}
@@ -166,8 +170,8 @@ const CreateTask = () => {
                 Select Employee
               </option>
               {employees.map((employeeId) => (
-                <option key={employeeId} value={employeeId}>
-                  {employeeId}
+                <option key={employeeId._id} value={employeeId._id}>
+                  {employeeId.name}
                 </option>
               ))}
             </Select>
@@ -182,33 +186,22 @@ const CreateTask = () => {
           />
         </FormControl>
 
-        <div className="flex gap-2 my-3">
+        <div className="flex gap-3 my-3">
           <FormControl>
             <FormLabel>Priority</FormLabel>
             <Select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
+              <option value="" disabled>
+                Select priority
+              </option>
+              <option value="2">High</option>
+              <option value="1">Medium</option>
+              <option value="0">Low</option>
             </Select>
           </FormControl>
-
-          <FormControl>
-            <FormLabel>Status</FormLabel>
-            <Select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="Not Started">Not Started</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="flex gap-2 my-3">
-          <FormControl maxWidth={150}>
+          <FormControl maxWidth={200}>
             <FormLabel>Start Date</FormLabel>
             <MyDatePicker
               className="mb-1"
@@ -221,7 +214,7 @@ const CreateTask = () => {
             {startDate?._d && <>{`${startDate?._d}`.slice(4, 16)}</>}
           </FormControl>
 
-          <FormControl>
+          <FormControl maxWidth={200}>
             <FormLabel>Deadline</FormLabel>
             <MyDatePicker
               className="mb-1"

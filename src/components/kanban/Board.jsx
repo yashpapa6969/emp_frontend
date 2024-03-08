@@ -176,7 +176,6 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
 };
 
 const Card = ({ card, column, handleDragStart }) => {
-    console.log(card)
     return (
         <div>
             <DropIndicator beforeId={card?._id} column={column} />

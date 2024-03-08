@@ -28,11 +28,12 @@ const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
-    title:"",
-    gender:"",
+    title: "",
+    gender: "",
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
+    sourceInformation:"",
     workStartDate: "",
     source: [],
     companyName: "",
@@ -62,7 +63,6 @@ const Client = () => {
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
-  
   };
   useEffect(() => {
     setProjectData((prev) => ({
@@ -71,7 +71,7 @@ const Client = () => {
       requirement: selectedTagValue,
     }));
   }, [selectSourceValue, selectedTagValue]);
-  
+
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -138,21 +138,21 @@ const Client = () => {
     const formData = new FormData();
 
     Object.entries(projectData).forEach(([key, value]) => {
-      if (key === "source" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+      if (key === "source" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      }
-      else if (key === "requirement" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
+      } else if (key === "requirement" && Array.isArray(value)) {
+        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      } else if (value !== "") { // For all other non-empty values
+      } else if (value !== "") {
+        // For all other non-empty values
         formData.append(key, value);
       }
     });
-    
-    
 
     axios
       .post(
@@ -204,8 +204,33 @@ const Client = () => {
 
           <TabPanels>
             <TabPanel>
+              <div className="flex gap-2">
+                <FormControl id="companyAnniversary" maxWidth={150}>
+                  <FormLabel>Work Start Date</FormLabel>
+                  <MyDatePicker
+                    selected={projectData.workStartDate}
+                    onChange={(date) =>
+                      setProjectData({ ...projectData, workStartDate: date })
+                    }
+                    format={"DD/MM/YYYY"}
+                  />
+                </FormControl>
+                <FormControl id="tags" maxWidth={150}>
+                  <FormLabel>Source</FormLabel>
+                  <Flex>
+                    <SelectSource
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
+                  </Flex>    
+                </FormControl>
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
+                </FormControl>
+              </div>
               <div className="flex gap-3 mb-2">
-                <FormControl id="title" maxWidth={130} isRequired>
+                <FormControl id="title" maxWidth={130} >
                   <FormLabel>Title</FormLabel>
                   <Select
                     placeholder="Select Title"
@@ -238,19 +263,6 @@ const Client = () => {
               </div>
 
               <div className="flex gap-3 my-3">
-                <FormControl id="tags">
-                  <FormControl id="companyName">
-                    <FormLabel>Company Name</FormLabel>
-                    <Input name="companyName" onChange={handleChange} />
-                  </FormControl>
-                  <FormLabel>Source</FormLabel>
-                  <Flex>
-                    <SelectSource
-                      selectSourceValue={selectSourceValue}
-                      setSelectSourceValue={setSelectSourceValue}
-                    />
-                  </Flex>
-                </FormControl>
                 <FormControl id="phone1">
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
@@ -258,6 +270,10 @@ const Client = () => {
                 <FormControl id="phone2">
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
+                </FormControl>
+                <FormControl id="website">
+                  <FormLabel>Website</FormLabel>
+                  <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
 
@@ -270,6 +286,7 @@ const Client = () => {
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
                 </FormControl>
+<<<<<<< HEAD
                 <FormControl id="website">
                   <FormLabel>Website</FormLabel>
                   <Input name="website" onChange={handleChange} />
@@ -289,6 +306,8 @@ const Client = () => {
                 <br />
                 {projectData?.workStartDate?._d && <>{`${projectData?.workStartDate?._d}`.slice(4, 16)}</>}
                 </FormControl>
+=======
+>>>>>>> 7cbddc4a3bf7ec74cc2dde9e4bb630f8b2db2995
               </div>
             </TabPanel>
             <TabPanel>
@@ -330,7 +349,7 @@ const Client = () => {
                 <Input
                   name="businessAddress"
                   onChange={handleChange}
-                  className="h-32"
+                  h="5rem"
                 />
               </FormControl>
             </TabPanel>
@@ -403,7 +422,7 @@ const Client = () => {
                   <Input
                     name="additionalInformation"
                     onChange={handleChange}
-                    className="h-16"
+                    h="5rem"
                   />
                 </FormControl>
               </div>

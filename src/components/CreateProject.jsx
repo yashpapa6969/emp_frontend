@@ -100,8 +100,6 @@ const CreateProject = () => {
 
     // Fetch tag names for selected tag IDs
     const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
-    console.log(selectedTagNames);
-
     // Update projectData with tag names
     setProjectData({
       ...projectData,
@@ -183,17 +181,16 @@ const CreateProject = () => {
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
             <div className="flex flex-col md:flex-row gap-4">
-              <FormControl id="projectName" isRequired>
+              <FormControl id="projectName">
                 <FormLabel>Project Name</FormLabel>
                 <Input name="projectName" onChange={handleChange} />
               </FormControl>
-              <FormControl id="client_id" isRequired>
+              <FormControl id="client_id">
                 <FormLabel>Brand Name</FormLabel>
                 <Select
                   onChange={handleClientChange}
                   size="md"
                   placeholder="Select Brand"
-                  isRequired
                 >
                   {clients.map((client) => (
                     <option key={client.client_id} value={client.client_id}>
@@ -202,7 +199,7 @@ const CreateProject = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl id="priority" isRequired>
+              <FormControl id="priority">
                 <FormLabel>Priority</FormLabel>
                 <Select
                   width={300}
@@ -215,37 +212,6 @@ const CreateProject = () => {
                   <option value="High">High</option>
                 </Select>
               </FormControl>
-              <FormControl id="tags" isRequired>
-                <FormLabel>Tags</FormLabel>
-                <SelectTag
-                  selectTagValue={selctedTagValue}
-                  setSelectTagValue={setSelctedTagValue}
-                />
-                {/* <Select
-                onChange={handleTagChange}
-                size="md"
-                placeholder="Select tags"
-                isRequired
-              >
-                {tags.map((tag) => (
-                  <option key={tag._id} value={tag.tag_id}>
-                    {tag.tagName}
-                  </option>
-                ))}
-              </Select> */}
-                {projectData.tags.map((tag) => (
-                  <Tag
-                    key={tag._id}
-                    size="md"
-                    borderRadius="full"
-                    variant="solid"
-                    colorScheme="blue"
-                  >
-                    <TagLabel>{tag}</TagLabel>
-                    <TagCloseButton onClick={() => removeTagById(tag)} />
-                  </Tag>
-                ))}
-              </FormControl>
             </div>
             {selectedClient && (
               <>
@@ -255,13 +221,9 @@ const CreateProject = () => {
                 </FormLabel>
               </>
             )}
-            <FormControl id="description" isRequired>
+            <FormControl id="description">
               <FormLabel>Description</FormLabel>
-              <Input
-                name="description"
-                onChange={handleChange}
-                className="h-40"
-              />
+              <Input name="description" onChange={handleChange} h="5rem" />
             </FormControl>
 
             <div className="flex gap-2">
@@ -275,10 +237,12 @@ const CreateProject = () => {
                   placeholderText="Pick Date"
                 />
                 <br />
-                {projectData?.startDate?._d && <>{`${projectData?.startDate?._d}`.slice(4, 16)}</>}
+                {projectData?.startDate?._d && (
+                  <>{`${projectData?.startDate?._d}`.slice(4, 16)}</>
+                )}
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>End Date</FormLabel>
+                <FormLabel>Deadline</FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.deadline}
@@ -287,16 +251,17 @@ const CreateProject = () => {
                   placeholderText="Pick Date"
                 />
                 <br />
-                {projectData?.deadline?._d && <>{`${projectData?.deadline?._d}`.slice(4, 16)}</>}
+                {projectData?.deadline?._d && (
+                  <>{`${projectData?.deadline?._d}`.slice(4, 16)}</>
+                )}
               </FormControl>
             </div>
-            <FormControl id="employees" isRequired>
+            <FormControl id="employees">
               <FormLabel>Employees</FormLabel>
               <Select
                 onChange={handleEmployeeChange}
                 size="md"
                 placeholder="Select employees"
-                isRequired
               >
                 {employees.map((employee) => (
                   <option key={employee._id} value={employee.employee_id}>
