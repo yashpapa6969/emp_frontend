@@ -128,6 +128,7 @@ const GetAllInvoices = () => {
           />
         ) : (
           <TableContainer
+            formFor="invoice"
             searchText={searchText}
             setSearchText={setSearchText}
             setFilteredData={setFilteredInvoices}
@@ -136,7 +137,7 @@ const GetAllInvoices = () => {
             <Thead bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">Product Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">
+                <Th fontWeight="bold">
                   Duration
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
