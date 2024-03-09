@@ -7,7 +7,6 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  // Select,
   Tag,
   TagLabel,
   TagCloseButton,

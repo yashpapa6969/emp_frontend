@@ -11,12 +11,14 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
-import { GoPlus } from "react-icons/go"; // Import GoTrashcan for delete icon
+import { GoPlus } from "react-icons/go"; 
 import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { setClientId } from "../store/slice/ClientSlice";
+import { useDispatch } from "react-redux";
 
 const CreateClientButton = () => {
   return (
@@ -40,6 +42,8 @@ const GetAllClient = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -86,6 +90,9 @@ const GetAllClient = () => {
       </div>
     );
   }
+   const handleUpdateClient = (clientId) => {
+     dispatch(setClientId(clientId));
+   };
 
   return (
     <>
@@ -149,6 +156,17 @@ const GetAllClient = () => {
                       >
                         <DeleteIcon />
                       </Button>
+                      <Link to="/UpdateClient">
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="blue"
+                          ml={2}
+                          onClick={() => handleUpdateClient(client.client_id)}
+                        >
+                          Update
+                        </Button>
+                      </Link>
                     </Td>
                   </Tr>
                 ))
@@ -178,6 +196,17 @@ const GetAllClient = () => {
                       >
                         <DeleteIcon />
                       </Button>
+                      <Link to="/UpdateClient">
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="blue"
+                          ml={2}
+                          onClick={() => handleUpdateClient(client.client_id)}
+                        >
+                          Update
+                        </Button>
+                      </Link>
                     </Td>
                   </Tr>
                 ))}
