@@ -12,7 +12,7 @@ interface Props {
     formFor?: string;
 }
 
-const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor }: Props) => {
+const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor, searchFor }: Props) => {
     const handleSearch = (e) => {
         setSearchText(e.target.value);
         if (searchText != '') {
@@ -31,6 +31,9 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 }
                 if (formFor === "slip") {
                     return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
+                }
+                if (formFor === "invoice") {
+                    // return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
                 }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));

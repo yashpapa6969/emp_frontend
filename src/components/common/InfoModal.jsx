@@ -39,6 +39,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       employeeIds.forEach((id) => {
         dispatch(addEmployeeId(id));
       });
+      const clientId = data.client_id;
+      dispatch(setClientId(clientId));
     }
     if (modalFor === "slip" && data?.employee_id) {
       const employeeId = data.employee_id;

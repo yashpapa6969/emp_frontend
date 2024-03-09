@@ -23,7 +23,7 @@ const TagRender = ({ label, closable, onClose }) => {
     );
 };
 
-const SelectSource = ({ selectSourceValue, setSelectSourceValue }) => {
+const SelectSource = ({ selectSourceValue, setSelectSourceValue, width }) => {
     const toast = useToast();
     const [items, setItems] = useState([]);
     const [name, setName] = useState('');
@@ -71,7 +71,7 @@ const SelectSource = ({ selectSourceValue, setSelectSourceValue }) => {
             mode="multiple"
             tagRender={TagRender}
             style={{
-                width: 300,
+                width: width ? width : 300,
             }}
             value={selectSourceValue}
             onChange={setSelectSourceValue}
