@@ -1,106 +1,100 @@
-import { Card } from '@chakra-ui/react';
-import { Badge, Calendar } from 'antd';
-
-const getListData = (value) => {
-    let listData;
-    switch (value.date()) {
-        case 8:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-            ];
-            break;
-        case 10:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event.',
-                },
-            ];
-            break;
-        case 15:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event',
-                },
-                {
-                    type: 'success',
-                    content: 'This is very long usual event......',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 1.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 2.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 3.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 4.',
-                },
-            ];
-            break;
-        default:
-    }
-    return listData || [];
-};
-const getMonthData = (value) => {
-    if (value.month() === 8) {
-        return 1394;
-    }
-};
+import { useEffect, useState } from "react";
+import { Card } from "@chakra-ui/react";
+import { Badge, Calendar } from "antd";
+import axios from "axios";
 
 const CalendarComponent = () => {
-    const monthCellRender = (value) => {
-        const num = getMonthData(value);
-        return num ? (
-            <div className="notes-month">
-                <section>{num}</section>
-                <span>Backlog number</span>
-            </div>
-        ) : null;
-    };
-    const dateCellRender = (value) => {
-        const listData = getListData(value);
-        return (
-            <ul className="events">
-                {listData.map((item) => (
-                    <li key={item.content}>
-                        <Badge status={item.type} text={item.content} />
-                    </li>
-                ))}
-            </ul>
+  const [specialDates, setSpecialDates] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE}/api/admin/specialDates`
         );
+        setSpecialDates(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
-    const cellRender = (current, info) => {
-        if (info.type === 'date') return dateCellRender(current);
-        if (info.type === 'month') return monthCellRender(current);
-        return info.originNode;
-    };
+
+    fetchData();
+  }, []);
+
+  const getListData = (value) => {
+    const today = new Date();
+    const formattedDate = value.format("DD-MM-YY");
+
+    // Check if the date is before today
+    if (value.isBefore(today, "day")) {
+      return [];
+    }
+
+    const events = specialDates.filter((date) => {
+      return (
+        date.clientBirthday === formattedDate ||
+        date.clientAnniversary === formattedDate ||
+        date.workStartDate === formattedDate ||
+        date.companyAnniversary === formattedDate
+      );
+    });
+
+    const listData = events.map((event) => {
+      let eventType = "";
+      if (event.clientBirthday === formattedDate) {
+        eventType = "Client Birthday";
+      } else if (event.clientAnniversary === formattedDate) {
+        eventType = "Client Anniversary";
+      } else if (event.workStartDate === formattedDate) {
+        eventType = "Work Start Date";
+      } else if (event.companyAnniversary === formattedDate) {
+        eventType = "Company Anniversary";
+      }
+      return {
+        type: "success",
+        client: `${event.clientName} `,
+        brand: `${event.brandName} `,
+        eventType: eventType,
+      };
+    });
+    return listData;
+  };
+
+  const dateCellRender = (value) => {
+    const listData = getListData(value);
     return (
-        <Card p={4}>
-            <Calendar cellRender={cellRender} />
-        </Card>
-    )
+      <ul className="events">
+        {listData.map((item, index) => (
+          <li key={index}>
+            <Badge
+              status={item.type}
+              text={
+                <>
+                  Client: {item.client}
+                  <br />
+                  Brand: {item.brand}
+                  <br />
+                  Event: {item.eventType}
+                </>
+              }
+            />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  const cellRender = (current, info) => {
+    if (info.type === "date") return dateCellRender(current);
+    // For month view, you can customize if needed
+    return info.originNode;
+  };
+
+  return (
+    <Card p={4}>
+      <Calendar cellRender={cellRender} />
+    </Card>
+  );
 };
+
 export default CalendarComponent;
