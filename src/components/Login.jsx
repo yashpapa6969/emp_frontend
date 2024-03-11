@@ -58,11 +58,11 @@ const Login = () => {
       } else if (error.request) {
         // The request was made but no response was received
         console.error("No response was received:", error.request);
-        toast.error("Cannot connect to the server. Please check your internet connection.");
+        toast.error(error.request);
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error("Error setting up the request:", error.message);
-        toast.error("An error occurred. Please try again later.");
+        toast.error(error.message);
       }
     }
   };
