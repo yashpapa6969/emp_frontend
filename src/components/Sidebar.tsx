@@ -28,7 +28,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
         <div
             onMouseEnter={() => setExpandNavbar(true)}
             onMouseLeave={() => setExpandNavbar(false)}
-            className={`md:h-screen h-full transition-all ${expandNavbar ? "w-[300px]" : ""} bg-[#1E293B] text-white md:sticky top-0`}>
+            className={`h-screen transition-all ${expandNavbar ? "w-[300px]" : ""} bg-[#1E293B] text-white sticky top-0`}>
             <Link to="/home" onClick={handleNavClose} className="w-full h-[70px] bg-[#172032] flex items-center gap-3 p-4 text-lg md:text-2xl">
                 <img src='/logo.png' alt='logo' className='h-6' /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>ADSVERSIFY</span>
             </Link>

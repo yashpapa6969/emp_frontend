@@ -53,7 +53,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
 
   return (
     <>
-      <div className="w-full h-[70px] bg-[#172032] flex items-center justify-between px-4">
+      <div className="w-full sticky top-0 z-50 md:relative h-[70px] bg-[#172032] flex items-center justify-between px-4">
         <div className="flex items-center gap-3">
           <div className="text-white cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}><RiMenu2Fill /></div>
           <Menu>
