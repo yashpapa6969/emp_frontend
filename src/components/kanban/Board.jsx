@@ -16,7 +16,7 @@ const Board = ({ data }) => {
     const [cards, setCards] = useState(data);
 
     return (
-        <div className="grid grid-cols-3 w-full gap-3 p-12">
+        <div className="grid grid-cols-3 w-full gap-3">
             {statusData.map((item) => (
                 <Column
                     key={`col-${item.column}`}
