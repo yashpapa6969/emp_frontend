@@ -240,6 +240,7 @@ const Lead = () => {
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -268,6 +269,7 @@ const Lead = () => {
                 <FormControl id="gender" maxWidth={180}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
@@ -503,6 +505,7 @@ const Lead = () => {
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -513,6 +516,7 @@ const Lead = () => {
                 <FormControl id="gender">
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"

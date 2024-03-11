@@ -178,9 +178,10 @@ const Emp = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-3 mb-3">
-                <FormControl id="title" maxWidth={130}>
+                <FormControl id="title" maxWidth={100}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -194,9 +195,10 @@ const Emp = () => {
                   <Input name="name" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="gender" maxWidth={150}>
+                <FormControl id="gender" maxWidth={100}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
@@ -230,6 +232,7 @@ const Emp = () => {
                 <FormControl id="position" maxWidth={150}>
                   <FormLabel>Position</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="position"
                     onChange={(value) => handleSelectOption("position", value)}
                     placeholder="Select Position"
@@ -293,9 +296,10 @@ const Emp = () => {
                   </select>
                 </FormControl>
 
-                <FormControl id="type">
+                <FormControl id="type" maxWidth={150}>
                   <FormLabel>Employment Type</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="type"
                     onChange={(value) => handleSelectOption("type", value)}
                     placeholder="Select Type"
@@ -427,6 +431,7 @@ const Emp = () => {
                 <FormControl id="gender" maxWidth={150}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
