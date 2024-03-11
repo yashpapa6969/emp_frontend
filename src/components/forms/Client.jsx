@@ -252,6 +252,7 @@ const Client = () => {
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -274,9 +275,10 @@ const Client = () => {
                 </FormControl>
               </div>
               <div className="flex">
-                <FormControl id="gender" maxWidth={150}>
+                <FormControl id="gender" mr={3} maxWidth={100}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
@@ -286,7 +288,7 @@ const Client = () => {
                     <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="tags" maxWidth={250}>
+                <FormControl id="tags" maxWidth={250} mr={3}>
                   <FormLabel>Source</FormLabel>
                   <Flex>
                     <SelectSource
@@ -546,9 +548,10 @@ const Client = () => {
                     <Input name="sourceInformation" onChange={handleChange} />
                   </FormControl>
                 </FormControl>
-                <FormControl id="gender" maxWidth={150}>
+                <FormControl id="gender" maxWidth={100} mr={3}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
