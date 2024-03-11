@@ -151,7 +151,7 @@ const Client = () => {
     });
     
     
-
+console.log(formData)
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
