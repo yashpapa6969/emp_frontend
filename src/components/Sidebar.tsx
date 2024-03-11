@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { IoMdHome, IoMdPerson } from 'react-icons/io';
 import { IoPeopleSharp } from "react-icons/io5";
@@ -17,47 +17,52 @@ interface Props {
 }
 
 const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Props) => {
+    const [expandNavbar, setExpandNavbar] = useState(false);
+
     const handleNavClose = () => {
         const windowWidth = window.innerWidth;
         if (windowWidth <= 640) setShowSidebar(false);
     }
 
     return (
-        <div className='md:h-screen h-full w-[300px] bg-[#1E293B] text-white md:sticky top-0'>
+        <div
+            onMouseEnter={() => setExpandNavbar(true)}
+            onMouseLeave={() => setExpandNavbar(false)}
+            className={`md:h-screen h-full transition-all ${expandNavbar ? "w-[300px]" : ""} bg-[#1E293B] text-white md:sticky top-0`}>
             <Link to="/home" onClick={handleNavClose} className="w-full h-[70px] bg-[#172032] flex items-center gap-3 p-4 text-lg md:text-2xl">
-                <img src='/logo.png' alt='logo' className='h-6' /> ADSVERSIFY
+                <img src='/logo.png' alt='logo' className='h-6' /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>ADSVERSIFY</span>
             </Link>
 
-            <Link to="/home" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' && 'bg-gray-500'}`}>
-                <IoMdHome size={20} /> Dashboard
+            <Link to="/home" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <IoMdHome size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Dashboard</span>
             </Link>
-            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' && 'bg-gray-500'}`}>
-                <RiDragDropFill size={20} /> Manage Leads
+            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <RiDragDropFill size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Manage Leads</span>
             </Link>
 
-            <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' && 'bg-gray-500'}`}>
-                <GoPersonFill /> Manager Management
+            <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <GoPersonFill />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Manager Management</span>
             </Link>
-            <Link to="/getAllInvoice" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllInvoice' && 'bg-gray-500'}`}>
-                <HiDocumentDuplicate /> Invoice Management
+            <Link to="/getAllInvoice" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllInvoice' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <HiDocumentDuplicate />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Invoice Management</span>
             </Link>
-            <Link to="/getAllEmp" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' && 'bg-gray-500'}`}>
-                <IoMdPerson size={20} /> Employee Management
+            <Link to="/getAllEmp" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <IoMdPerson size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Employee Management</span>
             </Link>
-            <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' && 'bg-gray-500'}`}>
-                <FaDiagramProject size={20} />Project Management
+            <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <FaDiagramProject size={20} /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>Project Management</span>
             </Link>
-            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' && 'bg-gray-500'}`}>
-                <IoPeopleSharp size={20} /> Client Management
+            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <IoPeopleSharp size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Client Management</span>
             </Link>
             {/* <Link to="/getAllLead" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} /> Lead Management
             </Link> */}
-            <Link to="/getAllTask" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' && 'bg-gray-500'}`}>
-                <GrTask size={20} /> Task Management
+            <Link to="/getAllTask" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllTask' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <GrTask size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Task Management</span>
             </Link>
-            <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' && 'bg-gray-500'}`}>
-                <LuNewspaper size={18} /> Slip Management
+            <Link to="/getAllSlip" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <LuNewspaper size={18} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Slip Management</span>
             </Link>
         </div >
     )

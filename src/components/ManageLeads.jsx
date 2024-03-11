@@ -47,7 +47,7 @@ const ManageLeads = () => {
 
   return (
     <div className="p-6">
-      <div className="flex gap-1 mb-3">
+      <div className="flex mb-3">
         <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
           Manage Leads
         </div>
@@ -55,8 +55,8 @@ const ManageLeads = () => {
           Lead Information
         </div>
         <Menu>
-          <MenuButton as={Button} colorScheme="purple" rightIcon={<ChevronDownIcon />}>
-            Actions
+          <MenuButton className="border-b-[3px] px-3 text-gray-500 hover:bg-gray-100">
+            Actions <ChevronDownIcon />
           </MenuButton>
           <MenuList>
             <MenuItem>Download</MenuItem>
