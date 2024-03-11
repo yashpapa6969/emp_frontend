@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Text, VStack, Button, Card,CardBody } from "@chakra-ui/react";
+import { Box, Card, CardBody, Divider, Text, VStack } from "@chakra-ui/react";
+import { RxCalendar } from "react-icons/rx";
 import axios from "axios";
 
 const UpcomingEventsCard = () => {
@@ -26,33 +27,27 @@ const UpcomingEventsCard = () => {
   };
 
   return (
-    <Card maxW="md" borderWidth="1px" borderRadius="lg" p="4">
+    <Card>
       <CardBody>
-        <Text fontSize="xl" fontWeight="bold" mb="4">
-          Upcoming Events
-        </Text>
-        <VStack spacing="4">
+        <div className="">
+          <h1 className="text-lg flex gap-2 items-center">
+            <RxCalendar size={24} color="#ccc" /> Upcoming Events
+          </h1>
+          <Divider my={6} />
           {clients.map((client) => (
-            <Box
+            <div
               key={client._id}
               onClick={() => handleClientSelect(client._id)}
-              cursor="pointer"
-              maxH="200px"
-              overflowY="auto"
+              className="cursor-pointer"
             >
-              <Text
-                fontSize="lg"
-                fontWeight="bold"
-                display="flex"
-                justifyContent="space-between"
-              >
-                <span style={{ alignSelf: "flex-start" }}>
+              <div className="text-blue-600 flex justify-between">
+                <span>
                   Client: {client.clientName}
                 </span>
-                <span style={{ alignSelf: "flex-end" }}>
-                   Brand: {client.brandName}
+                <span>
+                  Brand: {client.brandName}
                 </span>
-              </Text>
+              </div>
 
               {selectedClient === client._id && (
                 <VStack align="start" spacing="2">
@@ -63,9 +58,9 @@ const UpcomingEventsCard = () => {
                   ))}
                 </VStack>
               )}
-            </Box>
+            </div>
           ))}
-        </VStack>
+        </div>
       </CardBody>
     </Card>
   );

@@ -49,10 +49,10 @@ const ManageLeads = () => {
     <div className="p-6">
       <div className="flex mb-3">
         <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
-          Manage Leads
+          Pipeline View
         </div>
         <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "info" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("info")}>
-          Lead Information
+          Table View
         </div>
         <Menu>
           <MenuButton className="border-b-[3px] px-3 text-gray-500 hover:bg-gray-100">
