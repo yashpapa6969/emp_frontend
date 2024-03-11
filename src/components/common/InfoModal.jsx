@@ -142,13 +142,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{data.title} {data.name}</ModalHeader>
+          <ModalHeader>{data && (data.name)}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  <Divider type="vertical"/>
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions

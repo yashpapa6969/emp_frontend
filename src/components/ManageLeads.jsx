@@ -49,23 +49,12 @@ const ManageLeads = () => {
     <div className="p-6">
       <div className="flex gap-1 mb-3">
         <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
-          Manage Leads
+          Pipeline View
         </div>
         <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "info" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("info")}>
-          Lead Information
+          Table View
         </div>
-        <Menu>
-          <MenuButton as={Button} colorScheme="purple" rightIcon={<ChevronDownIcon />}>
-            Actions
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-            <MenuItem>Delete</MenuItem>
-            <MenuItem>Attend a Workshop</MenuItem>
-          </MenuList>
-        </Menu>
+       
       </div>
       {activeTab === "manage" &&
         <CustomKanban data={leads} />
