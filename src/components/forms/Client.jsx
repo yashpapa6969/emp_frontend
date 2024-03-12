@@ -196,7 +196,7 @@ const Client = () => {
             multipleFiles: [],
           });
           setTimeout(() => {
-            navigate("/home");
+            navigate("/getAllClient");
           }, 2000);
         } else {
            toast.success(response.data.message, {

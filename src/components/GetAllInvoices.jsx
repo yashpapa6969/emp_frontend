@@ -90,32 +90,36 @@ const GetAllInvoices = () => {
         <div className="flex items-center mb-2">
           <select
             className="p-2 border rounded-md mr-2"
+            value={selectedYear || ""}
             onChange={(e) => setSelectedYear(e.target.value)}
           >
             <option value="" disabled>
-              Select Year
+              Select Financial Year
             </option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2020">2019</option>
-            <option value="2019">2018</option>
-            <option value="2018">2017</option>
-            <option value="2017">2016</option>
-            <option value="2015">2015</option>
-            <option value="2014">2014</option>
-            <option value="2013">2013</option>
-            <option value="2012">2012</option>
-            <option value="2011">2011</option>
+            <option value="2024">2024-2025</option>
+            <option value="2023">2023-2024</option>
+            <option value="2022">2022-2023</option>
+            <option value="2021">2021-2022</option>
+            <option value="2020">2020-2021</option>
+            <option value="2020">2019-2020</option>
+            <option value="2019">2018-2019</option>
+            <option value="2018">2017-2018</option>
+            <option value="2017">2016-2017</option>
+            <option value="2015">2015-2016</option>
+            <option value="2014">2014-2015</option>
+            <option value="2013">2013-2014</option>
+            <option value="2012">2012-2013</option>
+            <option value="2011">2011-2012</option>
           </select>
           {selectedYear && (
             <select
               className="p-2 border rounded-md"
+              defaultValue=""
               onChange={(e) => setSelectedMonth(e.target.value)}
             >
-              <option value="" disabled>Select Month</option>
+              <option value="" disabled>
+                Select Month
+              </option>
               <option value="1">January</option>
               <option value="2">February</option>
               <option value="3">March</option>

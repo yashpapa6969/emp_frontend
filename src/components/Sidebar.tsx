@@ -47,7 +47,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                 <HiDocumentDuplicate />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Invoice Management</span>
             </Link>
             <Link to="/getAllEmp" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <IoMdPerson size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Employee Management</span>
+                <IoMdPerson size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>HR Management</span>
             </Link>
             <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <FaDiagramProject size={20} /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>Project Management</span>

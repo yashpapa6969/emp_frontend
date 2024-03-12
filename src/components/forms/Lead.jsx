@@ -191,7 +191,7 @@ const Lead = () => {
               multipleFiles: [],
             });
             setTimeout(() => {
-              navigate("/home");
+              navigate("/manageLeads");
             }, 2000);
         } else {
          
