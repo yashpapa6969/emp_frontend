@@ -142,7 +142,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{data && (data.name)}</ModalHeader>
+          <ModalHeader>{data?.title} {data?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (

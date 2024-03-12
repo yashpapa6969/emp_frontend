@@ -32,13 +32,13 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 if (formFor === "slip") {
                     return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
                 }
-                if (formFor === "invoice") {
-                    const res = elem.services.map((item: any) => {
-                        console.log(item.product.toLowerCase().includes(searchText.toLowerCase()));
-                        return item.product.toLowerCase().includes(searchText.toLowerCase());
-                    })
-                    return res;
-                }
+                // if (formFor === "invoice") {
+                //     const res = elem.services.map((item: any) => {
+                //         console.log(item.product.toLowerCase().includes(searchText.toLowerCase()));
+                //         return item.product.toLowerCase().includes(searchText.toLowerCase());
+                //     })
+                //     return res;
+                // }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
         }
@@ -47,8 +47,10 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
     return (
         <>
             <Flex justifyContent={"end"} alignItems={"center"} gap={3} mb={6}>
-                <SearchIcon fontSize={20} color={"#cecece"} />
+                {formFor != "invoice" && (<>
+                <SearchIcon fontSize={20} color={"#cecece"} /> 
                 <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
+                </>)}
             </Flex>
 
             <Table width="100%">
