@@ -36,9 +36,6 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/home" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <IoMdHome size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Dashboard</span>
             </Link>
-            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <RiDragDropFill size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Manage Leads</span>
-            </Link>
 
             <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <GoPersonFill />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Manager Management</span>
@@ -54,6 +51,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             </Link>
             <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <IoPeopleSharp size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Client Management</span>
+            </Link>
+            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <RiDragDropFill size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Leads Management</span>
             </Link>
             {/* <Link to="/getAllLead" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} /> Lead Management

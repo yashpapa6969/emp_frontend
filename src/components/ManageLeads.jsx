@@ -1,21 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CustomKanban } from "./kanban/Board";
-import { Divider, Menu, MenuButton, MenuItem, MenuList, Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import {
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Button,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import { Tabs } from "antd";
 import GetAllLead from "./GetAllLead";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const ManageLeads = () => {
   const [leads, setLeads] = useState([]);
@@ -47,14 +39,25 @@ const ManageLeads = () => {
 
   return (
     <div className="p-6">
-      <div className="flex mb-3">
-        <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
-          Pipeline View
+      <div className="w-full flex justify-between mb-6">
+        <Link to="/CreateLead">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Lead
+          </Button>
+        </Link>
+        <div className="flex justify-end mb-3">
+          <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
+            Pipeline View
+          </div>
+          <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "info" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("info")}>
+            Table View
+          </div>
         </div>
-        <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "info" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("info")}>
-          Table View
-        </div>
-       
       </div>
       {activeTab === "manage" &&
         <CustomKanban data={leads} />

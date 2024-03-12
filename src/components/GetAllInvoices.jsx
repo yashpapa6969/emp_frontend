@@ -158,7 +158,7 @@ const GetAllInvoices = () => {
                 setFilteredData={setFilteredInvoices}
                 data={invoices}
               >
-                <Thead bg={"#F1F5F9"}>
+                <Thead position="sticky" top={0} zIndex={50} bg={"#F1F5F9"}>
                   <Tr>
                     <Th fontWeight="bold">Product Name</Th>
                     <Th fontWeight="bold">Duration</Th>
