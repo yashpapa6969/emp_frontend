@@ -1,96 +1,125 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { login, selectIsLoggedIn } from '../store/slice/authSlice';
-import { selectUser, setUser } from '../store/slice/UserSlice';
-// Import navigation hook from React Navigation if using React Navigation for navigation in React Native
-import { useNavigation } from '@react-navigation/native';
-// Assume toast library suitable for React Native is installed, for example react-native-toast-message
-import Toast from 'react-native-toast-message';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Text,
+} from "@chakra-ui/react";
+
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { login, selectIsLoggedIn } from "../store/slice/authSlice";
+import { selectUser } from "../store/slice/UserSlice";
+import { setUser } from "../store/slice/UserSlice";
+import { ToastContainer, toast } from "react-toastify";
+import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
-  // Use React Navigation's hook for navigation
-  const navigation = useNavigation();
+  const navigate = useNavigate();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   useEffect(() => {
-    if (user && isLoggedIn) {
-      // Navigate using React Navigation
-      navigation.navigate('Home');
+    if (user && isLoggedIn === true) {
+      navigate("/home");
     }
-  }, [isLoggedIn, navigation, user]);
-
-  const handleSubmit = async () => {
+  }, [isLoggedIn]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post(`http://185.199.53.202:3000/api/admin/loginEmployee`, { email, password });
+      const response = await axios.post(
+        `https://w5dfhwejp7.execute-api.ap-south-1.amazonaws.com/api/admin/loginEmployee`,
+        { email, password }
+      );
+      console.log(response)
+
+      // Check for a successful response (status code 200)
       if (response.status === 200) {
         dispatch(login());
         dispatch(setUser(response.data.employee));
-        Toast.show({ type: 'success', text1: response.data.message });
-        navigation.navigate('Home');
+        toast.success(response.data.message);
+        navigate("/home");
       } else {
-        console.error('Unexpected status code:', response.status);
-        Toast.show({ type: 'error', text1: 'An unexpected error occurred. Please try again later.' });
+        // Handle unexpected status codes as a generic error
+        console.error("Unexpected status code:", response.status);
+        toast.error("An unexpected error occurred. Please try again later.");
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      Toast.show({ type: 'error', text1: 'An error occurred. Please try again later.' });
+      console.error("Error logging in:", error);
+
+      // Check if the error response exists and has a message
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response was received:", error.request);
+        toast.error(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        toast.error(error.message);
+      }
     }
   };
 
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Employee Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email address"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      {error !== '' && <Text style={styles.errorText}>{error}</Text>}
-      <Button title="Login" onPress={handleSubmit} />
-      <Toast ref={(ref) => Toast.setRef(ref)} />
-    </View>
+    <>
+      <ToastContainer position="top-center" autoClose={3000} />
+      <Box
+        maxW="md"
+        mx="auto"
+        mt={20}
+        p={6}
+        borderWidth="1px"
+        borderRadius="lg"
+      >
+        <Text
+          color="black"
+          fontSize="5xl"
+          fontWeight="extrabold"
+          textAlign="center"
+          mb={4}
+        >
+          Employee Login
+        </Text>
+        <form onSubmit={handleSubmit}>
+          <FormControl id="email" isRequired>
+            <FormLabel>Email address</FormLabel>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="password" mt={4} isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
+          {error && (
+            <Box color="red.500" mt={2}>
+              {error}
+            </Box>
+          )}
+          <Button type="submit" colorScheme="purple" mt={4} w="100%">
+            Login
+          </Button>
+        </form>
+      </Box>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    marginVertical: 10,
-    padding: 15,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-  },
-  errorText: {
-    color: 'red',
-  },
-});
-
 export default Login;
+
