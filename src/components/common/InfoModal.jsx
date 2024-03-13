@@ -461,6 +461,52 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                       </>
                     )}
                   </div>
+
+                )}
+                {data.singleFile ? (
+                  <div>
+                    <Text fontWeight="bold">File Provided: </Text>
+                    <Button
+                      as="a"
+                      href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      textDecoration="none"
+                      _hover={{ textDecoration: "none" }}
+                      display="inline-block"
+                      variant="solid"
+                    >
+                      View File
+                    </Button>
+                  </div>
+                ) : data.multipleFiles && data.multipleFiles.length > 0 ? (
+                  <div>
+                    <Text fontWeight="bold">Files Provided: </Text>
+                    {data.multipleFiles.map((file, index) => (
+                      <div key={index}>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          display="inline-block"
+                          mr={2}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View File {index + 1}
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <Text fontWeight="bold">No files provided</Text>
+                )}
+
+              </div>
+
                   <div className="max-w-[200px] md:max-w-[300px]">
                     <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
                     {data.requirement && (
@@ -513,6 +559,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   <Text className="text-lg">{data.additionalInformation}</Text>
                 </div>
               </>
+
             )}
           </ModalBody>
           <ModalFooter>

@@ -35,29 +35,38 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE}/api/admin/loginEmployee`,
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
+  
+      // Check for a successful response (status code 200)
       if (response.status === 200) {
         dispatch(login());
         dispatch(setUser(response.data.employee));
         toast.success(response.data.message);
         navigate("/home");
       } else {
-        toast.error(error.response.data.message);
-        setError("Invalid credentials");
+        // Handle unexpected status codes as a generic error
+        console.error("Unexpected status code:", response.status);
+        toast.error("An unexpected error occurred. Please try again later.");
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      if (error.response) {
+  
+      // Check if the error response exists and has a message
+      if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response was received:", error.request);
+        toast.error(error.request);
       } else {
-        setError("An error occurred. Please try again later.");
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+        toast.error(error.message);
       }
     }
   };
+  
 
   return (
     <>

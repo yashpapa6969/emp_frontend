@@ -29,7 +29,7 @@ const UpdateClient = () => {
   const singleFileRef = useRef();
   const clientId = useSelector(selectClientId);
   const dispatch = useDispatch();
-  const [client,setClient]=useState("");
+  const [client, setClient] = useState("");
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
     title: "",
@@ -56,59 +56,64 @@ const UpdateClient = () => {
     additionalInformation: "",
     singleFile: null,
     multipleFiles: [],
+    singleFileView: null,
+    multipleFilesView: [],
+    singleFileToRemove: null,
+    multipleFilesToRemove: []
   });
   useEffect(() => {
     axios
       .get(
-        `${
-          import.meta.env.VITE_API_BASE
+        `${import.meta.env.VITE_API_BASE
         }/api/admin/getClientDetails/${clientId}`
       )
       .then((response) => {
         const clientData = response.data;
         setClient(response.data);
-       setProjectData((prev) => ({
-         ...prev,
-         // Populate projectData with fetched client details
-         enquiryDate: clientData?.enquiryDate
-           ? new Date(clientData.enquiryDate)
-           : prev.enquiryDate,
-         title: clientData?.title || prev.title,
-         gender: clientData?.gender || prev.gender,
-         clientBirthday: clientData?.clientBirthday || prev.clientBirthday,
-         clientAnniversary:
-           clientData?.clientAnniversary || prev.clientAnniversary,
-         companyAnniversary:
-           clientData?.companyAnniversary || prev.companyAnniversary,
-         workStartDate: clientData?.workStartDate || prev.workStartDate,
-         source: clientData?.source || prev.source,
-         companyName: clientData?.companyName || prev.companyName,
-         clientName: clientData?.clientName || prev.clientName,
-         brandName: clientData?.brandName || prev.brandName,
-         phone1: clientData?.phone1 || prev.phone1,
-         phone2: clientData?.phone2 || prev.phone2,
-         email1: clientData?.email1 || prev.email1,
-         email2: clientData?.email2 || prev.email2,
-         website: clientData?.website || prev.website,
-         businessAddress: clientData?.businessAddress || prev.businessAddress,
-         city: clientData?.city || prev.city,
-         state: clientData?.state || prev.state,
-         pincode: clientData?.pincode || prev.pincode,
-         country: clientData?.country || prev.country,
-         requirement: clientData?.requirement || prev.requirement,
-         additionalInformation:
-           clientData?.additionalInformation || prev.additionalInformation,
-         singleFile: null,
-         multipleFiles: [],
-       }));
+        setProjectData((prev) => ({
+          ...prev,
+          // Populate projectData with fetched client details
+          enquiryDate: clientData?.enquiryDate
+            ? new Date(clientData.enquiryDate)
+            : prev.enquiryDate,
+          title: clientData?.title || prev.title,
+          gender: clientData?.gender || prev.gender,
+          clientBirthday: clientData?.clientBirthday || prev.clientBirthday,
+          clientAnniversary:
+            clientData?.clientAnniversary || prev.clientAnniversary,
+          companyAnniversary:
+            clientData?.companyAnniversary || prev.companyAnniversary,
+          workStartDate: clientData?.workStartDate || prev.workStartDate,
+          source: clientData?.source || prev.source,
+          companyName: clientData?.companyName || prev.companyName,
+          clientName: clientData?.clientName || prev.clientName,
+          brandName: clientData?.brandName || prev.brandName,
+          phone1: clientData?.phone1 || prev.phone1,
+          phone2: clientData?.phone2 || prev.phone2,
+          email1: clientData?.email1 || prev.email1,
+          email2: clientData?.email2 || prev.email2,
+          website: clientData?.website || prev.website,
+          businessAddress: clientData?.businessAddress || prev.businessAddress,
+          city: clientData?.city || prev.city,
+          state: clientData?.state || prev.state,
+          pincode: clientData?.pincode || prev.pincode,
+          country: clientData?.country || prev.country,
+          requirement: clientData?.requirement || prev.requirement,
+          additionalInformation:
+            clientData?.additionalInformation || prev.additionalInformation,
+          singleFileView: clientData?.singleFile || prev.singleFileView,
+          multipleFilesView: clientData?.multipleFiles || prev.multipleFilesView,
+          singleFile: null,
+          multipleFiles: [],
+        }));
 
         setSelectedCountry(clientData.country);
         setSelectedState(clientData.state);
         setSelectSourceValue(clientData.source);
         setSelectedTagValue(clientData.requirement);
-         
+
       })
-     
+
       .catch((error) => {
         console.error("Error fetching client details:", error);
         toast.error("Failed to fetch client details");
@@ -126,13 +131,13 @@ const UpdateClient = () => {
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
   };
- useEffect(() => {
-   setProjectData((prev) => ({
-     ...prev,
-     source: selectSourceValue,
-     requirement: selectedTagValue,
-   }));
- }, [selectSourceValue, selectedTagValue]);
+  useEffect(() => {
+    setProjectData((prev) => ({
+      ...prev,
+      source: selectSourceValue,
+      requirement: selectedTagValue,
+    }));
+  }, [selectSourceValue, selectedTagValue]);
 
 
   const removeTagById = (tagToRemove) => {
@@ -166,10 +171,10 @@ const UpdateClient = () => {
       source: [...projectData.source, ...selectedTagNames],
     });
   };
- const handleSelectChange = (setSelected, name) => (value) => {
-   setSelected(value);
-   setProjectData({ ...projectData, [name]: value });
- };
+  const handleSelectChange = (setSelected, name) => (value) => {
+    setSelected(value);
+    setProjectData({ ...projectData, [name]: value });
+  };
 
   const handleSingleFileChange = (e) => {
     setProjectData({ ...projectData, singleFile: e.target.files[0] });
@@ -177,6 +182,7 @@ const UpdateClient = () => {
 
   const handleMultipleFilesChange = (e) => {
     const files = Array.from(e.target.files);
+    console.log(files);
     setProjectData({
       ...projectData,
       multipleFiles: [...projectData.multipleFiles, ...files],
@@ -189,6 +195,15 @@ const UpdateClient = () => {
     setProjectData({ ...newData });
   };
 
+  const handleAddSingleFileToRemove = (filename) => {
+    projectData.singleFileToRemove = filename;
+    setProjectData({ ...projectData });
+  }
+  const handleAddMultipleFilesToRemove = (filename) => {
+    projectData.multipleFilesToRemove = [...projectData.multipleFilesToRemove, filename];
+    console.log(projectData.multipleFilesToRemove)
+    setProjectData({ ...projectData });
+  }
   const handleDeleteMultipleFile = (index) => {
     const updatedFiles = [...projectData.multipleFiles];
     updatedFiles.splice(index, 1);
@@ -197,15 +212,25 @@ const UpdateClient = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    delete projectData.singleFileView;
+    delete projectData.multipleFilesView;
     const formData = new FormData();
-
     Object.entries(projectData).forEach(([key, value]) => {
       if (key === "source" && Array.isArray(value)) {
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      } else if (key === "requirement" && Array.isArray(value)) {
+      } else if (key === "multipleFiles" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append('multipleFiles', value[i]);
+        }
+      } else if (key === "multipleFilesToRemove" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append('multipleFilesToRemove', value[i]);
+        }
+      }
+
+      else if (key === "requirement" && Array.isArray(value)) {
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
@@ -213,9 +238,8 @@ const UpdateClient = () => {
         formData.append(key, value);
       }
     });
-
     axios
-      .put(
+      .patch(
         `${import.meta.env.VITE_API_BASE}/api/admin/updateClient/${clientId}`,
         formData,
         {
@@ -525,46 +549,85 @@ const UpdateClient = () => {
                   </div>
                 </TabPanel>
                 <TabPanel>
-                  <div className="flex gap-3">
-                    {projectData.singleFile && (
-                      <div>
-                        <p>Single File: {projectData.singleFile.name}</p>
-                        <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                  <div>
+                    <div>
+                      <h2>Existing Files</h2>
+                      <div className="flex gap-3">
+                        {/* Display single file */}
+                        {projectData.singleFileView && (
+                          <div>
+                            <div className="flex gap-1">
+                              <p>
+                                File : {projectData.singleFileView}
+                              </p>
+                              <Button as="a"
+                                href={`${import.meta.env.VITE_API_BASE}/uploads/${projectData.singleFileView}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "none" }}
+                                display="inline-block"
+                                variant="solid">View</Button>
+                              <Button onClick={() => {
+                                handleAddSingleFileToRemove(projectData.singleFileView);
+                              }}>Delete</Button>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    <FormControl mb="4">
-                      <FormLabel>Single File</FormLabel>
-                      <Input
-                        type="file"
-                        ref={singleFileRef}
-                        onChange={handleSingleFileChange}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="flex gap-3">
-                    {/* Display multiple files */}
-                    {projectData.multipleFiles.map((file, index) => (
-                      <div key={index}>
-                        <p>
-                          File {index + 1}: {file.name}
-                        </p>
-                        <Button onClick={() => handleDeleteMultipleFile(index)}>
-                          Delete
-                        </Button>
+                      <div className="flex gap-3">
+                        {/* Display multiple files */}
+                        {projectData.multipleFilesView.map((file, index) => (
+                          <div key={index}>
+                            <p>
+                              File {index + 1}: {file}
+                            </p>
+                            <div className="flex gap-1">
+                              <Button as="a"
+                                href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "none" }}
+                                display="inline-block"
+                                mr={2}
+                                mb={2}
+                                variant="solid">View</Button>
+                              <Button onClick={() => {
+                                handleAddMultipleFilesToRemove(file);
+                              }}>Delete</Button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                    <FormControl mb="4">
-                      <FormLabel>Multiple Files</FormLabel>
-                      <Input
-                        type="file"
-                        multiple
-                        onChange={handleMultipleFilesChange}
-                      />
-                    </FormControl>
+                    </div>
+                    <div>
+                      <h2>New Files</h2>
+                      <div className="flex gap-3">
+                        <FormControl mb="4">
+                          <FormLabel>Single File</FormLabel>
+                          <Input
+                            type="file"
+                            ref={singleFileRef}
+                            onChange={handleSingleFileChange}
+                          />
+                        </FormControl>
+                      </div>
+                      <div className="flex gap-3">
+                        <FormControl mb="4">
+                          <FormLabel>Multiple Files</FormLabel>
+                          <Input
+                            type="file"
+                            multiple
+                            onChange={handleMultipleFilesChange}
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
+                    <Button type="submit" colorScheme="purple" className="mt-5">
+                      Create Client
+                    </Button>
                   </div>
-                  <Button type="submit" colorScheme="purple" className="mt-5">
-                    Create Client
-                  </Button>
                 </TabPanel>
               </TabPanels>
             </Tabs>
