@@ -19,7 +19,7 @@ import { addEmployeeId } from "../../store/slice/EmployeeSlice";
 import { setClientId } from "../../store/slice/ClientSlice";
 import { setProjectId } from "../../store/slice/ProjectSlice";
 import { useEffect } from "react";
-import { Divider } from "antd";
+import { Divider, Tag } from "antd";
 import { CheckCircleIcon, ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
@@ -142,146 +142,180 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Employee Information</ModalHeader>
+          <ModalHeader>{data?.title} {data?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div>
-                <Text>
-                  <b>Id: </b> {data.manager_id}
-                </Text>
-                {data.probationPeriod && (
-                  <Text>
-                    <b>Probation period: </b> {data.probationPeriod}
-                  </Text>
-                )}
-                {data.leavingDate && (
-                  <Text>
-                    <b>Leaving date: </b> {data.leavingDate}
-                  </Text>
-                )}
-                <h1 className="mt-3 text-xl font-semibold mb-2 text-gray-500">
-                  Personal Information
-                </h1>
-                <div className="flex flex-col md:flex-row justify-between">
-                  <Text>
-                    <b>Name: </b> {data.title} {data.name}
-                  </Text>
-                  {data.gender && (
-                    <Text>
-                      <b>Gender: </b> {data.gender}
-                    </Text>
-                  )}
-                  {data.dob && (
-                    <Text>
-                      <b>DOB: </b> {data.dob}
-                    </Text>
-                  )}
-                  {data.joiningDate && (
-                    <Text>
-                      <b>Joining date: </b> {data.joiningDate}
-                    </Text>
-                  )}
-                  {data.type && (
-                    <Text>
-                      <b>Type: </b> {data.type}
-                    </Text>
-                  )}
+              <>
+                <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
+                  <Divider type="vertical"/>
+                  <Menu>
+                    <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
+                      Actions
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleTaskDelete()}>
+                          <DeleteIcon mr={2} /> Delete
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleChangeTaskStatus()}>
+                          <CheckCircleIcon mr={2} /> Change Status
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
-                <div className="flex flex-col md:flex-row md:gap-[100px]">
-                  {data.aadharNumber && (
-                    <Text>
-                      <b>Aadhar no.: </b> {data.aadharNumber}
-                    </Text>
-                  )}
-                  {data.panNumber && (
-                    <Text>
-                      <b>Pan no.: </b> {data.panNumber}{console.log(data)}
-                    </Text>
-                  )}
-
+                <Divider />
+                <div className="flex gap-10">
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Employee Information</h1>
+                    {data.name && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
+                        <Text className="text-lg capitalize">{data.name}</Text>
+                      </>
+                    )}
+                    {data.gender && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Gender </Text>
+                        <Text className="text-lg capitalize">{data.gender}</Text>
+                      </>
+                    )}
+                    {data.dob && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">DOB </Text>
+                        <Text className="text-lg capitalize">{data.dob}</Text>
+                      </>
+                    )}
+                    {data.joiningDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Joining Date </Text>
+                        <Text className="text-lg capitalize">{data.joiningDate}</Text>
+                      </>
+                    )}
+                    {data.probationPeriod && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Probation Period </Text>
+                        <Text className="text-lg capitalize">{data.probationPeriod}</Text>
+                      </>
+                    )}
+                    {data.leavingDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Leaving Date </Text>
+                        <Text className="text-lg capitalize">{data.leavingDate}</Text>
+                      </>
+                    )}
+                  </div>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Position Information</h1>
+                    {data.position && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Position </Text>
+                        <Text className="text-lg capitalize">{data.position}</Text>
+                      </>
+                    )}
+                    {data.type && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Type </Text>
+                        <Text className="text-lg capitalize">{data.type}</Text>
+                      </>
+                    )}
+                    {data.designation && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Designation </Text>
+                        <Text className="text-lg capitalize">{data.designation}</Text>
+                      </>
+                    )}
+                    {data.department && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Department </Text>
+                        <Text className="text-lg capitalize">{data.department}</Text>
+                      </>
+                    )}
+                  </div>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Contact Information</h1>
+                    {data.email && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Email </Text>
+                        <Text className="text-lg">{data.email}</Text>
+                      </>
+                    )}
+                    {data.contactNo && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Contact </Text>
+                        <Text className="text-lg">{data.contactNo}</Text>
+                      </>
+                    )}
+                    {data.permanentAddress && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Permanent Address </Text>
+                        <Text className="text-lg">{data.permanentAddress}</Text>
+                      </>
+                    )}
+                    {data.correspondenceAddress && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Correspondance Address </Text>
+                        <Text className="text-lg">{data.correspondenceAddress}</Text>
+                      </>
+                    )}
+                  </div>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
+                    {data.requirement && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Requirements </Text>
+                        <Text className="text-lg capitalize">{data.requirement}</Text>
+                      </>
+                    )}
+                    {data.aadharNumber && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Aadhar </Text>
+                        <Text className="text-lg capitalize">{data.aadharNumber}</Text>
+                      </>
+                    )}
+                    {data.panNumber && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">PAN </Text>
+                        <Text className="text-lg capitalize">{data.panNumber}</Text>
+                      </>
+                    )}
+                    {data.bankDetails && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Bank Details </Text>
+                        <Text className="text-lg capitalize">Name: {data.bankDetails.bankName}</Text>
+                        <Text className="text-lg capitalize">Acc no: {data.bankDetails.bankAccountNo}</Text>
+                        <Text className="text-lg capitalize">IFSC: {data.bankDetails.bankIfscCode}</Text>
+                        <Text className="text-lg capitalize">Type: {data.bankDetails.type}</Text>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <Text fontWeight="bold">Guardian details: </Text>
-                {data?.guardianDetails &&
-                  data.guardianDetails.map &&
-                  data.guardianDetails.map((item, index) => (
-                    <div key={index}>
-                      {item.guardianName && (
-                        <Text>Name: {item.guardianName}</Text>
-                      )}
-                      {item.guardianContactNo && (
-                        <Text>Contact: {item.guardianContactNo}</Text>
-                      )}
-                    </div>
-                  ))}
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
-                  Position details
-                </h1>
-                <div className="flex max-w-[700px] flex-col md:flex-row justify-between">
-                  {data.position && (
-                    <Text>
-                      <b>Position: </b> {data.position}
-                    </Text>
-                  )}
-                  {data.designation && (
-                    <Text>
-                      <b>Designation: </b> {data.designation}
-                    </Text>
-                  )}
-                  {data.department && (
-                    <Text>
-                      <b>Department: </b> {data.department}
-                    </Text>
-                  )}
+                <div className="w-full mt-4">
+                  <Text className="text-md font-bold text-gray-500 mt-2">Additional Information: </Text>
+                  <div className="w-full flex gap-2 mt-2">
+                    <Text className="text-lg font-bold">Permissions</Text>
+                    {data?.permissions?.map((item) => (<Tag key={item} className="text-lg">{item}</Tag>))}
+                  </div>
+                  <div className="w-full flex gap-2 mt-2">
+                    <Text className="text-lg font-bold">Guardian Details</Text>
+                    {data?.guardianDetails &&
+                      data.guardianDetails.map &&
+                      data.guardianDetails.map((item, index) => (
+                        <div key={index}>
+                          {item.guardianName && (
+                            <Text>Name: {item.guardianName}</Text>
+                          )}
+                          {item.guardianContactNo && (
+                            <Text>Contact: {item.guardianContactNo}</Text>
+                          )}
+                        </div>
+                      ))}
+                  </div>
                 </div>
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
-                  Contact details
-                </h1>
-                <div>
-                  {data.permanentAddress && (
-                    <Text fontWeight="bold">Permanent Address: </Text>
-                  )}
-                  {data.permanentAddress && (
-                    <Text>{data.permanentAddress}</Text>
-                  )}
-                  {data.correspondenceAddress && (
-                    <Text fontWeight="bold">Corespondance Address: </Text>
-                  )}
-                  {data.correspondenceAddress && (
-                    <Text>{data.correspondenceAddress}</Text>
-                  )}
-                  {data.email && (
-                    <Text>
-                      <b>Email: </b> {data.email}
-                    </Text>
-                  )}
-                  {data.contactNo && (
-                    <Text>
-                      <b>Contact no.: </b> {data.contactNo}
-                    </Text>
-                  )}
-                </div>
-                {/* <h1 className="mt-4 text-xl font-semibold mb-2 text-gray-500">
-                  Permissions
-                </h1>
-                {data?.permissions && data.permissions.length > 0 ? (
-                  data.permissions.map((permission, index) => (
-                    <Text key={index}>{permission}</Text>
-                  ))
-                ) : (
-                  <Text color="red">No permissions</Text>
-                )} */}
-                <h1 className="mt-4 text-xl font-semibold mb-2 text-slate-600">
-                  Bank details
-                </h1>
-                {data?.bankDetails && data.bankDetails.length > 0 ? (
-                  data.bankDetails.map((bd, index) => (
-                    <Text key={index}>{bd}</Text>
-                  ))
-                ) : (
-                  <Text color="red">No permissions</Text>
-                )}
-              </div>
+              </>
             )}
           </ModalBody>
           <ModalFooter>
@@ -305,125 +339,129 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Client Information</ModalHeader>
+          <ModalHeader textTransform={"capitalize"}>{data?.title} {data?.clientName}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {data.clientName && (
-                  <Text>
-                    <b>Name: </b> {data.clientName}
-                  </Text>
-                )}
-                {data.clientBirthday && (
-                  <Text>
-                    <b>Birthday: </b> {data.clientBirthday}
-                  </Text>
-                )}
-                {data.workStartDate && (
-                  <Text>
-                    <b>Work start date: </b> {data.workStartDate}
-                  </Text>
-                )}
-                {data.brandName && (
-                  <div>
-                    <Text fontWeight="bold">Brand Name: </Text>
-                    <Text>{data.brandName}</Text>
+              <>
+                <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
+                  <Divider type="vertical" />
+                  <Menu>
+                    <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
+                      Actions
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleTaskDelete()}>
+                          <DeleteIcon mr={2} /> Delete
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleChangeTaskStatus()}>
+                          <CheckCircleIcon mr={2} /> Change Status
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </div>
+                <Divider />
+                <div className="flex gap-10">
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Task Information</h1>
+                    {data.clientName && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
+                        <Text className="text-lg capitalize">{data.clientName}</Text>
+                      </>
+                    )}
+                    {data.clientBirthday && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
+                        <Text className="text-lg capitalize">{data.clientBirthday}</Text>
+                      </>
+                    )}
+                    {data.workStartDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Work Start Date </Text>
+                        <Text className="text-lg capitalize">{data.workStartDate}</Text>
+                      </>
+                    )}
+                    {data.city && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">City </Text>
+                        <Text className="text-lg capitalize">{data.city}</Text>
+                      </>
+                    )}
+                    {data.state && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">State </Text>
+                        <Text className="text-lg capitalize">{data.state}</Text>
+                      </>
+                    )}
+                    {data.pincode && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Pincode </Text>
+                        <Text className="text-lg capitalize">{data.pincode}</Text>
+                      </>
+                    )}
+                    {data.country && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Country </Text>
+                        <Text className="text-lg capitalize">{data.country}</Text>
+                      </>
+                    )}
                   </div>
-                )}
-                {data.companyName && (
-                  <div>
-                    <Text fontWeight="bold">Company Name: </Text>
-                    <Text>{data.companyName}</Text>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Brand Information</h1>
+                    {data.brandName && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Brand Name </Text>
+                        <Text className="text-lg capitalize">{data.brandName}</Text>
+                      </>
+                    )}
+                    {data.companyName && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Company Name </Text>
+                        <Text className="text-lg capitalize">{data.companyName}</Text>
+                      </>
+                    )}
+                    {data.enquiryDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Enquiry Date </Text>
+                        <Text className="text-lg capitalize">{data.enquiryDate}</Text>
+                      </>
+                    )}
+                    {data.buisnessAddress && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Business Address </Text>
+                        <Text className="text-lg capitalize">{data.buisnessAddress}</Text>
+                      </>
+                    )}
                   </div>
-                )}
-                {data.email1 && (
-                  <div>
-                    <Text fontWeight="bold">Email1: </Text>
-                    <Text>{data.email1}</Text>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Contact Information</h1>
+                    {(data.email1 || data.email2) && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Emails </Text>
+                        <Text className="text-lg">{data.email1}</Text>
+                        <Text className="text-lg">{data.email2}</Text>
+                      </>
+                    )}
+                    {(data.phone1 || data.phone2) && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Phone </Text>
+                        <Text className="text-lg">{data.phone1}</Text>
+                        <Text className="text-lg">{data.phone2}</Text>
+                      </>
+                    )}
+                    {data.website && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Website </Text>
+                        <Text className="text-lg">{data.website}</Text>
+                      </>
+                    )}
                   </div>
-                )}
-                {data.email2 && (
-                  <div>
-                    <Text fontWeight="bold">Email2: </Text>
-                    <Text>{data.email2}</Text>
-                  </div>
-                )}
-                {data.phone1 && (
-                  <div>
-                    <Text fontWeight="bold">Phone1: </Text>
-                    <Text>{data.phone1}</Text>
-                  </div>
-                )}
-                {data.phone2 && (
-                  <div>
-                    <Text fontWeight="bold">Phone2: </Text>
-                    <Text>{data.phone2}</Text>
-                  </div>
-                )}
-                {data.enquiryDate && (
-                  <div>
-                    <Text fontWeight="bold">Enquiry Date: </Text>
-                    <Text>{data.enquiryDate}</Text>
-                  </div>
-                )}
-                {data.website && (
-                  <div>
-                    <Text fontWeight="bold">Website: </Text>
-                    <Text>{data.website}</Text>
-                  </div>
-                )}
-                {data.buisnessAddress && (
-                  <div>
-                    <Text fontWeight="bold">Business Address: </Text>
-                    <Text>{data.businessAddress}</Text>
-                  </div>
-                )}
-                {data.city && (
-                  <div>
-                    <Text fontWeight="bold">Cinty: </Text>
-                    <Text>{data.city}</Text>
-                  </div>
-                )}
-                {data.state && (
-                  <div>
-                    <Text fontWeight="bold">State: </Text>
-                    <Text>{data.state}</Text>
-                  </div>
-                )}
-                {data.pincode && (
-                  <div>
-                    <Text fontWeight="bold">Pincode: </Text>
-                    <Text>{data.pincode}</Text>
-                  </div>
-                )}
-                {data.country && (
-                  <div>
-                    <Text fontWeight="bold">Country: </Text>
-                    <Text>{data.country}</Text>
-                  </div>
-                )}
-                {data.requirement && (
-                  <div>
-                    <Text fontWeight="bold">Requirement: </Text>
-                    <Text>{data.requirement}</Text>
-                  </div>
-                )}
-                {data.additionalInformation && (
-                  <div>
-                    <Text fontWeight="bold">Additional Information: </Text>
-                    <Text>{data.additionalInformation}</Text>
-                  </div>
-                )}
-                {data.source && data.source.length > 0 && (
-                  <div>
-                    <Text fontWeight="bold">Source:</Text>
-                    <ul>
-                      {data.source.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+
                 )}
                 {data.singleFile ? (
                   <div>
@@ -468,6 +506,60 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 )}
 
               </div>
+
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
+                    {data.requirement && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Requirements </Text>
+                        <Text className="text-lg capitalize">{data.requirement}</Text>
+                      </>
+                    )}
+                    {data.source && data.source.length > 0 && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Source </Text>
+                        <ul>
+                          {data.source.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                    {Array.isArray(data.multipleFiles) &&
+                      data.multipleFiles.length > 0 ? (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Business Address </Text>
+                        {data.multipleFiles.map((file, index) => (
+                          <div key={index}>
+                            <Button
+                              as="a"
+                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
+                                }`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              textDecoration="none"
+                              _hover={{ textDecoration: "none" }}
+                              mr={2}
+                              mb={2}
+                              variant="outline"
+                              colorScheme="purple"
+                              mt={2}
+                            >
+                              View File {index + 1}
+                            </Button>
+                          </div>
+                        ))}
+                      </>) : (
+                      <Text fontWeight="bold">No files provided</Text>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full mt-4">
+                  <Text className="text-md font-bold text-gray-500 mt-2">Additional Information: </Text>
+                  <Text className="text-lg">{data.additionalInformation}</Text>
+                </div>
+              </>
+
             )}
           </ModalBody>
           <ModalFooter>

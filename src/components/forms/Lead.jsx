@@ -22,8 +22,10 @@ import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Lead = () => {
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
     source: [],
@@ -160,11 +162,42 @@ const Lead = () => {
         },
       })
       .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 200 || response.status ===201) {
+         toast.success(response.data.message, {
+           autoClose: 2000, 
+         });
+            setProjectData({
+              enquiryDate: new Date(),
+              source: [],
+              companyName: "",
+              clientName: "",
+              brandName: "",
+              phone1: "",
+              phone2: "",
+              email1: "",
+              email2: "",
+              website: "",
+              gstNo: "",
+              businessAddress: "",
+              billingAddress: "",
+              city: "",
+              state: "",
+              pincode: "",
+              country: "",
+              requirement: "",
+              additionalInformation: "",
+              sourceInformation: "",
+              singleFile: null,
+              multipleFiles: [],
+            });
+            setTimeout(() => {
+              navigate("/manageLeads");
+            }, 2000);
         } else {
-          console.error("Failed to create project");
-          toast.success(response.data.message);
+         
+         toast.success(response.data.message, {
+           autoClose: 2000,
+         });
         }
       })
       .catch((error) => {
@@ -207,6 +240,7 @@ const Lead = () => {
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -235,6 +269,7 @@ const Lead = () => {
                 <FormControl id="gender" maxWidth={180}>
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
@@ -298,11 +333,19 @@ const Lead = () => {
                 </FormControl>
                 <FormControl id="city">
                   <FormLabel>City</FormLabel>
-                  <Input name="city" onChange={handleChange} />
+                  <Input
+                    name="city"
+                    onChange={handleChange}
+                    value={projectData.city}
+                  />
                 </FormControl>
                 <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
-                  <Input name="pincode" onChange={handleChange} />
+                  <Input
+                    name="pincode"
+                    onChange={handleChange}
+                    value={projectData.pincode}
+                  />
                 </FormControl>
               </div>
               <FormControl id="businessAddress" className="w-1/2">
@@ -311,23 +354,37 @@ const Lead = () => {
                   name="businessAddress"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.businessAddress}
                 />
               </FormControl>
+          
             </TabPanel>
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="brandName" mb={3} >
+                <FormControl id="brandName" mb={3}>
                   <FormLabel>Brand Name</FormLabel>
-                  <Input name="brandName" onChange={handleChange} />
+                  <Input
+                    name="brandName"
+                    onChange={handleChange}
+                    value={projectData.brandName}
+                  />
                 </FormControl>
                 <FormControl id="companyName" mb={3}>
                   <FormLabel>Company Name</FormLabel>
-                  <Input name="companyName" onChange={handleChange} />
+                  <Input
+                    name="companyName"
+                    onChange={handleChange}
+                    value={projectData.companyName}
+                  />
                 </FormControl>
                 <FormControl id="gst" mb={3}>
                   <FormLabel>GST</FormLabel>
-                  <Input name="gst" onChange={handleChange} />
+                  <Input
+                    name="gstNo"
+                    onChange={handleChange}
+                    value={projectData.gstNo}
+                  />
                 </FormControl>
               </div>
               <FormControl id="billingAddress" className="w-1/2">
@@ -336,8 +393,12 @@ const Lead = () => {
                   name="billingAddress"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.billingAddress}
                 />
               </FormControl>
+              <Button type="submit" colorScheme="purple" className="mt-5">
+                Create Lead
+              </Button>
             </TabPanel>
             <TabPanel>
               <FormControl id="requirement" maxWidth={300}>
@@ -358,8 +419,12 @@ const Lead = () => {
                   name="additionalInformation"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.additionalInformation}
                 />
               </FormControl>
+              <Button type="submit" colorScheme="purple" className="mt-5">
+                Create Lead
+              </Button>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3">
@@ -430,34 +495,17 @@ const Lead = () => {
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
-                  <Select
-                    onChange={handleTagChange}
-                    size="md"
-                    placeholder="Select Source"
-                  >
-                    {tags.map((tag) => (
-                      <option key={tag._id} value={tag.source_tag_id}>
-                        {tag.sourceTagName}
-                      </option>
-                    ))}
-                  </Select>
-
-                  {projectData.source.map((tag) => (
-                    <Tag
-                      key={tag._id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                    >
-                      <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton onClick={() => removeTagById(tag)} />
-                    </Tag>
-                  ))}
+                  <Flex>
+                    <SelectSource
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
+                  </Flex>
                 </FormControl>
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>Title</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -468,18 +516,23 @@ const Lead = () => {
                 <FormControl id="gender">
                   <FormLabel>Gender</FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
-                    onChange={handleChange}
+                    onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
                   >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
               </div>
 
               <div className="flex flex-col gap-3">
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
+                </FormControl>
                 <FormControl id="email1">
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
@@ -521,11 +574,19 @@ const Lead = () => {
                 </FormControl>
                 <FormControl id="city">
                   <FormLabel>City</FormLabel>
-                  <Input name="city" onChange={handleChange} />
+                  <Input
+                    name="city"
+                    onChange={handleChange}
+                    value={projectData.city}
+                  />
                 </FormControl>
                 <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
-                  <Input name="pincode" onChange={handleChange} />
+                  <Input
+                    name="pincode"
+                    onChange={handleChange}
+                    value={projectData.pincode}
+                  />
                 </FormControl>
               </div>
               <FormControl id="businessAddress" className="w-1/2">
@@ -534,28 +595,42 @@ const Lead = () => {
                   name="businessAddress"
                   onChange={handleChange}
                   className="h-32"
+                  value={projectData.businessAddress}
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
-                <FormControl id="brandName" mb={3} >
+                <FormControl id="brandName" mb={3}>
                   <FormLabel>Brand Name</FormLabel>
-                  <Input name="brandName" onChange={handleChange} />
+                  <Input
+                    name="brandName"
+                    onChange={handleChange}
+                    value={projectData.brandName}
+                  />
                 </FormControl>
                 <FormControl id="companyName" mb={3}>
                   <FormLabel>Company Name</FormLabel>
-                  <Input name="companyName" onChange={handleChange} />
+                  <Input
+                    name="companyName"
+                    onChange={handleChange}
+                    value={projectData.companyName}
+                  />
                 </FormControl>
                 <FormControl id="gst" mb={3}>
                   <FormLabel>GST</FormLabel>
-                  <Input name="gst" onChange={handleChange} />
+                  <Input
+                    name="gstNo"
+                    onChange={handleChange}
+                    value={projectData.gstNo}
+                  />
                 </FormControl>
               </div>
-              <FormControl id="billingAddress" isRequired className="w-1/2">
+              <FormControl id="billingAddress" className="w-1/2">
                 <FormLabel>Billing Address</FormLabel>
                 <Input
                   name="billingAddress"
                   onChange={handleChange}
                   className="h-32"
+                  value={projectData.billingAddress}
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
@@ -573,6 +648,7 @@ const Lead = () => {
                     name="additionalInformation"
                     onChange={handleChange}
                     className="h-16"
+                    value={projectData.additionalInformation}
                   />
                 </FormControl>
               </div>

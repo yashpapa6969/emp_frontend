@@ -90,7 +90,7 @@ const GetAllLead = () => {
 
   return (
     <>
-      <div className="w-full p-8">
+      <div className="w-full pt-4">
         <h1 className="text-3xl font-bold mb-4">Lead Information</h1>
         <Link to="/CreateLead">
           <Button

@@ -43,8 +43,8 @@ function Home() {
   return (
     <ChakraProvider theme={theme}>
       <div className="px-4 mt-8 mb-10 flex flex-col gap-4">
-        <Flex gap={3}>
-          <Card width={"25%"}>
+        <div className="flex gap-3 flex-col md:flex-row">
+          <Card className="w-full md:w-1/4">
             <CardBody>
               <Flex alignItems={"center"} justifyContent={"space-between"}>
                 <div className="flex gap-4 items-center text-lg">
@@ -62,7 +62,7 @@ function Home() {
               />
             </CardBody>
           </Card>
-          <Card width={"25%"}>
+          <Card className="w-full md:w-1/4">
             <CardBody>
               <Flex alignItems={"center"} justifyContent={"space-between"}>
                 <div className="flex gap-4 items-center text-lg">
@@ -80,7 +80,7 @@ function Home() {
               />
             </CardBody>
           </Card>
-          <Card width={"25%"}>
+          <Card className="w-full md:w-1/4">
             <CardBody>
               <Flex alignItems={"center"} justifyContent={"space-between"}>
                 <div className="flex gap-4 items-center text-lg">
@@ -98,7 +98,7 @@ function Home() {
               />
             </CardBody>
           </Card>
-          <Card width={"25%"}>
+          <Card className="w-full md:w-1/4">
             <CardBody>
               <Flex alignItems={"center"} justifyContent={"space-between"}>
                 <div className="flex gap-4 items-center text-lg">
@@ -116,12 +116,12 @@ function Home() {
               />
             </CardBody>
           </Card>
-        </Flex>
-        <Flex gap={4}>
-          <Card width={"65%"}>
+        </div>
+        <div className="flex gap-4 flex-col md:flex-row">
+          <Card className="w-full md:w-[65%]">
             <CardBody>
-              <Grid templateColumns="repeat(3, 1fr)" gap={8}>
-                <GridItem>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
                   <div className="flex gap-4 items-center text-md text-gray-600">
                     <LiaFileInvoiceSolid fontSize={20} />
                     Invoice overview
@@ -204,8 +204,8 @@ function Home() {
                       rounded={"lg"}
                     />
                   </div>
-                </GridItem>
-                <GridItem>
+                </div>
+                <div>
                   <div className="flex gap-4 items-center text-md text-gray-600">
                     <PiNewspaperLight fontSize={20} />
                     Estimate overview
@@ -288,8 +288,8 @@ function Home() {
                       rounded={"lg"}
                     />
                   </div>
-                </GridItem>
-                <GridItem>
+                </div>
+                <div>
                   <div className="flex gap-4 items-center text-md text-gray-600">
                     <PiNewspaperClipping fontSize={20} />
                     Proposal overview
@@ -372,10 +372,10 @@ function Home() {
                       rounded={"lg"}
                     />
                   </div>
-                </GridItem>
-              </Grid>
+                </div>
+              </div>
               <Divider mt={10} mb={4} />
-              <Flex gap={6}>
+              <div className="flex gap-6 flex-col md:flex-row">
                 <Stat className="rounded-md border-[0.6px] px-4 py-2">
                   <StatLabel>Outstanding Invoices</StatLabel>
                   <StatNumber>$38,353.00</StatNumber>
@@ -388,11 +388,11 @@ function Home() {
                   <StatLabel>Paid Invoices</StatLabel>
                   <StatNumber>$38,353.00</StatNumber>
                 </Stat>
-              </Flex>
+              </div>
             </CardBody>
           </Card>
 
-          <div style={{ width: "35%", overflowX: "auto" }}>
+          <div className="overflow-auto w-full md:w-[35%]">
             <Card>
               <CardBody>
                 <div className="flex justify-between">
@@ -430,12 +430,12 @@ function Home() {
                   ))}
                 </div>
               </CardBody>
-              <div className="mt-4">
-                <UpcomingEventsCard />
-              </div>
             </Card>
+            <div className="mt-4">
+              <UpcomingEventsCard />
+            </div>
           </div>
-        </Flex>
+        </div>
         <CalendarComponent />
       </div>
     </ChakraProvider>
