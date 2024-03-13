@@ -1,0 +1,7 @@
+{
+  "name": "emp_db",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
