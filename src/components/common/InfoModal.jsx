@@ -425,16 +425,30 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                     </ul>
                   </div>
                 )}
-                {Array.isArray(data.multipleFiles) &&
-                  data.multipleFiles.length > 0 ? (
+                {data.singleFile ? (
+                  <div>
+                    <Text fontWeight="bold">File Provided: </Text>
+                    <Button
+                      as="a"
+                      href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      textDecoration="none"
+                      _hover={{ textDecoration: "none" }}
+                      display="inline-block"
+                      variant="solid"
+                    >
+                      View File
+                    </Button>
+                  </div>
+                ) : data.multipleFiles && data.multipleFiles.length > 0 ? (
                   <div>
                     <Text fontWeight="bold">Files Provided: </Text>
                     {data.multipleFiles.map((file, index) => (
                       <div key={index}>
                         <Button
                           as="a"
-                          href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
-                            }`}
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           textDecoration="none"
@@ -452,6 +466,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 ) : (
                   <Text fontWeight="bold">No files provided</Text>
                 )}
+
               </div>
             )}
           </ModalBody>

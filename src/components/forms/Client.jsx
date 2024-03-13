@@ -26,8 +26,8 @@ const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
-    title:"",
-    gender:"",
+    title: "",
+    gender: "",
     clientBirthday: "",
     clientAnniversary: "",
     companyAnniversary: "",
@@ -60,7 +60,7 @@ const Client = () => {
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
-  
+
   };
   useEffect(() => {
     setProjectData((prev) => ({
@@ -69,7 +69,7 @@ const Client = () => {
       requirement: selectedTagValue,
     }));
   }, [selectSourceValue, selectedTagValue]);
-  
+
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -111,11 +111,13 @@ const Client = () => {
 
   const handleMultipleFilesChange = (e) => {
     const files = Array.from(e.target.files);
+    console.log(files);
     setProjectData({
       ...projectData,
       multipleFiles: [...projectData.multipleFiles, ...files],
     });
   };
+
 
   const handleDeleteSingleFile = () => {
     singleFileRef.current.value = "";
@@ -144,14 +146,18 @@ const Client = () => {
       else if (key === "requirement" && Array.isArray(value)) { // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
-        });
+        })
+      } else if (key === "multipleFiles" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append('multipleFiles', value[i]);
+        }
       } else if (value !== "") { // For all other non-empty values
         formData.append(key, value);
       }
     });
-    
-    
-console.log(formData)
+
+
+    console.log(formData)
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
@@ -325,7 +331,7 @@ console.log(formData)
                 <Input
                   name="businessAddress"
                   onChange={handleChange}
-                  h="5rem" 
+                  h="5rem"
                 />
               </FormControl>
             </TabPanel>
@@ -413,7 +419,8 @@ console.log(formData)
               </div>
               <div className="flex gap-3">
                 {/* Display multiple files */}
-                {projectData.multipleFiles.map((file, index) => (
+                {console.log(projectData.multipleFiles)}
+                {projectData.multipleFiles && ((file, index) => (
                   <div key={index}>
                     <p>
                       File {index + 1}: {file.name}
@@ -466,11 +473,11 @@ console.log(formData)
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
-                    <SelectSource
-                      width={150}
-                      selectSourceValue={selectSourceValue}
-                      setSelectSourceValue={setSelectSourceValue}
-                    />
+                  <SelectSource
+                    width={150}
+                    selectSourceValue={selectSourceValue}
+                    setSelectSourceValue={setSelectSourceValue}
+                  />
 
                   {projectData.source.map((tag) => (
                     <Tag
@@ -611,7 +618,7 @@ console.log(formData)
               </div>
               <div className="flex gap-3">
                 {/* Display multiple files */}
-                {projectData.multipleFiles.map((file, index) => (
+                {projectData.multipleFiles && projectData.multipleFiles.map((file, index) => (
                   <div key={index}>
                     <p>
                       File {index + 1}: {file.name}
