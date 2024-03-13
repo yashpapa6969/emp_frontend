@@ -201,7 +201,6 @@ const UpdateClient = () => {
   }
   const handleAddMultipleFilesToRemove = (filename) => {
     projectData.multipleFilesToRemove = [...projectData.multipleFilesToRemove, filename];
-    console.log(projectData.multipleFilesToRemove)
     setProjectData({ ...projectData });
   }
   const handleDeleteMultipleFile = (index) => {
@@ -553,38 +552,49 @@ const UpdateClient = () => {
                     <div>
                       <h2>Existing Files</h2>
                       <div className="flex gap-3">
-                        {/* Display single file */}
                         {projectData.singleFileView && (
                           <div>
                             <div className="flex gap-1">
-                              <p>
-                                File : {projectData.singleFileView}
-                              </p>
-                              <Button as="a"
-                                href={`${import.meta.env.VITE_API_BASE}/uploads/${projectData.singleFileView}`}
+                              <p>File : {projectData.singleFileView}</p>
+                              <Button
+                                as="a"
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
                                 _hover={{ textDecoration: "none" }}
                                 display="inline-block"
-                                variant="solid">View</Button>
-                              <Button onClick={() => {
-                                handleAddSingleFileToRemove(projectData.singleFileView);
-                              }}>Delete</Button>
+                                variant="solid"
+                              >
+                                View
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  handleAddSingleFileToRemove(
+                                    projectData.singleFileView
+                                  );
+                                }}
+                              >
+                                Delete
+                              </Button>
                             </div>
                           </div>
                         )}
                       </div>
                       <div className="flex gap-3">
-                        {/* Display multiple files */}
                         {projectData.multipleFilesView.map((file, index) => (
                           <div key={index}>
                             <p>
                               File {index + 1}: {file}
                             </p>
                             <div className="flex gap-1">
-                              <Button as="a"
-                                href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
+                              <Button
+                                as="a"
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -592,10 +602,17 @@ const UpdateClient = () => {
                                 display="inline-block"
                                 mr={2}
                                 mb={2}
-                                variant="solid">View</Button>
-                              <Button onClick={() => {
-                                handleAddMultipleFilesToRemove(file);
-                              }}>Delete</Button>
+                                variant="solid"
+                              >
+                                View
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  handleAddMultipleFilesToRemove(file);
+                                }}
+                              >
+                                Delete
+                              </Button>
                             </div>
                           </div>
                         ))}
@@ -625,7 +642,7 @@ const UpdateClient = () => {
                       </div>
                     </div>
                     <Button type="submit" colorScheme="purple" className="mt-5">
-                      Create Client
+                      Update Client
                     </Button>
                   </div>
                 </TabPanel>
@@ -660,34 +677,23 @@ const UpdateClient = () => {
                     <FormControl id="tags">
                       <FormLabel>Source</FormLabel>
                       <SelectSource
-                        width={150}
                         selectSourceValue={selectSourceValue}
                         setSelectSourceValue={setSelectSourceValue}
                       />
-
-                      {projectData.source.map((tag) => (
-                        <Tag
-                          key={tag._id}
-                          size="md"
-                          borderRadius="full"
-                          variant="solid"
-                          colorScheme="blue"
-                        >
-                          <TagLabel>{tag}</TagLabel>
-                          <TagCloseButton onClick={() => removeTagById(tag)} />
-                        </Tag>
-                      ))}
                     </FormControl>
-                    <FormControl id="gender">
+                    <FormControl id="gender" maxWidth={150}>
                       <FormLabel>Gender</FormLabel>
                       <Select
                         name="gender"
-                        onChange={handleChange}
+                        onChange={(value) =>
+                          handleSelectOption("gender", value)
+                        }
                         placeholder="Select gender"
+                        value={client.gender}
                       >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Others">Others</option>
+                        <Select.Option value="Male">Male</Select.Option>
+                        <Select.Option value="Female">Female</Select.Option>
+                        <Select.Option value="Others">Others</Select.Option>
                       </Select>
                     </FormControl>
                   </div>
@@ -824,7 +830,7 @@ const UpdateClient = () => {
                     </FormControl>
                   </div>
                   <Button type="submit" colorScheme="purple" className="mt-5">
-                    Create Client
+                    Update Client
                   </Button>
                 </TabPanel>
               </TabPanels>

@@ -64,7 +64,6 @@ const Client = () => {
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
-
   };
   useEffect(() => {
     setProjectData((prev) => ({
@@ -122,7 +121,6 @@ const Client = () => {
     });
   };
 
-
   const handleDeleteSingleFile = () => {
     singleFileRef.current.value = "";
     const { singleFile, ...newData } = projectData;
@@ -149,23 +147,17 @@ const Client = () => {
       } else if (key === "requirement" && Array.isArray(value)) {
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
-
-        })
+        });
       } else if (key === "multipleFiles" && Array.isArray(value)) {
         for (let i = 0; i < value.length; i++) {
-          formData.append('multipleFiles', value[i]);
+          formData.append("multipleFiles", value[i]);
         }
-      } else if (value !== "") { // For all other non-empty values
-
-        });
       } else if (value !== "" && value !== null) {
-
         formData.append(key, value);
       }
     });
 
-
-    console.log(formData)
+    console.log(formData);
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
@@ -178,9 +170,9 @@ const Client = () => {
       )
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
           setProjectData({
             enquiryDate: new Date(),
             title: "",
@@ -213,9 +205,9 @@ const Client = () => {
             navigate("/getAllClient");
           }, 2000);
         } else {
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
@@ -392,7 +384,6 @@ const Client = () => {
                   onChange={handleChange}
                   h="5rem"
                   value={projectData.businessAddress}
-
                 />
               </FormControl>
               <Button type="submit" colorScheme="purple" className="mt-5">
@@ -491,16 +482,17 @@ const Client = () => {
               <div className="flex gap-3">
                 {/* Display multiple files */}
                 {console.log(projectData.multipleFiles)}
-                {projectData.multipleFiles && ((file, index) => (
-                  <div key={index}>
-                    <p>
-                      File {index + 1}: {file.name}
-                    </p>
-                    <Button onClick={() => handleDeleteMultipleFile(index)}>
-                      Delete
-                    </Button>
-                  </div>
-                ))}
+                {projectData.multipleFiles &&
+                  ((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
                 <FormControl mb="4">
                   <FormLabel>Multiple Files</FormLabel>
                   <Input
@@ -697,16 +689,17 @@ const Client = () => {
               </div>
               <div className="flex gap-3">
                 {/* Display multiple files */}
-                {projectData.multipleFiles && projectData.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <p>
-                      File {index + 1}: {file.name}
-                    </p>
-                    <Button onClick={() => handleDeleteMultipleFile(index)}>
-                      Delete
-                    </Button>
-                  </div>
-                ))}
+                {projectData.multipleFiles &&
+                  projectData.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
                 <FormControl mb="4">
                   <FormLabel>Multiple Files</FormLabel>
                   <Input
