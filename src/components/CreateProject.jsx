@@ -183,11 +183,11 @@ const CreateProject = () => {
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
             <div className="flex flex-col md:flex-row gap-4">
-              <FormControl id="projectName">
+              <FormControl id="projectName" isRequired>
                 <FormLabel>Project Name</FormLabel>
                 <Input name="projectName" onChange={handleChange} />
               </FormControl>
-              <FormControl id="client_id">
+              <FormControl id="client_id" isRequired>
                 <FormLabel>Brand Name</FormLabel>
                 <Select
                   onChange={handleClientChange}
@@ -201,7 +201,7 @@ const CreateProject = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl id="priority">
+              <FormControl id="priority" isRequired>
                 <FormLabel>Priority</FormLabel>
                 <Select
                   width={300}
@@ -229,7 +229,7 @@ const CreateProject = () => {
             </FormControl>
 
             <div className="flex gap-2">
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Start Date</FormLabel>
                 <MyDatePicker
                   className="mb-1"
@@ -258,7 +258,7 @@ const CreateProject = () => {
                 )}
               </FormControl>
             </div>
-            <FormControl id="employees">
+            <FormControl id="employees" isRequired>
               <FormLabel>Employees</FormLabel>
               <Select
                 onChange={handleEmployeeChange}

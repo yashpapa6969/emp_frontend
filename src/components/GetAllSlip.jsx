@@ -136,7 +136,7 @@ const GetAllSlip = () => {
             setFilteredData={setFilteredProjects}
             data={projects}
           >
-            <Thead bg={"#F1F5F9"}>
+            <Thead position="sticky" top={0} bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   S. No.

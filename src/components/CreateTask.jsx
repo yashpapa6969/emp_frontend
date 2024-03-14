@@ -132,7 +132,7 @@ const CreateTask = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row gap-3 mb-3">
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel>Brand Name</FormLabel>
             <Select value={selectedBrandName} onChange={handleBrandChange}>
               <option disabled value="">
@@ -146,7 +146,7 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel>Project</FormLabel>
             <Select value={selectedProject} onChange={handleProjectChange}>
               <option disabled value="">
@@ -160,7 +160,7 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel>Employee</FormLabel>
             <Select
               value={selectedEmployee}
@@ -178,7 +178,7 @@ const CreateTask = () => {
           </FormControl>
         </div>
 
-        <FormControl>
+        <FormControl isRequired>
           <FormLabel>Description</FormLabel>
           <Textarea
             value={description}
@@ -187,7 +187,7 @@ const CreateTask = () => {
         </FormControl>
 
         <div className="flex gap-3 my-3">
-          <FormControl>
+          <FormControl isRequired>
             <FormLabel>Priority</FormLabel>
             <Select
               value={priority}
@@ -201,7 +201,7 @@ const CreateTask = () => {
               <option value="0">Low</option>
             </Select>
           </FormControl>
-          <FormControl maxWidth={200}>
+          <FormControl maxWidth={200} isRequired>
             <FormLabel>Start Date</FormLabel>
             <MyDatePicker
               className="mb-1"
@@ -214,7 +214,7 @@ const CreateTask = () => {
             {startDate?._d && <>{`${startDate?._d}`.slice(4, 16)}</>}
           </FormControl>
 
-          <FormControl maxWidth={200}>
+          <FormControl maxWidth={200} isRequired>
             <FormLabel>Deadline</FormLabel>
             <MyDatePicker
               className="mb-1"

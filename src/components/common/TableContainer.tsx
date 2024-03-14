@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { Flex, Table } from '@chakra-ui/react'
+import { Box, Flex, Table } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
 
 interface Props {
@@ -48,14 +48,16 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
         <>
             <Flex justifyContent={"end"} alignItems={"center"} gap={3} mb={6}>
                 {formFor != "invoice" && (<>
-                <SearchIcon fontSize={20} color={"#cecece"} /> 
-                <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
+                    <SearchIcon fontSize={20} color={"#cecece"} />
+                    <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
                 </>)}
             </Flex>
 
-            <Table width="100%">
-                {children}
-            </Table>
+            <Box overflowY="scroll" maxHeight="400px">
+                <Table width="100%">
+                    {children}
+                </Table>
+            </Box>
         </>
     )
 }

@@ -87,7 +87,7 @@ const GetAllManagers = () => {
             setFilteredData={setFilteredManagers}
             data={managers}
           >
-            <Thead bg={"#F1F5F9"}>
+            <Thead position="sticky" top={0} bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">Id</Th>
                 <Th fontWeight="bold">Name</Th>

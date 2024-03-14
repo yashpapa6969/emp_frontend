@@ -117,7 +117,7 @@ const CreateSlip = () => {
         <p className="font-light mb-4">Fill the below form to add a new Salary Slip</p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="manager_id">
+            <FormControl id="manager_id" isRequired>
               <FormLabel>Select Employee</FormLabel>
               <select
                 onChange={handleSelectManager}
@@ -141,34 +141,34 @@ const CreateSlip = () => {
 
 
             <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" >
+              <FormControl id="basicPay" isRequired>
                 <FormLabel>Basic Pay</FormLabel>
                 <Input name="basicPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="travelPay">
+              <FormControl id="travelPay" isRequired>
                 <FormLabel>Travel Pay</FormLabel>
                 <Input name="travelPay" onChange={handleChange} />
               </FormControl>
-              <FormControl id="Bonus" >
+              <FormControl id="Bonus" isRequired>
                 <FormLabel>Bonus</FormLabel>
                 <Input name="bonus" onChange={handleChange} />
               </FormControl>
             </div>
             <div className="flex gap-3">
-              <FormControl id="paidLeave" >
+              <FormControl id="paidLeave" isRequired>
                 <FormLabel>Paid Leave</FormLabel>
                 <Input name="paidLeave" onChange={handleChange} />
               </FormControl>
-              <FormControl id="tds" >
+              <FormControl id="tds" isRequired>
                 <FormLabel>TDS</FormLabel>
                 <Input name="tds" onChange={handleChange} />
               </FormControl>
-              <FormControl id="totaleaves">
+              <FormControl id="totaleaves" isRequired>
                 <FormLabel>Total Leaves</FormLabel>
                 <Input name="totalLeaves" onChange={handleChange} />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={400}>
+            <FormControl id="advanceSalary" maxWidth={400} isRequired>
               <FormLabel>Advance Salary</FormLabel>
               <Input name="advanceSalary" onChange={handleChange} />
             </FormControl>

@@ -208,7 +208,7 @@ const Lead = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl id="enquiryDate">
+      <FormControl id="enquiryDate" isRequired>
         <FormLabel>Enquiry Date</FormLabel>
         <MyDatePicker
           className="mb-1"
@@ -237,7 +237,7 @@ const Lead = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-4 mb-3">
-                <FormControl id="title" maxWidth={130}>
+                <FormControl id="title" maxWidth={130} isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -248,7 +248,7 @@ const Lead = () => {
                     <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="clientName">
+                <FormControl id="clientName" isRequired>
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
@@ -266,7 +266,7 @@ const Lead = () => {
                   <Input name="sourceInformation" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="gender" maxWidth={180}>
+                <FormControl id="gender" maxWidth={180} isRequired>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -281,7 +281,7 @@ const Lead = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="phone1">
+                <FormControl id="phone1" isRequired>
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
@@ -362,7 +362,7 @@ const Lead = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="brandName" mb={3}>
+                <FormControl id="brandName" mb={3} isRequired>
                   <FormLabel>Brand Name</FormLabel>
                   <Input
                     name="brandName"
@@ -370,7 +370,7 @@ const Lead = () => {
                     value={projectData.brandName}
                   />
                 </FormControl>
-                <FormControl id="companyName" mb={3}>
+                <FormControl id="companyName" mb={3} isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input
                     name="companyName"
@@ -479,11 +479,11 @@ const Lead = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="clientName">
+                <FormControl id="clientName" isRequired>
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone1">
+                <FormControl id="phone1" isRequired>
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
@@ -502,7 +502,7 @@ const Lead = () => {
                     />
                   </Flex>
                 </FormControl>
-                <FormControl id="title" maxWidth={130}>
+                <FormControl id="title" maxWidth={130} isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -513,7 +513,7 @@ const Lead = () => {
                     <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="gender">
+                <FormControl id="gender" isRequired>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -599,7 +599,7 @@ const Lead = () => {
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
-                <FormControl id="brandName" mb={3}>
+                <FormControl id="brandName" mb={3} isRequired>
                   <FormLabel>Brand Name</FormLabel>
                   <Input
                     name="brandName"
@@ -607,7 +607,7 @@ const Lead = () => {
                     value={projectData.brandName}
                   />
                 </FormControl>
-                <FormControl id="companyName" mb={3}>
+                <FormControl id="companyName" mb={3} isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input
                     name="companyName"
