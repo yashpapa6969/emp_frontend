@@ -39,7 +39,7 @@ const ManageLeads = () => {
 
   return (
     <div className="p-6">
-      <div className="w-full flex md:flex-row-reverse items-center justify-between mb-6">
+      <div className="w-full flex items-center justify-between mb-6">
         <Link to="/CreateLead">
           <Button
             colorScheme="blue"

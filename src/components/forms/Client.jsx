@@ -114,6 +114,7 @@ const Client = () => {
 
   const handleMultipleFilesChange = (e) => {
     const files = Array.from(e.target.files);
+    console.log(files);
     setProjectData({
       ...projectData,
       multipleFiles: [...projectData.multipleFiles, ...files],
@@ -147,11 +148,16 @@ const Client = () => {
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
+      } else if (key === "multipleFiles" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append("multipleFiles", value[i]);
+        }
       } else if (value !== "" && value !== null) {
         formData.append(key, value);
       }
     });
 
+    console.log(formData);
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
@@ -164,9 +170,9 @@ const Client = () => {
       )
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
           setProjectData({
             enquiryDate: new Date(),
             title: "",
@@ -199,9 +205,9 @@ const Client = () => {
             navigate("/getAllClient");
           }, 2000);
         } else {
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
@@ -475,16 +481,18 @@ const Client = () => {
               </div>
               <div className="flex gap-3">
                 {/* Display multiple files */}
-                {projectData.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <p>
-                      File {index + 1}: {file.name}
-                    </p>
-                    <Button onClick={() => handleDeleteMultipleFile(index)}>
-                      Delete
-                    </Button>
-                  </div>
-                ))}
+                {console.log(projectData.multipleFiles)}
+                {projectData.multipleFiles &&
+                  ((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
                 <FormControl mb="4">
                   <FormLabel>Multiple Files</FormLabel>
                   <Input
@@ -537,6 +545,26 @@ const Client = () => {
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags" maxWidth={150}>
                   <FormLabel>Source</FormLabel>
+                  <SelectSource
+                    width={150}
+                    selectSourceValue={selectSourceValue}
+                    setSelectSourceValue={setSelectSourceValue}
+                  />
+
+                  {projectData.source.map((tag) => (
+                    <Tag
+                      key={tag._id}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton onClick={() => removeTagById(tag)} />
+                    </Tag>
+                  ))}
+                </FormControl>
+                <FormControl id="gender">
                   <Flex>
                     <SelectSource
                       selectSourceValue={selectSourceValue}
@@ -661,16 +689,17 @@ const Client = () => {
               </div>
               <div className="flex gap-3">
                 {/* Display multiple files */}
-                {projectData.multipleFiles.map((file, index) => (
-                  <div key={index}>
-                    <p>
-                      File {index + 1}: {file.name}
-                    </p>
-                    <Button onClick={() => handleDeleteMultipleFile(index)}>
-                      Delete
-                    </Button>
-                  </div>
-                ))}
+                {projectData.multipleFiles &&
+                  projectData.multipleFiles.map((file, index) => (
+                    <div key={index}>
+                      <p>
+                        File {index + 1}: {file.name}
+                      </p>
+                      <Button onClick={() => handleDeleteMultipleFile(index)}>
+                        Delete
+                      </Button>
+                    </div>
+                  ))}
                 <FormControl mb="4">
                   <FormLabel>Multiple Files</FormLabel>
                   <Input
