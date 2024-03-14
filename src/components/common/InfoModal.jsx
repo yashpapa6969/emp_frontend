@@ -83,7 +83,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -100,7 +100,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
@@ -214,7 +214,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -231,7 +231,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
@@ -411,7 +411,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -428,7 +428,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
@@ -608,7 +608,11 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             {data && ( // Check if data exists
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  <h2 className="text-lg mr-2">Get:</h2>
+                  <Link to={`/GetEmp`}>
+                    <Button colorScheme="green">Get Emp details</Button>
+                  </Link>
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -625,43 +629,56 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
                   <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Employee Information</h1>
-                    {data.name && (
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Project Information</h1>
+                    {data.projectName && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
-                        <Text className="text-lg capitalize">{data.name}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Project Name </Text>
+                        <Text className="text-lg capitalize">{data.projectName}</Text>
                       </>
                     )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Position Information</h1>
-                    {data.position && (
+                    {data.brandName && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Position </Text>
-                        <Text className="text-lg capitalize">{data.position}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Brand Name </Text>
+                        <Text className="text-lg capitalize">{data.brandName}</Text>
                       </>
                     )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Contact Information</h1>
-                    {data.email && (
+                    {data.priority && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Email </Text>
-                        <Text className="text-lg">{data.email}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Priority </Text>
+                        <Text className="text-lg capitalize">{data.priority}</Text>
                       </>
                     )}
                   </div>
                   <div className="max-w-[200px] md:max-w-[300px]">
                     <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
-                    {data.requirement && (
+                    {data.startDate && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Requirements </Text>
-                        <Text className="text-lg capitalize">{data.requirement}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Start Date </Text>
+                        <Text className="text-lg">{data.startDate}</Text>
+                      </>
+                    )}
+                    {data.deadline && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Deadline </Text>
+                        <Text className="text-lg">{data.deadline}</Text>
+                      </>
+                    )}
+                    {data.tags && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Tags </Text>
+                        {data.tags.length > 0 && ( // Check if tags exist and have length greater than 0
+                          <div>
+                            <Text fontWeight="bold">Tags: </Text>
+                            {data.tags.map((tag, index) => (
+                              <Text key={index}>{tag.tagName}</Text>
+                            ))}
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
@@ -669,68 +686,9 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <div className="w-full mt-4">
                   <Text className="text-md font-bold text-gray-500 mt-2">Additional Information: </Text>
                   <div className="w-full flex gap-2 mt-2">
-                  </div>
-                  <div className="w-full flex gap-2 mt-2">
+                    {data?.description}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <Text fontWeight="bold" mb={2}>Client Details: </Text>
-                    <Link to={`/GetClient`}>
-                      <Button>Get Client details</Button>
-                    </Link>
-                  </div>
-
-                  {data.projectName && ( // Check if projectName exists
-                    <div>
-                      <Text fontWeight="bold">Project Name: </Text>
-                      <Text>{data.projectName}</Text>
-                    </div>
-                  )}
-                  {data.brandName && ( // Check if brandName exists
-                    <div>
-                      <Text fontWeight="bold">Brand Name: </Text>
-                      <Text>{data.brandName}</Text>
-                    </div>
-                  )}
-                  {data.priority && ( // Check if priority exists
-                    <div>
-                      <Text fontWeight="bold">Priority: </Text>
-                      <Text>{data.priority}</Text>
-                    </div>
-                  )}
-                  {data.startDate && ( // Check if startDate exists
-                    <div>
-                      <Text fontWeight="bold">Start Date: </Text>
-                      <Text>{data.startDate}</Text>
-                    </div>
-                  )}
-                  {data.deadline && ( // Check if deadline exists
-                    <div>
-                      <Text fontWeight="bold">End Date: </Text>
-                      <Text>{data.deadline}</Text>
-                    </div>
-                  )}
-                  {data.tags &&
-                    data.tags.length > 0 && ( // Check if tags exist and have length greater than 0
-                      <div>
-                        <Text fontWeight="bold">Tags: </Text>
-                        {data.tags.map((tag, index) => (
-                          <Text key={index}>{tag.tagName}</Text>
-                        ))}
-                      </div>
-                    )}
-                  {data.description && ( // Check if description exists
-                    <div>
-                      <Text fontWeight="bold">Description: </Text>
-                      <Text>{data.description}</Text>
-                    </div>
-                  )}
-                </div>
-                <Text fontWeight="bold">Emp Details: </Text>
-                <Link to={`/GetEmp`}>
-                  <Button>Get Emp details</Button>
-                </Link>
               </>
             )}
           </ModalBody>
@@ -806,27 +764,27 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <div className="mt-4">
                   <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md max-w-[190px] px-3 py-1 mb-4">Service Information: </h1>
                   {data.services && (
-                  <div className="grid grid-cols-2">
-                    {data.services.map((service, index) => (
-                      <div key={index}>
-                        <Text className="text-xl font-bold text-gray-600">Service {index+1} </Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Invoice </Text>
-                        <Text className="text-lg capitalize">{service.product}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Description </Text>
-                        <Text className="text-lg capitalize">{service.serviceDescription}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Duration </Text>
-                        <Text className="text-lg capitalize">{service.duration}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Quantity </Text>
-                        <Text className="text-lg capitalize">{service.quantity}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Unit Price </Text>
-                        <Text className="text-lg capitalize">{service.unitPrice}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">Start Date </Text>
-                        <Text className="text-lg capitalize">{service.startDate}</Text>
-                        <Text className="text-sm font-bold text-gray-500 mt-1">End Date </Text>
-                        <Text className="text-lg capitalize">{service.endDate}</Text>
-                      </div>
-                    ))}
-                  </div>)}
+                    <div className="grid grid-cols-2">
+                      {data.services.map((service, index) => (
+                        <div key={index}>
+                          <Text className="text-xl font-bold text-gray-600">Service {index + 1} </Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Invoice </Text>
+                          <Text className="text-lg capitalize">{service.product}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Description </Text>
+                          <Text className="text-lg capitalize">{service.serviceDescription}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Duration </Text>
+                          <Text className="text-lg capitalize">{service.duration}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Quantity </Text>
+                          <Text className="text-lg capitalize">{service.quantity}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Unit Price </Text>
+                          <Text className="text-lg capitalize">{service.unitPrice}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">Start Date </Text>
+                          <Text className="text-lg capitalize">{service.startDate}</Text>
+                          <Text className="text-sm font-bold text-gray-500 mt-1">End Date </Text>
+                          <Text className="text-lg capitalize">{service.endDate}</Text>
+                        </div>
+                      ))}
+                    </div>)}
                 </div>
               </>
             )}
@@ -1005,62 +963,62 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                     )}
                   </div>
                   <div className="w-full flex gap-2 mt-2">
-                  {data.requirement && data.requirement.length > 0 && (
-                    <div>
-                      <ul>
-                        {data.requirement.map((req, index) => (
-                          <li key={index}>{req}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                    {data.requirement && data.requirement.length > 0 && (
+                      <div>
+                        <ul>
+                          {data.requirement.map((req, index) => (
+                            <li key={index}>{req}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                   <div className="w-full flex gap-2 mt-2">
-                  {data.singleFile && (
-                    <div>
-                      <Text fontWeight="bold">Single File: </Text>
-                      <Button
-                        as="a"
-                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split("/")[4]
-                          }`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        textDecoration="none"
-                        _hover={{ textDecoration: "none" }}
-                        mb={2}
-                        variant="solid"
-                      >
-                        View Single File
-                      </Button>
-                    </div>
-                  )}
-                  {Array.isArray(data.multipleFiles) &&
-                    data.multipleFiles.length > 0 ? (
-                    <div>
-                      <Text fontWeight="bold">Files Provided: </Text>
-                      {data.multipleFiles.map((file, index) => (
-                        <div key={index}>
-                          <Button
-                            as="a"
-                            href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
-                              }`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            textDecoration="none"
-                            _hover={{ textDecoration: "none" }}
-                            display="inline-block"
-                            mr={2}
-                            mb={2}
-                            variant="solid"
-                          >
-                            View File {index + 1}
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <Text fontWeight="bold">No files provided</Text>
-                  )}
+                    {data.singleFile && (
+                      <div>
+                        <Text fontWeight="bold">Single File: </Text>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split("/")[4]
+                            }`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View Single File
+                        </Button>
+                      </div>
+                    )}
+                    {Array.isArray(data.multipleFiles) &&
+                      data.multipleFiles.length > 0 ? (
+                      <div>
+                        <Text fontWeight="bold">Files Provided: </Text>
+                        {data.multipleFiles.map((file, index) => (
+                          <div key={index}>
+                            <Button
+                              as="a"
+                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
+                                }`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              textDecoration="none"
+                              _hover={{ textDecoration: "none" }}
+                              display="inline-block"
+                              mr={2}
+                              mb={2}
+                              variant="solid"
+                            >
+                              View File {index + 1}
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <Text fontWeight="bold">No files provided</Text>
+                    )}
                   </div>
                 </div>
               </>
