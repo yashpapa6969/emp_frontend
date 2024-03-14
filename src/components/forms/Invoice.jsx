@@ -167,7 +167,7 @@ const Invoice = () => {
 
   return (
     <Stack spacing={4}>
-      <FormControl maxWidth={300}>
+      <FormControl maxWidth={300} isRequired>
         <FormLabel>Select Client</FormLabel>
         <Select placeholder="Select client" onChange={handleClientChange}>
           {clients.map((client) => (
@@ -214,7 +214,7 @@ const Invoice = () => {
                     <FaTrashCan />
                   </div>
 
-                  <FormControl maxWidth={300}>
+                  <FormControl maxWidth={300} isRequired>
                     <FormLabel>Select Product</FormLabel>
                     <Select
                       placeholder="Select product"

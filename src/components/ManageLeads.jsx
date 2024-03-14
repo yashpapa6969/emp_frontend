@@ -39,7 +39,7 @@ const ManageLeads = () => {
 
   return (
     <div className="p-6">
-      <div className="w-full flex justify-between mb-6">
+      <div className="w-full flex md:flex-row-reverse items-center justify-between mb-6">
         <Link to="/CreateLead">
           <Button
             colorScheme="blue"
@@ -50,7 +50,7 @@ const ManageLeads = () => {
             <GoPlus /> Add a Lead
           </Button>
         </Link>
-        <div className="flex justify-end mb-3">
+        <div className="flex flex-col md:flex-row justify-end mb-3">
           <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
             Pipeline View
           </div>

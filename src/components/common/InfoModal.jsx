@@ -762,7 +762,11 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  <h2 className="text-lg mr-2">Get:</h2>
+                  <Link to={`/GetClient`}>
+                    <Button colorScheme="green">Client details</Button>
+                  </Link>
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -779,86 +783,50 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
                   <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Employee Information</h1>
-                    {data.name && (
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Basic Information</h1>
+                    {data.date1 && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
-                        <Text className="text-lg capitalize">{data.name}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Date </Text>
+                        <Text className="text-lg capitalize">{data.date1}</Text>
                       </>
                     )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Position Information</h1>
-                    {data.position && (
+                    {data.time1 && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Position </Text>
-                        <Text className="text-lg capitalize">{data.position}</Text>
-                      </>
-                    )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Contact Information</h1>
-                    {data.email && (
-                      <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Email </Text>
-                        <Text className="text-lg">{data.email}</Text>
-                      </>
-                    )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
-                    {data.requirement && (
-                      <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Requirements </Text>
-                        <Text className="text-lg capitalize">{data.requirement}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Time </Text>
+                        <Text className="text-lg capitalize">{data.time1}</Text>
                       </>
                     )}
                   </div>
                 </div>
-                <div className="w-full mt-4">
-                  <Text className="text-md font-bold text-gray-500 mt-2">Additional Information: </Text>
-                  <div className="w-full flex gap-2 mt-2">
-                  </div>
-                  <div className="w-full flex gap-2 mt-2">
-                  </div>
-                </div>
-                <div>
-                  <Text fontWeight="bold">Client ID: </Text>
-                  <Link to={`/GetClient`}>
-                    <Button>Get Client details</Button>
-                  </Link>
-
-                  <Text fontWeight="bold">Date </Text>
-                  <Text>{data.date1}</Text>
-                  <Text fontWeight="bold">Time </Text>
-                  <Text>{data.time1}</Text>
-
-                  {data.services && (<>
-                    <Text fontWeight="bold">Services </Text>
+                <div className="mt-4">
+                  <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md max-w-[190px] px-3 py-1 mb-4">Service Information: </h1>
+                  {data.services && (
+                  <div className="grid grid-cols-2">
                     {data.services.map((service, index) => (
                       <div key={index}>
-                        <Text fontWeight="bold">Invoice: </Text>
-                        <Text>{service.product}</Text>
-                        <Text fontWeight="bold">Description: </Text>
-                        <Text>{service.serviceDescription}</Text>
-                        <Text fontWeight="bold">Duration: </Text>
-                        <Text>{service.duration}</Text>
-                        <Text fontWeight="bold">Quantity: </Text>
-                        <Text>{service.quantity}</Text>
-                        <Text fontWeight="bold">Unit Price: </Text>
-                        <Text>{service.unitPrice}</Text>
-                        <Text fontWeight="bold">Start Date: </Text>
-                        <Text>{service.startDate}</Text>
-                        <Text fontWeight="bold">End Date: </Text>
-                        <Text>{service.endDate}</Text>
+                        <Text className="text-xl font-bold text-gray-600">Service {index+1} </Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Invoice </Text>
+                        <Text className="text-lg capitalize">{service.product}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Description </Text>
+                        <Text className="text-lg capitalize">{service.serviceDescription}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Duration </Text>
+                        <Text className="text-lg capitalize">{service.duration}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Quantity </Text>
+                        <Text className="text-lg capitalize">{service.quantity}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Unit Price </Text>
+                        <Text className="text-lg capitalize">{service.unitPrice}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">Start Date </Text>
+                        <Text className="text-lg capitalize">{service.startDate}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-1">End Date </Text>
+                        <Text className="text-lg capitalize">{service.endDate}</Text>
                       </div>
                     ))}
-                  </>)}
+                  </div>)}
                 </div>
               </>
             )}
@@ -885,13 +853,13 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Lead Information</ModalHeader>
+          <ModalHeader>{data?.title} {data?.clientName}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -908,43 +876,102 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
                   <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Employee Information</h1>
-                    {data.name && (
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Lead Information</h1>
+                    {data.companyName && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
-                        <Text className="text-lg capitalize">{data.name}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Company Name </Text>
+                        <Text className="text-lg capitalize">{data.companyName}</Text>
                       </>
                     )}
-                  </div>
-                  <div className="max-w-[200px] md:max-w-[300px]">
-                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Position Information</h1>
-                    {data.position && (
+                    {data.brandName && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Position </Text>
-                        <Text className="text-lg capitalize">{data.position}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Brand Name </Text>
+                        <Text className="text-lg capitalize">{data.brandName}</Text>
+                      </>
+                    )}
+                    {data.clientName && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Client Name </Text>
+                        <Text className="text-lg capitalize">{data.clientName}</Text>
+                      </>
+                    )}
+                    {data.gender && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Gender </Text>
+                        <Text className="text-lg capitalize">{data.gender}</Text>
+                      </>
+                    )}
+                    {data.enquiryDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Enquiry Date </Text>
+                        <Text className="text-lg capitalize">{data.enquiryDate}</Text>
                       </>
                     )}
                   </div>
                   <div className="max-w-[200px] md:max-w-[300px]">
                     <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Contact Information</h1>
-                    {data.email && (
+                    {(data.email1 || data.email2) && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Email </Text>
-                        <Text className="text-lg">{data.email}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Emails </Text>
+                        <Text className="text-lg capitalize">{data.email1}</Text>
+                        <Text className="text-lg capitalize">{data.email2}</Text>
+                      </>
+                    )}
+                    {(data.phone1 || data.phone2) && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Phone </Text>
+                        <Text className="text-lg capitalize">{data.phone1}</Text>
+                        <Text className="text-lg capitalize">{data.phone2}</Text>
+                      </>
+                    )}
+                    {data.businessAddress && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Business Address </Text>
+                        <Text className="text-lg capitalize">{data.businessAddress}</Text>
+                      </>
+                    )}
+                    {data.billingAddress && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Billing Address </Text>
+                        <Text className="text-lg capitalize">{data.billingAddress}</Text>
+                      </>
+                    )}
+                    {data.city && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">City </Text>
+                        <Text className="text-lg capitalize">{data.city}</Text>
+                      </>
+                    )}
+                    {data.state && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">State </Text>
+                        <Text className="text-lg capitalize">{data.state}</Text>
+                      </>
+                    )}
+                    {data.country && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Country </Text>
+                        <Text className="text-lg capitalize">{data.country}</Text>
+                      </>
+                    )}
+                    {data.pincode && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Pincode </Text>
+                        <Text className="text-lg capitalize">{data.pincode}</Text>
                       </>
                     )}
                   </div>
                   <div className="max-w-[200px] md:max-w-[300px]">
                     <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Other Information</h1>
-                    {data.requirement && (
+                    {data.website && (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Requirements </Text>
-                        <Text className="text-lg capitalize">{data.requirement}</Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Website </Text>
+                        <Text className="text-lg capitalize">{data.website}</Text>
                       </>
                     )}
                   </div>
@@ -952,150 +979,34 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                 <div className="w-full mt-4">
                   <Text className="text-md font-bold text-gray-500 mt-2">Additional Information: </Text>
                   <div className="w-full flex gap-2 mt-2">
+                    {data.additionalInformation && (
+                      <Text className="text-lg capitalize">{data.additionalInformation}</Text>
+                    )}
                   </div>
                   <div className="w-full flex gap-2 mt-2">
+                    {data.status && (
+                      <Text className="text-lg capitalize">Status: {data.status}</Text>
+                    )}
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {data.enquiryDate && (
-                    <div>
-                      <Text fontWeight="bold">Enquiry Date: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.enquiryDate}</Text>
-                    </div>
-                  )}
-                  {data.companyName && (
-                    <div>
-                      <Text fontWeight="bold">Company Name: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.companyName}</Text>
-                    </div>
-                  )}
-                  {data.gender && (
-                    <div>
-                      <Text fontWeight="bold">Gender: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.gender}</Text>
-                    </div>
-                  )}
-                  {data.title && (
-                    <div>
-                      <Text fontWeight="bold">Title: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.title}</Text>
-                    </div>
-                  )}
-                  {data.brandName && (
-                    <div>
-                      <Text fontWeight="bold">Brand Name: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.brandName}</Text>
-                    </div>
-                  )}
-                  {data.clientName && (
-                    <div>
-                      <Text fontWeight="bold">Client Name: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.clientName}</Text>
-                    </div>
-                  )}
-                  {data.phone1 && (
-                    <div>
-                      <Text fontWeight="bold">Phone Number 1: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.phone1}</Text>
-                    </div>
-                  )}
-                  {data.phone2 && (
-                    <div>
-                      <Text fontWeight="bold">Phone Number 2: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.phone2}</Text>
-                    </div>
-                  )}
-                  {data.email1 && (
-                    <div>
-                      <Text fontWeight="bold">Email 1: </Text>
-                      <Text fontSize="18px">{data.email1}</Text>
-                    </div>
-                  )}
-                  {data.email2 && (
-                    <div>
-                      <Text fontWeight="bold">Email 2: </Text>
-                      <Text fontSize="18px">{data.email2}</Text>
-                    </div>
-                  )}
-                  {data.status && (
-                    <div>
-                      <Text fontWeight="bold">Status: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.status}</Text>
-                    </div>
-                  )}
-                  {data.businessAddress && (
-                    <div>
-                      <Text fontWeight="bold">Business Address: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.businessAddress}</Text>
-                    </div>
-                  )}
-                  {data.billingAddress && (
-                    <div>
-                      <Text fontWeight="bold">Billing Address: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.billingAddress}</Text>
-                    </div>
-                  )}
-                  {data.city && (
-                    <div>
-                      <Text fontWeight="bold">City: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.city}</Text>
-                    </div>
-                  )}
-                  {data.state && (
-                    <div>
-                      <Text fontWeight="bold">State: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.state}</Text>
-                    </div>
-                  )}
-                  {data.pincode && (
-                    <div>
-                      <Text fontWeight="bold">Pincode: </Text>
-                      <Text fontSize="18px">{data.pincode}</Text>
-                    </div>
-                  )}
-                  {data.country && (
-                    <div>
-                      <Text fontWeight="bold">Country: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.country}</Text>
-                    </div>
-                  )}
-                  {data.website && (
-                    <div>
-                      <Text fontWeight="bold">Website: </Text>
-                      <Text fontSize="18px">{data.website}</Text>
-                    </div>
-                  )}
-                  {data.status && (
-                    <div>
-                      <Text fontWeight="bold">Status: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.status}</Text>
-                    </div>
-                  )}
-                  {data.additionalInformation && (
-                    <div>
-                      <Text fontWeight="bold">Additional Information: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.additionalInformation}</Text>
-                    </div>
-                  )}
-                  {data.sourceInformation && (
-                    <div>
-                      <Text fontWeight="bold">Source Information: </Text>
-                      <Text fontSize="18px" textTransform={"capitalize"}>{data.sourceInformation}</Text>
-                    </div>
-                  )}
-                  {data.source && data.source.length > 0 && (
-                    <div>
-                      <Text fontWeight="bold">Source:</Text>
-                      <ul>
-                        {data.source.map((item, index) => (
-                          <li key={index}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <div className="w-full flex gap-2 mt-2">
+                    {data.sourceInformation && (
+                      <Text className="text-lg capitalize">Source Information: {data.sourceInformation}</Text>
+                    )}
+                  </div>
+                  <div className="w-full flex gap-2 mt-2">
+                    {data.source && data.source.length > 0 && (
+                      <div>
+                        <ul>
+                          {data.source.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full flex gap-2 mt-2">
                   {data.requirement && data.requirement.length > 0 && (
                     <div>
-                      <Text fontWeight="bold">Requirements: </Text>
                       <ul>
                         {data.requirement.map((req, index) => (
                           <li key={index}>{req}</li>
@@ -1103,6 +1014,8 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                       </ul>
                     </div>
                   )}
+                  </div>
+                  <div className="w-full flex gap-2 mt-2">
                   {data.singleFile && (
                     <div>
                       <Text fontWeight="bold">Single File: </Text>
@@ -1148,6 +1061,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   ) : (
                     <Text fontWeight="bold">No files provided</Text>
                   )}
+                  </div>
                 </div>
               </>
             )}
@@ -1274,7 +1188,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                   <Link to={`/GetProject`}>
                     <Button colorScheme="green">Project details</Button>
                   </Link>
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -1291,7 +1205,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">

@@ -98,7 +98,7 @@ const GetAllLead = () => {
             setFilteredData={setFilteredLeads}
             data={leads}
           >
-            <Thead position="sticky" top={0} zIndex={50} bg={"#F1F5F9"}>
+            <Thead position="sticky" top={0} bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Company Name</Th>

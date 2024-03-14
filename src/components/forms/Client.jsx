@@ -249,7 +249,7 @@ const Client = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-2">
-                <FormControl id="title" maxWidth={130}>
+                <FormControl id="title" maxWidth={130} isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -269,7 +269,7 @@ const Client = () => {
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName">
+                <FormControl id="companyName" isRequired>
                   <FormLabel>Company Name</FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
@@ -288,7 +288,7 @@ const Client = () => {
                     <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="tags" maxWidth={250} mr={3}>
+                <FormControl id="tags" maxWidth={250} mr={3} isRequired>
                   <FormLabel>Source</FormLabel>
                   <Flex>
                     <SelectSource
@@ -304,26 +304,26 @@ const Client = () => {
               </div>
 
               <div className="flex gap-3 my-3">
-                <FormControl id="phone1">
+                <FormControl id="phone1" isRequired>
                   <FormLabel>Phone Number 1</FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone2">
+                <FormControl id="phone2" isRequired>
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="website">
+                <FormControl id="website" isRequired>
                   <FormLabel>Website</FormLabel>
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="email1">
+                <FormControl id="email1" isRequired>
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="email2">
+                <FormControl id="email2" isRequired>
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
                 </FormControl>
@@ -516,7 +516,7 @@ const Client = () => {
                   <FormLabel>Client Name</FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="brandName" mb={3}>
+                <FormControl id="brandName" mb={3} isRequired>
                   <FormLabel>Brand Name</FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
@@ -543,12 +543,12 @@ const Client = () => {
                       setSelectSourceValue={setSelectSourceValue}
                     />
                   </Flex>
-                  <FormControl id="clientName">
+                  <FormControl id="clientName" isRequired>
                     <FormLabel>Source Information</FormLabel>
                     <Input name="sourceInformation" onChange={handleChange} />
                   </FormControl>
                 </FormControl>
-                <FormControl id="gender" maxWidth={100} mr={3}>
+                <FormControl id="gender" maxWidth={100} mr={3} isRequired>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     style={{ width: "100%" }}

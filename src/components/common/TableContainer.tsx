@@ -53,7 +53,7 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 </>)}
             </Flex>
 
-            <Box overflowY="scroll" maxHeight="300px">
+            <Box overflowY="scroll" maxHeight="400px">
                 <Table width="100%">
                     {children}
                 </Table>

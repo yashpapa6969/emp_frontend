@@ -190,12 +190,12 @@ const Emp = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl id="employeeName">
+                <FormControl id="employeeName" isRequired>
                   <FormLabel>Employee Name</FormLabel>
                   <Input name="name" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="gender" maxWidth={100}>
+                <FormControl id="gender" maxWidth={100} isRequired>
                   <FormLabel>Gender</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -209,11 +209,11 @@ const Emp = () => {
                   </Select>
                 </FormControl>
 
-                <FormControl id="contactNo">
+                <FormControl id="contactNo" isRequired>
                   <FormLabel>Contact Number</FormLabel>
                   <Input name="contactNo" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="dob" maxWidth={150}>
+                <FormControl id="dob" maxWidth={150} isRequired>
                   <FormLabel>DOB</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -243,7 +243,7 @@ const Emp = () => {
                     <Select.Option value="3">Manager</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="designation">
+                <FormControl id="designation" isRequired>
                   <FormLabel>Designation</FormLabel>
                   <Input
                     name="designation"
@@ -261,14 +261,14 @@ const Emp = () => {
                   <FormLabel>Email</FormLabel>
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="password" maxWidth={350}>
+                <FormControl id="password" maxWidth={350} isRequired>
                   <FormLabel>Password</FormLabel>
                   <Input name="password" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="joiningDate" maxWidth={300}>
+                <FormControl id="joiningDate" maxWidth={300} isRequired>
                   <FormLabel>Joining Date</FormLabel>
                   <MyDatePicker
                     className="mb-1"
@@ -281,7 +281,7 @@ const Emp = () => {
                   <br />
                   {projectData?.joiningDate?._d && <>{joiningDate}</>}
                 </FormControl>
-                <FormControl id="manager_id">
+                <FormControl id="manager_id" isRequired>
                   <FormLabel>Assigned Manager</FormLabel>
                   <select
                     onChange={handleSelectManager}
@@ -296,7 +296,7 @@ const Emp = () => {
                   </select>
                 </FormControl>
 
-                <FormControl id="type" maxWidth={150}>
+                <FormControl id="type" maxWidth={150} isRequired>
                   <FormLabel>Employment Type</FormLabel>
                   <Select
                     style={{ width: "100%" }}
@@ -310,15 +310,15 @@ const Emp = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="aadharNumber">
+                <FormControl id="aadharNumber" isRequired>
                   <FormLabel>Aadhar Number</FormLabel>
                   <Input name="aadharNumber" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="panNumber">
+                <FormControl id="panNumber" isRequired>
                   <FormLabel>Pan Number</FormLabel>
                   <Input name="panNumber" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="probationPeriod">
+                <FormControl id="probationPeriod" isRequired>
                   <FormLabel>Probation Period</FormLabel>
                   <Input name="probationPeriod" onChange={handleChange} />
                 </FormControl>
@@ -326,7 +326,7 @@ const Emp = () => {
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="permanentAddress" className="w-1/2">
+                <FormControl id="permanentAddress" className="w-1/2" isRequired>
                   <FormLabel>Permanent Address</FormLabel>
                   <Input
                     name="permanentAddress"
@@ -334,7 +334,7 @@ const Emp = () => {
                     className="h-16"
                   />
                 </FormControl>
-                <FormControl id="correspondenceAddress" className="w-1/2">
+                <FormControl id="correspondenceAddress" className="w-1/2" isRequired>
                   <FormLabel>Correspondence Address</FormLabel>
                   <Input
                     name="correspondenceAddress"
@@ -347,7 +347,7 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="guardianDetails.guardianName">
+                <FormControl id="guardianDetails.guardianName" isRequired>
                   <FormLabel>Guardian Name</FormLabel>
                   <Input
                     name="guardianDetails.guardianName"
@@ -366,7 +366,7 @@ const Emp = () => {
 
             <TabPanel>
               <div className="flex gap-3">
-                <FormControl id="bankDetails.bankName">
+                <FormControl id="bankDetails.bankName" isRequired>
                   <FormLabel>Bank Name </FormLabel>
                   <Input name="bankDetails.bankName" onChange={handleChange} />
                 </FormControl>
@@ -459,7 +459,7 @@ const Emp = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="position">
+                <FormControl id="position" isRequired>
                   <FormLabel>Position</FormLabel>
                   <Input name="position" onChange={handleChange} />
                 </FormControl>
@@ -473,11 +473,11 @@ const Emp = () => {
               </div>
 
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="department" maxWidth={500}>
+                <FormControl id="department" maxWidth={500} isRequired>
                   <FormLabel>Department</FormLabel>
                   <Input name="department" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="email" maxWidth={350}>
+                <FormControl id="email" maxWidth={350} isRequired>
                   <FormLabel>Email</FormLabel>
                   <Input name="email" onChange={handleChange} />
                 </FormControl>
