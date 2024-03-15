@@ -24,6 +24,7 @@ import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
 import { useSelector, useDispatch } from "react-redux";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
+import moment from "moment";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
@@ -119,11 +120,14 @@ const UpdateClient = () => {
         toast.error("Failed to fetch client details");
       });
   }, [clientId]);
+  const workStartDate = projectData.workStartDate ? moment(projectData.workStartDate, 'DD-MM-YY') : null;
+  const clientBirthdayDate = projectData.clientBirthday ? moment(projectData.clientBirthday, 'DD-MM-YY') : null;
+  const clientAnniversaryDate = projectData.clientAnniversary ? moment(projectData.clientAnniversary, 'DD-MM-YY') : null;
+  const companyAnniversaryDate = projectData.companyAnniversary ? moment(projectData.companyAnniversary, 'DD-MM-YY') : null;
 
 
-
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(projectData.country);
+  const [selectedState, setSelectedState] = useState(projectData.state);
   const [tags, setTags] = useState([]);
   const [selectSourceValue, setSelectSourceValue] = useState([]);
   const [selectedTagValue, setSelectedTagValue] = useState([]);
@@ -302,7 +306,7 @@ const UpdateClient = () => {
               <TabPanels>
                 <TabPanel>
                   <div className="flex gap-3 mb-2">
-                    <FormControl id="title" maxWidth={130} isRequired>
+                    <FormControl id="title" maxWidth={130}>
                       <FormLabel>Title</FormLabel>
                       <Select
                         placeholder="Select Title"
@@ -413,6 +417,7 @@ const UpdateClient = () => {
                     <FormControl id="companyAnniversary">
                       <FormLabel>Work Start Date</FormLabel>
                       <MyDatePicker
+                        value={workStartDate}
                         selected={projectData.workStartDate}
                         onChange={(date) =>
                           setProjectData({
@@ -431,7 +436,7 @@ const UpdateClient = () => {
                       <FormLabel>Country</FormLabel>
                       <CountryDropdown
                         name="country"
-                        value={projectData.selectedCountry}
+                        value={selectedCountry}
                         onChange={handleSelectChange(
                           setSelectedCountry,
                           "selectedCountry"
@@ -444,7 +449,7 @@ const UpdateClient = () => {
                       <RegionDropdown
                         country={selectedCountry}
                         name="state"
-                        value={projectData.selectedState}
+                        value={selectedState}
                         onChange={(e) =>
                           handleSelectChange(setSelectedState, "state", e)
                         }
@@ -484,6 +489,7 @@ const UpdateClient = () => {
                     <FormControl id="clientBirthday">
                       <FormLabel>Client Birthday</FormLabel>
                       <MyDatePicker
+                        value={clientBirthdayDate}
                         selected={projectData.clientBirthday}
                         onChange={(date) =>
                           setProjectData({
@@ -497,6 +503,7 @@ const UpdateClient = () => {
                     <FormControl id="clientAnniversary">
                       <FormLabel>Client Anniversary</FormLabel>
                       <MyDatePicker
+                        value={clientAnniversaryDate}
                         selected={projectData.clientAnniversary}
                         onChange={(date) =>
                           setProjectData({
@@ -510,6 +517,7 @@ const UpdateClient = () => {
                     <FormControl id="companyAnniversary">
                       <FormLabel>Company Anniversary</FormLabel>
                       <MyDatePicker
+                        value={companyAnniversaryDate}
                         selected={projectData.companyAnniversary}
                         onChange={(date) =>
                           setProjectData({
@@ -558,9 +566,8 @@ const UpdateClient = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -592,9 +599,8 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"

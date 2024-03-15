@@ -23,38 +23,39 @@ import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
 import { useSelector, useDispatch } from "react-redux";
-import { selectLeadId,clearLeadId } from "../../store/slice/LeadSlice";
+import { selectLeadId, clearLeadId } from "../../store/slice/LeadSlice";
+import moment from "moment";
 
 const UpdateLead = () => {
   const singleFileRef = useRef();
-  const clientId = useSelector(selectLeadId);
-  console.log(clientId);
+  const leadId = useSelector(selectLeadId);
+  console.log(leadId);
   const dispatch = useDispatch();
   const [client, setClient] = useState("");
   const [projectData, setProjectData] = useState({
-    enquiryDate: new Date(),
     title: "",
     gender: "",
-    clientBirthday: "",
-    clientAnniversary: "",
-    companyAnniversary: "",
-    workStartDate: "",
-    source: [],
     companyName: "",
-    clientName: "",
+    enquiryDate: new Date(),
+    source: [],
+    sourceInformation: "",
     brandName: "",
+    clientName: "",
     phone1: "",
     phone2: "",
     email1: "",
     email2: "",
     website: "",
+    gstNo: "",
     businessAddress: "",
+    billingAddress: "",
     city: "",
     state: "",
     pincode: "",
     country: "",
     requirement: "",
     additionalInformation: "",
+    status: "",
     singleFile: null,
     multipleFiles: [],
     singleFileView: null,
@@ -65,47 +66,40 @@ const UpdateLead = () => {
   useEffect(() => {
     axios
       .get(
-        `${
-          import.meta.env.VITE_API_BASE
-        }/api/admin/getClientDetails/${clientId}`
+        `${import.meta.env.VITE_API_BASE}/api/admin/getLeadDetails/${leadId}`
       )
       .then((response) => {
         const clientData = response.data;
         setClient(response.data);
-        setProjectData((prev) => ({
-          ...prev,
-          // Populate projectData with fetched client details
-          enquiryDate: clientData?.enquiryDate
-            ? new Date(clientData.enquiryDate)
-            : prev.enquiryDate,
-          title: clientData?.title || prev.title,
-          gender: clientData?.gender || prev.gender,
-          clientBirthday: clientData?.clientBirthday || prev.clientBirthday,
-          clientAnniversary:
-            clientData?.clientAnniversary || prev.clientAnniversary,
-          companyAnniversary:
-            clientData?.companyAnniversary || prev.companyAnniversary,
-          workStartDate: clientData?.workStartDate || prev.workStartDate,
-          source: clientData?.source || prev.source,
-          companyName: clientData?.companyName || prev.companyName,
-          clientName: clientData?.clientName || prev.clientName,
-          brandName: clientData?.brandName || prev.brandName,
-          phone1: clientData?.phone1 || prev.phone1,
-          phone2: clientData?.phone2 || prev.phone2,
-          email1: clientData?.email1 || prev.email1,
-          email2: clientData?.email2 || prev.email2,
-          website: clientData?.website || prev.website,
-          businessAddress: clientData?.businessAddress || prev.businessAddress,
-          city: clientData?.city || prev.city,
-          state: clientData?.state || prev.state,
-          pincode: clientData?.pincode || prev.pincode,
-          country: clientData?.country || prev.country,
-          requirement: clientData?.requirement || prev.requirement,
+        setProjectData((projectData)=>({
+          ...projectData,
+          enquiryDate: clientData?.enquiryDate || projectData.enquiryDate,
+          title: clientData?.title || projectData.title,
+          gender: clientData?.gender || projectData.gender,
+          source: clientData?.source || projectData.source,
+          sourceInformation: clientData?.sourceInformation || projectData.sourceInformation,
+          companyName: clientData?.companyName || projectData.companyName,
+          clientName: clientData?.clientName || projectData.clientName,
+          brandName: clientData?.brandName || projectData.brandName,
+          phone1: clientData?.phone1 || projectData.phone1,
+          phone2: clientData?.phone2 || projectData.phone2,
+          email1: clientData?.email1 || projectData.email1,
+          email2: clientData?.email2 || projectData.email2,
+          website: clientData?.website || projectData.website,
+          gstNo: clientData?.gstNo || projectData.gstNo,
+          businessAddress: clientData?.businessAddress || projectData.businessAddress,
+          billingAddress: clientData?.billingAddress || projectData.billingAddress,
+          city: clientData?.city || projectData.city,
+          state: clientData?.state || projectData.state,
+          pincode: clientData?.pincode || projectData.pincode,
+          country: clientData?.country || projectData.country,
+          requirement: clientData?.requirement || projectData.requirement,
           additionalInformation:
-            clientData?.additionalInformation || prev.additionalInformation,
-          singleFileView: clientData?.singleFile || prev.singleFileView,
+            clientData?.additionalInformation || projectData.additionalInformation,
+          status: clientData?.status || projectData.status,
+          singleFileView: clientData?.singleFile || projectData.singleFileView,
           multipleFilesView:
-            clientData?.multipleFiles || prev.multipleFilesView,
+            clientData?.multipleFiles || projectData.multipleFilesView,
           singleFile: null,
           multipleFiles: [],
         }));
@@ -120,7 +114,9 @@ const UpdateLead = () => {
         console.error("Error fetching client details:", error);
         toast.error("Failed to fetch client details");
       });
-  }, [clientId]);
+  }, [leadId]);
+
+  const enquiryDate = projectData.enquiryDate ? moment(projectData.enquiryDate, 'DD-MM-YY') : null;
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
@@ -223,13 +219,15 @@ const UpdateLead = () => {
         });
       } else if (key === "multipleFiles" && Array.isArray(value)) {
         for (let i = 0; i < value.length; i++) {
-          formData.append("multipleFiles", value[i]);
+          formData.append('multipleFiles', value[i]);
         }
       } else if (key === "multipleFilesToRemove" && Array.isArray(value)) {
         for (let i = 0; i < value.length; i++) {
-          formData.append("multipleFilesToRemove", value[i]);
+          formData.append('multipleFilesToRemove', value[i]);
         }
-      } else if (key === "requirement" && Array.isArray(value)) {
+      }
+
+      else if (key === "requirement" && Array.isArray(value)) {
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
@@ -237,9 +235,10 @@ const UpdateLead = () => {
         formData.append(key, value);
       }
     });
+    console.log(formData)
     axios
       .patch(
-        `${import.meta.env.VITE_API_BASE}/api/admin/updateClient/${clientId}`,
+        `${import.meta.env.VITE_API_BASE}/api/admin/updateLead/${leadId}`,
         formData,
         {
           headers: {
@@ -261,6 +260,7 @@ const UpdateLead = () => {
       });
   };
 
+
   return (
     <>
       {" "}
@@ -273,36 +273,40 @@ const UpdateLead = () => {
         m="4"
       >
         <h1 className="text-2xl font-semibold">
-          Update Client {client.clientName}
+          Update Lead{client.clientName}
         </h1>
 
         <form onSubmit={handleSubmit}>
-          {/* <FormControl id="enquiryDate" isRequired>
-                <FormLabel>Enquiry Date</FormLabel>
-                <MyDatePicker
-                    selected={projectData.enquiryDate}
-                    onChange={(date) =>
-                        setProjectData({ ...projectData, enquiryDate: date })
-                    }
-                    defaultValue={moment()}
-                    format={"DD/MM/YYYY"}
-                />
-            </FormControl>
-                */}
+          <FormControl id="enquiryDate">
+            <FormLabel>Enquiry Date</FormLabel>
+            <MyDatePicker
+              className="mb-1"
+              selected={projectData.enquiryDate}
+              onChange={(date) =>
+                setProjectData({ ...projectData, enquiryDate: date })
+              }
+              defaultValue={moment()}
+              format={"DD/MM/YYYY"}
+            />
+            <br />
+            {projectData?.enquiryDate?._d && (
+              <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>
+            )}
+          </FormControl>
           <div className="hidden md:block">
             <Tabs>
               <TabList>
-                <Tab>Client Information</Tab>
-                <Tab>Address Information</Tab>
                 <Tab>Personal Information</Tab>
+                <Tab>Address Information</Tab>
+                <Tab>Billing Information</Tab>
                 <Tab>Additional Information</Tab>
                 <Tab>Files Information</Tab>
               </TabList>
 
               <TabPanels>
                 <TabPanel>
-                  <div className="flex gap-3 mb-2">
-                    <FormControl id="title" maxWidth={130} isRequired>
+                  <div className="flex gap-4 mb-3">
+                    <FormControl id="title" maxWidth={130}>
                       <FormLabel>Title</FormLabel>
                       <Select
                         placeholder="Select Title"
@@ -313,7 +317,6 @@ const UpdateLead = () => {
                         <Select.Option value="Mrs.">Mrs.</Select.Option>
                       </Select>
                     </FormControl>
-
                     <FormControl id="clientName">
                       <FormLabel>Client Name</FormLabel>
                       <Input
@@ -322,6 +325,20 @@ const UpdateLead = () => {
                         value={projectData.clientName}
                       />
                     </FormControl>
+                    <FormControl id="tags">
+                      <FormLabel>Source</FormLabel>
+                      <Flex>
+                        <SelectSource
+                          selectSourceValue={selectSourceValue}
+                          setSelectSourceValue={setSelectSourceValue}
+                        />
+                      </Flex>
+                    </FormControl>
+                    <FormControl id="clientName">
+                      <FormLabel>Source Information</FormLabel>
+                      <Input name="sourceInformation" onChange={handleChange} value={projectData.sourceInformation} />
+                    </FormControl>
+
                     <FormControl id="gender" maxWidth={150}>
                       <FormLabel>Gender</FormLabel>
                       <Select
@@ -337,87 +354,42 @@ const UpdateLead = () => {
                         <Select.Option value="Others">Others</Select.Option>
                       </Select>
                     </FormControl>
-                    <FormControl id="brandName">
-                      <FormLabel>Brand Name</FormLabel>
-                      <Input
-                        name="brandName"
-                        onChange={handleChange}
-                        value={client.brandName}
-                      />
-                    </FormControl>
                   </div>
+                  <FormControl id="phone1">
+                    <FormLabel>Phone Number 1</FormLabel>
+                    <Input
+                      name="phone1"
+                      onChange={handleChange}
+                      value={projectData.phone1}
+                    />
+                  </FormControl>
+                  <FormControl id="phone2">
+                    <FormLabel>Phone Number 2</FormLabel>
+                    <Input name="phone2" onChange={handleChange} value={projectData.phone2} />
+                  </FormControl>
+                  <FormControl id="website">
+                    <FormLabel>Website</FormLabel>
+                    <Input name="website" onChange={handleChange} value={projectData.website} />
+                  </FormControl>
 
-                  <div className="flex gap-3 my-3">
-                    <FormControl id="tags">
-                      <FormControl id="companyName">
-                        <FormLabel>Company Name</FormLabel>
-                        <Input
-                          name="companyName"
-                          onChange={handleChange}
-                          value={projectData.companyName}
-                        />
-                      </FormControl>
-                      <FormLabel>Source</FormLabel>
-                      <Flex>
-                        <SelectSource
-                          selectSourceValue={selectSourceValue}
-                          setSelectSourceValue={setSelectSourceValue}
-                        />
-                      </Flex>
-                    </FormControl>
-                    <FormControl id="phone1">
-                      <FormLabel>Phone Number 1</FormLabel>
-                      <Input
-                        name="phone1"
-                        onChange={handleChange}
-                        value={projectData.phone1}
-                      />
-                    </FormControl>
-                    <FormControl id="phone2">
-                      <FormLabel>Phone Number 2</FormLabel>
-                      <Input
-                        name="phone2"
-                        onChange={handleChange}
-                        value={projectData.phone2}
-                      />
-                    </FormControl>
-                  </div>
-
-                  <div className="flex gap-3 mb-3">
+                  <div className="flex gap-3">
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input
-                        name="email1"
-                        onChange={handleChange}
-                        value={client.email1}
-                      />
+                      <Input name="email1" onChange={handleChange} value={projectData.email1} />
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>
-                      <Input
-                        name="email2"
-                        onChange={handleChange}
-                        value={client.email2}
-                      />
+                      <Input name="email2" onChange={handleChange} value={projectData.email2} />
                     </FormControl>
-                    <FormControl id="website">
-                      <FormLabel>Website</FormLabel>
-                      <Input
-                        name="website"
-                        onChange={handleChange}
-                        value={client.website}
-                      />
-                    </FormControl>
-                  </div>
-                  <div className="flex gap-3">
                     <FormControl id="companyAnniversary">
-                      <FormLabel>Work Start Date</FormLabel>
+                      <FormLabel>Enquiry Date</FormLabel>
                       <MyDatePicker
-                        selected={projectData.workStartDate}
+                        value={enquiryDate}
+                        selected={projectData.enquiryDate}
                         onChange={(date) =>
                           setProjectData({
                             ...projectData,
-                            workStartDate: date,
+                            enquiryDate: date,
                           })
                         }
                         format={"DD/MM/YYYY"}
@@ -431,11 +403,10 @@ const UpdateLead = () => {
                       <FormLabel>Country</FormLabel>
                       <CountryDropdown
                         name="country"
-                        value={projectData.selectedCountry}
-                        onChange={handleSelectChange(
-                          setSelectedCountry,
-                          "selectedCountry"
-                        )}
+                        value={selectedCountry}
+                        onChange={(e) =>
+                          handleSelectChange(setSelectedCountry, "country", e)
+                        }
                         className="border-[0.375px] rounded-md max-w-[200px] h-[2rem]"
                       />
                     </FormControl>
@@ -444,7 +415,7 @@ const UpdateLead = () => {
                       <RegionDropdown
                         country={selectedCountry}
                         name="state"
-                        value={projectData.selectedState}
+                        value={selectedState}
                         onChange={(e) =>
                           handleSelectChange(setSelectedState, "state", e)
                         }
@@ -473,79 +444,78 @@ const UpdateLead = () => {
                     <Input
                       name="businessAddress"
                       onChange={handleChange}
-                      h="5rem"
+                      className="h-16"
                       value={projectData.businessAddress}
                     />
                   </FormControl>
+
                 </TabPanel>
 
                 <TabPanel>
                   <div className="flex gap-3">
-                    <FormControl id="clientBirthday">
-                      <FormLabel>Client Birthday</FormLabel>
-                      <MyDatePicker
-                        selected={projectData.clientBirthday}
-                        onChange={(date) =>
-                          setProjectData({
-                            ...projectData,
-                            clientBirthday: date,
-                          })
-                        }
-                        format={"DD/MM/YYYY"}
+                    <FormControl id="brandName" mb={3}>
+                      <FormLabel>Brand Name</FormLabel>
+                      <Input
+                        name="brandName"
+                        onChange={handleChange}
+                        value={projectData.brandName}
                       />
                     </FormControl>
-                    <FormControl id="clientAnniversary">
-                      <FormLabel>Client Anniversary</FormLabel>
-                      <MyDatePicker
-                        selected={projectData.clientAnniversary}
-                        onChange={(date) =>
-                          setProjectData({
-                            ...projectData,
-                            clientAnniversary: date,
-                          })
-                        }
-                        format={"DD/MM/YYYY"}
+                    <FormControl id="companyName" mb={3}>
+                      <FormLabel>Company Name</FormLabel>
+                      <Input
+                        name="companyName"
+                        onChange={handleChange}
+                        value={projectData.companyName}
                       />
                     </FormControl>
-                    <FormControl id="companyAnniversary">
-                      <FormLabel>Company Anniversary</FormLabel>
-                      <MyDatePicker
-                        selected={projectData.companyAnniversary}
-                        onChange={(date) =>
-                          setProjectData({
-                            ...projectData,
-                            companyAnniversary: date,
-                          })
-                        }
-                        format={"DD/MM/YYYY"}
+                    <FormControl id="gst" mb={3}>
+                      <FormLabel>GST</FormLabel>
+                      <Input
+                        name="gstNo"
+                        onChange={handleChange}
+                        value={projectData.gstNo}
                       />
                     </FormControl>
                   </div>
+                  <FormControl id="billingAddress" className="w-1/2">
+                    <FormLabel>Billing Address</FormLabel>
+                    <Input
+                      name="billingAddress"
+                      onChange={handleChange}
+                      className="h-16"
+                      value={projectData.billingAddress}
+                    />
+                  </FormControl>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Lead
+                  </Button>
                 </TabPanel>
                 <TabPanel>
-                  <div className="flex flex-col gap-3">
-                    <FormControl id="requirement" className="w-1/2">
-                      <FormLabel>Requirement</FormLabel>
-                      {/* <Input
-                                        name="requirement"
-                                        onChange={handleChange}
-                                        className="h-16"
-                                    /> */}
-                      <SelectTag
-                        selectTagValue={selectedTagValue}
-                        setSelectTagValue={setSelectedTagValue}
-                      />
-                    </FormControl>
-                    <FormControl id="additionalInformation" className="w-1/2">
-                      <FormLabel>Additional Information</FormLabel>
-                      <Input
-                        name="additionalInformation"
-                        onChange={handleChange}
-                        className="h-16"
-                        value={projectData.additionalInformation}
-                      />
-                    </FormControl>
-                  </div>
+                  <FormControl id="requirement" maxWidth={300}>
+                    <FormLabel>Requirement</FormLabel>
+                    {/* <Input
+                      name="requirement"
+                      onChange={handleChange}
+                      className="h-16"
+                    /> */}
+                    <SelectTag
+                      selectTagValue={selectedTagValue}
+                      setSelectTagValue={setSelectedTagValue}
+                    />
+                  </FormControl>
+                  <FormControl id="additionalInformation">
+                    <FormLabel>Additional Information</FormLabel>
+                    <Input
+                      name="additionalInformation"
+                      onChange={handleChange}
+                      className="h-16"
+                      value={projectData.additionalInformation}
+                    />
+                  </FormControl>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Create Lead
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div>
@@ -558,9 +528,8 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -592,9 +561,8 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -642,7 +610,7 @@ const UpdateLead = () => {
                       </div>
                     </div>
                     <Button type="submit" colorScheme="purple" className="mt-5">
-                      Update Client
+                      Update Lead
                     </Button>
                   </div>
                 </TabPanel>
@@ -676,20 +644,31 @@ const UpdateLead = () => {
                   <div className="flex gap-3 mb-3">
                     <FormControl id="tags">
                       <FormLabel>Source</FormLabel>
-                      <SelectSource
-                        selectSourceValue={selectSourceValue}
-                        setSelectSourceValue={setSelectSourceValue}
-                      />
+                      <Flex>
+                        <SelectSource
+                          selectSourceValue={selectSourceValue}
+                          setSelectSourceValue={setSelectSourceValue}
+                        />
+                      </Flex>
                     </FormControl>
-                    <FormControl id="gender" maxWidth={150}>
+                    <FormControl id="title" maxWidth={130}>
+                      <FormLabel>Title</FormLabel>
+                      <Select
+                        style={{ width: "100%" }}
+                        placeholder="Select Title"
+                        onChange={(value) => handleSelectOption("title", value)}
+                      >
+                        <Select.Option value="Mr.">Mr.</Select.Option>
+                        <Select.Option value="Mrs.">Mrs.</Select.Option>
+                      </Select>
+                    </FormControl>
+                    <FormControl id="gender">
                       <FormLabel>Gender</FormLabel>
                       <Select
+                        style={{ width: "100%" }}
                         name="gender"
-                        onChange={(value) =>
-                          handleSelectOption("gender", value)
-                        }
+                        onChange={(value) => handleSelectOption("gender", value)}
                         placeholder="Select gender"
-                        value={client.gender}
                       >
                         <Select.Option value="Male">Male</Select.Option>
                         <Select.Option value="Female">Female</Select.Option>
@@ -699,6 +678,10 @@ const UpdateLead = () => {
                   </div>
 
                   <div className="flex flex-col gap-3">
+                    <FormControl id="clientName">
+                      <FormLabel>Source Information</FormLabel>
+                      <Input name="sourceInformation" onChange={handleChange} />
+                    </FormControl>
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
                       <Input name="email1" onChange={handleChange} />
@@ -740,11 +723,19 @@ const UpdateLead = () => {
                     </FormControl>
                     <FormControl id="city">
                       <FormLabel>City</FormLabel>
-                      <Input name="city" onChange={handleChange} />
+                      <Input
+                        name="city"
+                        onChange={handleChange}
+                        value={projectData.city}
+                      />
                     </FormControl>
                     <FormControl id="pincode">
                       <FormLabel>Pincode</FormLabel>
-                      <Input name="pincode" onChange={handleChange} />
+                      <Input
+                        name="pincode"
+                        onChange={handleChange}
+                        value={projectData.pincode}
+                      />
                     </FormControl>
                   </div>
                   <FormControl id="businessAddress" className="w-1/2">
@@ -753,20 +744,33 @@ const UpdateLead = () => {
                       name="businessAddress"
                       onChange={handleChange}
                       className="h-32"
+                      value={projectData.businessAddress}
                     />
                   </FormControl>
                   <div className="flex flex-col mt-3 gap-3">
                     <FormControl id="brandName" mb={3}>
                       <FormLabel>Brand Name</FormLabel>
-                      <Input name="brandName" onChange={handleChange} />
+                      <Input
+                        name="brandName"
+                        onChange={handleChange}
+                        value={projectData.brandName}
+                      />
                     </FormControl>
                     <FormControl id="companyName" mb={3}>
                       <FormLabel>Company Name</FormLabel>
-                      <Input name="companyName" onChange={handleChange} />
+                      <Input
+                        name="companyName"
+                        onChange={handleChange}
+                        value={projectData.companyName}
+                      />
                     </FormControl>
                     <FormControl id="gst" mb={3}>
                       <FormLabel>GST</FormLabel>
-                      <Input name="gst" onChange={handleChange} />
+                      <Input
+                        name="gstNo"
+                        onChange={handleChange}
+                        value={projectData.gstNo}
+                      />
                     </FormControl>
                   </div>
                   <FormControl id="billingAddress" className="w-1/2">
@@ -775,6 +779,7 @@ const UpdateLead = () => {
                       name="billingAddress"
                       onChange={handleChange}
                       className="h-32"
+                      value={projectData.billingAddress}
                     />
                   </FormControl>
                   <div className="flex flex-col mt-3 gap-3">
@@ -792,14 +797,15 @@ const UpdateLead = () => {
                         name="additionalInformation"
                         onChange={handleChange}
                         className="h-16"
+                        value={projectData.additionalInformation}
                       />
                     </FormControl>
                   </div>
-                  <div className="flex mt-3 gap-3">
+                  <div className="flex gap-3">
                     {/* Display single file */}
                     {projectData.singleFile && (
                       <div>
-                        <p>Single File: {projectData.singleFile.name}</p>
+                        <p>Single File: {projectData.singleFile}</p>
                         <Button onClick={handleDeleteSingleFile}>Delete</Button>
                       </div>
                     )}
@@ -830,7 +836,7 @@ const UpdateLead = () => {
                     </FormControl>
                   </div>
                   <Button type="submit" colorScheme="purple" className="mt-5">
-                    Update Client
+                    Create Lead
                   </Button>
                 </TabPanel>
               </TabPanels>
