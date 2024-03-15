@@ -32,6 +32,7 @@ import GetProject from "./components/common/InfoBoxProject";
 import InfoBoxClient from "./components/common/InfoBoxClient";
 import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
+import UpdateLead from "./components/forms/UpdateLead";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -196,6 +197,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <UpdateClient></UpdateClient>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLead"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLead></UpdateLead>
               </AppLayout>
             }
           />

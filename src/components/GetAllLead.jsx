@@ -16,14 +16,18 @@ import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { toast } from "react-toastify"; // Import DeleteIcon
+import { toast } from "react-toastify"; 
+import { useDispatch } from "react-redux";
+import { setLeadId } from "../store/slice/LeadSlice";
+import { Link } from "react-router-dom";
 
 const GetAllLead = () => {
   const [leads, setLeads] = useState([]);
   const [selectedLead, setSelectedLead] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredLeads, setFilteredLeads] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
+  const [isLoading, setIsLoading] = useState(true); 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchData() {
@@ -85,6 +89,10 @@ const GetAllLead = () => {
     );
   }
 
+   const handleUpdateClient = (leadId) => {
+     dispatch(setLeadId(leadId));
+   };
+
   return (
     <>
       <div className="w-full pt-4">
@@ -117,150 +125,161 @@ const GetAllLead = () => {
             <Tbody maxHeight={100}>
               {searchText !== ""
                 ? filteredLeads.map((lead, index) => (
-                  <Tr key={lead._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{lead.companyName}</Td>
-                    <Td className="md:table-cell hidden">{lead.status}</Td>
-                    <Td className="md:table-cell hidden">{lead.brandName}</Td>
-                    <Td className="md:table-cell hidden">
-                      {lead.status === 0 && "Raw"}
-                      {lead.status === 1 && "In-Progress"}
-                      {lead.status === 2 && "Converted"}
-                      {lead.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton
-                          size="sm"
-                          as={Button}
+                    <Tr key={lead._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{lead.companyName}</Td>
+                      <Td className="md:table-cell hidden">{lead.status}</Td>
+                      <Td className="md:table-cell hidden">{lead.brandName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {lead.status === 0 && "Raw"}
+                        {lead.status === 1 && "In-Progress"}
+                        {lead.status === 2 && "Converted"}
+                        {lead.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton
+                            size="sm"
+                            as={Button}
+                            colorScheme="purple"
+                          >
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
                           colorScheme="purple"
+                          onClick={() => handleMoreInfo(lead)}
                         >
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 0)
-                            }
-                          >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 1)
-                            }
-                          >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(lead)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        onClick={() => handleDeleteLead(lead.lead_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          onClick={() => handleDeleteLead(lead.lead_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
                 : leads.map((lead, index) => (
-                  <Tr key={lead._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{lead.companyName}</Td>
-                    <Td className="md:table-cell hidden">{lead.status}</Td>
-                    <Td className="md:table-cell hidden">{lead.brandName}</Td>
-                    <Td className="md:table-cell hidden">
-                      {lead.status === 0 && "Raw"}
-                      {lead.status === 1 && "In-Progress"}
-                      {lead.status === 2 && "Converted"}
-                      {lead.status === 3 && "Lost"}
-                      <Menu>
-                        <MenuButton
-                          size="sm"
-                          as={Button}
+                    <Tr key={lead._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>{lead.companyName}</Td>
+                      <Td className="md:table-cell hidden">{lead.status}</Td>
+                      <Td className="md:table-cell hidden">{lead.brandName}</Td>
+                      <Td className="md:table-cell hidden">
+                        {lead.status === 0 && "Raw"}
+                        {lead.status === 1 && "In-Progress"}
+                        {lead.status === 2 && "Converted"}
+                        {lead.status === 3 && "Lost"}
+                        <Menu>
+                          <MenuButton
+                            size="sm"
+                            as={Button}
+                            colorScheme="purple"
+                          >
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 0)
+                              }
+                            >
+                              Raw
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 1)
+                              }
+                            >
+                              In-Progress
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 2)
+                              }
+                            >
+                              Converted
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(lead.lead_id, 3)
+                              }
+                            >
+                              Lost
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
                           colorScheme="purple"
+                          onClick={() => handleMoreInfo(lead)}
                         >
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 0)
-                            }
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteLead(lead.lead_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                        <Link to="/UpdateLead">
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            colorScheme="blue"
+                            ml={2}
+                            onClick={() => handleUpdateClient(lead.lead_id)}
                           >
-                            Raw
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 1)
-                            }
-                          >
-                            In-Progress
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 2)
-                            }
-                          >
-                            Converted
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(lead.lead_id, 3)
-                            }
-                          >
-                            Lost
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(lead)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() => handleDeleteLead(lead.lead_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                            Update
+                          </Button>
+                        </Link>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}
-      </div >
+      </div>
 
       <InfoModal
         modalFor="lead"
