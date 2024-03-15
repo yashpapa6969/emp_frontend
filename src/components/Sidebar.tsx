@@ -81,7 +81,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                     </Link>
                 </div>
             )} */}
-            <Accordion p={2} m={0} allowToggle>
+            <Accordion p={2} pr={3} m={0} allowToggle>
                 <AccordionItem border={"none"}>
                     <h2>
                         <AccordionButton className='flex justify-between'>
