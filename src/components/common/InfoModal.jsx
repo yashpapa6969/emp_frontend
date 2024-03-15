@@ -1004,8 +1004,6 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                               rel="noopener noreferrer"
                               textDecoration="none"
                               _hover={{ textDecoration: "none" }}
-                              display="inline-block"
-                              mr={2}
                               mb={2}
                               variant="solid"
                             >
