@@ -119,7 +119,7 @@ const GetAllTask = () => {
             setFilteredData={setFilteredClients}
             data={clients}
           >
-            <Thead bg={"#F1F5F9"}>
+            <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Brand Name</Th>
