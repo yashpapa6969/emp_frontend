@@ -44,7 +44,7 @@ const Lead = () => {
     state: "",
     pincode: "",
     country: "",
-    requirement: "",
+    requirement: [],
     additionalInformation: "",
     sourceInformation: "",
     singleFile: null,

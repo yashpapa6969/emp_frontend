@@ -24,7 +24,7 @@ import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import { Text } from '@chakra-ui/react';
 const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({
@@ -65,6 +65,13 @@ const Client = () => {
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
   };
+
+
+  const RequiredIndicator = () => {
+    return <Text as="span" color="red.500" ml={1}>*</Text>;
+  };
+
+
   useEffect(() => {
     setProjectData((prev) => ({
       ...prev,
@@ -94,11 +101,9 @@ const Client = () => {
       (option) => option.value
     );
 
-    // Fetch tag names for selected tag IDs
     const selectedTagNames = selectedTags.map((tagId) => getTagNameById(tagId));
     console.log(selectedTagNames);
 
-    // Update projectData with tag names
     setProjectData({
       ...projectData,
       source: [...projectData.source, ...selectedTagNames],
@@ -157,7 +162,25 @@ const Client = () => {
       }
     });
 
-    console.log(formData);
+    const requiredFields = [
+      { key: 'brandName', label: 'Brand Name' },
+      { key: 'gender', label: 'Gender' },
+      { key: 'title', label: 'Title' },
+      { key: 'enquiryDate', label: 'Enquiry Date' },
+      { key: 'source', label: 'Source', isArray: true },
+      { key: 'clientName', label: 'Client Name' },
+      { key: 'companyName', label: 'Company Name' },
+      { key: 'phone1', label: 'Phone 1' }
+    ];
+
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
+    console.log(formData.brandName
+    );
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createClient`,
@@ -218,7 +241,7 @@ const Client = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* <FormControl id="enquiryDate" isRequired>
+      {/* <FormControl id="enquiryDate" >
                 <FormLabel>Enquiry Date</FormLabel>
                 <MyDatePicker
                     selected={projectData.enquiryDate}
@@ -255,8 +278,9 @@ const Client = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-2">
-                <FormControl id="title" maxWidth={130} isRequired>
-                  <FormLabel>Title</FormLabel>
+                <FormControl id="title" maxWidth={130} >
+                  <FormLabel>Title         <RequiredIndicator />
+                  </FormLabel>
                   <Select
                     style={{ width: "100%" }}
                     placeholder="Select Title"
@@ -267,22 +291,27 @@ const Client = () => {
                   </Select>
                 </FormControl>
                 <FormControl id="clientName">
-                  <FormLabel>Client Name</FormLabel>
+                  <FormLabel>
+                    Client Name
+                    <RequiredIndicator />
+                  </FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="brandName">
-                  <FormLabel>Brand Name</FormLabel>
+                <FormControl id="brandName" >
+                  <FormLabel>Brand Name   <RequiredIndicator /> </FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="companyName" isRequired>
-                  <FormLabel>Company Name</FormLabel>
+                <FormControl id="companyName" >
+                  <FormLabel>Company Name         <RequiredIndicator />
+                  </FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
               </div>
               <div className="flex">
                 <FormControl id="gender" mr={3} maxWidth={100}>
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel>Gender         <RequiredIndicator />
+                  </FormLabel>
                   <Select
                     style={{ width: "100%" }}
                     name="gender"
@@ -294,8 +323,8 @@ const Client = () => {
                     <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="tags" maxWidth={250} mr={3} isRequired>
-                  <FormLabel>Source</FormLabel>
+                <FormControl id="tags" maxWidth={250} mr={3} >
+                  <FormLabel>Source  <RequiredIndicator /> </FormLabel>
                   <Flex>
                     <SelectSource
                       selectSourceValue={selectSourceValue}
@@ -303,33 +332,34 @@ const Client = () => {
                     />
                   </Flex>
                 </FormControl>
-                <FormControl id="clientName">
+                <FormControl id="sourceInformation">
                   <FormLabel>Source Information</FormLabel>
                   <Input name="sourceInformation" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 my-3">
-                <FormControl id="phone1" isRequired>
-                  <FormLabel>Phone Number 1</FormLabel>
+                <FormControl id="phone1">
+                  <FormLabel>Phone Number 1 <RequiredIndicator /> </FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone2" isRequired>
+
+                <FormControl id="phone2" >
                   <FormLabel>Phone Number 2</FormLabel>
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="website" isRequired>
+                <FormControl id="website" >
                   <FormLabel>Website</FormLabel>
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
 
               <div className="flex gap-3 mb-3">
-                <FormControl id="email1" isRequired>
+                <FormControl id="email1" >
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="email2" isRequired>
+                <FormControl id="email2" >
                   <FormLabel>Email 2</FormLabel>
                   <Input name="email2" onChange={handleChange} />
                 </FormControl>
@@ -521,20 +551,22 @@ const Client = () => {
             <TabPanel>
               <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="clientName">
-                  <FormLabel>Client Name</FormLabel>
+                  <FormLabel>
+                    Client Name <RequiredIndicator />
+                  </FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="brandName" mb={3} isRequired>
-                  <FormLabel>Brand Name</FormLabel>
+                <FormControl id="brandName" mb={3} >
+                  <FormLabel>Brand Name  <RequiredIndicator /> </FormLabel>
                   <Input name="brandName" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="companyName" mb={3}>
-                  <FormLabel>Company Name</FormLabel>
+                  <FormLabel>Company Name <RequiredIndicator /> </FormLabel>
                   <Input name="companyName" onChange={handleChange} />
                 </FormControl>
 
                 <FormControl id="phone1">
-                  <FormLabel>Phone Number 1</FormLabel>
+                  <FormLabel>Phone Number 1 <RequiredIndicator /> </FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="phone2">
@@ -544,7 +576,7 @@ const Client = () => {
               </div>
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags" maxWidth={150}>
-                  <FormLabel>Source</FormLabel>
+                  <FormLabel>Source  <RequiredIndicator /> </FormLabel>
                   <SelectSource
                     width={150}
                     selectSourceValue={selectSourceValue}
@@ -571,13 +603,13 @@ const Client = () => {
                       setSelectSourceValue={setSelectSourceValue}
                     />
                   </Flex>
-                  <FormControl id="clientName" isRequired>
+                  <FormControl id="sourceInformation">
                     <FormLabel>Source Information</FormLabel>
                     <Input name="sourceInformation" onChange={handleChange} />
                   </FormControl>
                 </FormControl>
-                <FormControl id="gender" maxWidth={100} mr={3} isRequired>
-                  <FormLabel>Gender</FormLabel>
+                <FormControl id="gender" maxWidth={100} mr={3} >
+                  <FormLabel>Gender  <RequiredIndicator /> </FormLabel>
                   <Select
                     style={{ width: "100%" }}
                     name="gender"
