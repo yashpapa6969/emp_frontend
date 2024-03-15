@@ -979,8 +979,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                         <Text fontWeight="bold">Single File: </Text>
                         <Button
                           as="a"
-                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile.split("/")[4]
-                            }`}
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           textDecoration="none"
@@ -1000,8 +999,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
                           <div key={index}>
                             <Button
                               as="a"
-                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
-                                }`}
+                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               textDecoration="none"

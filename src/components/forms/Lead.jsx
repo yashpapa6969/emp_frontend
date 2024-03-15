@@ -141,20 +141,22 @@ const Lead = () => {
 
     Object.entries(projectData).forEach(([key, value]) => {
       if (key === "source" && Array.isArray(value)) {
-        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
       } else if (key === "requirement" && Array.isArray(value)) {
-        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      } else if (value !== "") {
-        // For all other non-empty values
+      } else if (key === "multipleFiles" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append("multipleFiles", value[i]);
+        }
+      } else if (value !== "" && value !== null) {
         formData.append(key, value);
       }
     });
+
     axios
       .post(`${import.meta.env.VITE_API_BASE}/api/admin/createLead`, formData, {
         headers: {
@@ -162,42 +164,42 @@ const Lead = () => {
         },
       })
       .then((response) => {
-        if (response.status === 200 || response.status ===201) {
-         toast.success(response.data.message, {
-           autoClose: 2000, 
-         });
-            setProjectData({
-              enquiryDate: new Date(),
-              source: [],
-              companyName: "",
-              clientName: "",
-              brandName: "",
-              phone1: "",
-              phone2: "",
-              email1: "",
-              email2: "",
-              website: "",
-              gstNo: "",
-              businessAddress: "",
-              billingAddress: "",
-              city: "",
-              state: "",
-              pincode: "",
-              country: "",
-              requirement: "",
-              additionalInformation: "",
-              sourceInformation: "",
-              singleFile: null,
-              multipleFiles: [],
-            });
-            setTimeout(() => {
-              navigate("/manageLeads");
-            }, 2000);
+        if (response.status === 200 || response.status === 201) {
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
+          setProjectData({
+            enquiryDate: new Date(),
+            source: [],
+            companyName: "",
+            clientName: "",
+            brandName: "",
+            phone1: "",
+            phone2: "",
+            email1: "",
+            email2: "",
+            website: "",
+            gstNo: "",
+            businessAddress: "",
+            billingAddress: "",
+            city: "",
+            state: "",
+            pincode: "",
+            country: "",
+            requirement: "",
+            additionalInformation: "",
+            sourceInformation: "",
+            singleFile: null,
+            multipleFiles: [],
+          });
+          setTimeout(() => {
+            navigate("/manageLeads");
+          }, 2000);
         } else {
-         
-         toast.success(response.data.message, {
-           autoClose: 2000,
-         });
+
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
@@ -357,7 +359,7 @@ const Lead = () => {
                   value={projectData.businessAddress}
                 />
               </FormControl>
-          
+
             </TabPanel>
 
             <TabPanel>

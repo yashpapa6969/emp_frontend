@@ -591,7 +591,7 @@ const UpdateClient = () => {
                         )}
                       </div>
                       <div className="flex gap-3">
-                        {projectData.multipleFilesView.map((file, index) => (
+                        {projectData?.multipleFilesView.map((file, index) => (
                           <div key={index}>
                             <p>
                               File {index + 1}: {file}
@@ -816,7 +816,7 @@ const UpdateClient = () => {
                   </div>
                   <div className="flex gap-3">
                     {/* Display multiple files */}
-                    {projectData.multipleFiles.map((file, index) => (
+                    {projectData?.multipleFiles.map((file, index) => (
                       <div key={index}>
                         <p>
                           File {index + 1}: {file.name}
