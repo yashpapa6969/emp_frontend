@@ -4,7 +4,7 @@ export const convertDateFormatString = (date) => {
     return dateArr[2] + " " + dateArr[1] + " " + dateArr[3];
 }
 
-export const convertDateStringFormat = (date) => {
+export const converDateStringFormat = (date) => {
     const dateArr = date.split(" ");
     return dateArr[1] + " " + dateArr[0] + " " + dateArr[2];
 }

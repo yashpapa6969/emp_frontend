@@ -149,8 +149,25 @@ const CreateProject = () => {
         }
       )
       .then((response) => {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status ===201) {
           toast.success(response.data.message);
+          setProjectData({
+            projectName: "",
+            client_id: "",
+            priority: "",
+            startDate: "",
+            deadline: "",
+            tags: [],
+            description: "",
+            employees: [],
+          });
+           toast.success(response.data.message, {
+             autoClose: 2000,
+           });
+               setTimeout(() => {
+                 navigate("/getAllClient");
+               }, 2000);
+
         } else {
           console.error("Failed to create project");
           console.log(response.data.message);
