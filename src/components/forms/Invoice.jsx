@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Stack,
   Input,
@@ -31,6 +31,12 @@ const Invoice = () => {
     fetchClients();
     fetchProducts();
   }, []);
+
+  const addServiceRef = useRef(null);
+
+  useEffect(() => {
+    if (addServiceRef.current) addServiceRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [services])
 
   const fetchClients = async () => {
     try {
@@ -291,8 +297,10 @@ const Invoice = () => {
                 </div>
               </div>
             ))}
-            <div onClick={handleAddService}
-              className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg hover:bg-gray-50 rounded-lg border-gray-100 text-gray-400 flex flex-col gap-4 items-center justify-center cursor-pointer">
+            <div
+              onClick={handleAddService}
+              ref={addServiceRef}
+              className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg bg-purple-200 hover:bg-purple-300 rounded-lg border-gray-100 text-purple-900 flex flex-col gap-4 items-center justify-center cursor-pointer">
               <FaPlus size={40} />
               Add Service
             </div>

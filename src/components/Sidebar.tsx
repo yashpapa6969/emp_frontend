@@ -21,6 +21,7 @@ interface Props {
 const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Props) => {
     const [expandNavbar, setExpandNavbar] = useState(false);
     const [showAccordion, setShowAccordion] = useState(false);
+    const [accordionIndex, setAccordionIndex] = useState([10]);
 
     const handleNavClose = () => {
         const windowWidth = window.innerWidth;
@@ -33,12 +34,14 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
         }
         if (type === "leave") {
             setExpandNavbar(false);
+            setAccordionIndex([10]);
         }
         setShowAccordion(false);
     }
 
     const accordionClick = () => {
-        setShowAccordion(!showAccordion);
+        if (accordionIndex[0] != 0) setAccordionIndex([0]);
+        else setAccordionIndex([10]);
     }
 
     return (
@@ -57,8 +60,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
             <Link to="/getAllManager" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllManager' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <GoPersonFill />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Manager Management</span>
             </Link>
-            <Link to="/getAllInvoice" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 mt-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllInvoice' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <HiDocumentDuplicate />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Invoice Management</span>
+            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <IoPeopleSharp size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Client Management</span>
+            </Link>
+            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <RiDragDropFill size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Leads Management</span>
             </Link>
             {/* <div onClick={accordionClick} className={`flex items-center justify-between h-[45px] mx-4 mt-2 mb-0 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'HRManagement' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <div className='flex items-center gap-2'>
@@ -81,11 +87,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                     </Link>
                 </div>
             )} */}
-            <Accordion p={2} m={0} allowToggle>
+            <Accordion p={2} pr={3} m={0} allowToggle onClick={accordionClick} index={accordionIndex}>
                 <AccordionItem border={"none"}>
                     <h2>
                         <AccordionButton className='flex justify-between'>
-                            <div className='flex gap-2'>
+                            <div className='flex gap-2 text-left'>
                                 <IoMdPerson size={20} /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>HR Management</span>
                             </div>
                             {expandNavbar && <AccordionIcon />}
@@ -104,14 +110,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                     </AccordionPanel>
                 </AccordionItem>
             </Accordion>
+            <Link to="/getAllInvoice" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 mt-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllInvoice' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <HiDocumentDuplicate />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Invoice Management</span>
+            </Link>
             <Link to="/getAllProject" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllProject' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <FaDiagramProject size={20} /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>Project Management</span>
-            </Link>
-            <Link to="/getAllClient" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <IoPeopleSharp size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Client Management</span>
-            </Link>
-            <Link to="/manageLeads" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <RiDragDropFill size={20} />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Leads Management</span>
             </Link>
             {/* <Link to="/getAllLead" onClick={handleNavClose} className={`flex items-center gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLead' && 'bg-gray-500'}`}>
                 <FaTty size={20} /> Lead Management

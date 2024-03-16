@@ -13,6 +13,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import MyDatePicker from "../common/MyDatePicker";
+import { converDateFormatString, converDateStringFormat } from "../../helpers";
 
 const Emp = () => {
   const [projectData, setProjectData] = useState({
@@ -224,7 +225,7 @@ const Emp = () => {
                     format={"DD/MM/YYYY"}
                   />
                   <br />
-                  {projectData?.dob?._d && <>{`${projectData?.dob?._d}`.slice(4, 16)}</>}
+                  {projectData?.dob?._d && <>{converDateFormatString(projectData?.dob?._d)}</>}
                 </FormControl>
               </div>
 
@@ -279,7 +280,7 @@ const Emp = () => {
                     format={"DD/MM/YYYY"}
                   />
                   <br />
-                  {projectData?.joiningDate?._d && <>{joiningDate}</>}
+                  {projectData?.joiningDate?._d && <>{converDateStringFormat(joiningDate)}</>}
                 </FormControl>
                 <FormControl id="manager_id" isRequired>
                   <FormLabel>Assigned Manager</FormLabel>
@@ -455,7 +456,7 @@ const Emp = () => {
                     }
                     format={"DD/MM/YYYY"}
                   />
-                  {projectData?.dob?._d && <>{`${projectData?.dob?._d}`}</>}
+                  {projectData?.dob?._d && <>{converDateFormatString(projectData?.dob?._d)}</>}
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">

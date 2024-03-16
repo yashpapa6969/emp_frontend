@@ -23,7 +23,8 @@ const UpcomingEventsCard = () => {
   }, []);
 
   const handleClientSelect = (clientId) => {
-    setSelectedClient(clientId);
+    if (selectedClient != clientId) setSelectedClient(clientId);
+    else setSelectedClient(null);
   };
 
   return (
