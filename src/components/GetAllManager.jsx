@@ -15,6 +15,8 @@ import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import { GoPlus } from "react-icons/go"; 
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
@@ -72,6 +74,16 @@ const GetAllManagers = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
+        <Link to="/CreateManager">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Manager
+          </Button>
+        </Link>
 
         {managers.length === 0 && (
           <Empty

@@ -23,6 +23,7 @@ import { Empty } from "antd";
 import { Link } from "react-router-dom";
 import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
+import { GoPlus } from "react-icons/go"; 
 
 const GetAllInvoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -104,58 +105,70 @@ const GetAllInvoices = () => {
     <>
       <div className="w-full p-8">
         <h1 className="text-3xl font-bold mb-4">Invoice Information</h1>
+        <div className="flex flex-wrap justify-between items-center mb-5">
+          <Link to="/CreateInvoice">
+            <Button
+              colorScheme="blue"
+              _hover={{ bg: "blue.600" }}
+              mb="2"
+              className="flex gap-2 items-center"
+            >
+              <GoPlus /> Add an Invoice
+            </Button>
+          </Link>
 
-        <div className="flex items-center mb-2">
-          <select
-            className="p-2 border rounded-md mr-2"
-            value={selectedYear || ""}
-            onChange={(e) => setSelectedYear(e.target.value)}
-          >
-            <option value="" disabled>
-              Select Financial Year
-            </option>
-            <option value="2025">2025-2026</option>
-            <option value="2024">2024-2025</option>
-            <option value="2023">2023-2024</option>
-            <option value="2022">2022-2023</option>
-            <option value="2021">2021-2022</option>
-            <option value="2020">2020-2021</option>
-            <option value="2020">2019-2020</option>
-            <option value="2019">2018-2019</option>
-            <option value="2018">2017-2018</option>
-            <option value="2017">2016-2017</option>
-            <option value="2015">2015-2016</option>
-            <option value="2014">2014-2015</option>
-            <option value="2013">2013-2014</option>
-            <option value="2012">2012-2013</option>
-            <option value="2011">2011-2012</option>
-          </select>
-          {selectedYear && (
+          <div className="flex items-center justify-end mb-5">
             <select
-              className="p-2 border rounded-md"
-              defaultValue=""
-              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="p-2 border rounded-md mr-2"
+              value={selectedYear || ""}
+              onChange={(e) => setSelectedYear(e.target.value)}
             >
               <option value="" disabled>
-                Select Month
+                Select Financial Year
               </option>
-              <option value="1">January</option>
-              <option value="2">February</option>
-              <option value="3">March</option>
-              <option value="4">April</option>
-              <option value="5">May</option>
-              <option value="6">June</option>
-              <option value="7">July</option>
-              <option value="8">August</option>
-              <option value="9">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
+              <option value="2025">2025-2026</option>
+              <option value="2024">2024-2025</option>
+              <option value="2023">2023-2024</option>
+              <option value="2022">2022-2023</option>
+              <option value="2021">2021-2022</option>
+              <option value="2020">2020-2021</option>
+              <option value="2020">2019-2020</option>
+              <option value="2019">2018-2019</option>
+              <option value="2018">2017-2018</option>
+              <option value="2017">2016-2017</option>
+              <option value="2015">2015-2016</option>
+              <option value="2014">2014-2015</option>
+              <option value="2013">2013-2014</option>
+              <option value="2012">2012-2013</option>
+              <option value="2011">2011-2012</option>
             </select>
-          )}
-          <Button className="ml-2" colorScheme="gray" onClick={handleReset}>
-            Reset
-          </Button>
+            {selectedYear && (
+              <select
+                className="p-2 border rounded-md"
+                defaultValue=""
+                onChange={(e) => setSelectedMonth(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select Month
+                </option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            )}
+            <Button className="ml-2" colorScheme="gray" onClick={handleReset}>
+              Reset
+            </Button>
+          </div>
         </div>
 
         {isLoading ? (
