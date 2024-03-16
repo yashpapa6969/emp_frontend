@@ -272,9 +272,10 @@ const UpdateLead = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-2xl font-semibold">
-          Update Lead{client.clientName}
+        <h1 className="text-md font-semibold">
+          Update Lead
         </h1>
+        <h1 className="text-2xl font-semibold mb-3">{client.clientName}</h1>
 
         <form onSubmit={handleSubmit}>
           <FormControl id="enquiryDate">
