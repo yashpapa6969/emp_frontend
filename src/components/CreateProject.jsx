@@ -31,6 +31,9 @@ const CreateProject = () => {
     description: "",
     employees: [],
   });
+  const RequiredIndicator = () => {
+    return <Text as="span" color="red.500" ml={1}>*</Text>;
+  };
   const [tags, setTags] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [clients, setClients] = useState([]);
@@ -140,6 +143,23 @@ const CreateProject = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const requiredFields = [
+      { key: 'projectName', label: 'Project Name' },
+      { key: 'client_id', label: 'Brand Name' },
+      { key: 'priority', label: 'Priority' },
+      { key: 'startDate', label: 'Start Date' },
+      { key: 'deadline', label: 'Deadline' },
+      { key: 'description', label: 'Description' },
+      { key: 'employees', label: 'Employees', isArray: true },
+
+    ];
+   
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createProject`,
@@ -202,16 +222,16 @@ const CreateProject = () => {
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
             <div className="flex flex-col md:flex-row gap-4">
-              <FormControl id="projectName" isRequired>
-                <FormLabel>Project Name</FormLabel>
+              <FormControl id="projectName" >
+                <FormLabel>Project Name<RequiredIndicator/> </FormLabel>
                 <Input
                   name="projectName"
                   onChange={handleChange}
                   value={projectData.projectName}
                 />
               </FormControl>
-              <FormControl id="client_id" isRequired>
-                <FormLabel>Brand Name</FormLabel>
+              <FormControl id="client_id" >
+                <FormLabel>Brand Name<RequiredIndicator/> </FormLabel>
                 <Select
                   onChange={handleClientChange}
                   size="md"
@@ -225,8 +245,8 @@ const CreateProject = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl id="priority" isRequired>
-                <FormLabel>Priority</FormLabel>
+              <FormControl id="priority" >
+                <FormLabel>Priority<RequiredIndicator/> </FormLabel>
                 <Select
                   width={300}
                   name="priority"
@@ -251,7 +271,7 @@ const CreateProject = () => {
               </Card>
             )}
             <FormControl id="description">
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Description<RequiredIndicator/> </FormLabel>
               <Input
                 name="description"
                 onChange={handleChange}
@@ -261,8 +281,8 @@ const CreateProject = () => {
             </FormControl>
 
             <div className="flex gap-2">
-              <FormControl mb="4" isRequired>
-                <FormLabel>Start Date</FormLabel>
+              <FormControl mb="4" >
+                <FormLabel>Start Date<RequiredIndicator/> </FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.startDate}
@@ -276,7 +296,7 @@ const CreateProject = () => {
                 )}
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Deadline</FormLabel>
+                <FormLabel>Deadline<RequiredIndicator/> </FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.deadline}
@@ -290,8 +310,8 @@ const CreateProject = () => {
                 )}
               </FormControl>
             </div>
-            <FormControl id="employees" isRequired>
-              <FormLabel>Employees</FormLabel>
+            <FormControl id="employees" >
+              <FormLabel>Employees<RequiredIndicator/> </FormLabel>
               <Select
                 onChange={handleEmployeeChange}
                 size="md"
