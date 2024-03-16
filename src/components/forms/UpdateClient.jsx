@@ -25,6 +25,7 @@ import SelectTag from "../common/SelectTag";
 import { useSelector, useDispatch } from "react-redux";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
 import moment from "moment";
+import { convertDateFormatString } from "../../helpers";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
@@ -276,9 +277,10 @@ const UpdateClient = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-2xl font-semibold">
-          Update Client {client.clientName}
+        <h1 className="text-md font-semibold">
+          Update Client
         </h1>
+        <h1 className="text-2xl font-semibold">{client.clientName}</h1>
 
         <form onSubmit={handleSubmit}>
           {/* <FormControl id="enquiryDate" isRequired>
@@ -427,6 +429,7 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
+                      {workStartDate && <p>{convertDateFormatString(workStartDate)}</p>}
                     </FormControl>
                   </div>
                 </TabPanel>
@@ -499,6 +502,7 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
+                      {clientBirthdayDate && <p>{convertDateFormatString(clientBirthdayDate)}</p>}
                     </FormControl>
                     <FormControl id="clientAnniversary">
                       <FormLabel>Client Anniversary</FormLabel>
@@ -513,6 +517,7 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
+                      {clientAnniversaryDate && <p>{convertDateFormatString(clientAnniversaryDate)}</p>}
                     </FormControl>
                     <FormControl id="companyAnniversary">
                       <FormLabel>Company Anniversary</FormLabel>
@@ -527,6 +532,7 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
+                      {companyAnniversaryDate && <p>{convertDateFormatString(companyAnniversaryDate)}</p>}
                     </FormControl>
                   </div>
                 </TabPanel>
@@ -572,7 +578,6 @@ const UpdateClient = () => {
                                 rel="noopener noreferrer"
                                 textDecoration="none"
                                 _hover={{ textDecoration: "none" }}
-                                display="inline-block"
                                 variant="solid"
                               >
                                 View
@@ -605,9 +610,6 @@ const UpdateClient = () => {
                                 rel="noopener noreferrer"
                                 textDecoration="none"
                                 _hover={{ textDecoration: "none" }}
-                                display="inline-block"
-                                mr={2}
-                                mb={2}
                                 variant="solid"
                               >
                                 View

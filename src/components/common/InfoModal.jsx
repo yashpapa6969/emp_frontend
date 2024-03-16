@@ -1120,7 +1120,7 @@ if (modalFor === "leave")
                   <Link to={`/GetClient`}>
                     <Button colorScheme="green">Client details</Button>
                   </Link>
-                  <Divider type="vertical" />
+                  {/* <Divider type="vertical" />
                   <Menu>
                     <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
                       Actions
@@ -1137,7 +1137,7 @@ if (modalFor === "leave")
                         </div>
                       </MenuItem>
                     </MenuList>
-                  </Menu>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">

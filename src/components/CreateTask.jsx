@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import MyDatePicker from "./common/MyDatePicker";
 import { toast } from "react-toastify";
+import { convertDateFormatString } from "../helpers";
 
 
 const CreateTask = () => {
@@ -45,19 +46,19 @@ const CreateTask = () => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
 
-   axios
-     .post(
-       `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
-       { brandName: selectedBrand }
-     )
-     .then((response) => {
-       setProjects(response.data);
-       
-     })
-     .catch((error) => {
-       console.error("Error fetching projects:", error);
-       toast.error(error.response.data.message);
-     });
+    axios
+      .post(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
+        { brandName: selectedBrand }
+      )
+      .then((response) => {
+        setProjects(response.data);
+
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+        toast.error(error.response.data.message);
+      });
 
   };
 
@@ -211,7 +212,7 @@ const CreateTask = () => {
               placeholderText="Pick Date"
             />
             <br />
-            {startDate?._d && <>{`${startDate?._d}`.slice(4, 16)}</>}
+            {startDate && <p>{convertDateFormatString(startDate)}</p>}
           </FormControl>
 
           <FormControl maxWidth={200} isRequired>
@@ -224,7 +225,7 @@ const CreateTask = () => {
               placeholderText="Pick Date"
             />
             <br />
-            {deadline?._d && <>{`${deadline?._d}`.slice(4, 16)}</>}
+            {deadline && <p>{convertDateFormatString(deadline)}</p>}
           </FormControl>
         </div>
 
