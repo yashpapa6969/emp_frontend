@@ -3,6 +3,8 @@ import { FaFire, FaPlus, FaTrash } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Empty, Tag } from "antd";
+import { Button } from "@chakra-ui/react";
+import InfoModal from "../common/InfoModal";
 
 export const CustomKanban = ({ data }) => {
     return (
@@ -16,7 +18,7 @@ const Board = ({ data }) => {
     const [cards, setCards] = useState(data);
 
     return (
-        <div className="grid grid-cols-3 w-full gap-3">
+        <div className="grid grid-cols-3 w-full h-full gap-3">
             {statusData.map((item) => (
                 <Column
                     key={`col-${item.column}`}
@@ -137,7 +139,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
     const filteredCards = cards.filter((c) => c.status.toLowerCase() === column.toLowerCase());
 
     return (
-        <div className={`w-full bg-gray-100 rounded-md p-4 h-[400px] ${column === "converted" ? "col-span-3" : "col-span-3 md:col-span-1"}`}>
+        <div className={`w-full bg-gray-100 rounded-md p-4 min-h-[250px] h-full ${column === "converted" ? "col-span-3" : "col-span-3 md:col-span-1"}`}>
             <div className="mb-3 flex items-center justify-between">
                 <h3 className={`font-medium ${headingColor}`}>{title}</h3>
                 <span className="rounded text-sm text-neutral-400">
@@ -168,7 +170,7 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
                             ))}
                         </div>
                     )}
-                    <DropIndicator beforeId={null} column={column} />
+                <DropIndicator beforeId={null} column={column} />
                 {/* <AddCard column={column} setCards={setCards} /> */}
             </div>
         </div>
@@ -176,8 +178,10 @@ const Column = ({ title, headingColor, cards, column, setCards, data }) => {
 };
 
 const Card = ({ card, column, handleDragStart }) => {
+    const [selectedLead, setSelectedLead] = useState(null);
+
     return (
-        <div>
+        <>
             <DropIndicator beforeId={card?._id} column={column} />
             <motion.div
                 layout
@@ -187,7 +191,10 @@ const Card = ({ card, column, handleDragStart }) => {
                 className={`cursor-grab rounded border p-3 active:cursor-grabbing bg-white`}
             // ${column === "raw" ? "bg-red-400" : column === "in-progress" ? "bg-green-400" : column === "converted" ? "bg-purple-400" : "bg-blue-400" }
             >
-                <h2 className="text-lg capitalize">{card?.title && card?.title} {card?.clientName}</h2>
+                <div className="flex gap-2 items-center justify-between">
+                    <h2 className="text-lg capitalize">{card?.title && card?.title} {card?.clientName}</h2>
+                    <Button bg="gray.500" _hover={{ bg: "gray.400" }} color={"gray.50"} size={"sm"} onClick={() => setSelectedLead(card)}>View Details</Button>
+                </div>
                 <div className="flex gap-2 flex-wrap mt-4">
                     {card?.country && <Tag color="orange">Location: {card?.city && card?.city}, {card?.country}</Tag>}
                     {card?.brandName && <Tag color="green">Brand: {card?.brandName}</Tag>}
@@ -196,7 +203,13 @@ const Card = ({ card, column, handleDragStart }) => {
                     {card?.website && <Tag color="cyan">{card?.website}</Tag>}
                 </div>
             </motion.div>
-        </div>
+            <InfoModal
+                modalFor="lead"
+                data={selectedLead}
+                onClose={() => setSelectedLead(null)}
+                isOpen={selectedLead !== null}
+            />
+        </>
     );
 };
 

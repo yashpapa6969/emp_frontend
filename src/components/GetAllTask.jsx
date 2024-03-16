@@ -119,7 +119,7 @@ const GetAllTask = () => {
             setFilteredData={setFilteredClients}
             data={clients}
           >
-            <Thead bg={"#F1F5F9"}>
+            <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
               <Tr>
                 <Th fontWeight="bold">S. No.</Th>
                 <Th fontWeight="bold">Brand Name</Th>
@@ -244,7 +244,13 @@ const GetAllTask = () => {
                         }
                       </div>
                     </Td>
-                    <Td className="md:table-cell hidden capitalize">{priorityArray[client.priority] || client.priority}</Td>
+                    <Td className={`md:table-cell hidden capitalize 
+                      ${priorityArray[client.priority] === "urgent" && "bg-red-400"} 
+                      ${priorityArray[client.priority] === "high" && "bg-orange-300"}
+                      ${priorityArray[client.priority] === "medium" && "bg-blue-300"} 
+                      ${priorityArray[client.priority] === "low" && "bg-gray-400"}`}>
+                      {priorityArray[client.priority] || client.priority}
+                    </Td>
                     <Td className="md:table-cell hidden">
                       <div className="flex gap-2 items-center">
                         {client.status === "Not Started" ? <div className="h-3 w-3 rounded-full bg-red-600" /> :

@@ -805,7 +805,7 @@ const UpdateLead = () => {
                     {/* Display single file */}
                     {projectData.singleFile && (
                       <div>
-                        <p>Single File: {projectData.singleFile}</p>
+                        <p>Single File: {projectData.singleFileView}</p>
                         <Button onClick={handleDeleteSingleFile}>Delete</Button>
                       </div>
                     )}
