@@ -17,8 +17,6 @@ import {
   AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import { format } from 'date-fns';
-
-
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import { GoPlus } from "react-icons/go";
