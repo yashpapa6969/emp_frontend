@@ -8,10 +8,17 @@ import {
   Button,
   useDisclosure,
   Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
-import { GoPlus } from "react-icons/go"; 
+import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Empty } from "antd";
 import { Link } from "react-router-dom";
@@ -42,8 +49,9 @@ const GetAllClient = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteClientId, setDeleteClientId] = useState(null);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     async function fetchData() {
@@ -78,9 +86,23 @@ const GetAllClient = () => {
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
       );
       setClients(response.data);
+      setIsDeleteAlertOpen(false);
     } catch (error) {
       console.error("Error deleting client:", error);
     }
+  };
+
+  const handleDeleteConfirmation = (clientId) => {
+    setDeleteClientId(clientId);
+    setIsDeleteAlertOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteAlertOpen(false);
+  };
+
+  const handleUpdateClient = (clientId) => {
+    dispatch(setClientId(clientId));
   };
 
   if (isLoading) {
@@ -90,9 +112,6 @@ const GetAllClient = () => {
       </div>
     );
   }
-   const handleUpdateClient = (clientId) => {
-     dispatch(setClientId(clientId));
-   };
 
   return (
     <>
@@ -126,6 +145,7 @@ const GetAllClient = () => {
                 Enquiry Date
               </Th>
               <Th fontWeight="bold">Action</Th>
+              <Th fontWeight="bold"></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -152,7 +172,9 @@ const GetAllClient = () => {
                         variant={"outline"}
                         colorScheme="red"
                         ml={2}
-                        onClick={() => handleDeleteClient(client.client_id)}
+                        onClick={() =>
+                          handleDeleteConfirmation(client.client_id)
+                        }
                       >
                         <DeleteIcon />
                       </Button>
@@ -187,15 +209,7 @@ const GetAllClient = () => {
                       >
                         More Info
                       </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() => handleDeleteClient(client.client_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
+
                       <Link to="/UpdateClient">
                         <Button
                           size={"sm"}
@@ -207,6 +221,19 @@ const GetAllClient = () => {
                           Update
                         </Button>
                       </Link>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={50}
+                        onClick={() =>
+                          handleDeleteConfirmation(client.client_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
                     </Td>
                   </Tr>
                 ))}
@@ -220,6 +247,34 @@ const GetAllClient = () => {
         onClose={onClose}
         isOpen={isOpen}
       />
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Client
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete this client?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button
+                colorScheme="red"
+                onClick={() => handleDeleteClient(deleteClientId)}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

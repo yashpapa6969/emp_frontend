@@ -7,7 +7,14 @@ import {
   Td,
   Button,
   useDisclosure,
-  Spinner, 
+  Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -25,6 +32,8 @@ const GetAllEmp = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true); 
+   const [deleteProjectId, setDeleteProjectId] = useState(null);
+   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -47,18 +56,19 @@ const GetAllEmp = () => {
     onOpen();
   };
 
-  const handleDeleteEmployee = async (employeeId) => {
+  const handleDeleteEmployee = async () => {
     try {
       await axios.delete(
         `${
           import.meta.env.VITE_API_BASE
-        }/api/admin/deleteEmployeeById/${employeeId}`
+        }/api/admin/deleteEmployeeById/${deleteProjectId}`
       );
       toast.success("Successfully deleted employee")
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`
       );
       setEmployees(response.data);
+      setIsDeleteAlertOpen(false);
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
@@ -71,6 +81,15 @@ const GetAllEmp = () => {
       </div>
     );
   }
+  
+  const handleDeleteConfirmation = (projectId) => {
+    setDeleteProjectId(projectId);
+    setIsDeleteAlertOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteAlertOpen(false);
+  };
 
   return (
     <>
@@ -112,6 +131,7 @@ const GetAllEmp = () => {
                   Joining Date
                 </Th>
                 <Th fontWeight="bold">Action</Th>
+                <Th fontWeight="bold"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -162,12 +182,16 @@ const GetAllEmp = () => {
                         >
                           More Info
                         </Button>
+                      </Td>
+                      <Td>
                         <Button
                           size={"sm"}
                           variant={"outline"}
                           colorScheme="red"
                           ml={2}
-                          onClick={() => handleDeleteEmployee(emp.employee._id)}
+                          onClick={() =>
+                            handleDeleteConfirmation(emp.employee_id)
+                          }
                         >
                           <DeleteIcon />
                         </Button>
@@ -185,6 +209,29 @@ const GetAllEmp = () => {
         onClose={onClose}
         isOpen={isOpen}
       />
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Employee
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete this employee information?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleDeleteEmployee} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

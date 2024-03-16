@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Thead,
   Tbody,
@@ -10,13 +10,19 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Spinner, // Import Spinner component from Chakra UI
+  Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setLeadId } from "../store/slice/LeadSlice";
 import { Link } from "react-router-dom";
@@ -26,7 +32,9 @@ const GetAllLead = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredLeads, setFilteredLeads] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [deleteLeadId, setDeleteLeadId] = useState(null); // State to store the lead id to be deleted
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false); // State to manage the delete confirmation dialog
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,7 +60,8 @@ const GetAllLead = () => {
   const handleStatusChange = async (leadId, statusNo) => {
     try {
       await axios.get(
-        `${import.meta.env.VITE_API_BASE
+        `${
+          import.meta.env.VITE_API_BASE
         }/api/admin/updateLeadStatus/${leadId}/${statusNo}`
       );
       // Fetch data again after updating status
@@ -66,16 +75,28 @@ const GetAllLead = () => {
     }
   };
 
-  const handleDeleteLead = async (leadId) => {
+  const handleDeleteConfirmation = (leadId) => {
+    setDeleteLeadId(leadId); // Set the lead id to be deleted
+    setIsDeleteAlertOpen(true); // Open the delete confirmation dialog
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteAlertOpen(false); // Close the delete confirmation dialog
+  };
+
+  const handleDeleteLead = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE}/api/admin/deleteLeadById/${leadId}`
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteLeadById/${deleteLeadId}`
       );
-      toast.success("Successfully deleted Lead")
+      toast.success("Successfully deleted Lead");
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`
       );
       setLeads(response.data);
+      setIsDeleteAlertOpen(false); // Close the delete confirmation dialog after successful deletion
     } catch (error) {
       console.error("Error deleting lead:", error);
     }
@@ -89,9 +110,9 @@ const GetAllLead = () => {
     );
   }
 
-   const handleUpdateClient = (leadId) => {
-     dispatch(setLeadId(leadId));
-   };
+  const handleUpdateClient = (leadId) => {
+    dispatch(setLeadId(leadId));
+  };
 
   return (
     <>
@@ -120,6 +141,7 @@ const GetAllLead = () => {
                   Status
                 </Th>
                 <Th fontWeight="bold">Action</Th>
+                <Th fontWeight="bold"></Th>
               </Tr>
             </Thead>
             <Tbody maxHeight={100}>
@@ -187,7 +209,7 @@ const GetAllLead = () => {
                           size={"sm"}
                           variant={"outline"}
                           colorScheme="red"
-                          onClick={() => handleDeleteLead(lead.lead_id)}
+                          onClick={() => handleDeleteConfirmation(lead.lead_id)} // Open delete confirmation dialog
                         >
                           <DeleteIcon />
                         </Button>
@@ -253,15 +275,7 @@ const GetAllLead = () => {
                         >
                           More Info
                         </Button>
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          ml={2}
-                          onClick={() => handleDeleteLead(lead.lead_id)}
-                        >
-                          <DeleteIcon />
-                        </Button>
+
                         <Link to="/UpdateLead">
                           <Button
                             size={"sm"}
@@ -273,6 +287,18 @@ const GetAllLead = () => {
                             Update
                           </Button>
                         </Link>
+                      </Td>
+                      <Td>
+                        {" "}
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteConfirmation(lead.lead_id)} // Open delete confirmation dialog
+                        >
+                          <DeleteIcon />
+                        </Button>
                       </Td>
                     </Tr>
                   ))}
@@ -287,6 +313,33 @@ const GetAllLead = () => {
         onClose={() => setSelectedLead(null)}
         isOpen={selectedLead !== null}
       />
+
+      {/* Delete confirmation dialog */}
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Lead
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this lead? This action cannot be
+              undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleDeleteLead} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

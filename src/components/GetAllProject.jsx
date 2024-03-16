@@ -7,11 +7,18 @@ import {
   Td,
   Button,
   useDisclosure,
-  Spinner, // Import Spinner component from Chakra UI
+  Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
-import { GoPlus } from "react-icons/go"; 
+import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
@@ -40,7 +47,9 @@ const GetAllProject = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // New state to manage loading
+  const [isLoading, setIsLoading] = useState(true);
+  const [deleteProjectId, setDeleteProjectId] = useState(null);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -49,10 +58,10 @@ const GetAllProject = () => {
           `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
         );
         setProjects(response.data);
-        setIsLoading(false); // Set loading to false once data is fetched
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setIsLoading(false); // Set loading to false in case of error too
+        setIsLoading(false);
       }
     }
     fetchData();
@@ -63,21 +72,31 @@ const GetAllProject = () => {
     onOpen();
   };
 
-  const handleDeleteProject = async (projectId) => {
+  const handleDeleteProject = async () => {
     try {
       await axios.delete(
         `${
           import.meta.env.VITE_API_BASE
-        }/api/admin/deleteProjectById/${projectId}`
+        }/api/admin/deleteProjectById/${deleteProjectId}`
       );
-    toast.success("Successfully deleted Project");
+      toast.success("Successfully deleted Project");
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
       );
       setProjects(response.data);
+      setIsDeleteAlertOpen(false);
     } catch (error) {
       console.error("Error deleting project:", error);
     }
+  };
+
+  const handleDeleteConfirmation = (projectId) => {
+    setDeleteProjectId(projectId);
+    setIsDeleteAlertOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteAlertOpen(false);
   };
 
   if (isLoading) {
@@ -120,6 +139,7 @@ const GetAllProject = () => {
                   Status
                 </Th>
                 <Th fontWeight="bold">Action</Th>
+                <Th fontWeight="bold"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -148,7 +168,7 @@ const GetAllProject = () => {
                           variant={"outline"}
                           colorScheme="red"
                           ml={2}
-                          onClick={() => handleDeleteProject(project.project_id)}
+                          onClick={() => handleDeleteConfirmation(project._id)}
                         >
                           <DeleteIcon />
                         </Button>
@@ -174,12 +194,17 @@ const GetAllProject = () => {
                         >
                           More Info
                         </Button>
+                      </Td>
+                      <Td>
+                        {" "}
                         <Button
                           size={"sm"}
                           variant={"outline"}
                           colorScheme="red"
                           ml={2}
-                          onClick={() => handleDeleteProject(project.project_id)}
+                          onClick={() =>
+                            handleDeleteConfirmation(project.project_id)
+                          }
                         >
                           <DeleteIcon />
                         </Button>
@@ -197,6 +222,30 @@ const GetAllProject = () => {
         onClose={onClose}
         isOpen={isOpen}
       />
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Project
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete this project?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleDeleteProject} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Thead,
   Tbody,
@@ -6,8 +6,13 @@ import {
   Th,
   Td,
   Button,
-  useDisclosure,
-  Spinner, // Import Spinner component from Chakra UI
+  Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -15,18 +20,19 @@ import { GoPlus } from "react-icons/go";
 import TableContainer from "./common/TableContainer";
 import { Link } from "react-router-dom";
 import { Empty } from "antd";
-import { DownloadIcon } from "@chakra-ui/icons";
+import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
-import { DeleteIcon } from "@chakra-ui/icons";
 
 const GetAllSlip = () => {
   const [projects, setProjects] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [downloading, setDownloading] = useState(null);
+  const [deleteSlipId, setDeleteSlipId] = useState(null); // State to store the slip id to be deleted
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false); // State to manage the delete confirmation dialog
 
   useEffect(() => {
     async function fetchData() {
@@ -46,20 +52,20 @@ const GetAllSlip = () => {
 
   const handleMoreInfo = (project) => {
     setSelectedProject(project);
-    onOpen();
+    setIsOpen(true);
   };
 
   async function axiosDownloadFile(url, fileName) {
     setDownloading(true);
     return axios({
       url,
-      method: 'GET',
-      responseType: 'blob',
+      method: "GET",
+      responseType: "blob",
     })
-      .then(response => {
+      .then((response) => {
         const href = window.URL.createObjectURL(response.data);
 
-        const anchorElement = document.createElement('a');
+        const anchorElement = document.createElement("a");
 
         anchorElement.href = href;
         anchorElement.download = fileName;
@@ -71,17 +77,19 @@ const GetAllSlip = () => {
         window.URL.revokeObjectURL(href);
         setDownloading(false);
       })
-      .catch(error => {
-        console.log('error: ', error);
+      .catch((error) => {
+        console.log("error: ", error);
         setDownloading(false);
       });
   }
 
   const handleDownload = (id, index) => {
-    const url = `${import.meta.env.VITE_API_BASE}/api/admin/downloadSalarySlip/${id}`;
+    const url = `${
+      import.meta.env.VITE_API_BASE
+    }/api/admin/downloadSalarySlip/${id}`;
     axiosDownloadFile(url, `${id}.pdf`);
     setDownloading(index);
-  }
+  };
 
   if (isLoading) {
     return (
@@ -90,17 +98,29 @@ const GetAllSlip = () => {
       </div>
     );
   }
-  const handleDeleteSlip = async (projectId) => {
+
+  const handleDeleteConfirmation = (projectId) => {
+    setDeleteSlipId(projectId); // Set the slip id to be deleted
+    setIsDeleteAlertOpen(true); // Open the delete confirmation dialog
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteAlertOpen(false); // Close the delete confirmation dialog
+  };
+
+  const handleDeleteSlip = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE
-        }/api/admin/deleteSlipById/${projectId}`
+        `${
+          import.meta.env.VITE_API_BASE
+        }/api/admin/deleteSlipById/${deleteSlipId}`
       );
       toast.success("Successfully deleted Slip");
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE}/api/admin/getAllSlips`
       );
       setProjects(response.data);
+      setIsDeleteAlertOpen(false);
     } catch (error) {
       console.error("Error deleting project:", error);
     }
@@ -114,7 +134,7 @@ const GetAllSlip = () => {
         <Link to="/createSlip">
           <Button
             colorScheme="blue"
-            onClick={onOpen}
+            onClick={() => setIsOpen(true)}
             _hover={{ bg: "blue.600" }}
             mb="2"
             className="flex gap-2 items-center"
@@ -152,84 +172,92 @@ const GetAllSlip = () => {
                 </Th>
 
                 <Th fontWeight="bold">Action</Th>
+                <Th fontWeight="bold"></Th>
               </Tr>
             </Thead>
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td className="md:table-cell hidden">{index + 1}</Td>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.basicPay}</Td>
-                    <Td className="md:table-cell hidden">
-                      {project.travelPay}
-                    </Td>
-                    <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td className="flex gap-2 flex-col md:flex-row">
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        isLoading={index === downloading}
-                        colorScheme="purple"
-                        onClick={() => handleDownload(project.slip_id, index)}
-                      >
-                        <DownloadIcon />
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        onClick={() => handleDeleteSlip(project.slip_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                    <Tr key={project._id}>
+                      <Td className="md:table-cell hidden">{index + 1}</Td>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.travelPay}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.bonus}</Td>
+                      <Td className="flex gap-2 flex-col md:flex-row">
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          isLoading={index === downloading}
+                          colorScheme="purple"
+                          onClick={() => handleDownload(project.slip_id, index)}
+                        >
+                          <DownloadIcon />
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          onClick={() =>
+                            handleDeleteConfirmation(project.slip_id)
+                          } // Open delete confirmation dialog
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
                 : projects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td className="md:table-cell hidden">{index + 1}</Td>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.basicPay}</Td>
-                    <Td className="md:table-cell hidden">
-                      {project.travelPay}
-                    </Td>
-                    <Td className="md:table-cell hidden">{project.bonus}</Td>
-                    <Td className="flex gap-2 flex-col md:flex-row">
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        isLoading={index === downloading}
-                        colorScheme="purple"
-                        onClick={() => handleDownload(project.slip_id, index)}
-                      >
-                        <DownloadIcon />
-                      </Button>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        onClick={() => handleDeleteSlip(project.slip_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                    <Tr key={project._id}>
+                      <Td className="md:table-cell hidden">{index + 1}</Td>
+                      <Td>{index + 1}</Td>
+                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">
+                        {project.travelPay}
+                      </Td>
+                      <Td className="md:table-cell hidden">{project.bonus}</Td>
+                      <Td className="flex gap-2 flex-col md:flex-row">
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(project)}
+                        >
+                          More Info
+                        </Button>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          isLoading={index === downloading}
+                          colorScheme="purple"
+                          onClick={() => handleDownload(project.slip_id, index)}
+                        >
+                          <DownloadIcon />
+                        </Button>
+                      </Td>
+                      <Td>
+                        {" "}
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          onClick={() =>
+                            handleDeleteConfirmation(project.slip_id)
+                          } // Open delete confirmation dialog
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}
@@ -238,9 +266,36 @@ const GetAllSlip = () => {
       <InfoModal
         modalFor="slip"
         data={selectedProject}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
         isOpen={isOpen}
       />
+
+      {/* Delete confirmation dialog */}
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Slip
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this slip? This action cannot be
+              undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleDeleteSlip} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };

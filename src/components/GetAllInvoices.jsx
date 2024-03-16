@@ -8,6 +8,13 @@ import {
   Button,
   useDisclosure,
   Spinner,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -26,6 +33,8 @@ const GetAllInvoices = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
+    const [deleteInvoiceId, setDeleteInvoiceId] = useState(null);
+    const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
   async function fetchData(year, month) {
     setIsLoading(true);
@@ -64,15 +73,16 @@ const GetAllInvoices = () => {
     onOpen();
   };
 
-  const handleDeleteInvoice = async (invoiceId) => {
+  const handleDeleteInvoice = async () => {
     try {
       await axios.delete(
         `${
           import.meta.env.VITE_API_BASE
-        }/api/admin/deleteInvoiceById/${invoiceId}`
+        }/api/admin/deleteInvoiceById/${deleteInvoiceId}`
       );
       toast.success("Successfully deleted Invoice");
       fetchData(selectedYear, selectedMonth);
+       setIsDeleteAlertOpen(false);
     } catch (error) {
       console.error("Error deleting invoice:", error);
     }
@@ -81,6 +91,14 @@ const GetAllInvoices = () => {
      setSelectedYear(null);
      setSelectedMonth(null);
    };
+
+     const handleDeleteConfirmation = (projectId) => {
+       setDeleteInvoiceId(projectId);
+       setIsDeleteAlertOpen(true);
+     };
+     const handleDeleteCancel = () => {
+       setIsDeleteAlertOpen(false);
+     };
 
   return (
     <>
@@ -96,15 +114,6 @@ const GetAllInvoices = () => {
             <option value="" disabled>
               Select Financial Year
             </option>
-            <option value="2034">2034-2035</option>
-            <option value="2033">2033-2034</option>
-            <option value="2032">2032-2033</option>
-            <option value="2031">2031-2032</option>
-            <option value="2030">2030-2031</option>
-            <option value="2029">2029-2030</option>
-            <option value="2028">2028-2029</option>
-            <option value="2027">2027-2028</option>
-            <option value="2026">2026-2027</option>
             <option value="2025">2025-2026</option>
             <option value="2024">2024-2025</option>
             <option value="2023">2023-2024</option>
@@ -179,6 +188,7 @@ const GetAllInvoices = () => {
                       Unit Price
                     </Th>
                     <Th fontWeight="bold">Action</Th>
+                    <Th fontWeight="bold"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -257,12 +267,14 @@ const GetAllInvoices = () => {
                               >
                                 <DownloadIcon />
                               </Button>
+                            </Td>
+                            <Td>
                               <Button
                                 size={"sm"}
                                 variant={"outline"}
                                 colorScheme="red"
                                 onClick={() =>
-                                  handleDeleteInvoice(invoice.invoive_id)
+                                  handleDeleteConfirmation(invoice.invoive_id)
                                 }
                               >
                                 <DeleteIcon />
@@ -284,6 +296,29 @@ const GetAllInvoices = () => {
         onClose={onClose}
         isOpen={isOpen}
       />
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={undefined}
+        onClose={handleDeleteCancel}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Invoice
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              Are you sure you want to delete this Invoice?
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button colorScheme="red" onClick={handleDeleteInvoice} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };
