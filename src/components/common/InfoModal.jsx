@@ -392,7 +392,70 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
-
+if (modalFor === "leave")
+    return (
+      <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{data?.employee_name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <>
+                <Divider />
+                <div className="flex gap-10">
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Leave Information</h1>
+                    {data.type && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Type </Text>
+                        <Text className="text-lg capitalize">{data.type}</Text>
+                      </>
+                    )}
+                    {data.startDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Start Date </Text>
+                        <Text className="text-lg">{new Date(data.startDate).toLocaleDateString()}</Text>
+                      </>
+                    )}
+                    {data.endDate && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">End Date </Text>
+                        <Text className="text-lg">{new Date(data.endDate).toLocaleDateString()}</Text>
+                      </>
+                    )}
+                    {data.status && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Status </Text>
+                        <Text className="text-lg capitalize">{data.status}</Text>
+                      </>
+                    )}
+                    {data.reason && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Reason </Text>
+                        <Text className="text-lg capitalize">{data.reason}</Text>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
   if (modalFor === "client")
     return (
       <Modal
