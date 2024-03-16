@@ -11,7 +11,9 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+const RequiredIndicator = () => {
+  return <Text as="span" color="red.500" ml={1}>*</Text>;
+};
 const CreateSlip = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
   const navigate=useNavigate();
@@ -65,6 +67,23 @@ const CreateSlip = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const requiredFields = [
+      { key: 'employee_id', label: 'Select Employee' },
+      { key: 'basicPay', label: 'Basic Pay' },
+      { key: 'travelPay', label: 'Travel Pay' },
+      { key: 'bonus', label: 'Bonus' },
+      { key: 'paidLeave', label: 'Paid Leave' },
+      { key: 'tds', label: 'TDS' },
+      { key: 'totalLeaves', label: 'Total Leaves' },
+      { key: 'advanceSalary', label: 'Advance Salary' },
+    ];
+  
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
@@ -136,8 +155,8 @@ const CreateSlip = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="manager_id" isRequired>
-              <FormLabel>Select Employee</FormLabel>
+            <FormControl id="manager_id" >
+              <FormLabel>Select Employee <RequiredIndicator /></FormLabel>
               <select
                 onChange={handleSelectManager}
                 value={projectData.employee_id}
@@ -163,24 +182,24 @@ const CreateSlip = () => {
             )}
 
             <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" isRequired>
-                <FormLabel>Basic Pay</FormLabel>
+              <FormControl id="basicPay" >
+                <FormLabel>Basic Pay<RequiredIndicator /></FormLabel>
                 <Input
                   name="basicPay"
                   onChange={handleChange}
                   value={projectData.basicPay}
                 />
               </FormControl>
-              <FormControl id="travelPay" isRequired>
-                <FormLabel>Travel Pay</FormLabel>
+              <FormControl id="travelPay" >
+                <FormLabel>Travel Pay<RequiredIndicator /></FormLabel>
                 <Input
                   name="travelPay"
                   onChange={handleChange}
                   value={projectData.travelPay}
                 />
               </FormControl>
-              <FormControl id="Bonus" isRequired>
-                <FormLabel>Bonus</FormLabel>
+              <FormControl id="Bonus" >
+                <FormLabel>Bonus<RequiredIndicator /></FormLabel>
                 <Input
                   name="bonus"
                   onChange={handleChange}
@@ -189,24 +208,24 @@ const CreateSlip = () => {
               </FormControl>
             </div>
             <div className="flex gap-3">
-              <FormControl id="paidLeave" isRequired>
-                <FormLabel>Paid Leave</FormLabel>
+              <FormControl id="paidLeave" >
+                <FormLabel>Paid Leave<RequiredIndicator /></FormLabel>
                 <Input
                   name="paidLeave"
                   onChange={handleChange}
                   value={projectData.paidLeave}
                 />
               </FormControl>
-              <FormControl id="tds" isRequired>
-                <FormLabel>TDS</FormLabel>
+              <FormControl id="tds" >
+                <FormLabel>TDS<RequiredIndicator /></FormLabel>
                 <Input
                   name="tds"
                   onChange={handleChange}
                   value={projectData.tds}
                 />
               </FormControl>
-              <FormControl id="totaleaves" isRequired>
-                <FormLabel>Total Leaves</FormLabel>
+              <FormControl id="totaleaves" >
+                <FormLabel>Total Leaves<RequiredIndicator /></FormLabel>
                 <Input
                   name="totalLeaves"
                   onChange={handleChange}
@@ -214,8 +233,8 @@ const CreateSlip = () => {
                 />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={400} isRequired>
-              <FormLabel>Advance Salary</FormLabel>
+            <FormControl id="advanceSalary" maxWidth={400} >
+              <FormLabel>Advance Salary<RequiredIndicator /></FormLabel>
               <Input
                 name="advanceSalary"
                 onChange={handleChange}
