@@ -25,11 +25,14 @@ import SelectTag from "../common/SelectTag";
 import { useSelector, useDispatch } from "react-redux";
 import { selectLeadId, clearLeadId } from "../../store/slice/LeadSlice";
 import moment from "moment";
+import { convertDateFormatString } from "../../helpers";
+import { useNavigate } from "react-router-dom";
 
 const UpdateLead = () => {
   const singleFileRef = useRef();
   const leadId = useSelector(selectLeadId);
   console.log(leadId);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [client, setClient] = useState("");
   const [projectData, setProjectData] = useState({
@@ -247,10 +250,14 @@ const UpdateLead = () => {
         }
       )
       .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 200 || response.status===201) {
+           toast.success(response.data.message, {
+             autoClose: 2000,
+           });
+           setTimeout(() => {
+             navigate("/manageLeads");
+           }, 2000);
         } else {
-          console.error("Failed to create project");
           toast.success(response.data.message);
         }
       })
@@ -272,9 +279,7 @@ const UpdateLead = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-md font-semibold">
-          Update Lead
-        </h1>
+        <h1 className="text-md font-semibold">Update Lead</h1>
         <h1 className="text-2xl font-semibold mb-3">{client.clientName}</h1>
 
         <form onSubmit={handleSubmit}>
@@ -290,8 +295,9 @@ const UpdateLead = () => {
               format={"DD/MM/YYYY"}
             />
             <br />
-            {projectData?.enquiryDate?._d && (
-              <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>
+
+            {projectData.enquiryDate && (
+              <p>{convertDateFormatString(projectData.enquiryDate)}</p>
             )}
           </FormControl>
           <div className="hidden md:block">
@@ -337,7 +343,11 @@ const UpdateLead = () => {
                     </FormControl>
                     <FormControl id="clientName">
                       <FormLabel>Source Information</FormLabel>
-                      <Input name="sourceInformation" onChange={handleChange} value={projectData.sourceInformation} />
+                      <Input
+                        name="sourceInformation"
+                        onChange={handleChange}
+                        value={projectData.sourceInformation}
+                      />
                     </FormControl>
 
                     <FormControl id="gender" maxWidth={150}>
@@ -356,47 +366,54 @@ const UpdateLead = () => {
                       </Select>
                     </FormControl>
                   </div>
-                  <FormControl id="phone1">
-                    <FormLabel>Phone Number 1</FormLabel>
-                    <Input
-                      name="phone1"
-                      onChange={handleChange}
-                      value={projectData.phone1}
-                    />
-                  </FormControl>
-                  <FormControl id="phone2">
-                    <FormLabel>Phone Number 2</FormLabel>
-                    <Input name="phone2" onChange={handleChange} value={projectData.phone2} />
-                  </FormControl>
-                  <FormControl id="website">
-                    <FormLabel>Website</FormLabel>
-                    <Input name="website" onChange={handleChange} value={projectData.website} />
-                  </FormControl>
+                  <div className="flex gap-4 mb-3">
+                    <FormControl id="phone1">
+                      <FormLabel>Phone Number 1</FormLabel>
+                      <Input
+                        name="phone1"
+                        onChange={handleChange}
+                        value={projectData.phone1}
+                      />
+                    </FormControl>
+                    <FormControl id="phone2">
+                      <FormLabel>Phone Number 2</FormLabel>
+                      <Input
+                        name="phone2"
+                        onChange={handleChange}
+                        value={projectData.phone2}
+                      />
+                    </FormControl>
+                    <FormControl id="website">
+                      <FormLabel>Website</FormLabel>
+                      <Input
+                        name="website"
+                        onChange={handleChange}
+                        value={projectData.website}
+                      />
+                    </FormControl>
+                  </div>
 
                   <div className="flex gap-3">
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input name="email1" onChange={handleChange} value={projectData.email1} />
+                      <Input
+                        name="email1"
+                        onChange={handleChange}
+                        value={projectData.email1}
+                      />
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>
-                      <Input name="email2" onChange={handleChange} value={projectData.email2} />
-                    </FormControl>
-                    <FormControl id="companyAnniversary">
-                      <FormLabel>Enquiry Date</FormLabel>
-                      <MyDatePicker
-                        value={enquiryDate}
-                        selected={projectData.enquiryDate}
-                        onChange={(date) =>
-                          setProjectData({
-                            ...projectData,
-                            enquiryDate: date,
-                          })
-                        }
-                        format={"DD/MM/YYYY"}
+                      <Input
+                        name="email2"
+                        onChange={handleChange}
+                        value={projectData.email2}
                       />
                     </FormControl>
                   </div>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Lead
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div className="flex gap-3 mb-3 flex-col md:flex-row">
@@ -449,7 +466,9 @@ const UpdateLead = () => {
                       value={projectData.businessAddress}
                     />
                   </FormControl>
-
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Lead
+                  </Button>
                 </TabPanel>
 
                 <TabPanel>
@@ -515,7 +534,7 @@ const UpdateLead = () => {
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="purple" className="mt-5">
-                    Create Lead
+                    Update Lead
                   </Button>
                 </TabPanel>
                 <TabPanel>
@@ -529,8 +548,9 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${projectData.singleFileView}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -562,8 +582,9 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${file}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -668,7 +689,9 @@ const UpdateLead = () => {
                       <Select
                         style={{ width: "100%" }}
                         name="gender"
-                        onChange={(value) => handleSelectOption("gender", value)}
+                        onChange={(value) =>
+                          handleSelectOption("gender", value)
+                        }
                         placeholder="Select gender"
                       >
                         <Select.Option value="Male">Male</Select.Option>

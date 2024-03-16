@@ -52,13 +52,7 @@ const SelectSource = ({ selectSourceValue, setSelectSourceValue, width }) => {
         axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: name })
             .then(() => {
                 fetchSourceTags();
-                toast({
-                    title: "Success",
-                    description: "Added a new source tag",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                })
+              
             })
         setName('');
         setTimeout(() => {

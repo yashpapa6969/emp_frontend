@@ -26,11 +26,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
 import moment from "moment";
 import { convertDateFormatString } from "../../helpers";
+import { useNavigate } from "react-router-dom";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
   const clientId = useSelector(selectClientId);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const [client, setClient] = useState("");
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
@@ -44,6 +46,7 @@ const UpdateClient = () => {
     companyName: "",
     clientName: "",
     brandName: "",
+    sourceInformation:"",
     phone1: "",
     phone2: "",
     email1: "",
@@ -90,6 +93,7 @@ const UpdateClient = () => {
           companyName: clientData?.companyName || prev.companyName,
           clientName: clientData?.clientName || prev.clientName,
           brandName: clientData?.brandName || prev.brandName,
+          sourceInformation: clientData?.sourceInformation || prev.sourceInformation,
           phone1: clientData?.phone1 || prev.phone1,
           phone2: clientData?.phone2 || prev.phone2,
           email1: clientData?.email1 || prev.email1,
@@ -113,7 +117,7 @@ const UpdateClient = () => {
         setSelectedState(clientData.state);
         setSelectSourceValue(clientData.source);
         setSelectedTagValue(clientData.requirement);
-
+        dispatch(clearClientId);
       })
 
       .catch((error) => {
@@ -253,8 +257,13 @@ const UpdateClient = () => {
         }
       )
       .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 200 || response.status === 201) {
+            toast.success(response.data.message, {
+              autoClose: 2000,
+            });
+           setTimeout(() => {
+             navigate("/getAllClient");
+           }, 2000);
         } else {
           console.error("Failed to create project");
           toast.success(response.data.message);
@@ -277,9 +286,7 @@ const UpdateClient = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-md font-semibold">
-          Update Client
-        </h1>
+        <h1 className="text-md font-semibold">Update Client</h1>
         <h1 className="text-2xl font-semibold">{client.clientName}</h1>
 
         <form onSubmit={handleSubmit}>
@@ -307,6 +314,25 @@ const UpdateClient = () => {
 
               <TabPanels>
                 <TabPanel>
+                  <div className="flex gap-3">
+                    <FormControl id="companyAnniversary">
+                      <FormLabel>Work Start Date</FormLabel>
+                      <MyDatePicker
+                        value={workStartDate}
+                        selected={projectData.workStartDate}
+                        onChange={(date) =>
+                          setProjectData({
+                            ...projectData,
+                            workStartDate: date,
+                          })
+                        }
+                        format={"DD/MM/YYYY"}
+                      />
+                      {workStartDate && (
+                        <p>{convertDateFormatString(workStartDate)}</p>
+                      )}
+                    </FormControl>
+                  </div>
                   <div className="flex gap-3 mb-2">
                     <FormControl id="title" maxWidth={130}>
                       <FormLabel>Title</FormLabel>
@@ -328,6 +354,17 @@ const UpdateClient = () => {
                         value={projectData.clientName}
                       />
                     </FormControl>
+
+                    <FormControl id="brandName">
+                      <FormLabel>Brand Name</FormLabel>
+                      <Input
+                        name="brandName"
+                        onChange={handleChange}
+                        value={client.brandName}
+                      />
+                    </FormControl>
+                  </div>
+                  <div className="flex gap-3 my-3">
                     <FormControl id="gender" maxWidth={150}>
                       <FormLabel>Gender</FormLabel>
                       <Select
@@ -343,16 +380,24 @@ const UpdateClient = () => {
                         <Select.Option value="Others">Others</Select.Option>
                       </Select>
                     </FormControl>
+                    <FormControl id="brandName" maxWidth={250}>
+                      <FormLabel>Source</FormLabel>
+                      <Flex>
+                        <SelectSource
+                          selectSourceValue={selectSourceValue}
+                          setSelectSourceValue={setSelectSourceValue}
+                        />
+                      </Flex>
+                    </FormControl>
                     <FormControl id="brandName">
-                      <FormLabel>Brand Name</FormLabel>
+                      <FormLabel>Source Information</FormLabel>
                       <Input
-                        name="brandName"
+                        name="sourcename"
                         onChange={handleChange}
-                        value={client.brandName}
+                        value={client.sourceName}
                       />
                     </FormControl>
                   </div>
-
                   <div className="flex gap-3 my-3">
                     <FormControl id="tags">
                       <FormControl id="companyName">
@@ -363,14 +408,8 @@ const UpdateClient = () => {
                           value={projectData.companyName}
                         />
                       </FormControl>
-                      <FormLabel>Source</FormLabel>
-                      <Flex>
-                        <SelectSource
-                          selectSourceValue={selectSourceValue}
-                          setSelectSourceValue={setSelectSourceValue}
-                        />
-                      </Flex>
                     </FormControl>
+
                     <FormControl id="phone1">
                       <FormLabel>Phone Number 1</FormLabel>
                       <Input
@@ -415,23 +454,9 @@ const UpdateClient = () => {
                       />
                     </FormControl>
                   </div>
-                  <div className="flex gap-3">
-                    <FormControl id="companyAnniversary">
-                      <FormLabel>Work Start Date</FormLabel>
-                      <MyDatePicker
-                        value={workStartDate}
-                        selected={projectData.workStartDate}
-                        onChange={(date) =>
-                          setProjectData({
-                            ...projectData,
-                            workStartDate: date,
-                          })
-                        }
-                        format={"DD/MM/YYYY"}
-                      />
-                      {workStartDate && <p>{convertDateFormatString(workStartDate)}</p>}
-                    </FormControl>
-                  </div>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Client
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div className="flex gap-3 mb-3 flex-col md:flex-row">
@@ -485,6 +510,9 @@ const UpdateClient = () => {
                       value={projectData.businessAddress}
                     />
                   </FormControl>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Client
+                  </Button>
                 </TabPanel>
 
                 <TabPanel>
@@ -502,7 +530,9 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
-                      {clientBirthdayDate && <p>{convertDateFormatString(clientBirthdayDate)}</p>}
+                      {clientBirthdayDate && (
+                        <p>{convertDateFormatString(clientBirthdayDate)}</p>
+                      )}
                     </FormControl>
                     <FormControl id="clientAnniversary">
                       <FormLabel>Client Anniversary</FormLabel>
@@ -517,7 +547,9 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
-                      {clientAnniversaryDate && <p>{convertDateFormatString(clientAnniversaryDate)}</p>}
+                      {clientAnniversaryDate && (
+                        <p>{convertDateFormatString(clientAnniversaryDate)}</p>
+                      )}
                     </FormControl>
                     <FormControl id="companyAnniversary">
                       <FormLabel>Company Anniversary</FormLabel>
@@ -532,9 +564,14 @@ const UpdateClient = () => {
                         }
                         format={"DD/MM/YYYY"}
                       />
-                      {companyAnniversaryDate && <p>{convertDateFormatString(companyAnniversaryDate)}</p>}
+                      {companyAnniversaryDate && (
+                        <p>{convertDateFormatString(companyAnniversaryDate)}</p>
+                      )}
                     </FormControl>
                   </div>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Client
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div className="flex flex-col gap-3">
@@ -560,6 +597,9 @@ const UpdateClient = () => {
                       />
                     </FormControl>
                   </div>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Client
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div>
@@ -572,8 +612,9 @@ const UpdateClient = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${projectData.singleFileView}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -604,8 +645,9 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${file}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
