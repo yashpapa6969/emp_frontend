@@ -101,6 +101,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, activeLink, setActiveLink }: Pro
                         <Link to="/getLetter" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <SlEnvolopeLetter />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Letter</span>
                         </Link>
+                        <Link to="/getAllLeaves" onClick={handleNavClose} className={`flex items-center h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                            <SlEnvolopeLetter />  <span className={`${expandNavbar ? "visible" : "hidden"}`}>Leave Management</span>
+                        </Link>
                     </AccordionPanel>
                 </AccordionItem>
             </Accordion>

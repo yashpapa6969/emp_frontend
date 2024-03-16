@@ -33,6 +33,7 @@ import InfoBoxClient from "./components/common/InfoBoxClient";
 import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
 import UpdateLead from "./components/forms/UpdateLead";
+import GetAllLeaves from "./components/GetAllLeaves";
 
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -142,6 +143,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <GetAllSlip />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllLeaves"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllLeaves"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllLeaves />
               </AppLayout>
             }
           />
