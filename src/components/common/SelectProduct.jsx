@@ -53,7 +53,7 @@ const SelectProduct = ({ selectSourceValue, setSelectSourceValue, width }) => {
 
     const handleAddSource = (e) => {
         e.preventDefault();
-        axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/addProducts`, { product: name, unitPrice: price })
+      const res =   axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/addProducts`, { product: name, unitPrice: price })
             .then(() => {
                 fetchSourceTags();
                 toast({
@@ -68,58 +68,65 @@ const SelectProduct = ({ selectSourceValue, setSelectSourceValue, width }) => {
         setTimeout(() => {
             inputRef.current?.focus();
         }, 0);
+
+        setSelectSourceValue((prevValue) => [...prevValue, {product:res.data.result.product,unitPrice:res.data.result.unitPrice}]);
+
     };
 
     return (
         <Select
-            mode="single"
-            tagRender={TagRender}
-            style={{
-                width: width ? width : 300,
-            }}
-            value={selectSourceValue}
-            onChange={setSelectSourceValue}
-            placeholder="Choose a value"
-            dropdownRender={(menu) => (
-                <>
-                    <Space
-                        style={{
-                            padding: '0 8px 4px',
-                        }}
-                    >
-                        <Input
-                            placeholder="Product"
-                            ref={inputRef}
-                            value={name}
-                            onChange={onNameChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Input
-                            type='number'
-                            placeholder="Price"
-                            ref={inputRef}
-                            value={price}
-                            onChange={onPriceChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Button type="text" disabled={!name || !price} icon={<PlusOutlined />} onClick={handleAddSource}>
-                            Add item
-                        </Button>
-                    </Space>
-                    <Divider
-                        style={{
-                            margin: '8px 0',
-                        }}
+        mode="single"
+        tagRender={TagRender}
+        style={{
+            width: width ? width : 300,
+        }}
+        value={selectSourceValue}
+        onChange={setSelectSourceValue}
+        placeholder="Choose a value"
+        dropdownRender={(menu) => (
+            <>
+                <Space
+                    style={{
+                        padding: '0 8px 4px',
+                    }}
+                >
+                    <Input
+                        placeholder="Product"
+                        ref={inputRef}
+                        value={name}
+                        onChange={onNameChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                     />
-                    {menu}
-                </>
-            )}
-            options={items.map((item) => ({
-                key: `item-${item.product_id}`,
-                label: item.product,
-                value: item.product_id,
-            }))}
-        />
+                    <Input
+                        type='number'
+                        placeholder="Price"
+                        value={price}
+                        onChange={onPriceChange}
+                        onKeyDown={(e) => e.stopPropagation()}
+                    />
+                    <Button
+                        type="text"
+                        disabled={!name || !price}
+                        icon={<PlusOutlined />}
+                        onClick={handleAddSource}
+                    >
+                        Add item
+                    </Button>
+                </Space>
+                <Divider
+                    style={{
+                        margin: '8px 0',
+                    }}
+                />
+                {menu}
+            </>
+        )}
+        options={items.map((item) => ({
+            key: `item-${item.product_id}`,
+            label: item.product,
+            value: item.product_id,
+        }))}
+    />
     );
 };
 export default SelectProduct;

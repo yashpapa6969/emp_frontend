@@ -13,6 +13,7 @@ import {
   TagCloseButton,
   Flex,
   Input,
+  Text,
 } from "@chakra-ui/react";
 import { Select } from "antd";
 import axios from "axios";
@@ -24,7 +25,6 @@ import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Text } from '@chakra-ui/react';
 const Client = () => {
   const singleFileRef = useRef();
   const [projectData, setProjectData] = useState({

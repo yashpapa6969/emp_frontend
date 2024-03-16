@@ -7,8 +7,8 @@ import {
   FormLabel,
   Card,
   CardBody,
-  Text,
   Select,
+  Text,
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
@@ -17,7 +17,10 @@ import { PiArrowsLeftRightFill } from "react-icons/pi";
 import { FaPlus, FaTrashCan } from "react-icons/fa6";
 import SelectProduct from "../common/SelectProduct";
 import SelectClient from "../common/SelectClient";
-
+import { useNavigate } from "react-router-dom";
+const RequiredIndicator = () => {
+  return <Text as="span" color="red.500" ml={1}>*</Text>;
+};
 const Invoice = () => {
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
@@ -26,6 +29,7 @@ const Invoice = () => {
   const [services, setServices] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productValue, setProductValue] = useState([]);
+  const navigate=useNavigate();
 
   useEffect(() => {
     fetchClients();
@@ -123,7 +127,26 @@ const Invoice = () => {
         endDate: service.endDate.toISOString(),
       })),
     };
+    const requiredFields = [
+      { key: 'client_id', label: 'Client' },
+      { key: 'gst', label: 'GST' },
+      { key: 'services', label: 'Services', isArray: true },
+  ];
+  const validateForm = (requestData, requiredFields) => {
+    for (let { key, label, isArray } of requiredFields) {
+        if (isArray ? !requestData[key] || requestData[key].length === 0 : !requestData[key]) {
+            return `${label} is required.`;
+        }
+    }
+    return null; // Return null if all required fields are present
+};
 
+  const errorMessage = validateForm(requestData, requiredFields);
+  if (errorMessage) {
+      toast.error(errorMessage);
+      return; // Stop further execution if validation fails
+  }
+  
     console.log(requestData);
 
     try {
@@ -150,8 +173,16 @@ const Invoice = () => {
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
-
-      toast.success("Invoice Slip is downloaded successfully.");
+       setServices([]);
+       setSelectedGst("");
+       setProducts([]);
+       toast.success("Invoice Slip is downloaded successfully.", {
+         autoClose: 2000,
+       });
+           setTimeout(() => {
+             navigate("/getAllInvoice");
+           }, 2000);
+           
     } catch (error) {
       console.error("Error creating invoice:", error);
       toast.error(
@@ -182,8 +213,8 @@ const Invoice = () => {
 
   return (
     <Stack spacing={4}>
-      <FormControl maxWidth={300} isRequired>
-        <FormLabel>Select Client</FormLabel>
+      <FormControl maxWidth={300} >
+        <FormLabel>Select Client <RequiredIndicator /></FormLabel>
         <Select placeholder="Select client" onChange={handleClientChange}>
           {clients.map((client) => (
             <option key={client._id} value={client._id}>
@@ -204,7 +235,7 @@ const Invoice = () => {
         </Card>
       )}
       <FormControl maxWidth={50}>
-        <FormLabel>GST</FormLabel>
+        <FormLabel>GST <RequiredIndicator /></FormLabel>
         <Input
           type="number"
           placeholder="Enter GST"
@@ -226,8 +257,8 @@ const Invoice = () => {
                     <FaTrashCan />
                   </div>
 
-                  <FormControl maxWidth={300} isRequired>
-                    <FormLabel>Select Product</FormLabel>
+                  <FormControl maxWidth={300} >
+                    <FormLabel>Select Product <RequiredIndicator /></FormLabel>
                     <Select
                       placeholder="Select product"
                       onChange={(e) =>
@@ -245,7 +276,7 @@ const Invoice = () => {
                   </FormControl>
 
                   <FormControl mt={4}>
-                    <FormLabel>Service Description</FormLabel>
+                    <FormLabel>Service Description<RequiredIndicator /></FormLabel>
                     <Input
                       value={service.serviceDescription}
                       onChange={(e) =>
@@ -260,7 +291,7 @@ const Invoice = () => {
 
                   <div className="flex gap-4 items-center mt-4">
                     <FormControl maxWidth={100}>
-                      <FormLabel>Start Date</FormLabel>
+                      <FormLabel>Start Date<RequiredIndicator /></FormLabel>
                       <MyDatePicker
                         selected={service.startDate}
                         onChange={(date) =>
@@ -271,7 +302,7 @@ const Invoice = () => {
                     </FormControl>
                     <PiArrowsLeftRightFill size={20} />
                     <FormControl maxWidth={100}>
-                      <FormLabel>End Date</FormLabel>
+                      <FormLabel>End Date<RequiredIndicator /></FormLabel>
                       <MyDatePicker
                         selected={service.endDate}
                         onChange={(date) =>
@@ -285,7 +316,7 @@ const Invoice = () => {
 
                   <div className="flex gap-4 items-center mt-4">
                     <FormControl maxWidth={100}>
-                      <FormLabel>Quantity</FormLabel>
+                      <FormLabel>Quantity<RequiredIndicator /></FormLabel>
                       <Input
                         type="number"
                         value={service.quantity}
@@ -295,7 +326,7 @@ const Invoice = () => {
                       />
                     </FormControl>
                     <FormControl maxWidth={100}>
-                      <FormLabel>Duration</FormLabel>
+                      <FormLabel>Duration<RequiredIndicator /></FormLabel>
                       <Input
                         type="text"
                         value={service.duration}

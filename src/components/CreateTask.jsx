@@ -6,6 +6,7 @@ import {
   FormLabel,
   Select,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
@@ -27,7 +28,9 @@ const CreateTask = () => {
   const [deadline, setDeadline] = useState("");
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
-
+  const RequiredIndicator = () => {
+    return <Text as="span" color="red.500" ml={1}>*</Text>;
+  };
   useEffect(() => {
     // Fetch brand names
     axios
@@ -45,7 +48,7 @@ const CreateTask = () => {
   const handleBrandChange = (event) => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
-
+  
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
@@ -81,8 +84,18 @@ const CreateTask = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Make API call to post task data
-    const taskData = {
+    const requiredFields = [
+      { key: 'brandName', label: 'Brand Name' },
+      { key: 'client_id', label: 'Project' },
+      { key: 'deadline', label: 'Deadline' },
+      { key: 'description', label: 'Description' },
+      { key: 'employee_id', label: 'Employee' },
+      { key: 'priority', label: 'Priority' },
+      { key: 'startDate', label: 'startDate' },
+
+    ];
+
+       const taskData = {
       brandName: selectedBrandName,
       project_id: selectedProject,
       employee_id: selectedEmployee,
@@ -92,6 +105,12 @@ const CreateTask = () => {
       deadline: deadline,
       priority: priority,
     };
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !taskData[key] || taskData[key].length === 0 : !taskData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    } 
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/addTask`,
@@ -133,8 +152,8 @@ const CreateTask = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row gap-3 mb-3">
-          <FormControl isRequired>
-            <FormLabel>Brand Name</FormLabel>
+          <FormControl >
+            <FormLabel>Brand Name <RequiredIndicator /></FormLabel>
             <Select value={selectedBrandName} onChange={handleBrandChange}>
               <option disabled value="">
                 Select Brand
@@ -147,8 +166,8 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Project</FormLabel>
+          <FormControl >
+            <FormLabel>Project <RequiredIndicator /></FormLabel>
             <Select value={selectedProject} onChange={handleProjectChange}>
               <option disabled value="">
                 Select Project
@@ -161,8 +180,8 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel>Employee</FormLabel>
+          <FormControl >
+            <FormLabel>Employee<RequiredIndicator /></FormLabel>
             <Select
               value={selectedEmployee}
               onChange={(e) => setSelectedEmployee(e.target.value)}
@@ -179,8 +198,8 @@ const CreateTask = () => {
           </FormControl>
         </div>
 
-        <FormControl isRequired>
-          <FormLabel>Description</FormLabel>
+        <FormControl >
+          <FormLabel>Description<RequiredIndicator /></FormLabel>
           <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -188,8 +207,8 @@ const CreateTask = () => {
         </FormControl>
 
         <div className="flex gap-3 my-3">
-          <FormControl isRequired>
-            <FormLabel>Priority</FormLabel>
+          <FormControl >
+            <FormLabel>Priority<RequiredIndicator /></FormLabel>
             <Select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
@@ -202,8 +221,8 @@ const CreateTask = () => {
               <option value="0">Low</option>
             </Select>
           </FormControl>
-          <FormControl maxWidth={200} isRequired>
-            <FormLabel>Start Date</FormLabel>
+          <FormControl maxWidth={200} >
+            <FormLabel>Start Date<RequiredIndicator/> </FormLabel>
             <MyDatePicker
               className="mb-1"
               selected={startDate}
@@ -215,8 +234,8 @@ const CreateTask = () => {
             {startDate && <p>{convertDateFormatString(startDate)}</p>}
           </FormControl>
 
-          <FormControl maxWidth={200} isRequired>
-            <FormLabel>Deadline</FormLabel>
+          <FormControl maxWidth={200} >
+            <FormLabel>Deadline<RequiredIndicator /></FormLabel>
             <MyDatePicker
               className="mb-1"
               selected={deadline}

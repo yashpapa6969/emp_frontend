@@ -34,7 +34,7 @@ import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
 import UpdateLead from "./components/forms/UpdateLead";
 import GetAllLeaves from "./components/GetAllLeaves";
-
+import CreateLeave from "./components/CreateLeave";
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   // const refreshPage = () => {
@@ -187,6 +187,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <CreateSlip />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createLeave"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateLeave"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateLeave />
               </AppLayout>
             }
           />

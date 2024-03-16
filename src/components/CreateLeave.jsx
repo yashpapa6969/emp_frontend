@@ -11,12 +11,10 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const RequiredIndicator = () => {
-  return <Text as="span" color="red.500" ml={1}>*</Text>;
-};
-const CreateSlip = () => {
+
+const CreateLeave = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     employee_id: "",
     basicPay: "",
@@ -62,34 +60,14 @@ const CreateSlip = () => {
     setProjectData({ ...projectData, employee_id: selectedEmployeeId });
   };
 
-
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const requiredFields = [
-      { key: 'employee_id', label: 'Select Employee' },
-      { key: 'basicPay', label: 'Basic Pay' },
-      { key: 'travelPay', label: 'Travel Pay' },
-      { key: 'bonus', label: 'Bonus' },
-      { key: 'paidLeave', label: 'Paid Leave' },
-      { key: 'tds', label: 'TDS' },
-      { key: 'totalLeaves', label: 'Total Leaves' },
-      { key: 'advanceSalary', label: 'Advance Salary' },
-    ];
-  
-    for (let { key, label, isArray } of requiredFields) {
-      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
-        toast.error(`${label} is required.`);
-        return;
-      }
-    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
         projectData,
         {
-          responseType: 'blob', // Important: This tells Axios to expect a binary response instead of JSON
+          responseType: "blob", // Important: This tells Axios to expect a binary response instead of JSON
           headers: {
             "Content-Type": "application/json",
           },
@@ -97,13 +75,13 @@ const CreateSlip = () => {
       )
       .then((response) => {
         // Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: 'application/pdf' });
+        const file = new Blob([response.data], { type: "application/pdf" });
         // Build a URL from the file
         const fileURL = URL.createObjectURL(file);
         // Create a temp <a> tag to trigger download
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = fileURL;
-        link.setAttribute('download', 'salary_slip.pdf'); // or any other extension
+        link.setAttribute("download", "salary_slip.pdf"); // or any other extension
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -111,23 +89,24 @@ const CreateSlip = () => {
         if (response.status === 200 || response.status === 201) {
           setSelectedEmployeeInfo(null);
           setProjectData({
-    employee_id: "",
-    basicPay: "",
-    travelPay: "",
-    bonus: "",
-    paidLeave: "",
-    tds: "",
-    totalLeaves: "",
-    advanceSalary: "",
-  })
-   toast.success("Salary slip downloaded successfully.", {
-     autoClose: 2000,
-   });    setTimeout(() => {
-     navigate("/getAllSlip");
-   }, 2000);
+            employee_id: "",
+            basicPay: "",
+            travelPay: "",
+            bonus: "",
+            paidLeave: "",
+            tds: "",
+            totalLeaves: "",
+            advanceSalary: "",
+          });
+          toast.success("Salary slip downloaded successfully.", {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/getAllSlip");
+          }, 2000);
         } else {
           console.error("Failed to download slip");
-          toast.error('Failed to download slip.');
+          toast.error("Failed to download slip.");
         }
       })
       .catch((error) => {
@@ -155,8 +134,8 @@ const CreateSlip = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="manager_id" >
-              <FormLabel>Select Employee <RequiredIndicator /></FormLabel>
+            <FormControl id="manager_id" isRequired>
+              <FormLabel>Select Employee</FormLabel>
               <select
                 onChange={handleSelectManager}
                 value={projectData.employee_id}
@@ -182,24 +161,24 @@ const CreateSlip = () => {
             )}
 
             <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" >
-                <FormLabel>Basic Pay<RequiredIndicator /></FormLabel>
+              <FormControl id="basicPay" isRequired>
+                <FormLabel>Basic Pay</FormLabel>
                 <Input
                   name="basicPay"
                   onChange={handleChange}
                   value={projectData.basicPay}
                 />
               </FormControl>
-              <FormControl id="travelPay" >
-                <FormLabel>Travel Pay<RequiredIndicator /></FormLabel>
+              <FormControl id="travelPay" isRequired>
+                <FormLabel>Travel Pay</FormLabel>
                 <Input
                   name="travelPay"
                   onChange={handleChange}
                   value={projectData.travelPay}
                 />
               </FormControl>
-              <FormControl id="Bonus" >
-                <FormLabel>Bonus<RequiredIndicator /></FormLabel>
+              <FormControl id="Bonus" isRequired>
+                <FormLabel>Bonus</FormLabel>
                 <Input
                   name="bonus"
                   onChange={handleChange}
@@ -208,24 +187,24 @@ const CreateSlip = () => {
               </FormControl>
             </div>
             <div className="flex gap-3">
-              <FormControl id="paidLeave" >
-                <FormLabel>Paid Leave<RequiredIndicator /></FormLabel>
+              <FormControl id="paidLeave" isRequired>
+                <FormLabel>Paid Leave</FormLabel>
                 <Input
                   name="paidLeave"
                   onChange={handleChange}
                   value={projectData.paidLeave}
                 />
               </FormControl>
-              <FormControl id="tds" >
-                <FormLabel>TDS<RequiredIndicator /></FormLabel>
+              <FormControl id="tds" isRequired>
+                <FormLabel>TDS</FormLabel>
                 <Input
                   name="tds"
                   onChange={handleChange}
                   value={projectData.tds}
                 />
               </FormControl>
-              <FormControl id="totaleaves" >
-                <FormLabel>Total Leaves<RequiredIndicator /></FormLabel>
+              <FormControl id="totaleaves" isRequired>
+                <FormLabel>Total Leaves</FormLabel>
                 <Input
                   name="totalLeaves"
                   onChange={handleChange}
@@ -233,8 +212,8 @@ const CreateSlip = () => {
                 />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={400} >
-              <FormLabel>Advance Salary<RequiredIndicator /></FormLabel>
+            <FormControl id="advanceSalary" maxWidth={400} isRequired>
+              <FormLabel>Advance Salary</FormLabel>
               <Input
                 name="advanceSalary"
                 onChange={handleChange}
@@ -252,4 +231,4 @@ const CreateSlip = () => {
   );
 };
 
-export default CreateSlip;
+export default CreateLeave;
