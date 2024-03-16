@@ -17,6 +17,7 @@ import { PiArrowsLeftRightFill } from "react-icons/pi";
 import { FaPlus, FaTrashCan } from "react-icons/fa6";
 import SelectProduct from "../common/SelectProduct";
 import SelectClient from "../common/SelectClient";
+import { useNavigate } from "react-router-dom";
 
 const Invoice = () => {
   const [clients, setClients] = useState([]);
@@ -26,6 +27,7 @@ const Invoice = () => {
   const [services, setServices] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productValue, setProductValue] = useState([]);
+  const navigate=useNavigate();
 
   useEffect(() => {
     fetchClients();
@@ -150,8 +152,16 @@ const Invoice = () => {
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
-
-      toast.success("Invoice Slip is downloaded successfully.");
+       setServices([]);
+       setSelectedGst("");
+       setProducts([]);
+       toast.success("Invoice Slip is downloaded successfully.", {
+         autoClose: 2000,
+       });
+           setTimeout(() => {
+             navigate("/getAllInvoice");
+           }, 2000);
+           
     } catch (error) {
       console.error("Error creating invoice:", error);
       toast.error(

@@ -18,6 +18,8 @@ import { ToastContainer, toast } from "react-toastify";
 import MyDatePicker from "./common/MyDatePicker";
 import axios from "axios";
 import SelectTag from "./common/SelectTag";
+import { useNavigate } from "react-router-dom";
+import { convertDateFormatString } from "../helpers";
 
 const CreateProject = () => {
   const [projectData, setProjectData] = useState({
@@ -26,7 +28,6 @@ const CreateProject = () => {
     priority: "",
     startDate: "",
     deadline: "",
-    tags: [],
     description: "",
     employees: [],
   });
@@ -35,6 +36,7 @@ const CreateProject = () => {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
   const [selctedTagValue, setSelctedTagValue] = useState([]);
+  const navigate = useNavigate();
   const getEmployeeNameById = (id) => {
     const employee = employees.find((employee) => employee.employee_id === id);
     return employee ? employee.name : "Unknown Employee";
@@ -151,13 +153,13 @@ const CreateProject = () => {
       .then((response) => {
         if (response.status === 200 || response.status ===201) {
           toast.success(response.data.message);
+          setSelectedClient(null);
           setProjectData({
             projectName: "",
             client_id: "",
             priority: "",
             startDate: "",
             deadline: "",
-            tags: [],
             description: "",
             employees: [],
           });
@@ -165,7 +167,7 @@ const CreateProject = () => {
              autoClose: 2000,
            });
                setTimeout(() => {
-                 navigate("/getAllClient");
+                 navigate("/getAllProject");
                }, 2000);
 
         } else {
@@ -202,7 +204,11 @@ const CreateProject = () => {
             <div className="flex flex-col md:flex-row gap-4">
               <FormControl id="projectName" isRequired>
                 <FormLabel>Project Name</FormLabel>
-                <Input name="projectName" onChange={handleChange} />
+                <Input
+                  name="projectName"
+                  onChange={handleChange}
+                  value={projectData.projectName}
+                />
               </FormControl>
               <FormControl id="client_id" isRequired>
                 <FormLabel>Brand Name</FormLabel>
@@ -210,6 +216,7 @@ const CreateProject = () => {
                   onChange={handleClientChange}
                   size="md"
                   placeholder="Select Brand"
+                  value={projectData.client_id}
                 >
                   {clients.map((client) => (
                     <option key={client.client_id} value={client.client_id}>
@@ -225,6 +232,7 @@ const CreateProject = () => {
                   name="priority"
                   onChange={handleChange}
                   placeholder="Select priority"
+                  value={projectData.priority}
                 >
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -244,7 +252,12 @@ const CreateProject = () => {
             )}
             <FormControl id="description">
               <FormLabel>Description</FormLabel>
-              <Input name="description" onChange={handleChange} h="5rem" />
+              <Input
+                name="description"
+                onChange={handleChange}
+                h="5rem"
+                value={projectData.description}
+              />
             </FormControl>
 
             <div className="flex gap-2">
@@ -258,11 +271,8 @@ const CreateProject = () => {
                   placeholderText="Pick Date"
                 />
                 <br />
-                {projectData?.startDate?._d && (
-                  <>{`${projectData?.startDate?._d.getDate()} ${projectData?.startDate?._d.toLocaleString(
-                    "default",
-                    { month: "short" }
-                  )} ${projectData?.startDate?._d.getFullYear()}`}</>
+                {projectData.startDate && (
+                  <p>{convertDateFormatString(projectData.startDate)}</p>
                 )}
               </FormControl>
               <FormControl mb="4">
@@ -275,11 +285,8 @@ const CreateProject = () => {
                   placeholderText="Pick Date"
                 />
                 <br />
-                {projectData?.deadline?._d && (
-                  <>{`${projectData?.deadline?._d.getDate()} ${projectData?.deadline?._d.toLocaleString(
-                    "default",
-                    { month: "short" }
-                  )} ${projectData?.deadline?._d.getFullYear()}`}</>
+                {projectData.deadline && (
+                  <p>{convertDateFormatString(projectData.deadline)}</p>
                 )}
               </FormControl>
             </div>
@@ -299,7 +306,7 @@ const CreateProject = () => {
               <div className="mt-4 flex gap-2">
                 {projectData.employees.map((tag) => (
                   <Tag
-                    key={tag._id}
+                    key={tag.employee_id}
                     size="md"
                     borderRadius="full"
                     variant="solid"

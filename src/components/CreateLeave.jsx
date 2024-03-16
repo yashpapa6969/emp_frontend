@@ -12,9 +12,9 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const CreateSlip = () => {
+const CreateLeave = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     employee_id: "",
     basicPay: "",
@@ -60,9 +60,6 @@ const CreateSlip = () => {
     setProjectData({ ...projectData, employee_id: selectedEmployeeId });
   };
 
-
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -70,7 +67,7 @@ const CreateSlip = () => {
         `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
         projectData,
         {
-          responseType: 'blob', // Important: This tells Axios to expect a binary response instead of JSON
+          responseType: "blob", // Important: This tells Axios to expect a binary response instead of JSON
           headers: {
             "Content-Type": "application/json",
           },
@@ -78,13 +75,13 @@ const CreateSlip = () => {
       )
       .then((response) => {
         // Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: 'application/pdf' });
+        const file = new Blob([response.data], { type: "application/pdf" });
         // Build a URL from the file
         const fileURL = URL.createObjectURL(file);
         // Create a temp <a> tag to trigger download
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = fileURL;
-        link.setAttribute('download', 'salary_slip.pdf'); // or any other extension
+        link.setAttribute("download", "salary_slip.pdf"); // or any other extension
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -92,23 +89,24 @@ const CreateSlip = () => {
         if (response.status === 200 || response.status === 201) {
           setSelectedEmployeeInfo(null);
           setProjectData({
-    employee_id: "",
-    basicPay: "",
-    travelPay: "",
-    bonus: "",
-    paidLeave: "",
-    tds: "",
-    totalLeaves: "",
-    advanceSalary: "",
-  })
-   toast.success("Salary slip downloaded successfully.", {
-     autoClose: 2000,
-   });    setTimeout(() => {
-     navigate("/getAllSlip");
-   }, 2000);
+            employee_id: "",
+            basicPay: "",
+            travelPay: "",
+            bonus: "",
+            paidLeave: "",
+            tds: "",
+            totalLeaves: "",
+            advanceSalary: "",
+          });
+          toast.success("Salary slip downloaded successfully.", {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/getAllSlip");
+          }, 2000);
         } else {
           console.error("Failed to download slip");
-          toast.error('Failed to download slip.');
+          toast.error("Failed to download slip.");
         }
       })
       .catch((error) => {
@@ -233,4 +231,4 @@ const CreateSlip = () => {
   );
 };
 
-export default CreateSlip;
+export default CreateLeave;
