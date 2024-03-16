@@ -208,6 +208,16 @@ const Lead = () => {
       });
   };
 
+   const formatDate = (date) => {
+     if (!date) return ""; // Handle the case where date is null or undefined
+     const formattedDate = new Date(date);
+     const day = formattedDate.getDate();
+     const month = formattedDate.toLocaleString("default", { month: "short" });
+     const year = formattedDate.getFullYear();
+     return `${day} ${month} ${year}`;
+   };
+
+
   return (
     <form onSubmit={handleSubmit}>
       <FormControl id="enquiryDate" isRequired>
@@ -222,9 +232,7 @@ const Lead = () => {
           format={"DD/MM/YYYY"}
         />
         <br />
-        {projectData?.enquiryDate?._d && (
-          <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>
-        )}
+        <div>{formatDate(projectData.enquiryDate)}</div>
       </FormControl>
       <div className="hidden md:block">
         <Tabs>
@@ -359,7 +367,6 @@ const Lead = () => {
                   value={projectData.businessAddress}
                 />
               </FormControl>
-
             </TabPanel>
 
             <TabPanel>
@@ -480,6 +487,20 @@ const Lead = () => {
 
           <TabPanels>
             <TabPanel>
+              <FormControl id="enquiryDate" isRequired>
+                <FormLabel>Enquiry Date</FormLabel>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.enquiryDate}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, enquiryDate: date })
+                  }
+                  defaultValue={moment()}
+                  format={"DD/MM/YYYY"}
+                />
+                <br />
+                <div>{formatDate(projectData.enquiryDate)}</div>
+              </FormControl>
               <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="clientName" isRequired>
                   <FormLabel>Client Name</FormLabel>

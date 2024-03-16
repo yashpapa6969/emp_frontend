@@ -218,7 +218,9 @@ const CreateProject = () => {
             {selectedClient && (
               <Card variant={"outline"}>
                 <CardBody>
-                  <Text textTransform={"capitalize"}>Client Name: {selectedClient.clientName}</Text>
+                  <Text textTransform={"capitalize"}>
+                    Client Name: {selectedClient.clientName}
+                  </Text>
                   <Text>Client Company: {selectedClient.companyName}</Text>
                 </CardBody>
               </Card>
@@ -240,7 +242,10 @@ const CreateProject = () => {
                 />
                 <br />
                 {projectData?.startDate?._d && (
-                  <>{`${projectData?.startDate?._d}`.slice(4, 16)}</>
+                  <>{`${projectData?.startDate?._d.getDate()} ${projectData?.startDate?._d.toLocaleString(
+                    "default",
+                    { month: "short" }
+                  )} ${projectData?.startDate?._d.getFullYear()}`}</>
                 )}
               </FormControl>
               <FormControl mb="4">
@@ -254,7 +259,10 @@ const CreateProject = () => {
                 />
                 <br />
                 {projectData?.deadline?._d && (
-                  <>{`${projectData?.deadline?._d}`.slice(4, 16)}</>
+                  <>{`${projectData?.deadline?._d.getDate()} ${projectData?.deadline?._d.toLocaleString(
+                    "default",
+                    { month: "short" }
+                  )} ${projectData?.deadline?._d.getFullYear()}`}</>
                 )}
               </FormControl>
             </div>
@@ -272,18 +280,18 @@ const CreateProject = () => {
                 ))}
               </Select>
               <div className="mt-4 flex gap-2">
-              {projectData.employees.map((tag) => (
-                <Tag
-                  key={tag._id}
-                  size="md"
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="blue"
-                >
-                  <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
-                  <TagCloseButton onClick={() => removeEmployeeById(tag)} />
-                </Tag>
-              ))}
+                {projectData.employees.map((tag) => (
+                  <Tag
+                    key={tag._id}
+                    size="md"
+                    borderRadius="full"
+                    variant="solid"
+                    colorScheme="blue"
+                  >
+                    <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
+                    <TagCloseButton onClick={() => removeEmployeeById(tag)} />
+                  </Tag>
+                ))}
               </div>
             </FormControl>
             <Button type="submit" colorScheme="purple">

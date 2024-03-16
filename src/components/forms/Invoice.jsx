@@ -169,6 +169,15 @@ const Invoice = () => {
       );
     }
   };
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle the case where date is null or undefined
+    const formattedDate = new Date(date);
+    const day = formattedDate.getDate();
+    const month = formattedDate.toLocaleString("default", { month: "short" });
+    const year = formattedDate.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
 
 
   return (
@@ -187,7 +196,9 @@ const Invoice = () => {
       {selectedClient && (
         <Card variant={"outline"}>
           <CardBody>
-            <Text textTransform={"capitalize"}>Client Name: {selectedClient.clientName}</Text>
+            <Text textTransform={"capitalize"}>
+              Client Name: {selectedClient.clientName}
+            </Text>
             <Text>Client Company: {selectedClient.companyName}</Text>
           </CardBody>
         </Card>
@@ -202,17 +213,12 @@ const Invoice = () => {
         />
       </FormControl>
 
-
-      {services.length > 0 &&
+      {services.length > 0 && (
         <div className="flex items-center max-w-[900px] overflow-x-scroll pb-10 hide-scroll-bar">
-          <div
-            className="flex flex-nowrap"
-          >
+          <div className="flex flex-nowrap">
             {services.map((service, index) => (
               <div key={`card-${index}`} className="inline-block px-3">
-                <div
-                  className="w-[300px] my-4 px-4 py-6 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                >
+                <div className="w-[300px] my-4 px-4 py-6 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
                   <div
                     onClick={() => handleRemoveService(index)}
                     className="flex items-center justify-center w-10 h-10 hover:bg-red-600 transition-all bg-red-500 text-white gap-2 rounded-full mb-4 cursor-pointer"
@@ -261,14 +267,19 @@ const Invoice = () => {
                           handleServiceChange(index, "startDate", date)
                         } // Corrected to use 'date' instead of 'startDate'
                       />
+                      <div>{formatDate(service.startDate)}</div>
                     </FormControl>
                     <PiArrowsLeftRightFill size={20} />
                     <FormControl maxWidth={100}>
                       <FormLabel>End Date</FormLabel>
                       <MyDatePicker
                         selected={service.endDate}
-                        onChange={(date) => handleServiceChange(index, "endDate", date)} // Corrected to use 'date' instead of 'endDate'
+                        onChange={(date) =>
+                          handleServiceChange(index, "endDate", date)
+                        }
+                        // Corrected to use 'date' instead of 'endDate'
                       />
+                      <div>{formatDate(service.endDate)}</div>
                     </FormControl>
                   </div>
 
@@ -300,16 +311,27 @@ const Invoice = () => {
             <div
               onClick={handleAddService}
               ref={addServiceRef}
-              className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg bg-purple-200 hover:bg-purple-300 rounded-lg border-gray-100 text-purple-900 flex flex-col gap-4 items-center justify-center cursor-pointer">
+              className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg bg-purple-200 hover:bg-purple-300 rounded-lg border-gray-100 text-purple-900 flex flex-col gap-4 items-center justify-center cursor-pointer"
+            >
               <FaPlus size={40} />
               Add Service
             </div>
           </div>
         </div>
-      }
+      )}
 
-      {(services.length === 0 && selectedClient) && <Button onClick={handleAddService} variant={"outline"} colorScheme="purple">Add Service</Button>}
-      <Button onClick={handleSubmit} colorScheme="purple">Create Invoice</Button>
+      {services.length === 0 && selectedClient && (
+        <Button
+          onClick={handleAddService}
+          variant={"outline"}
+          colorScheme="purple"
+        >
+          Add Service
+        </Button>
+      )}
+      <Button onClick={handleSubmit} colorScheme="purple">
+        Create Invoice
+      </Button>
     </Stack>
   );
 };
