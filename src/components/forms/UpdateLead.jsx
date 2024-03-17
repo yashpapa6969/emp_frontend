@@ -543,6 +543,7 @@ const UpdateLead = () => {
                       onChange={handleChange}
                       className="h-16"
                       value={projectData.additionalInformation}
+                      h='5rem'
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="purple" className="mt-5">

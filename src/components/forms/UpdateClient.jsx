@@ -147,7 +147,13 @@ const UpdateClient = () => {
     }));
   }, [selectSourceValue, selectedTagValue]);
 
-
+   const RequiredIndicator = () => {
+     return (
+       <Text as="span" color="red.500" ml={1}>
+         *
+       </Text>
+     );
+   };
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -302,18 +308,7 @@ const UpdateClient = () => {
         <h1 className="text-2xl font-semibold">{client.clientName}</h1>
 
         <form onSubmit={handleSubmit}>
-          {/* <FormControl id="enquiryDate" isRequired>
-                <FormLabel>Enquiry Date</FormLabel>
-                <MyDatePicker
-                    selected={projectData.enquiryDate}
-                    onChange={(date) =>
-                        setProjectData({ ...projectData, enquiryDate: date })
-                    }
-                    defaultValue={moment()}
-                    format={"DD/MM/YYYY"}
-                />
-            </FormControl>
-                */}
+       
           <FormControl id="enquiryDate">
             <FormLabel>Enquiry Date</FormLabel>
             <MyDatePicker
@@ -623,6 +618,7 @@ const UpdateClient = () => {
                         onChange={handleChange}
                         className="h-16"
                         value={projectData.additionalInformation}
+                        h="5rem"
                       />
                     </FormControl>
                   </div>
@@ -641,8 +637,9 @@ const UpdateClient = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${projectData.singleFileView}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -673,8 +670,9 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${file}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -701,7 +699,9 @@ const UpdateClient = () => {
                       {projectData.singleFile && (
                         <div>
                           <p>Single File: {projectData.singleFile.name}</p>
-                          <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                          <Button onClick={handleDeleteSingleFile}>
+                            Delete
+                          </Button>
                         </div>
                       )}
                       <div className="flex gap-3">
@@ -721,7 +721,9 @@ const UpdateClient = () => {
                             <p>
                               File {index + 1}: {file.name}
                             </p>
-                            <Button onClick={() => handleDeleteMultipleFile(index)}>
+                            <Button
+                              onClick={() => handleDeleteMultipleFile(index)}
+                            >
                               Delete
                             </Button>
                           </div>

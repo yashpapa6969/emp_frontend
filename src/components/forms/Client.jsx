@@ -228,7 +228,6 @@ const Client = () => {
           setTimeout(() => {
             navigate("/getAllClient");
           }, 2000);
-        } else {
           toast.success(response.data.message, {
             autoClose: 2000,
           });
@@ -250,18 +249,22 @@ const Client = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* <FormControl id="enquiryDate" >
-                <FormLabel>Enquiry Date</FormLabel>
-                <MyDatePicker
-                    selected={projectData.enquiryDate}
-                    onChange={(date) =>
-                        setProjectData({ ...projectData, enquiryDate: date })
-                    }
-                    defaultValue={moment()}
-                    format={"DD/MM/YYYY"}
-                />
-            </FormControl>
-                */}
+      <FormControl id="enquiryDate">
+        <FormLabel>
+          Enquiry Date <RequiredIndicator />{" "}
+        </FormLabel>
+        <MyDatePicker
+          className="mb-1"
+          selected={projectData.enquiryDate}
+          onChange={(date) =>
+            setProjectData({ ...projectData, enquiryDate: date })
+          }
+          defaultValue={moment()}
+          format={"DD/MM/YYYY"}
+        />
+        <br />
+        <div>{formatDate(projectData.enquiryDate)}</div>
+      </FormControl>
       <div className="hidden md:block">
         <Tabs>
           <TabList>
