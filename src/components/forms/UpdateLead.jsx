@@ -370,7 +370,7 @@ const UpdateLead = () => {
                           handleSelectOption("gender", value)
                         }
                         placeholder="Select gender"
-                        value={client.gender}
+                        value={projectData.gender}
                       >
                         <Select.Option value="Male">Male</Select.Option>
                         <Select.Option value="Female">Female</Select.Option>
@@ -474,7 +474,7 @@ const UpdateLead = () => {
                     <Input
                       name="businessAddress"
                       onChange={handleChange}
-                      className="h-16"
+                      h='5rem'
                       value={projectData.businessAddress}
                     />
                   </FormControl>
@@ -515,8 +515,9 @@ const UpdateLead = () => {
                     <Input
                       name="billingAddress"
                       onChange={handleChange}
-                      className="h-16"
                       value={projectData.billingAddress}
+                      h='5rem'
+
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="purple" className="mt-5">
@@ -543,7 +544,7 @@ const UpdateLead = () => {
                       onChange={handleChange}
                       className="h-16"
                       value={projectData.additionalInformation}
-                      h='5rem'
+                      h="5rem"
                     />
                   </FormControl>
                   <Button type="submit" colorScheme="purple" className="mt-5">
@@ -561,8 +562,9 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${projectData.singleFileView}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -594,8 +596,9 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${import.meta.env.VITE_API_BASE
-                                  }/uploads/${file}`}
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -626,12 +629,18 @@ const UpdateLead = () => {
                         {projectData.singleFile && (
                           <div>
                             <p>Single File: {projectData.singleFile.name}</p>
-                            <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                            <Button onClick={handleDeleteSingleFile}>
+                              Delete
+                            </Button>
                           </div>
                         )}
                         <FormControl mb="4">
                           <FormLabel>Single File</FormLabel>
-                          <Input type="file" ref={singleFileRef} onChange={handleSingleFileChange} />
+                          <Input
+                            type="file"
+                            ref={singleFileRef}
+                            onChange={handleSingleFileChange}
+                          />
                         </FormControl>
                       </div>
                       <div className="flex gap-3">
@@ -641,7 +650,9 @@ const UpdateLead = () => {
                             <p>
                               File {index + 1}: {file.name}
                             </p>
-                            <Button onClick={() => handleDeleteMultipleFile(index)}>
+                            <Button
+                              onClick={() => handleDeleteMultipleFile(index)}
+                            >
                               Delete
                             </Button>
                           </div>
@@ -674,21 +685,68 @@ const UpdateLead = () => {
 
               <TabPanels>
                 <TabPanel>
-                  <div className="flex flex-col gap-3 mb-3">
+                  <div className="flex gap-2 mb-3">
+                    <FormControl id="title" maxWidth={130}>
+                      <FormLabel>Title</FormLabel>
+                      <Select
+                        placeholder="Select Title"
+                        onChange={(value) => handleSelectOption("title", value)}
+                        value={projectData.title}
+                      >
+                        <Select.Option value="Mr.">Mr.</Select.Option>
+                        <Select.Option value="Mrs.">Mrs.</Select.Option>
+                      </Select>
+                    </FormControl>
                     <FormControl id="clientName">
                       <FormLabel>Client Name</FormLabel>
-                      <Input name="clientName" onChange={handleChange} />
+                      <Input
+                        name="clientName"
+                        onChange={handleChange}
+                        value={projectData.clientName}
+                      />
                     </FormControl>
+                  </div>
+                  <FormControl id="gender">
+                    <FormLabel>Gender</FormLabel>
+                    <Select
+                      name="gender"
+                      onChange={(value) => handleSelectOption("gender", value)}
+                      placeholder="Select gender"
+                      value={projectData.gender}
+                    >
+                      <Select.Option value="Male">Male</Select.Option>
+                      <Select.Option value="Female">Female</Select.Option>
+                      <Select.Option value="Others">Others</Select.Option>
+                    </Select>
+                  </FormControl>
+                  <div className="flex flex-col gap-3 mb-3">
                     <FormControl id="phone1">
                       <FormLabel>Phone Number 1</FormLabel>
-                      <Input name="phone1" onChange={handleChange} />
+                      <Input
+                        name="phone1"
+                        onChange={handleChange}
+                        value={projectData.phone1}
+                      />
                     </FormControl>
                     <FormControl id="phone2">
                       <FormLabel>Phone Number 2</FormLabel>
-                      <Input name="phone2" onChange={handleChange} />
+                      <Input
+                        name="phone2"
+                        onChange={handleChange}
+                        value={projectData.phone2}
+                      />
+                    </FormControl>
+                    <FormControl id="website">
+                      <FormLabel>Website</FormLabel>
+                      <Input
+                        name="website"
+                        onChange={handleChange}
+                        value={projectData.website}
+                      />
                     </FormControl>
                   </div>
-                  <div className="flex gap-3 mb-3">
+
+                  <div className="flex flex-col gap-3">
                     <FormControl id="tags">
                       <FormLabel>Source</FormLabel>
                       <Flex>
@@ -698,52 +756,38 @@ const UpdateLead = () => {
                         />
                       </Flex>
                     </FormControl>
-                    <FormControl id="title" maxWidth={130}>
-                      <FormLabel>Title</FormLabel>
-                      <Select
-                        style={{ width: "100%" }}
-                        placeholder="Select Title"
-                        onChange={(value) => handleSelectOption("title", value)}
-                      >
-                        <Select.Option value="Mr.">Mr.</Select.Option>
-                        <Select.Option value="Mrs.">Mrs.</Select.Option>
-                      </Select>
-                    </FormControl>
-                    <FormControl id="gender">
-                      <FormLabel>Gender</FormLabel>
-                      <Select
-                        style={{ width: "100%" }}
-                        name="gender"
-                        onChange={(value) =>
-                          handleSelectOption("gender", value)
-                        }
-                        placeholder="Select gender"
-                      >
-                        <Select.Option value="Male">Male</Select.Option>
-                        <Select.Option value="Female">Female</Select.Option>
-                        <Select.Option value="Others">Others</Select.Option>
-                      </Select>
-                    </FormControl>
-                  </div>
-
-                  <div className="flex flex-col gap-3">
                     <FormControl id="clientName">
                       <FormLabel>Source Information</FormLabel>
                       <Input name="sourceInformation" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input name="email1" onChange={handleChange} />
+                      <Input
+                        name="email1"
+                        onChange={handleChange}
+                        value={projectData.email1}
+                      />
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>
-                      <Input name="email2" onChange={handleChange} />
+                      <Input
+                        name="email2"
+                        onChange={handleChange}
+                        value={projectData.email2}
+                      />
                     </FormControl>
                     <FormControl id="website">
                       <FormLabel>Website</FormLabel>
-                      <Input name="website" onChange={handleChange} />
+                      <Input
+                        name="website"
+                        onChange={handleChange}
+                        value={projectData.website}
+                      />
                     </FormControl>
                   </div>
+                  <Button type="submit" colorScheme="purple" className="mt-5">
+                    Update Lead
+                  </Button>
                 </TabPanel>
                 <TabPanel>
                   <div className="flex gap-3 mb-3 flex-col md:flex-row">
@@ -792,7 +836,7 @@ const UpdateLead = () => {
                     <Input
                       name="businessAddress"
                       onChange={handleChange}
-                      className="h-32"
+                      h="5rem"
                       value={projectData.businessAddress}
                     />
                   </FormControl>
@@ -827,65 +871,152 @@ const UpdateLead = () => {
                     <Input
                       name="billingAddress"
                       onChange={handleChange}
-                      className="h-32"
+                      h='5rem'
                       value={projectData.billingAddress}
                     />
                   </FormControl>
                   <div className="flex flex-col mt-3 gap-3">
-                    <FormControl id="requirement" className="w-1/2">
+                    <FormControl id="requirement" maxWidth={300}>
                       <FormLabel>Requirement</FormLabel>
-                      <Input
-                        name="requirement"
-                        onChange={handleChange}
-                        className="h-16"
+                      {/* <Input
+                      name="requirement"
+                      onChange={handleChange}
+                      className="h-16"
+                    /> */}
+                      <SelectTag
+                        selectTagValue={selectedTagValue}
+                        setSelectTagValue={setSelectedTagValue}
                       />
                     </FormControl>
-                    <FormControl id="additionalInformation" className="w-1/2">
+                    <FormControl id="additionalInformation">
                       <FormLabel>Additional Information</FormLabel>
                       <Input
                         name="additionalInformation"
                         onChange={handleChange}
                         className="h-16"
                         value={projectData.additionalInformation}
+                        h="5rem"
                       />
                     </FormControl>
                   </div>
-                  <div className="flex gap-3">
-                    {/* Display single file */}
-                    {projectData.singleFile && (
-                      <div>
-                        <p>Single File: {projectData.singleFileView}</p>
-                        <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                  <div>
+                    <div>
+                      <h2>Existing Files</h2>
+                      <div className="flex gap-3">
+                        {projectData.singleFileView && (
+                          <div>
+                            <div className="flex gap-1">
+                              <p>File : {projectData.singleFileView}</p>
+                              <Button
+                                as="a"
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${projectData.singleFileView}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "none" }}
+                                display="inline-block"
+                                variant="solid"
+                              >
+                                View
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  handleAddSingleFileToRemove(
+                                    projectData.singleFileView
+                                  );
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    <FormControl mb="4">
-                      <FormLabel>Single File</FormLabel>
-                      <Input type="file" onChange={handleSingleFileChange} />
-                    </FormControl>
-                  </div>
-                  <div className="flex gap-3">
-                    {/* Display multiple files */}
-                    {projectData.multipleFiles.map((file, index) => (
-                      <div key={index}>
-                        <p>
-                          File {index + 1}: {file.name}
-                        </p>
-                        <Button onClick={() => handleDeleteMultipleFile(index)}>
-                          Delete
-                        </Button>
+                      <div className="flex gap-3">
+                        {projectData.multipleFilesView.map((file, index) => (
+                          <div key={index}>
+                            <p>
+                              File {index + 1}: {file}
+                            </p>
+                            <div className="flex gap-1">
+                              <Button
+                                as="a"
+                                href={`${
+                                  import.meta.env.VITE_API_BASE
+                                }/uploads/${file}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                textDecoration="none"
+                                _hover={{ textDecoration: "none" }}
+                                display="inline-block"
+                                mr={2}
+                                mb={2}
+                                variant="solid"
+                              >
+                                View
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  handleAddMultipleFilesToRemove(file);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                    <FormControl mb="4">
-                      <FormLabel>Multiple Files</FormLabel>
-                      <Input
-                        type="file"
-                        multiple
-                        onChange={handleMultipleFilesChange}
-                      />
-                    </FormControl>
+                    </div>
+                    <div>
+                      <h2>New Files</h2>
+                      <div className="flex gap-3">
+                        {/* Display single file */}
+                        {projectData.singleFile && (
+                          <div>
+                            <p>Single File: {projectData.singleFile.name}</p>
+                            <Button onClick={handleDeleteSingleFile}>
+                              Delete
+                            </Button>
+                          </div>
+                        )}
+                        <FormControl mb="4">
+                          <FormLabel>Single File</FormLabel>
+                          <Input
+                            type="file"
+                            ref={singleFileRef}
+                            onChange={handleSingleFileChange}
+                          />
+                        </FormControl>
+                      </div>
+                      <div className="flex gap-3">
+                        {/* Display multiple files */}
+                        {projectData.multipleFiles.map((file, index) => (
+                          <div key={index}>
+                            <p>
+                              File {index + 1}: {file.name}
+                            </p>
+                            <Button
+                              onClick={() => handleDeleteMultipleFile(index)}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        ))}
+                        <FormControl mb="4">
+                          <FormLabel>Multiple Files</FormLabel>
+                          <Input
+                            type="file"
+                            multiple
+                            onChange={handleMultipleFilesChange}
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
                   </div>
                   <Button type="submit" colorScheme="purple" className="mt-5">
-                    Create Lead
+                    Update Lead
                   </Button>
                 </TabPanel>
               </TabPanels>
