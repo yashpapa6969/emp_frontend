@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
+  const multipleFileRef = useRef();
   const clientId = useSelector(selectClientId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -231,6 +232,7 @@ const UpdateClient = () => {
     });
   };
   const handleDeleteMultipleFile = (index) => {
+    multipleFileRef.current.value = "";
     const updatedFiles = [...projectData.multipleFiles];
     updatedFiles.splice(index, 1);
     setProjectData({ ...projectData, multipleFiles: updatedFiles });
@@ -733,6 +735,7 @@ const UpdateClient = () => {
                           <Input
                             type="file"
                             multiple
+                            ref={multipleFileRef}
                             onChange={handleMultipleFilesChange}
                           />
                         </FormControl>
@@ -922,6 +925,7 @@ const UpdateClient = () => {
                       <Input
                         type="file"
                         multiple
+                        ref={multipleFileRef}
                         onChange={handleMultipleFilesChange}
                       />
                     </FormControl>
