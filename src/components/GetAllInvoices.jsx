@@ -190,7 +190,9 @@ const GetAllInvoices = () => {
                 <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
                   <Tr>
                     <Th fontWeight="bold">Product Name</Th>
-                    <Th fontWeight="bold" className="md:table-cell hidden">Duration</Th>
+                    <Th fontWeight="bold" className="md:table-cell hidden">
+                      Duration
+                    </Th>
                     <Th fontWeight="bold" className="md:table-cell hidden">
                       Quantity
                     </Th>
@@ -204,95 +206,102 @@ const GetAllInvoices = () => {
                 <Tbody>
                   {searchText !== ""
                     ? filteredInvoices.map((invoice, index) =>
-                      invoice.services.map((service) => (
-                        <Tr key={service._id}>
-                          <Td>{service.product}</Td>
-                          <Td className="md:table-cell hidden">{service.duration}</Td>
-                          <Td className="md:table-cell hidden">
-                            {service.quantity}
-                          </Td>
-                          <Td className="md:table-cell hidden">
-                            {service.unitPrice}
-                          </Td>
-                          <Td className="flex flex-col md:flex-row gap-2">
-                            <Button
-                              size={"sm"}
-                              colorScheme="purple"
-                              onClick={() => handleMoreInfo(invoice)}
-                            >
-                              More Info
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              // isLoading={index === downloading}
-                              colorScheme="purple"
-                              onClick={() =>
-                                handleDownload(invoice.invoive_id, index)
-                              }
-                            >
-                              <DownloadIcon />
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              colorScheme="red"
-                              onClick={() =>
-                                handleDeleteInvoice(invoice.invoive_id)
-                              }
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      ))
-                    )
+                        invoice.services.map((service) => (
+                          <Tr key={service._id}>
+                            <Td>{service.product}</Td>
+                            <Td className="md:table-cell hidden">
+                              {service.duration}
+                            </Td>
+                            <Td className="md:table-cell hidden">
+                              {service.quantity}
+                            </Td>
+                            <Td className="md:table-cell hidden">
+                              {service.unitPrice}
+                            </Td>
+                            <Td className="flex flex-col md:flex-row gap-2">
+                              <Button
+                                size={"sm"}
+                                colorScheme="purple"
+                                onClick={() => handleMoreInfo(invoice)}
+                              >
+                                More Info
+                              </Button>
+                              <Button
+                                size={"sm"}
+                                variant={"outline"}
+                                // isLoading={index === downloading}
+                                colorScheme="purple"
+                                onClick={() =>
+                                  handleDownload(invoice.invoive_id, index)
+                                }
+                              >
+                                <DownloadIcon />
+                              </Button>
+                              <Button
+                                size={"sm"}
+                                variant={"outline"}
+                                colorScheme="red"
+                                onClick={() =>
+                                  handleDeleteInvoice(invoice.invoive_id)
+                                }
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Td>
+                          </Tr>
+                        ))
+                      )
                     : invoices.map((invoice) =>
-                      invoice.services.map((service, index) => (
-                        <Tr key={service._id}>
-                          <Td>{service.product}</Td>
-                          <Td className="md:table-cell hidden">{service.duration}</Td>
-                          <Td className="md:table-cell hidden">
-                            {service.quantity}
-                          </Td>
-                          <Td className="md:table-cell hidden">
-                            {service.unitPrice}
-                          </Td>
-                          <Td className="flex flex-col md:flex-row gap-2">
-                            <Button
-                              size={"sm"}
-                              colorScheme="purple"
-                              onClick={() => handleMoreInfo(invoice)}
-                            >
-                              More Info
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              // isLoading={index === downloading}
-                              colorScheme="purple"
-                              onClick={() =>
-                                handleDownload(invoice.invoive_id, index)
-                              }
-                            >
-                              <DownloadIcon />
-                            </Button>
-                          </Td>
-                          <Td>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              colorScheme="red"
-                              onClick={() =>
-                                handleDeleteConfirmation(invoice.invoive_id)
-                              }
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      ))
-                    )}
+                        invoice.services.map((service, index) => (
+                          <Tr key={service._id}>
+                            <Td>{service.product}</Td>
+                            <Td className="md:table-cell hidden">
+                              {service.duration
+                                ? service.duration
+                                : "Duration not specified"}
+                            </Td>
+
+                            <Td className="md:table-cell hidden">
+                              {service.quantity}
+                            </Td>
+                            <Td className="md:table-cell hidden">
+                              {service.unitPrice}
+                            </Td>
+                            <Td className="flex flex-col md:flex-row gap-2">
+                              <Button
+                                size={"sm"}
+                                colorScheme="purple"
+                                onClick={() => handleMoreInfo(invoice)}
+                              >
+                                More Info
+                              </Button>
+                              <Button
+                                size={"sm"}
+                                variant={"outline"}
+                                // isLoading={index === downloading}
+                                colorScheme="purple"
+                                onClick={() =>
+                                  handleDownload(invoice.invoive_id, index)
+                                }
+                              >
+                                <DownloadIcon />
+                              </Button>
+                            </Td>
+                            <Td>
+                              <Button
+                                size={"sm"}
+                                variant={"outline"}
+                                colorScheme="red"
+                                onClick={() =>
+                                  handleDeleteConfirmation(invoice.invoive_id)
+                                }
+                              >
+                                <DeleteIcon />
+                              </Button>
+                            </Td>
+                          </Tr>
+                        ))
+                      )}
                 </Tbody>
               </TableContainer>
             )}

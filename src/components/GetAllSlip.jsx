@@ -219,7 +219,7 @@ const GetAllSlip = () => {
                 : projects.map((project, index) => (
                     <Tr key={project._id}>
                       <Td className="md:table-cell hidden">{index + 1}</Td>
-                      <Td>{index + 1}</Td>
+                      <Td>{project.name}</Td>
                       <Td className="md:table-cell hidden">{project.basicPay}</Td>
                       <Td className="md:table-cell hidden">
                         {project.travelPay}

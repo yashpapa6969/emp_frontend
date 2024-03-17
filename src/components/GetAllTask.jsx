@@ -157,213 +157,219 @@ const GetAllTask = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredTasks.map((task, index) => (
-                  <Tr key={task._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>
-                      <div className="flex gap-2 items-center">
-                        {task.brandName}
-                      </div>
-                    </Td>
-                    <Td
-                      className={`md:table-cell hidden capitalize`}
-                    >
-                      <div className={`p-1 text-center ${priorityArray[task.priority] === "urgent" &&
-                        "bg-red-400 max-w-[68px]"
-                        } ${priorityArray[task.priority] === "high" &&
-                        "bg-orange-300 max-w-[48px]"
-                        } ${priorityArray[task.priority] === "medium" &&
-                        "bg-blue-300 max-w-[68px]"
-                        } ${priorityArray[task.priority] === "low" &&
-                        "bg-gray-400 max-w-[48px]"
-                        }`}>
-                        {priorityArray[task.priority] || task.priority}
-                      </div>
-                    </Td>
-                    <Td className="md:table-cell hidden">
-                      <div className="flex gap-2 items-center">
-                        {task.status === "Not Started" ? (
-                          <div className="h-3 w-3 rounded-full bg-red-600" />
-                        ) : task.status === "Working" ? (
-                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                        ) : task.status === "Awaited Feedback" ? (
-                          <div className="h-3 w-3 rounded-full bg-blue-600" />
-                        ) : (
-                          <div className="h-3 w-3 rounded-full bg-green-600" />
-                        )}{" "}
-                        {task.status}
-                      </div>
-                    </Td>
-                    <Td className="md:table-cell hidden">
-                      {task.status === 0 && "Not Started"}
-                      {task.status === 1 && "Working"}
-                      {task.status === 2 && "Awaited Feedback"}
-                      {task.status === 3 && "Completed"}
-                      <Menu>
-                        <MenuButton
-                          size={"sm"}
-                          as={Button}
-                          colorScheme="purple"
+                    <Tr key={task._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>
+                        <div className="flex gap-2 items-center">
+                          {task.brandName}
+                        </div>
+                      </Td>
+                      <Td className={`md:table-cell hidden capitalize`}>
+                        <span
+                          className={`
+    p-1 text-center 
+    ${priorityArray[task.priority] === "urgent" && "text-red-500"}
+    ${priorityArray[task.priority] === "high" && "text-orange-500"}
+    ${priorityArray[task.priority] === "medium" && "text-blue-500"}
+    ${priorityArray[task.priority] === "low" && "text-gray-500"}
+    font-bold
+  `}
+                          style={{
+                            backgroundColor: "transparent", // Set background color to transparent
+                          }}
                         >
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 0)
-                            }
+                          {priorityArray[task.priority] || task.priority}
+                        </span>
+                      </Td>
+
+                      <Td className="md:table-cell hidden">
+                        <div className="flex gap-2 items-center">
+                          {task.status === "Not Started" ? (
+                            <div className="h-3 w-3 rounded-full bg-red-600" />
+                          ) : task.status === "Working" ? (
+                            <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                          ) : task.status === "Awaited Feedback" ? (
+                            <div className="h-3 w-3 rounded-full bg-blue-600" />
+                          ) : (
+                            <div className="h-3 w-3 rounded-full bg-green-600" />
+                          )}{" "}
+                          {task.status}
+                        </div>
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {task.status === 0 && "Not Started"}
+                        {task.status === 1 && "Working"}
+                        {task.status === 2 && "Awaited Feedback"}
+                        {task.status === 3 && "Completed"}
+                        <Menu>
+                          <MenuButton
+                            size={"sm"}
+                            as={Button}
+                            colorScheme="purple"
                           >
-                            Not Started
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 1)
-                            }
-                          >
-                            Working
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 2)
-                            }
-                          >
-                            Awaited Feedback
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 3)
-                            }
-                          >
-                            Completed
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(task)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() => handleDeleteConfirmation(task.task_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 0)
+                              }
+                            >
+                              Not Started
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 1)
+                              }
+                            >
+                              Working
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 2)
+                              }
+                            >
+                              Awaited Feedback
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 3)
+                              }
+                            >
+                              Completed
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(task)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteConfirmation(task.task_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
                 : tasks.map((task, index) => (
-                  <Tr key={task._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>
-                      <div className="flex gap-2 items-center">
-                        {task.brandName}
-                      </div>
-                    </Td>
-                    <Td
-                      className={`md:table-cell hidden capitalize`}
-                    >
-                      <div className={`p-1 text-center ${priorityArray[task.priority] === "urgent" &&
-                        "bg-red-400 max-w-[68px]"
-                        } ${priorityArray[task.priority] === "high" &&
-                        "bg-orange-300 max-w-[48px]"
-                        } ${priorityArray[task.priority] === "medium" &&
-                        "bg-blue-300 max-w-[68px]"
-                        } ${priorityArray[task.priority] === "low" &&
-                        "bg-gray-400 max-w-[48px]"
-                        }`}>
-                        {priorityArray[task.priority] || task.priority}
-                      </div>
-                    </Td>
-                    <Td className="md:table-cell hidden">
-                      <div className="flex gap-2 items-center">
-                        {task.status === "Not Started" ? (
-                          <div className="h-3 w-3 rounded-full bg-red-600" />
-                        ) : task.status === "Working" ? (
-                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                        ) : task.status === "Awaited Feedback" ? (
-                          <div className="h-3 w-3 rounded-full bg-blue-600" />
-                        ) : (
-                          <div className="h-3 w-3 rounded-full bg-green-600" />
-                        )}{" "}
-                        {task.status}
-                      </div>
-                    </Td>
-                    <Td className="md:table-cell hidden">
-                      {task.status === 0 && "Not Started"}
-                      {task.status === 1 && "Working"}
-                      {task.status === 2 && "Awaited Feedback"}
-                      {task.status === 3 && "Completed"}
-                      <Menu>
-                        <MenuButton
-                          size={"sm"}
-                          as={Button}
-                          colorScheme="purple"
+                    <Tr key={task._id}>
+                      <Td>{index + 1}</Td>
+                      <Td>
+                        <div className="flex gap-2 items-center">
+                          {task.brandName}
+                        </div>
+                      </Td>
+                      <Td className={`md:table-cell hidden capitalize`}>
+                        <span
+                          className={`
+    p-1 text-center 
+    ${priorityArray[task.priority] === "urgent" && "text-red-500"}
+    ${priorityArray[task.priority] === "high" && "text-orange-500"}
+    ${priorityArray[task.priority] === "medium" && "text-blue-500"}
+    ${priorityArray[task.priority] === "low" && "text-gray-500"}
+    font-bold
+  `}
+                          style={{
+                            backgroundColor: "transparent", // Set background color to transparent
+                          }}
                         >
-                          Change Status
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 0)
-                            }
+                          {priorityArray[task.priority] || task.priority}
+                        </span>
+                      </Td>
+
+                      <Td className="md:table-cell hidden">
+                        <div className="flex gap-2 items-center">
+                          {task.status === "Not Started" ? (
+                            <div className="h-3 w-3 rounded-full bg-red-600" />
+                          ) : task.status === "Working" ? (
+                            <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                          ) : task.status === "Awaited Feedback" ? (
+                            <div className="h-3 w-3 rounded-full bg-blue-600" />
+                          ) : (
+                            <div className="h-3 w-3 rounded-full bg-green-600" />
+                          )}{" "}
+                          {task.status}
+                        </div>
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {task.status === 0 && "Not Started"}
+                        {task.status === 1 && "Working"}
+                        {task.status === 2 && "Awaited Feedback"}
+                        {task.status === 3 && "Completed"}
+                        <Menu>
+                          <MenuButton
+                            size={"sm"}
+                            as={Button}
+                            colorScheme="purple"
                           >
-                            Not Started
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 1)
-                            }
-                          >
-                            Working
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 2)
-                            }
-                          >
-                            Awaited Feedback
-                          </MenuItem>
-                          <MenuItem
-                            onClick={() =>
-                              handleStatusChange(task.task_id, 3)
-                            }
-                          >
-                            Completed
-                          </MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(task)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() => handleDeleteConfirmation(task.task_id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                            Change Status
+                          </MenuButton>
+                          <MenuList>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 0)
+                              }
+                            >
+                              Not Started
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 1)
+                              }
+                            >
+                              Working
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 2)
+                              }
+                            >
+                              Awaited Feedback
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() =>
+                                handleStatusChange(task.task_id, 3)
+                              }
+                            >
+                              Completed
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          colorScheme="purple"
+                          onClick={() => handleMoreInfo(task)}
+                        >
+                          More Info
+                        </Button>
+                      </Td>
+                      <Td>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          colorScheme="red"
+                          ml={2}
+                          onClick={() => handleDeleteConfirmation(task.task_id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))}
             </Tbody>
           </TableContainer>
         )}

@@ -91,12 +91,13 @@ const CreateProject = () => {
       (client) => client.client_id === clientId
     );
     setSelectedClient(selectedClient);
-
     setProjectData({
       ...projectData,
       client_id: clientId,
       brandName: selectedClient.brandName,
+      employees:[],
     });
+    document.getElementById("employees").value ="";
   };
 
   const handleTagChange = (e) => {
@@ -130,6 +131,7 @@ const CreateProject = () => {
       ...projectData,
       employees: [...projectData.employees, ...selectedIds],
     });
+     document.getElementById("employees").value = "";
   };
 
   const removeEmployeeById = (employeeIdToRemove) => {
@@ -222,16 +224,22 @@ const CreateProject = () => {
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
             <div className="flex flex-col md:flex-row gap-4">
-              <FormControl id="projectName" >
-                <FormLabel>Project Name<RequiredIndicator/> </FormLabel>
+              <FormControl id="projectName">
+                <FormLabel>
+                  Project Name
+                  <RequiredIndicator />{" "}
+                </FormLabel>
                 <Input
                   name="projectName"
                   onChange={handleChange}
                   value={projectData.projectName}
                 />
               </FormControl>
-              <FormControl id="client_id" >
-                <FormLabel>Brand Name<RequiredIndicator/> </FormLabel>
+              <FormControl id="client_id">
+                <FormLabel>
+                  Brand Name
+                  <RequiredIndicator />{" "}
+                </FormLabel>
                 <Select
                   onChange={handleClientChange}
                   size="md"
@@ -245,8 +253,11 @@ const CreateProject = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl id="priority" >
-                <FormLabel>Priority<RequiredIndicator/> </FormLabel>
+              <FormControl id="priority">
+                <FormLabel>
+                  Priority
+                  <RequiredIndicator />{" "}
+                </FormLabel>
                 <Select
                   width={300}
                   name="priority"
@@ -271,7 +282,10 @@ const CreateProject = () => {
               </Card>
             )}
             <FormControl id="description">
-              <FormLabel>Description<RequiredIndicator/> </FormLabel>
+              <FormLabel>
+                Description
+                <RequiredIndicator />{" "}
+              </FormLabel>
               <Input
                 name="description"
                 onChange={handleChange}
@@ -281,8 +295,11 @@ const CreateProject = () => {
             </FormControl>
 
             <div className="flex gap-2">
-              <FormControl mb="4" >
-                <FormLabel>Start Date<RequiredIndicator/> </FormLabel>
+              <FormControl mb="4">
+                <FormLabel>
+                  Start Date
+                  <RequiredIndicator />{" "}
+                </FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.startDate}
@@ -296,7 +313,10 @@ const CreateProject = () => {
                 )}
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Deadline<RequiredIndicator/> </FormLabel>
+                <FormLabel>
+                  Deadline
+                  <RequiredIndicator />{" "}
+                </FormLabel>
                 <MyDatePicker
                   className="mb-1"
                   selected={projectData.deadline}
@@ -310,13 +330,15 @@ const CreateProject = () => {
                 )}
               </FormControl>
             </div>
-            <FormControl id="employees" >
-              <FormLabel>Employees<RequiredIndicator/> </FormLabel>
-              <Select
-                onChange={handleEmployeeChange}
-                size="md"
-                placeholder="Select employees"
-              >
+            <FormControl id="employees">
+              <FormLabel>
+                Employees
+                <RequiredIndicator />
+              </FormLabel>
+              <Select onChange={handleEmployeeChange} size="md" value="">
+                <option value="" disabled>
+                  Select employees
+                </option>
                 {employees.map((employee) => (
                   <option key={employee._id} value={employee.employee_id}>
                     {employee.name}
@@ -324,22 +346,23 @@ const CreateProject = () => {
                 ))}
               </Select>
               {projectData?.employees?.length > 0 && (
-              <Box className="my-4 p-4 rounded-lg bg-slate-100 shadow-lg flex gap-2">
-                {projectData.employees.map((tag) => (
-                  <Tag
-                    key={tag.employee_id}
-                    size="lg"
-                    borderRadius="full"
-                    variant="outline"
-                    colorScheme="purple"
-                  >
-                    <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
-                    <TagCloseButton onClick={() => removeEmployeeById(tag)} />
-                  </Tag>
-                ))}
-              </Box>
+                <Box className="my-4 p-4 rounded-lg bg-slate-100 shadow-lg flex gap-2">
+                  {projectData.employees.map((tag) => (
+                    <Tag
+                      key={tag.employee_id}
+                      size="lg"
+                      borderRadius="full"
+                      variant="outline"
+                      colorScheme="purple"
+                    >
+                      <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
+                      <TagCloseButton onClick={() => removeEmployeeById(tag)} />
+                    </Tag>
+                  ))}
+                </Box>
               )}
             </FormControl>
+
             <Button type="submit" colorScheme="purple">
               Create Project
             </Button>
