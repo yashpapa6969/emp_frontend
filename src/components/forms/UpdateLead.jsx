@@ -74,7 +74,7 @@ const UpdateLead = () => {
       .then((response) => {
         const clientData = response.data;
         setClient(response.data);
-        setProjectData((projectData)=>({
+        setProjectData((projectData) => ({
           ...projectData,
           enquiryDate: clientData?.enquiryDate || projectData.enquiryDate,
           title: clientData?.title || projectData.title,
@@ -195,15 +195,27 @@ const UpdateLead = () => {
 
   const handleAddSingleFileToRemove = (filename) => {
     projectData.singleFileToRemove = filename;
+    projectData.singleFileView = null;
     setProjectData({ ...projectData });
   };
   const handleAddMultipleFilesToRemove = (filename) => {
-    projectData.multipleFilesToRemove = [
-      ...projectData.multipleFilesToRemove,
-      filename,
-    ];
-    setProjectData({ ...projectData });
+    const updatedMultipleFilesView = projectData.multipleFilesView.filter(
+      (file) => file !== filename
+    );
+
+    const updatedMultipleFilesToRemove = [...projectData.multipleFilesToRemove, filename];
+    if (!updatedMultipleFilesToRemove.includes(filename)) {
+      updatedMultipleFilesToRemove.push(filename);
+    }
+
+    setProjectData({
+      ...projectData,
+      multipleFilesToRemove: updatedMultipleFilesToRemove,
+      multipleFilesView: updatedMultipleFilesView,
+    });
   };
+
+
   const handleDeleteMultipleFile = (index) => {
     const updatedFiles = [...projectData.multipleFiles];
     updatedFiles.splice(index, 1);
@@ -250,13 +262,13 @@ const UpdateLead = () => {
         }
       )
       .then((response) => {
-        if (response.status === 200 || response.status===201) {
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
-           setTimeout(() => {
-             navigate("/manageLeads");
-           }, 2000);
+        if (response.status === 200 || response.status === 201) {
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/manageLeads");
+          }, 2000);
         } else {
           toast.success(response.data.message);
         }
@@ -548,9 +560,8 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -582,9 +593,8 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -611,16 +621,30 @@ const UpdateLead = () => {
                     <div>
                       <h2>New Files</h2>
                       <div className="flex gap-3">
+                        {/* Display single file */}
+                        {projectData.singleFile && (
+                          <div>
+                            <p>Single File: {projectData.singleFile.name}</p>
+                            <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                          </div>
+                        )}
                         <FormControl mb="4">
                           <FormLabel>Single File</FormLabel>
-                          <Input
-                            type="file"
-                            ref={singleFileRef}
-                            onChange={handleSingleFileChange}
-                          />
+                          <Input type="file" ref={singleFileRef} onChange={handleSingleFileChange} />
                         </FormControl>
                       </div>
                       <div className="flex gap-3">
+                        {/* Display multiple files */}
+                        {projectData.multipleFiles.map((file, index) => (
+                          <div key={index}>
+                            <p>
+                              File {index + 1}: {file.name}
+                            </p>
+                            <Button onClick={() => handleDeleteMultipleFile(index)}>
+                              Delete
+                            </Button>
+                          </div>
+                        ))}
                         <FormControl mb="4">
                           <FormLabel>Multiple Files</FormLabel>
                           <Input
@@ -652,15 +676,15 @@ const UpdateLead = () => {
                   <div className="flex flex-col gap-3 mb-3">
                     <FormControl id="clientName">
                       <FormLabel>Client Name</FormLabel>
-                      <Input name="clientName" onChange={handleChange} value={projectData.clientName}/>
+                      <Input name="clientName" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="phone1">
                       <FormLabel>Phone Number 1</FormLabel>
-                      <Input name="phone1" onChange={handleChange} value={projectData.phone1}/>
+                      <Input name="phone1" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="phone2">
                       <FormLabel>Phone Number 2</FormLabel>
-                      <Input name="phone2" onChange={handleChange} value={projectData.phone2}/>
+                      <Input name="phone2" onChange={handleChange} />
                     </FormControl>
                   </div>
                   <div className="flex gap-3 mb-3">
@@ -708,11 +732,11 @@ const UpdateLead = () => {
                     </FormControl>
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input name="email1" onChange={handleChange} value={projectData.email1}/>
+                      <Input name="email1" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>
-                      <Input name="email2" onChange={handleChange} value={projectData.email2}/>
+                      <Input name="email2" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="website">
                       <FormLabel>Website</FormLabel>

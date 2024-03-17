@@ -14,7 +14,6 @@ import {
   Flex,
   Input,
   Text,
-  Box,
 } from "@chakra-ui/react";
 import { Select } from "antd";
 import axios from "axios";
@@ -128,10 +127,11 @@ const Client = () => {
   };
 
   const handleDeleteSingleFile = () => {
-    singleFileRef.current.value = "";
+    singleFileRef.current.value = ""; // Clear the file input if necessary
     const { singleFile, ...newData } = projectData;
-    setProjectData({ ...newData });
+    setProjectData({ ...newData, singleFile: null }); // Set singleFile to null to clear it
   };
+
 
   const handleDeleteMultipleFile = (index) => {
     const updatedFiles = [...projectData.multipleFiles];
@@ -534,19 +534,16 @@ const Client = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3">
-                {/* Display multiple files */}
-                {console.log(projectData.multipleFiles)}
-                {projectData.multipleFiles &&
-                  ((file, index) => (
-                    <div key={index}>
-                      <p>
-                        File {index + 1}: {file.name}
-                      </p>
-                      <Button onClick={() => handleDeleteMultipleFile(index)}>
-                        Delete
-                      </Button>
-                    </div>
-                  ))}
+                {projectData.multipleFiles.map((file, index) => (
+                  <div key={index}>
+                    <p>
+                      File {index + 1}: {file.name}
+                    </p>
+                    <Button onClick={() => handleDeleteMultipleFile(index)}>
+                      Delete
+                    </Button>
+                  </div>
+                ))}
                 <FormControl mb="4">
                   <FormLabel>Multiple Files</FormLabel>
                   <Input
@@ -617,7 +614,7 @@ const Client = () => {
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
-              <div className="flex flex-col gap-3 mb-3">
+              <div className="flex gap-3 mb-3">
                 <FormControl id="tags" maxWidth={150}>
                   <FormLabel>
                     Source <RequiredIndicator />{" "}
@@ -628,24 +625,26 @@ const Client = () => {
                     setSelectSourceValue={setSelectSourceValue}
                   />
 
-                  {projectData?.source?.length > 0 && (
-                    <Box className="my-4 p-4 rounded-lg bg-slate-100 shadow-lg flex flex-wrap gap-2">
-                      {projectData.source.map((tag) => (
-                        <Tag
-                          key={tag._id}
-                          size="md"
-                          borderRadius="full"
-                          variant="outline"
-                          colorScheme="purple"
-                        >
-                          <TagLabel>{tag}</TagLabel>
-                          <TagCloseButton onClick={() => removeTagById(tag)} />
-                        </Tag>
-                      ))}
-                    </Box>
-                  )}
+                  {projectData.source.map((tag) => (
+                    <Tag
+                      key={tag._id}
+                      size="md"
+                      borderRadius="full"
+                      variant="solid"
+                      colorScheme="blue"
+                    >
+                      <TagLabel>{tag}</TagLabel>
+                      <TagCloseButton onClick={() => removeTagById(tag)} />
+                    </Tag>
+                  ))}
                 </FormControl>
-                <FormControl id="sourceInfo">
+                <FormControl id="gender">
+                  <Flex>
+                    <SelectSource
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
+                  </Flex>
                   <FormControl id="sourceInformation">
                     <FormLabel>Source Information</FormLabel>
                     <Input name="sourceInformation" onChange={handleChange} />
@@ -752,7 +751,7 @@ const Client = () => {
                   />
                 </FormControl>
               </div>
-              <div className="flex mt-3 gap-3">
+              <div className="flex gap-3">
                 <FormControl id="clientBirthday">
                   <FormLabel>Client Birthday</FormLabel>
                   <MyDatePicker
@@ -835,7 +834,7 @@ const Client = () => {
           </TabPanels>
         </Tabs>
       </div>
-    </form >
+    </form>
   );
 };
 
