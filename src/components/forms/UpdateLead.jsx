@@ -291,13 +291,13 @@ const UpdateLead = () => {
               onChange={(date) =>
                 setProjectData({ ...projectData, enquiryDate: date })
               }
-              defaultValue={moment()}
+              value={enquiryDate}
               format={"DD/MM/YYYY"}
             />
             <br />
 
             {projectData.enquiryDate && (
-              <p>{convertDateFormatString(projectData.enquiryDate)}</p>
+              <p>{convertDateFormatString(enquiryDate)}</p>
             )}
           </FormControl>
           <div className="hidden md:block">
@@ -652,15 +652,15 @@ const UpdateLead = () => {
                   <div className="flex flex-col gap-3 mb-3">
                     <FormControl id="clientName">
                       <FormLabel>Client Name</FormLabel>
-                      <Input name="clientName" onChange={handleChange} />
+                      <Input name="clientName" onChange={handleChange} value={projectData.clientName}/>
                     </FormControl>
                     <FormControl id="phone1">
                       <FormLabel>Phone Number 1</FormLabel>
-                      <Input name="phone1" onChange={handleChange} />
+                      <Input name="phone1" onChange={handleChange} value={projectData.phone1}/>
                     </FormControl>
                     <FormControl id="phone2">
                       <FormLabel>Phone Number 2</FormLabel>
-                      <Input name="phone2" onChange={handleChange} />
+                      <Input name="phone2" onChange={handleChange} value={projectData.phone2}/>
                     </FormControl>
                   </div>
                   <div className="flex gap-3 mb-3">
@@ -708,11 +708,11 @@ const UpdateLead = () => {
                     </FormControl>
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input name="email1" onChange={handleChange} />
+                      <Input name="email1" onChange={handleChange} value={projectData.email1}/>
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>
-                      <Input name="email2" onChange={handleChange} />
+                      <Input name="email2" onChange={handleChange} value={projectData.email2}/>
                     </FormControl>
                     <FormControl id="website">
                       <FormLabel>Website</FormLabel>
