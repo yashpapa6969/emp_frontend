@@ -84,7 +84,7 @@ const GetAllLeaves = () => {
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
-        <h1 className="text-4xl text-center font-bold mb-4">Leave Information</h1>
+        <h1 className="text-4xl font-bold mb-4">Leave Information</h1>
 
         <Link to="/createLeave">
           <Button
@@ -114,11 +114,11 @@ const GetAllLeaves = () => {
             <Thead position="sticky" top={0} bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">Employee Name</Th>
-                <Th fontWeight="bold">Type</Th>
-                <Th fontWeight="bold">Start Date</Th>
-                <Th fontWeight="bold">End Date</Th>
-                <Th fontWeight="bold">Status</Th>
-                <Th fontWeight="bold">Reason</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Type</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Start Date</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">End Date</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Reason</Th>
                 <Th fontWeight="bold">Action</Th>
                 <Th fontWeight="bold"></Th>
               </Tr>
@@ -128,11 +128,11 @@ const GetAllLeaves = () => {
                 ? filteredLeaves.map((leave, index) => (
                     <Tr key={leave._id}>
                       <Td>{leave.employee_name}</Td>
-                      <Td>{leave.type}</Td>
-                      <Td>{leave.startDate}</Td>
-                      <Td>{leave.endDate}</Td>
-                      <Td>{leave.status}</Td>
-                      <Td>{leave.reason}</Td>
+                      <Td className="md:table-cell hidden">{leave.type}</Td>
+                      <Td className="md:table-cell hidden">{leave.startDate}</Td>
+                      <Td className="md:table-cell hidden">{leave.endDate}</Td>
+                      <Td className="md:table-cell hidden">{leave.status}</Td>
+                      <Td className="md:table-cell hidden">{leave.reason}</Td>
                       <Td>
                         <Button
                           size={"sm"}
@@ -155,11 +155,11 @@ const GetAllLeaves = () => {
                 : leaves.map((leave, index) => (
                     <Tr key={leave._id}>
                       <Td>{leave.employee_name}</Td>
-                      <Td>{leave.type}</Td>
-                      <Td>{format(new Date(leave.startDate), "MM/dd/yyyy")}</Td>
-                      <Td>{format(new Date(leave.endDate), "MM/dd/yyyy")}</Td>
-                      <Td>{leave.status}</Td>
-                      <Td>{leave.reason}</Td>
+                      <Td className="md:table-cell hidden">{leave.type}</Td>
+                      <Td className="md:table-cell hidden">{format(new Date(leave.startDate), "MM/dd/yyyy")}</Td>
+                      <Td className="md:table-cell hidden">{format(new Date(leave.endDate), "MM/dd/yyyy")}</Td>
+                      <Td className="md:table-cell hidden">{leave.status}</Td>
+                      <Td className="md:table-cell hidden">{leave.reason}</Td>
                       <Td>
                         <Button
                           size={"sm"}
