@@ -49,7 +49,7 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
         <div
             onMouseEnter={() => handleExpandNavbar("enter")}
             onMouseLeave={() => handleExpandNavbar("leave")}
-            className={`h-screen transition-all ${expandNavbar ? "md:w-[300px] w-[80px]" : ""} bg-[#1E293B] text-white sticky top-0`}>
+            className={`md:h-screen h-auto transition-all ${expandNavbar ? "md:w-[300px] w-[80px]" : ""} bg-[#1E293B] text-white sticky top-0`}>
             <Link to="/home" onClick={handleNavClose} className="w-full h-[70px] bg-[#172032] flex items-center justify-center md:justify-start gap-3 p-4 text-lg md:text-2xl">
                 <img src='/logo.png' alt='logo' className='h-6' /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>ADSVERSIFY</span>
             </Link>
@@ -96,16 +96,16 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
                         </AccordionButton>
                     </h2>
                     <AccordionPanel bg={"#090f29"} rounded={"md"} p={0}>
-                        <Link to="/getAllSlip" onClick={handleNavClose} className={`flex md:pt-0 pt-4 pb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                        <Link to="/getAllSlip" onClick={handleNavClose} className={`flex md:pt-0 pt-4 mb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllSlip' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <LuNewspaper size={18} />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Slip</span>
                         </Link>
-                        <Link to="/getAllEmp" onClick={handleNavClose} className={`flex pb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                        <Link to="/getAllEmp" onClick={handleNavClose} className={`flex mb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllEmp' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <IoMdPerson size={20} />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Employee {!isPhoneView && "Information"}</span>
                         </Link>
-                        <Link to="/getLetter" onClick={handleNavClose} className={`flex pb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                        <Link to="/getLetter" onClick={handleNavClose} className={`flex mb-2 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <FaEnvelopeOpen />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Letter</span>
                         </Link>
-                        <Link to="/getAllLeaves" onClick={handleNavClose} className={`flex md:pb-0 pb-4 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                        <Link to="/getAllLeaves" onClick={handleNavClose} className={`flex md:mb-0 mb-4 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <MdOutlineCalendarMonth />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Leave {!isPhoneView && "Management"}</span>
                         </Link>
                     </AccordionPanel>
