@@ -97,7 +97,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
           </Menu>
         </div>
         <div className="flex gap-4 items-center justify-center">
-          <div className='text-white'>
+          <div className='text-white text-[11px] md:text-[14px]'>
             {dateString}, {timeString}
           </div>
           <Menu>

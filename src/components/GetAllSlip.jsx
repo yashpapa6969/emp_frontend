@@ -128,7 +128,7 @@ const GetAllSlip = () => {
 
   return (
     <>
-      <div className="w-full p-8">
+      <div className="w-full p-8 md:block flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-4">Slip Information</h1>
 
         <Link to="/createSlip">
@@ -136,7 +136,7 @@ const GetAllSlip = () => {
             colorScheme="blue"
             onClick={() => setIsOpen(true)}
             _hover={{ bg: "blue.600" }}
-            mb="2"
+            mb="6"
             className="flex gap-2 items-center"
           >
             <GoPlus /> Create Slip
@@ -162,7 +162,7 @@ const GetAllSlip = () => {
                   S. No.
                 </Th>
                 <Th fontWeight="bold">Employee name</Th>
-                <Th fontWeight="bold">Basic Pay</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">Basic Pay</Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   Travel Pay
                 </Th>
@@ -181,7 +181,7 @@ const GetAllSlip = () => {
                     <Tr key={project._id}>
                       <Td className="md:table-cell hidden">{index + 1}</Td>
                       <Td>{index + 1}</Td>
-                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">{project.basicPay}</Td>
                       <Td className="md:table-cell hidden">
                         {project.travelPay}
                       </Td>
@@ -220,7 +220,7 @@ const GetAllSlip = () => {
                     <Tr key={project._id}>
                       <Td className="md:table-cell hidden">{index + 1}</Td>
                       <Td>{index + 1}</Td>
-                      <Td>{project.basicPay}</Td>
+                      <Td className="md:table-cell hidden">{project.basicPay}</Td>
                       <Td className="md:table-cell hidden">
                         {project.travelPay}
                       </Td>

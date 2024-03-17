@@ -14,6 +14,7 @@ import {
   Flex,
   Input,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { Select } from "antd";
 import axios from "axios";
@@ -238,14 +239,14 @@ const Client = () => {
         toast.error(error.response.data.message);
       });
   };
-    const formatDate = (date) => {
-      if (!date) return ""; // Handle the case where date is null or undefined
-      const formattedDate = new Date(date);
-      const day = formattedDate.getDate();
-      const month = formattedDate.toLocaleString("default", { month: "short" });
-      const year = formattedDate.getFullYear();
-      return `${day} ${month} ${year}`;
-    };
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle the case where date is null or undefined
+    const formattedDate = new Date(date);
+    const day = formattedDate.getDate();
+    const month = formattedDate.toLocaleString("default", { month: "short" });
+    const year = formattedDate.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -616,7 +617,7 @@ const Client = () => {
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
-              <div className="flex gap-3 mb-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="tags" maxWidth={150}>
                   <FormLabel>
                     Source <RequiredIndicator />{" "}
@@ -627,26 +628,24 @@ const Client = () => {
                     setSelectSourceValue={setSelectSourceValue}
                   />
 
-                  {projectData.source.map((tag) => (
-                    <Tag
-                      key={tag._id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                    >
-                      <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton onClick={() => removeTagById(tag)} />
-                    </Tag>
-                  ))}
+                  {projectData?.source?.length > 0 && (
+                    <Box className="my-4 p-4 rounded-lg bg-slate-100 shadow-lg flex flex-wrap gap-2">
+                      {projectData.source.map((tag) => (
+                        <Tag
+                          key={tag._id}
+                          size="md"
+                          borderRadius="full"
+                          variant="outline"
+                          colorScheme="purple"
+                        >
+                          <TagLabel>{tag}</TagLabel>
+                          <TagCloseButton onClick={() => removeTagById(tag)} />
+                        </Tag>
+                      ))}
+                    </Box>
+                  )}
                 </FormControl>
-                <FormControl id="gender">
-                  <Flex>
-                    <SelectSource
-                      selectSourceValue={selectSourceValue}
-                      setSelectSourceValue={setSelectSourceValue}
-                    />
-                  </Flex>
+                <FormControl id="sourceInfo">
                   <FormControl id="sourceInformation">
                     <FormLabel>Source Information</FormLabel>
                     <Input name="sourceInformation" onChange={handleChange} />
@@ -753,7 +752,7 @@ const Client = () => {
                   />
                 </FormControl>
               </div>
-              <div className="flex gap-3">
+              <div className="flex mt-3 gap-3">
                 <FormControl id="clientBirthday">
                   <FormLabel>Client Birthday</FormLabel>
                   <MyDatePicker
@@ -836,7 +835,7 @@ const Client = () => {
           </TabPanels>
         </Tabs>
       </div>
-    </form>
+    </form >
   );
 };
 

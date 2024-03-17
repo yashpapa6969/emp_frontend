@@ -25,22 +25,6 @@ import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 
-const CreateProjectButton = ({ onOpen }) => {
-  return (
-    <Link to="/CreateProject">
-      <Button
-        colorScheme="blue"
-        onClick={onOpen}
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Add a Project
-      </Button>
-    </Link>
-  );
-};
-
 const GetAllProject = () => {
   const [projects, setProjects] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,8 +59,7 @@ const GetAllProject = () => {
   const handleDeleteProject = async () => {
     try {
       await axios.delete(
-        `${
-          import.meta.env.VITE_API_BASE
+        `${import.meta.env.VITE_API_BASE
         }/api/admin/deleteProjectById/${deleteProjectId}`
       );
       toast.success("Successfully deleted Project");
@@ -109,9 +92,19 @@ const GetAllProject = () => {
 
   return (
     <>
-      <div className="w-full p-8">
+      <div className="w-full p-8 md:block flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-4">Project Information</h1>
-        <CreateProjectButton onOpen={onOpen} />
+        <Link to="/CreateProject">
+          <Button
+            colorScheme="blue"
+            onClick={onOpen}
+            _hover={{ bg: "blue.600" }}
+            mb="6"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Project
+          </Button>
+        </Link>
         {projects.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -145,72 +138,121 @@ const GetAllProject = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">
-                        {project.priority}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {project.brandName}
-                      </Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          ml={2}
-                          onClick={() => handleDeleteConfirmation(project._id)}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td
+                      className={`md:table-cell hidden capitalize`}
+                    >
+                      <div className={`p-1 text-center ${project?.priority.toLowerCase() === "urgent" &&
+                        "bg-red-400 max-w-[68px]"
+                        } ${project?.priority.toLowerCase() === "high" &&
+                        "bg-orange-300 max-w-[48px]"
+                        } ${project?.priority.toLowerCase() === "medium" &&
+                        "bg-blue-300 max-w-[68px]"
+                        } ${project?.priority.toLowerCase() === "low" &&
+                        "bg-gray-400 max-w-[48px]"
+                        }`}>
+                        {project?.priority}
+                      </div>
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      <div className="flex gap-2 items-center">
+                        {project.status === "Not Started" ? (
+                          <div className="h-3 w-3 rounded-full bg-red-600" />
+                        ) : project.status === "Working" ? (
+                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                        ) : project.status === "Awaited Feedback" ? (
+                          <div className="h-3 w-3 rounded-full bg-blue-600" />
+                        ) : (
+                          <div className="h-3 w-3 rounded-full bg-green-600" />
+                        )}{" "}
+                        {project.status}
+                      </div>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                    <Td>
+                      {" "}
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteConfirmation(project.project_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : projects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className="md:table-cell hidden">
-                        {project.priority}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {project.brandName}
-                      </Td>
-                      <Td className="md:table-cell hidden">{project.status}</Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                      <Td>
-                        {" "}
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          ml={2}
-                          onClick={() =>
-                            handleDeleteConfirmation(project.project_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td
+                      className={`md:table-cell hidden capitalize`}
+                    >
+                      <div className={`p-1 text-center ${project?.priority.toLowerCase() === "urgent" &&
+                        "bg-red-400 max-w-[68px]"
+                        } ${project?.priority.toLowerCase() === "high" &&
+                        "bg-orange-300 max-w-[48px]"
+                        } ${project?.priority.toLowerCase() === "medium" &&
+                        "bg-blue-300 max-w-[68px]"
+                        } ${project?.priority.toLowerCase() === "low" &&
+                        "bg-gray-400 max-w-[48px]"
+                        }`}>
+                        {project?.priority}
+                      </div>
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      <div className="flex gap-2 items-center">
+                        {project.status === "Not Started" ? (
+                          <div className="h-3 w-3 rounded-full bg-red-600" />
+                        ) : project.status === "Working" ? (
+                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                        ) : project.status === "Awaited Feedback" ? (
+                          <div className="h-3 w-3 rounded-full bg-blue-600" />
+                        ) : (
+                          <div className="h-3 w-3 rounded-full bg-green-600" />
+                        )}{" "}
+                        {project.status}
+                      </div>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                    <Td>
+                      {" "}
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteConfirmation(project.project_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}

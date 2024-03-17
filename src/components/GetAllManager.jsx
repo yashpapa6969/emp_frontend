@@ -72,13 +72,13 @@ const GetAllManagers = () => {
 
   return (
     <>
-      <div className="w-full p-8">
+      <div className="w-full p-8 md:block flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-10">Manager Information</h1>
         <Link to="/CreateManager">
           <Button
             colorScheme="blue"
             _hover={{ bg: "blue.600" }}
-            mb="2"
+            mb="6"
             className="flex gap-2 items-center"
           >
             <GoPlus /> Add a Manager

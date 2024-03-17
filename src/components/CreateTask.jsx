@@ -48,7 +48,7 @@ const CreateTask = () => {
   const handleBrandChange = (event) => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
-  
+
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
@@ -95,7 +95,7 @@ const CreateTask = () => {
 
     ];
 
-       const taskData = {
+    const taskData = {
       brandName: selectedBrandName,
       project_id: selectedProject,
       employee_id: selectedEmployee,
@@ -110,7 +110,7 @@ const CreateTask = () => {
         toast.error(`${label} is required.`);
         return;
       }
-    } 
+    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/addTask`,
@@ -206,7 +206,7 @@ const CreateTask = () => {
           />
         </FormControl>
 
-        <div className="flex gap-3 my-3">
+        <div className="flex flex-col md:flex-row gap-3 my-3">
           <FormControl >
             <FormLabel>Priority<RequiredIndicator /></FormLabel>
             <Select
@@ -221,31 +221,33 @@ const CreateTask = () => {
               <option value="0">Low</option>
             </Select>
           </FormControl>
-          <FormControl maxWidth={200} >
-            <FormLabel>Start Date<RequiredIndicator/> </FormLabel>
-            <MyDatePicker
-              className="mb-1"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              format={"DD/MM/YYYY"}
-              placeholderText="Pick Date"
-            />
-            <br />
-            {startDate && <p>{convertDateFormatString(startDate)}</p>}
-          </FormControl>
+          <div className="flex">
+            <FormControl maxWidth={200} >
+              <FormLabel>Start Date<RequiredIndicator /> </FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+              <br />
+              {startDate && <p>{convertDateFormatString(startDate)}</p>}
+            </FormControl>
 
-          <FormControl maxWidth={200} >
-            <FormLabel>Deadline<RequiredIndicator /></FormLabel>
-            <MyDatePicker
-              className="mb-1"
-              selected={deadline}
-              onChange={(date) => setDeadline(date)}
-              format={"DD/MM/YYYY"}
-              placeholderText="Pick Date"
-            />
-            <br />
-            {deadline && <p>{convertDateFormatString(deadline)}</p>}
-          </FormControl>
+            <FormControl maxWidth={200} >
+              <FormLabel>Deadline<RequiredIndicator /></FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={deadline}
+                onChange={(date) => setDeadline(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+              <br />
+              {deadline && <p>{convertDateFormatString(deadline)}</p>}
+            </FormControl>
+          </div>
         </div>
 
         <Button mt={4} width={"full"} colorScheme="purple" type="submit">

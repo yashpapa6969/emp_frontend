@@ -12,7 +12,7 @@ interface Props {
     formFor?: string;
 }
 
-const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor, searchFor }: Props) => {
+const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor }: Props) => {
     const handleSearch = (e) => {
         setSearchText(e.target.value);
         if (searchText != '') {
@@ -32,13 +32,12 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 if (formFor === "slip") {
                     return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
                 }
-                // if (formFor === "invoice") {
-                //     const res = elem.services.map((item: any) => {
-                //         console.log(item.product.toLowerCase().includes(searchText.toLowerCase()));
-                //         return item.product.toLowerCase().includes(searchText.toLowerCase());
-                //     })
-                //     return res;
-                // }
+                if (formFor === "invoice") {
+                    const res = elem.services.map((item: any) => {
+                        return item.product.toLowerCase().includes(searchText.toLowerCase());
+                    })
+                    return res;
+                }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
         }
@@ -46,12 +45,10 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
 
     return (
         <>
-            <Flex justifyContent={"end"} alignItems={"center"} gap={3} mb={6}>
-                {formFor != "invoice" && (<>
-                    <SearchIcon fontSize={20} color={"#cecece"} />
-                    <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
-                </>)}
-            </Flex>
+            <div className='flex gap-3 mb-6 items-center md:justify-end justify-center'>
+                <SearchIcon fontSize={20} color={"#cecece"} />
+                <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
+            </div>
 
             <Box className='md:overflow-y-scroll md:max-h-[400px]'>
                 <Table width="100%">

@@ -27,21 +27,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { setClientId } from "../store/slice/ClientSlice";
 import { useDispatch } from "react-redux";
 
-const CreateClientButton = () => {
-  return (
-    <Link to="/CreateClient">
-      <Button
-        colorScheme="blue"
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Add a Client
-      </Button>
-    </Link>
-  );
-};
-
 const GetAllClient = () => {
   const [clients, setClients] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,8 +62,7 @@ const GetAllClient = () => {
   const handleDeleteClient = async (clientId) => {
     try {
       await axios.delete(
-        `${
-          import.meta.env.VITE_API_BASE
+        `${import.meta.env.VITE_API_BASE
         }/api/admin/deleteClientById/${clientId}`
       );
       toast.success("Successfully deleted Client");
@@ -115,9 +99,18 @@ const GetAllClient = () => {
 
   return (
     <>
-      <div className="w-full p-8">
+      <div className="w-full p-8 md:block flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-4">Client Information</h1>
-        <CreateClientButton />
+        <Link to="/CreateClient">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="6"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Client
+          </Button>
+        </Link>
         {clients.length === 0 && (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -133,7 +126,7 @@ const GetAllClient = () => {
         >
           <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
             <Tr>
-              <Th fontWeight="bold">S. No.</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">S. No.</Th>
               <Th fontWeight="bold">Client Name</Th>
               <Th fontWeight="bold" className="md:table-cell hidden">
                 Brand Name
@@ -151,92 +144,92 @@ const GetAllClient = () => {
           <Tbody>
             {searchText !== ""
               ? filteredClients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.clientName}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">{client.phone1}</Td>
-                    <Td className="md:table-cell hidden">
-                      {client.enquiryDate}
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
+                <Tr key={client._id}>
+                  <Td className="md:table-cell hidden">{index + 1}</Td>
+                  <Td>{client.clientName}</Td>
+                  <Td className="md:table-cell hidden">{client.brandName}</Td>
+                  <Td className="md:table-cell hidden">{client.phone1}</Td>
+                  <Td className="md:table-cell hidden">
+                    {client.enquiryDate}
+                  </Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(client)}
+                    >
+                      More Info
+                    </Button>
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      colorScheme="red"
+                      ml={2}
+                      onClick={() =>
+                        handleDeleteConfirmation(client.client_id)
+                      }
+                    >
+                      <DeleteIcon />
+                    </Button>
+                    <Link to="/UpdateClient">
                       <Button
                         size={"sm"}
                         variant={"outline"}
-                        colorScheme="red"
+                        colorScheme="blue"
                         ml={2}
-                        onClick={() =>
-                          handleDeleteConfirmation(client.client_id)
-                        }
+                        onClick={() => handleUpdateClient(client.client_id)}
                       >
-                        <DeleteIcon />
+                        Update
                       </Button>
-                      <Link to="/UpdateClient">
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="blue"
-                          ml={2}
-                          onClick={() => handleUpdateClient(client.client_id)}
-                        >
-                          Update
-                        </Button>
-                      </Link>
-                    </Td>
-                  </Tr>
-                ))
+                    </Link>
+                  </Td>
+                </Tr>
+              ))
               : clients.map((client, index) => (
-                  <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{client.clientName}</Td>
-                    <Td className="md:table-cell hidden">{client.brandName}</Td>
-                    <Td className="md:table-cell hidden">{client.phone1}</Td>
-                    <Td className="md:table-cell hidden">
-                      {client.enquiryDate}
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(client)}
-                      >
-                        More Info
-                      </Button>
+                <Tr key={client._id}>
+                  <Td className="md:table-cell hidden">{index + 1}</Td>
+                  <Td>{client.clientName}</Td>
+                  <Td className="md:table-cell hidden">{client.brandName}</Td>
+                  <Td className="md:table-cell hidden">{client.phone1}</Td>
+                  <Td className="md:table-cell hidden">
+                    {client.enquiryDate}
+                  </Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(client)}
+                    >
+                      More Info
+                    </Button>
 
-                      <Link to="/UpdateClient">
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="blue"
-                          ml={2}
-                          onClick={() => handleUpdateClient(client.client_id)}
-                        >
-                          Update
-                        </Button>
-                      </Link>
-                    </Td>
-                    <Td>
+                    <Link to="/UpdateClient">
                       <Button
                         size={"sm"}
                         variant={"outline"}
-                        colorScheme="red"
-                        ml={50}
-                        onClick={() =>
-                          handleDeleteConfirmation(client.client_id)
-                        }
+                        colorScheme="blue"
+                        ml={2}
+                        onClick={() => handleUpdateClient(client.client_id)}
                       >
-                        <DeleteIcon />
+                        Update
                       </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                    </Link>
+                  </Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      colorScheme="red"
+                      ml={50}
+                      onClick={() =>
+                        handleDeleteConfirmation(client.client_id)
+                      }
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
           </Tbody>
         </TableContainer>
       </div>
