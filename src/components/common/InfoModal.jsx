@@ -608,16 +608,32 @@ if (modalFor === "leave")
                         </ul>
                       </>
                     )}
+                    {data.singleFile && (
+                      <div>
+                        <Text fontWeight="bold">Single File: </Text>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View Single File
+                        </Button>
+                      </div>
+                    )}
                     {Array.isArray(data.multipleFiles) &&
                       data.multipleFiles.length > 0 ? (
                       <>
-                        <Text className="text-sm font-bold text-gray-500 mt-3">Business Address </Text>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Multiple Files</Text>
                         {data.multipleFiles.map((file, index) => (
                           <div key={index}>
                             <Button
                               as="a"
-                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file.split("/")[4]
-                                }`}
+                              href={`${import.meta.env.VITE_API_BASE}/uploads/${file}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               textDecoration="none"

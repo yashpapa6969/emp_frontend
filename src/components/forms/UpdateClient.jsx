@@ -32,7 +32,7 @@ const UpdateClient = () => {
   const singleFileRef = useRef();
   const clientId = useSelector(selectClientId);
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [client, setClient] = useState("");
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
@@ -46,7 +46,7 @@ const UpdateClient = () => {
     companyName: "",
     clientName: "",
     brandName: "",
-    sourceInformation:"",
+    sourceInformation: "",
     phone1: "",
     phone2: "",
     email1: "",
@@ -78,9 +78,7 @@ const UpdateClient = () => {
         setProjectData((prev) => ({
           ...prev,
           // Populate projectData with fetched client details
-          enquiryDate: clientData?.enquiryDate
-            ? new Date(clientData.enquiryDate)
-            : prev.enquiryDate,
+          enquiryDate: clientData?.enquiryDate || prev.enquiryDate,
           title: clientData?.title || prev.title,
           gender: clientData?.gender || prev.gender,
           clientBirthday: clientData?.clientBirthday || prev.clientBirthday,
@@ -129,6 +127,7 @@ const UpdateClient = () => {
   const clientBirthdayDate = projectData.clientBirthday ? moment(projectData.clientBirthday, 'DD-MM-YY') : null;
   const clientAnniversaryDate = projectData.clientAnniversary ? moment(projectData.clientAnniversary, 'DD-MM-YY') : null;
   const companyAnniversaryDate = projectData.companyAnniversary ? moment(projectData.companyAnniversary, 'DD-MM-YY') : null;
+  const enquiryDate = projectData.enquiryDate ? moment(projectData.enquiryDate, 'DD-MM-YY') : null;
 
 
   const [selectedCountry, setSelectedCountry] = useState(projectData.country);
@@ -206,12 +205,25 @@ const UpdateClient = () => {
 
   const handleAddSingleFileToRemove = (filename) => {
     projectData.singleFileToRemove = filename;
+    projectData.singleFileView = null;
     setProjectData({ ...projectData });
-  }
+  };
   const handleAddMultipleFilesToRemove = (filename) => {
-    projectData.multipleFilesToRemove = [...projectData.multipleFilesToRemove, filename];
-    setProjectData({ ...projectData });
-  }
+    const updatedMultipleFilesView = projectData.multipleFilesView.filter(
+      (file) => file !== filename
+    );
+
+    const updatedMultipleFilesToRemove = [...projectData.multipleFilesToRemove, filename];
+    if (!updatedMultipleFilesToRemove.includes(filename)) {
+      updatedMultipleFilesToRemove.push(filename);
+    }
+
+    setProjectData({
+      ...projectData,
+      multipleFilesToRemove: updatedMultipleFilesToRemove,
+      multipleFilesView: updatedMultipleFilesView,
+    });
+  };
   const handleDeleteMultipleFile = (index) => {
     const updatedFiles = [...projectData.multipleFiles];
     updatedFiles.splice(index, 1);
@@ -258,12 +270,12 @@ const UpdateClient = () => {
       )
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-            toast.success(response.data.message, {
-              autoClose: 2000,
-            });
-           setTimeout(() => {
-             navigate("/getAllClient");
-           }, 2000);
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/getAllClient");
+          }, 2000);
         } else {
           console.error("Failed to create project");
           toast.success(response.data.message);
@@ -302,6 +314,23 @@ const UpdateClient = () => {
                 />
             </FormControl>
                 */}
+          <FormControl id="enquiryDate">
+            <FormLabel>Enquiry Date</FormLabel>
+            <MyDatePicker
+              className="mb-1"
+              selected={projectData.enquiryDate}
+              onChange={(date) =>
+                setProjectData({ ...projectData, enquiryDate: date })
+              }
+              value={enquiryDate}
+              format={"DD/MM/YYYY"}
+            />
+            <br />
+
+            {projectData.enquiryDate && (
+              <p>{convertDateFormatString(enquiryDate)}</p>
+            )}
+          </FormControl>
           <div className="hidden md:block">
             <Tabs>
               <TabList>
@@ -612,9 +641,8 @@ const UpdateClient = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -645,9 +673,8 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -670,6 +697,13 @@ const UpdateClient = () => {
                     </div>
                     <div>
                       <h2>New Files</h2>
+                      {/* Display single file */}
+                      {projectData.singleFile && (
+                        <div>
+                          <p>Single File: {projectData.singleFile.name}</p>
+                          <Button onClick={handleDeleteSingleFile}>Delete</Button>
+                        </div>
+                      )}
                       <div className="flex gap-3">
                         <FormControl mb="4">
                           <FormLabel>Single File</FormLabel>
@@ -681,6 +715,17 @@ const UpdateClient = () => {
                         </FormControl>
                       </div>
                       <div className="flex gap-3">
+                        {/* Display multiple files */}
+                        {projectData.multipleFiles.map((file, index) => (
+                          <div key={index}>
+                            <p>
+                              File {index + 1}: {file.name}
+                            </p>
+                            <Button onClick={() => handleDeleteMultipleFile(index)}>
+                              Delete
+                            </Button>
+                          </div>
+                        ))}
                         <FormControl mb="4">
                           <FormLabel>Multiple Files</FormLabel>
                           <Input
@@ -716,11 +761,11 @@ const UpdateClient = () => {
                     </FormControl>
                     <FormControl id="phone1">
                       <FormLabel>Phone Number 1</FormLabel>
-                      <Input name="phone1" onChange={handleChange} value={projectData.phone1} />
+                      <Input name="phone1" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="phone2">
                       <FormLabel>Phone Number 2</FormLabel>
-                      <Input name="phone2" onChange={handleChange} value={projectData.phone2}/>
+                      <Input name="phone2" onChange={handleChange} />
                     </FormControl>
                   </div>
                   <div className="flex gap-3 mb-3">
@@ -751,7 +796,7 @@ const UpdateClient = () => {
                   <div className="flex flex-col gap-3">
                     <FormControl id="email1">
                       <FormLabel>Email 1</FormLabel>
-                      <Input name="email1" onChange={handleChange} value={projectData.email1} />
+                      <Input name="email1" onChange={handleChange} />
                     </FormControl>
                     <FormControl id="email2">
                       <FormLabel>Email 2</FormLabel>

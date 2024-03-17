@@ -8,24 +8,28 @@ import {
   TabPanels,
   TabPanel,
   // Select,
+  Tag,
+  TagLabel,
+  TagCloseButton,
   Flex,
   Text,
 
 } from "@chakra-ui/react";
 import { Input, Select } from "antd";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 const RequiredIndicator = () => {
   return <Text as="span" color="red.500" ml={1}>*</Text>;
 };
 const Lead = () => {
+  const singleFileRef = useRef();
   const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
@@ -123,7 +127,9 @@ const Lead = () => {
   };
 
   const handleDeleteSingleFile = () => {
-    setProjectData({ ...projectData, singleFile: null });
+    singleFileRef.current.value = ""; // Clear the file input if necessary
+    const { singleFile, ...newData } = projectData;
+    setProjectData({ ...newData, singleFile: null }); // Set singleFile to null to clear it
   };
 
   const handleDeleteMultipleFile = (index) => {
@@ -225,14 +231,14 @@ const Lead = () => {
       });
   };
 
-   const formatDate = (date) => {
-     if (!date) return ""; // Handle the case where date is null or undefined
-     const formattedDate = new Date(date);
-     const day = formattedDate.getDate();
-     const month = formattedDate.toLocaleString("default", { month: "short" });
-     const year = formattedDate.getFullYear();
-     return `${day} ${month} ${year}`;
-   };
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle the case where date is null or undefined
+    const formattedDate = new Date(date);
+    const day = formattedDate.getDate();
+    const month = formattedDate.toLocaleString("default", { month: "short" });
+    const year = formattedDate.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
 
 
   return (
@@ -262,7 +268,7 @@ const Lead = () => {
           </TabList>
 
           <TabPanels>
-            <TabPanel> 
+            <TabPanel>
               <div className="flex gap-4 mb-3">
                 <FormControl id="title" maxWidth={130} >
                   <FormLabel>Title <RequiredIndicator /></FormLabel>
@@ -463,7 +469,11 @@ const Lead = () => {
                 )}
                 <FormControl mb="4">
                   <FormLabel>Single File</FormLabel>
-                  <Input type="file" onChange={handleSingleFileChange} />
+                  <Input
+                    type="file"
+                    ref={singleFileRef}
+                    onChange={handleSingleFileChange}
+                  />
                 </FormControl>
               </div>
               <div className="flex gap-3">
@@ -518,7 +528,7 @@ const Lead = () => {
                 <br />
                 <div>{formatDate(projectData.enquiryDate)}</div>
               </FormControl>
-              <div className="flex flex-col gap-3 my-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="clientName" >
                   <FormLabel>Client Name <RequiredIndicator /> </FormLabel>
                   <Input name="clientName" onChange={handleChange} />
@@ -532,7 +542,7 @@ const Lead = () => {
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
-              <div className="flex flex-col gap-3 mb-3">
+              <div className="flex gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Flex>
@@ -702,7 +712,7 @@ const Lead = () => {
                 )}
                 <FormControl mb="4">
                   <FormLabel>Single File</FormLabel>
-                  <Input type="file" onChange={handleSingleFileChange} />
+                  <Input type="file" ref={singleFileRef} onChange={handleSingleFileChange} />
                 </FormControl>
               </div>
               <div className="flex gap-3">
