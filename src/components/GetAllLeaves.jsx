@@ -83,8 +83,8 @@ const GetAllLeaves = () => {
     };
   return (
     <>
-      <div className="w-full p-8">
-        <h1 className="text-3xl font-bold mb-4">Leave Information</h1>
+      <div className="w-full p-8 md:block flex flex-col items-center">
+        <h1 className="text-4xl text-center font-bold mb-4">Leave Information</h1>
 
         <Link to="/createLeave">
           <Button

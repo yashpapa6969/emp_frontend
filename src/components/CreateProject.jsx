@@ -323,20 +323,22 @@ const CreateProject = () => {
                   </option>
                 ))}
               </Select>
-              <div className="mt-4 flex gap-2">
+              {projectData?.employees?.length > 0 && (
+              <Box className="my-4 p-4 rounded-lg bg-slate-100 shadow-lg flex gap-2">
                 {projectData.employees.map((tag) => (
                   <Tag
                     key={tag.employee_id}
-                    size="md"
+                    size="lg"
                     borderRadius="full"
-                    variant="solid"
-                    colorScheme="blue"
+                    variant="outline"
+                    colorScheme="purple"
                   >
                     <TagLabel>{getEmployeeNameById(tag)}</TagLabel>
                     <TagCloseButton onClick={() => removeEmployeeById(tag)} />
                   </Tag>
                 ))}
-              </div>
+              </Box>
+              )}
             </FormControl>
             <Button type="submit" colorScheme="purple">
               Create Project

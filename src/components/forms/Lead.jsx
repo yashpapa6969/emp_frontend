@@ -8,9 +8,6 @@ import {
   TabPanels,
   TabPanel,
   // Select,
-  Tag,
-  TagLabel,
-  TagCloseButton,
   Flex,
   Text,
 
@@ -24,7 +21,7 @@ import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const RequiredIndicator = () => {
   return <Text as="span" color="red.500" ml={1}>*</Text>;
 };
@@ -521,7 +518,7 @@ const Lead = () => {
                 <br />
                 <div>{formatDate(projectData.enquiryDate)}</div>
               </FormControl>
-              <div className="flex flex-col gap-3 mb-3">
+              <div className="flex flex-col gap-3 my-3">
                 <FormControl id="clientName" >
                   <FormLabel>Client Name <RequiredIndicator /> </FormLabel>
                   <Input name="clientName" onChange={handleChange} />
@@ -535,7 +532,7 @@ const Lead = () => {
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
-              <div className="flex gap-3 mb-3">
+              <div className="flex flex-col gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
                   <Flex>

@@ -39,7 +39,7 @@ const Invoice = () => {
   const addServiceRef = useRef(null);
 
   useEffect(() => {
-    if (addServiceRef.current) addServiceRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (addServiceRef.current && services.length > 1) addServiceRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [services])
 
   const fetchClients = async () => {
@@ -245,7 +245,7 @@ const Invoice = () => {
       </FormControl>
 
       {services.length > 0 && (
-        <div className="flex items-center max-w-[900px] overflow-x-scroll pb-10 hide-scroll-bar">
+        <div className="flex items-center max-w-[1200px] overflow-x-scroll pb-10 hide-scroll-bar">
           <div className="flex flex-nowrap">
             {services.map((service, index) => (
               <div key={`card-${index}`} className="inline-block px-3">

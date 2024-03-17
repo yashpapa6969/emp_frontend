@@ -27,21 +27,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { setClientId } from "../store/slice/ClientSlice";
 import { useDispatch } from "react-redux";
 
-const CreateClientButton = () => {
-  return (
-    <Link to="/CreateClient">
-      <Button
-        colorScheme="blue"
-        _hover={{ bg: "blue.600" }}
-        mb="2"
-        className="flex gap-2 items-center"
-      >
-        <GoPlus /> Add a Client
-      </Button>
-    </Link>
-  );
-};
-
 const GetAllClient = () => {
   const [clients, setClients] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -115,9 +100,18 @@ const GetAllClient = () => {
 
   return (
     <>
-      <div className="w-full p-8">
-        <h1 className="text-3xl font-bold mb-4">Client Information</h1>
-        <CreateClientButton />
+      <div className="w-full p-8 md:block flex flex-col items-center">
+        <h1 className="text-4xl font-bold mb-4">Client Information</h1>
+    <Link to="/CreateClient">
+      <Button
+        colorScheme="blue"
+        _hover={{ bg: "blue.600" }}
+        mb="6"
+        className="flex gap-2 items-center"
+      >
+        <GoPlus /> Add a Client
+      </Button>
+    </Link>
         {clients.length === 0 && (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -133,7 +127,7 @@ const GetAllClient = () => {
         >
           <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
             <Tr>
-              <Th fontWeight="bold">S. No.</Th>
+              <Th fontWeight="bold" className="md:table-cell hidden">S. No.</Th>
               <Th fontWeight="bold">Client Name</Th>
               <Th fontWeight="bold" className="md:table-cell hidden">
                 Brand Name
@@ -152,7 +146,7 @@ const GetAllClient = () => {
             {searchText !== ""
               ? filteredClients.map((client, index) => (
                   <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
+                    <Td className="md:table-cell hidden">{index + 1}</Td>
                     <Td>{client.clientName}</Td>
                     <Td className="md:table-cell hidden">{client.brandName}</Td>
                     <Td className="md:table-cell hidden">{client.phone1}</Td>
@@ -194,7 +188,7 @@ const GetAllClient = () => {
                 ))
               : clients.map((client, index) => (
                   <Tr key={client._id}>
-                    <Td>{index + 1}</Td>
+                    <Td className="md:table-cell hidden">{index + 1}</Td>
                     <Td>{client.clientName}</Td>
                     <Td className="md:table-cell hidden">{client.brandName}</Td>
                     <Td className="md:table-cell hidden">{client.phone1}</Td>
