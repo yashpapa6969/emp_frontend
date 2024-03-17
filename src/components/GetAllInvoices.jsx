@@ -36,6 +36,7 @@ const GetAllInvoices = () => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [deleteInvoiceId, setDeleteInvoiceId] = useState(null);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const [downloading, setDownloading] = useState(null);
 
   async function fetchData(year, month) {
     setIsLoading(true);
@@ -64,13 +65,15 @@ const GetAllInvoices = () => {
   const handleDownload = (id, index) => {
     const url = `${import.meta.env.VITE_API_BASE
       }/api/admin/downloadInvoice/${id}`;
-    // Implement download functionality
+        axiosDownloadFile(url, `${id}.pdf`);
+        setDownloading(index);
   };
 
   const handleMoreInfo = (invoice) => {
     setSelectedInvoice(invoice);
     onOpen();
   };
+
 
   const handleDeleteInvoice = async () => {
     try {
@@ -97,7 +100,33 @@ const GetAllInvoices = () => {
   const handleDeleteCancel = () => {
     setIsDeleteAlertOpen(false);
   };
+  async function axiosDownloadFile(url, fileName) {
+    setDownloading(true);
+    return axios({
+      url,
+      method: "GET",
+      responseType: "blob",
+    })
+      .then((response) => {
+        const href = window.URL.createObjectURL(response.data);
 
+        const anchorElement = document.createElement("a");
+
+        anchorElement.href = href;
+        anchorElement.download = fileName;
+
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
+
+        document.body.removeChild(anchorElement);
+        window.URL.revokeObjectURL(href);
+        setDownloading(false);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+        setDownloading(false);
+      });
+  }
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">

@@ -228,6 +228,7 @@ const Client = () => {
           setTimeout(() => {
             navigate("/getAllClient");
           }, 2000);
+        } else {
           toast.success(response.data.message, {
             autoClose: 2000,
           });
@@ -249,22 +250,18 @@ const Client = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl id="enquiryDate">
-        <FormLabel>
-          Enquiry Date <RequiredIndicator />{" "}
-        </FormLabel>
-        <MyDatePicker
-          className="mb-1"
-          selected={projectData.enquiryDate}
-          onChange={(date) =>
-            setProjectData({ ...projectData, enquiryDate: date })
-          }
-          defaultValue={moment()}
-          format={"DD/MM/YYYY"}
-        />
-        <br />
-        <div>{formatDate(projectData.enquiryDate)}</div>
-      </FormControl>
+      {/* <FormControl id="enquiryDate" >
+                <FormLabel>Enquiry Date</FormLabel>
+                <MyDatePicker
+                    selected={projectData.enquiryDate}
+                    onChange={(date) =>
+                        setProjectData({ ...projectData, enquiryDate: date })
+                    }
+                    defaultValue={moment()}
+                    format={"DD/MM/YYYY"}
+                />
+            </FormControl>
+                */}
       <div className="hidden md:block">
         <Tabs>
           <TabList>
@@ -587,12 +584,28 @@ const Client = () => {
               </div>
               <div>{formatDate(projectData.workStartDate)}</div>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="clientName">
-                  <FormLabel>
-                    Client Name <RequiredIndicator />
-                  </FormLabel>
-                  <Input name="clientName" onChange={handleChange} />
-                </FormControl>
+                <div className="flex gap-3 mb-2">
+                  <FormControl id="title" maxWidth={130}>
+                    <FormLabel>
+                      Title <RequiredIndicator />
+                    </FormLabel>
+                    <Select
+                      style={{ width: "100%" }}
+                      placeholder="Select Title"
+                      onChange={(value) => handleSelectOption("title", value)}
+                    >
+                      <Select.Option value="Mr.">Mr.</Select.Option>
+                      <Select.Option value="Mrs.">Mrs.</Select.Option>
+                    </Select>
+                  </FormControl>
+                  <FormControl id="clientName">
+                    <FormLabel>
+                      Client Name <RequiredIndicator />
+                    </FormLabel>
+                    <Input name="clientName" onChange={handleChange} />
+                  </FormControl>
+                </div>
+
                 <FormControl id="brandName" mb={3}>
                   <FormLabel>
                     Brand Name <RequiredIndicator />{" "}
@@ -617,58 +630,37 @@ const Client = () => {
                   <Input name="phone2" onChange={handleChange} />
                 </FormControl>
               </div>
-              <div className="flex gap-3 mb-3">
-                <FormControl id="tags" maxWidth={150}>
-                  <FormLabel>
-                    Source <RequiredIndicator />{" "}
-                  </FormLabel>
+              <FormControl id="tags" maxWidth={250} mr={3}>
+                <FormLabel>
+                  Source <RequiredIndicator />{" "}
+                </FormLabel>
+                <Flex>
                   <SelectSource
-                    width={150}
                     selectSourceValue={selectSourceValue}
                     setSelectSourceValue={setSelectSourceValue}
                   />
+                </Flex>
+              </FormControl>
 
-                  {projectData.source.map((tag) => (
-                    <Tag
-                      key={tag._id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                    >
-                      <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton onClick={() => removeTagById(tag)} />
-                    </Tag>
-                  ))}
-                </FormControl>
-                <FormControl id="gender">
-                  <Flex>
-                    <SelectSource
-                      selectSourceValue={selectSourceValue}
-                      setSelectSourceValue={setSelectSourceValue}
-                    />
-                  </Flex>
-                  <FormControl id="sourceInformation">
-                    <FormLabel>Source Information</FormLabel>
-                    <Input name="sourceInformation" onChange={handleChange} />
-                  </FormControl>
-                </FormControl>
-                <FormControl id="gender" maxWidth={100} mr={3}>
-                  <FormLabel>
-                    Gender <RequiredIndicator />{" "}
-                  </FormLabel>
-                  <Select
-                    style={{ width: "100%" }}
-                    name="gender"
-                    onChange={(value) => handleSelectOption("gender", value)}
-                    placeholder="Select gender"
-                  >
-                    <Select.Option value="Male">Male</Select.Option>
-                    <Select.Option value="Female">Female</Select.Option>
-                    <Select.Option value="Others">Others</Select.Option>
-                  </Select>
-                </FormControl>
-              </div>
+              <FormControl id="sourceInformation">
+                <FormLabel>Source Information</FormLabel>
+                <Input name="sourceInformation" onChange={handleChange} />
+              </FormControl>
+              <FormControl id="gender" maxWidth={100} mr={3}>
+                <FormLabel>
+                  Gender <RequiredIndicator />{" "}
+                </FormLabel>
+                <Select
+                  style={{ width: "100%" }}
+                  name="gender"
+                  onChange={(value) => handleSelectOption("gender", value)}
+                  placeholder="Select gender"
+                >
+                  <Select.Option value="Male">Male</Select.Option>
+                  <Select.Option value="Female">Female</Select.Option>
+                  <Select.Option value="Others">Others</Select.Option>
+                </Select>
+              </FormControl>
 
               <div className="flex flex-col gap-3">
                 <FormControl id="email1">
@@ -684,6 +676,9 @@ const Client = () => {
                   <Input name="website" onChange={handleChange} />
                 </FormControl>
               </div>
+              <Button type="submit" colorScheme="purple" className="mt-5">
+                Create Client
+              </Button>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3 mb-3 flex-col md:flex-row">

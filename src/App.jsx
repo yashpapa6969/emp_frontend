@@ -33,6 +33,7 @@ import InfoBoxClient from "./components/common/InfoBoxClient";
 import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
 import UpdateLead from "./components/forms/UpdateLead";
+import UpdateLeave from "./components/forms/UpdateLeave";
 import GetAllLeaves from "./components/GetAllLeaves";
 import CreateLeave from "./components/CreateLeave";
 function App() {
@@ -231,6 +232,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <UpdateLead></UpdateLead>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLeave"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLeave></UpdateLeave>
               </AppLayout>
             }
           />

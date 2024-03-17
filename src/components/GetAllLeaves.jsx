@@ -25,9 +25,11 @@ import { Link } from "react-router-dom";
 import { Empty } from "antd";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
-
+import { useDispatch } from "react-redux";
+import { setLeaveId } from "../store/slice/LeaveSlice";
 const GetAllLeaves = () => {
   const [leaves, setLeaves] = useState([]);
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedLeave, setSelectedLeave] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -81,6 +83,9 @@ const GetAllLeaves = () => {
     const handleDeleteCancel = () => {
       setIsDeleteAlertOpen(false);
     };
+     const handleUpdateClient = (leadId) => {
+       dispatch(setLeaveId(leadId));
+     };
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
@@ -114,11 +119,21 @@ const GetAllLeaves = () => {
             <Thead position="sticky" top={0} bg={"#F1F5F9"}>
               <Tr>
                 <Th fontWeight="bold">Employee Name</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Type</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Start Date</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">End Date</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Status</Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">Reason</Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Type
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Start Date
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  End Date
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Status
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
+                  Reason
+                </Th>
                 <Th fontWeight="bold">Action</Th>
                 <Th fontWeight="bold"></Th>
               </Tr>
@@ -129,7 +144,9 @@ const GetAllLeaves = () => {
                     <Tr key={leave._id}>
                       <Td>{leave.employee_name}</Td>
                       <Td className="md:table-cell hidden">{leave.type}</Td>
-                      <Td className="md:table-cell hidden">{leave.startDate}</Td>
+                      <Td className="md:table-cell hidden">
+                        {leave.startDate}
+                      </Td>
                       <Td className="md:table-cell hidden">{leave.endDate}</Td>
                       <Td className="md:table-cell hidden">{leave.status}</Td>
                       <Td className="md:table-cell hidden">{leave.reason}</Td>
@@ -141,6 +158,17 @@ const GetAllLeaves = () => {
                         >
                           More Info
                         </Button>
+                        <Link to="/UpdateLeave">
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            colorScheme="blue"
+                            ml={2}
+                            onClick={() => handleUpdateClient(lead.leave_id)}
+                          >
+                            Update
+                          </Button>
+                        </Link>
                         <Button
                           size={"sm"}
                           variant={"outline"}
@@ -156,8 +184,12 @@ const GetAllLeaves = () => {
                     <Tr key={leave._id}>
                       <Td>{leave.employee_name}</Td>
                       <Td className="md:table-cell hidden">{leave.type}</Td>
-                      <Td className="md:table-cell hidden">{format(new Date(leave.startDate), "MM/dd/yyyy")}</Td>
-                      <Td className="md:table-cell hidden">{format(new Date(leave.endDate), "MM/dd/yyyy")}</Td>
+                      <Td className="md:table-cell hidden">
+                        {format(new Date(leave.startDate), "MM/dd/yyyy")}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {format(new Date(leave.endDate), "MM/dd/yyyy")}
+                      </Td>
                       <Td className="md:table-cell hidden">{leave.status}</Td>
                       <Td className="md:table-cell hidden">{leave.reason}</Td>
                       <Td>
@@ -168,6 +200,17 @@ const GetAllLeaves = () => {
                         >
                           More Info
                         </Button>
+                        <Link to="/UpdateLeave">
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            colorScheme="blue"
+                            ml={2}
+                            onClick={() => handleUpdateClient(leave.leave_id)}
+                          >
+                            Update
+                          </Button>
+                        </Link>
                       </Td>
                       <Td>
                         {" "}
