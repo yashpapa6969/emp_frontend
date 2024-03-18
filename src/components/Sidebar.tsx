@@ -57,13 +57,13 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
             <Link to="/home" onClick={handleNavClose} className={`flex flex-col md:flex-row pt-2 text-center md:text-left items-center md:h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'Dashboard' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <IoMdHome size={20} /> <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "md:visible" : "hidden"}`}>Dashboard</span>
             </Link>
-
-            <Link to="/getAllClient" onClick={handleNavClose} className={`flex flex-col md:flex-row pt-2 text-center md:text-left items-center md:h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                <IoPeopleSharp size={20} />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Client {!isPhoneView && "Management"}</span>
-            </Link>
             <Link to="/manageLeads" onClick={handleNavClose} className={`flex flex-col md:flex-row pt-2 text-center md:text-left items-center md:h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'manageLeads' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <RiDragDropFill size={20} />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Leads {!isPhoneView && "Management"}</span>
             </Link>
+            <Link to="/getAllClient" onClick={handleNavClose} className={`flex flex-col md:flex-row pt-2 text-center md:text-left items-center md:h-[45px] gap-2 mx-4 my-2 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'getAllClient' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                <IoPeopleSharp size={20} />  <span className={`md:text-[16px] text-[10px] md:${expandNavbar ? "visible" : "hidden"}`}>Client {!isPhoneView && "Management"}</span>
+            </Link>
+      
             {/* <div onClick={accordionClick} className={`flex items-center justify-between h-[45px] mx-4 mt-2 mb-0 p-2 rounded-md transition-all cursor-pointer ${activeLink === 'HRManagement' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                 <div className='flex items-center gap-2'>
                     <IoMdPerson size={20} /> <span className={`${expandNavbar ? "visible" : "hidden"}`}>HR Management</span>

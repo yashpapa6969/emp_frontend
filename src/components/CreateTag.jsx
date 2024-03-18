@@ -184,7 +184,7 @@ const CreateTag = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-semibold mb-4">Tags Management</h1>
-      <h1 className="text-lg font-semibold mt-8 mb-4">Tag</h1>
+      <h1 className="text-lg font-semibold mt-8 mb-4">Proposal Tags</h1>
       <div className="flex justify-start gap-2 max-w-[400px]">
         <Input
           placeholder="Enter new Tag"
@@ -214,7 +214,7 @@ const CreateTag = () => {
         ))}
       </Box>
 
-      <h1 className="text-lg font-semibold mt-10 mb-4">Product</h1>
+      <h1 className="text-lg font-semibold mt-10 mb-4">Invoice Products</h1>
       <div className="flex justify-start gap-2 max-w-[400px]">
         <Input
           placeholder="Enter New product"

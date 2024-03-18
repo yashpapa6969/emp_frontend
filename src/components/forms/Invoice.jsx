@@ -214,8 +214,8 @@ const Invoice = () => {
   return (
     <Stack spacing={4}>
       <FormControl maxWidth={300} >
-        <FormLabel>Select Client <RequiredIndicator /></FormLabel>
-        <Select placeholder="Select client" onChange={handleClientChange}>
+        <FormLabel>Select Brand <RequiredIndicator /></FormLabel>
+        <Select placeholder="Select Brand" onChange={handleClientChange}>
           {clients.map((client) => (
             <option key={client._id} value={client._id}>
               {client.brandName}
