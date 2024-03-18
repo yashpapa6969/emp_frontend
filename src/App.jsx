@@ -16,6 +16,8 @@ import CreateLead from "./components/CreateLead";
 import AppLayout from "./layouts/AppLayout";
 import { useState } from "react";
 import ToDoPage from "./components/ToDoPage";
+import Settings from "./components/Settings";
+
 import GetAllProject from "./components/GetAllProject";
 import InfoBoxByID from "./components/common/InfoBoxByID";
 import GetAllLead from "./components/GetAllLead";
@@ -166,6 +168,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <ToDoPage />
+              </AppLayout>
+            }
+          />
+             <Route
+            path="/settings"
+            element={
+              <AppLayout
+                activeSideabarLink={"settings"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <Settings />
               </AppLayout>
             }
           />
