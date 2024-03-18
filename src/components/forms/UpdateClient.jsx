@@ -7,9 +7,6 @@ import {
   Tab,
   TabPanels,
   TabPanel,
-  Tag,
-  TagLabel,
-  TagCloseButton,
   Flex,
   Input,
   Box
@@ -30,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
+  const multipleFileRef = useRef();
   const clientId = useSelector(selectClientId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -208,6 +206,15 @@ const UpdateClient = () => {
     const { singleFile, ...newData } = projectData;
     setProjectData({ ...newData });
   };
+  
+  const handleDeleteMultipleFile = (index) => {
+    console.log(multipleFileRef.current.value);
+    const updatedFiles = [...projectData.multipleFiles];
+    updatedFiles.splice(index, 1);
+    multipleFileRef.current.value = "";
+    console.log(multipleFileRef.current.value);
+    setProjectData({ ...projectData, multipleFiles: updatedFiles });
+  };
 
   const handleAddSingleFileToRemove = (filename) => {
     projectData.singleFileToRemove = filename;
@@ -229,11 +236,6 @@ const UpdateClient = () => {
       multipleFilesToRemove: updatedMultipleFilesToRemove,
       multipleFilesView: updatedMultipleFilesView,
     });
-  };
-  const handleDeleteMultipleFile = (index) => {
-    const updatedFiles = [...projectData.multipleFiles];
-    updatedFiles.splice(index, 1);
-    setProjectData({ ...projectData, multipleFiles: updatedFiles });
   };
 
   const handleSubmit = (e) => {
@@ -713,9 +715,9 @@ const UpdateClient = () => {
                           />
                         </FormControl>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col-reverse gap-3">
                         {/* Display multiple files */}
-                        {projectData.multipleFiles.map((file, index) => (
+                        {projectData?.multipleFiles?.map((file, index) => (
                           <div key={index}>
                             <p>
                               File {index + 1}: {file.name}
@@ -732,6 +734,7 @@ const UpdateClient = () => {
                           <Input
                             type="file"
                             multiple
+                            ref={multipleFileRef}
                             onChange={handleMultipleFilesChange}
                           />
                         </FormControl>
@@ -1113,9 +1116,9 @@ const UpdateClient = () => {
                           />
                         </FormControl>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col-reverse gap-3">
                         {/* Display multiple files */}
-                        {projectData.multipleFiles.map((file, index) => (
+                        {projectData?.multipleFiles?.map((file, index) => (
                           <div key={index}>
                             <p>
                               File {index + 1}: {file.name}
@@ -1132,6 +1135,7 @@ const UpdateClient = () => {
                           <Input
                             type="file"
                             multiple
+                            ref={multipleFileRef}
                             onChange={handleMultipleFilesChange}
                           />
                         </FormControl>
