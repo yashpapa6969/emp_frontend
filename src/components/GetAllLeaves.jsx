@@ -129,6 +129,9 @@ const GetAllLeaves = () => {
                   End Date
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
+                  Application Date
+                </Th>
+                <Th fontWeight="bold" className="md:table-cell hidden">
                   Status
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
@@ -185,10 +188,13 @@ const GetAllLeaves = () => {
                       <Td>{leave.employee_name}</Td>
                       <Td className="md:table-cell hidden">{leave.type}</Td>
                       <Td className="md:table-cell hidden">
-                        {format(new Date(leave.startDate), "MM/dd/yyyy")}
+                        {format(new Date(leave.startDate), "dd/MM/yyyy")}
                       </Td>
                       <Td className="md:table-cell hidden">
-                        {format(new Date(leave.endDate), "MM/dd/yyyy")}
+                        {format(new Date(leave.endDate), "dd/MM/yyyy")}
+                      </Td>
+                      <Td className="md:table-cell hidden">
+                        {format(new Date(leave.createdAt), "dd/MM/yyyy")}
                       </Td>
                       <Td className="md:table-cell hidden">{leave.status}</Td>
                       <Td className="md:table-cell hidden">{leave.reason}</Td>

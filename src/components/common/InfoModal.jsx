@@ -422,13 +422,19 @@ if (modalFor === "leave")
                     {data.startDate && (
                       <>
                         <Text className="text-sm font-bold text-gray-500 mt-3">Start Date </Text>
-                        <Text className="text-lg">{new Date(data.startDate).toLocaleDateString()}</Text>
+                        <Text className="text-lg">{new Date(data.startDate).toLocaleDateString('en-GB')}</Text>
                       </>
                     )}
                     {data.endDate && (
                       <>
                         <Text className="text-sm font-bold text-gray-500 mt-3">End Date </Text>
-                        <Text className="text-lg">{new Date(data.endDate).toLocaleDateString()}</Text>
+                        <Text className="text-lg">{new Date(data.endDate).toLocaleDateString('en-GB')}</Text>
+                      </>
+                    )}
+                    {data.createdAt && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Application Date</Text>
+                        <Text className="text-lg">{new Date(data.createdAt).toLocaleDateString('en-GB')}</Text>
                       </>
                     )}
                     {data.status && (
