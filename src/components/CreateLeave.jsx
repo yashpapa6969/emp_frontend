@@ -7,23 +7,24 @@ import {
   FormLabel,
   Input,
   VStack,
+  Select
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import MyDatePicker from "./common/MyDatePicker";
+import moment from "moment";
 
 const CreateLeave = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
   const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     employee_id: "",
-    basicPay: "",
-    travelPay: "",
-    bonus: "",
-    paidLeave: "",
-    tds: "",
-    totalLeaves: "",
-    advanceSalary: "",
+    type: "",
+    startDate: new Date(),
+    endDate: new Date(),
+    createdAt: new Date(),
+    status: ""
   });
   const [tags, setTags] = useState([]);
   const [employee, setEmployee] = useState([]);
@@ -47,6 +48,9 @@ const CreateLeave = () => {
       });
   }, []);
 
+  const RequiredIndicator = () => {
+    return <Text as="span" color="red.500" ml={1}>*</Text>;
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProjectData({ ...projectData, [name]: value });
@@ -60,53 +64,47 @@ const CreateLeave = () => {
     setProjectData({ ...projectData, employee_id: selectedEmployeeId });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle the case where date is null or undefined
+    const formattedDate = new Date(date);
+    const day = formattedDate.getDate();
+    const month = formattedDate.toLocaleString("default", { month: "short" });
+    const year = formattedDate.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post(
-        `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
+        `${import.meta.env.VITE_API_BASE}/api/admin/createNewLeave`,
         projectData,
         {
-          responseType: "blob", // Important: This tells Axios to expect a binary response instead of JSON
           headers: {
             "Content-Type": "application/json",
           },
         }
       )
       .then((response) => {
-        // Create a Blob from the PDF Stream
-        const file = new Blob([response.data], { type: "application/pdf" });
-        // Build a URL from the file
-        const fileURL = URL.createObjectURL(file);
-        // Create a temp <a> tag to trigger download
-        const link = document.createElement("a");
-        link.href = fileURL;
-        link.setAttribute("download", "salary_slip.pdf"); // or any other extension
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-
         if (response.status === 200 || response.status === 201) {
-          setSelectedEmployeeInfo(null);
-          setProjectData({
-            employee_id: "",
-            basicPay: "",
-            travelPay: "",
-            bonus: "",
-            paidLeave: "",
-            tds: "",
-            totalLeaves: "",
-            advanceSalary: "",
-          });
-          toast.success("Salary slip downloaded successfully.", {
+          toast.success(response.data.message, {
             autoClose: 2000,
           });
+          setProjectData({
+            employee_id: "",
+            type: "",
+            startDate: new Date(),
+            endDate: new Date(),
+            createdAt: new Date(),
+            status: ""
+          });
           setTimeout(() => {
-            navigate("/getAllSlip");
+            navigate("/getAllLeaves");
           }, 2000);
         } else {
-          console.error("Failed to download slip");
-          toast.error("Failed to download slip.");
+
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
@@ -128,9 +126,9 @@ const CreateLeave = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-2xl font-semibold">Add Salary Slip</h1>
+        <h1 className="text-2xl font-semibold">Add New Leave Request</h1>
         <p className="font-light mb-4">
-          Fill the below form to add a new Salary Slip
+          Fill the below form to add a new Leave Request
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
@@ -161,73 +159,109 @@ const CreateLeave = () => {
             )}
 
             <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" isRequired>
-                <FormLabel>Basic Pay</FormLabel>
-                <Input
-                  name="basicPay"
+              <FormControl id="type">
+                <FormLabel>
+                  Type
+                  <RequiredIndicator />{" "}
+                </FormLabel>
+                <Select
+                  width={300}
+                  name="type"
                   onChange={handleChange}
-                  value={projectData.basicPay}
-                />
+                  placeholder="Select type"
+                  value={projectData.type}
+                >
+                  <option value="Annual">Annual</option>
+                  <option value="Sick">Sick</option>
+                  <option value="Maternity">Maternity</option>
+                  <option value="Paternity">Paternity</option>
+                  <option value="Unpaid">Unpaid</option>
+                  <option value="Other">Other</option>
+                </Select>
               </FormControl>
-              <FormControl id="travelPay" isRequired>
-                <FormLabel>Travel Pay</FormLabel>
-                <Input
-                  name="travelPay"
-                  onChange={handleChange}
-                  value={projectData.travelPay}
+              <FormControl id="startDate">
+                <FormLabel>Start Date <RequiredIndicator /> </FormLabel>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.startDate}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, startDate: date })
+                  }
+                  defaultValue={moment()}
+                  format={"DD/MM/YYYY"}
                 />
+                <br />
+                <div>{formatDate(projectData.startDate)}</div>
               </FormControl>
-              <FormControl id="Bonus" isRequired>
-                <FormLabel>Bonus</FormLabel>
-                <Input
-                  name="bonus"
-                  onChange={handleChange}
-                  value={projectData.bonus}
+              <FormControl id="endDate">
+                <FormLabel>End Date <RequiredIndicator /> </FormLabel>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.endDate}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, endDate: date })
+                  }
+                  defaultValue={moment()}
+                  format={"DD/MM/YYYY"}
                 />
+                <br />
+                <div>{formatDate(projectData.endDate)}</div>
+              </FormControl>
+              <FormControl id="applicationDate">
+                <FormLabel>Application Date <RequiredIndicator /> </FormLabel>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.createdAt}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, createdAt: date })
+                  }
+                  defaultValue={moment()}
+                  format={"DD/MM/YYYY"}
+                />
+                <br />
+                <div>{formatDate(projectData.createdAt)}</div>
               </FormControl>
             </div>
+
             <div className="flex gap-3">
-              <FormControl id="paidLeave" isRequired>
-                <FormLabel>Paid Leave</FormLabel>
-                <Input
-                  name="paidLeave"
+              <FormControl id="status">
+                <FormLabel>
+                  Status
+                  <RequiredIndicator />{" "}
+                </FormLabel>
+                <Select
+                  width={300}
+                  name="status"
                   onChange={handleChange}
-                  value={projectData.paidLeave}
-                />
+                  placeholder="Select Status"
+                  value={projectData.status}
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Rejected">Rejected</option>
+                </Select>
               </FormControl>
-              <FormControl id="tds" isRequired>
-                <FormLabel>TDS</FormLabel>
+            </div>
+
+            <div className="flex gap-3">
+              <FormControl id="Reason" isRequired>
+                <FormLabel>Reason</FormLabel>
                 <Input
-                  name="tds"
+                  name="reason"
                   onChange={handleChange}
-                  value={projectData.tds}
-                />
-              </FormControl>
-              <FormControl id="totaleaves" isRequired>
-                <FormLabel>Total Leaves</FormLabel>
-                <Input
-                  name="totalLeaves"
-                  onChange={handleChange}
-                  value={projectData.totalLeaves}
+                  value={projectData.reason}
                 />
               </FormControl>
             </div>
-            <FormControl id="advanceSalary" maxWidth={400} isRequired>
-              <FormLabel>Advance Salary</FormLabel>
-              <Input
-                name="advanceSalary"
-                onChange={handleChange}
-                value={projectData.advanceSalary}
-              />
-            </FormControl>
 
             <Button mt={6} type="submit" colorScheme="purple">
-              Create Salary Slip
+              Create Leave Request
             </Button>
           </VStack>
         </form>
       </Box>
     </>
+
   );
 };
 

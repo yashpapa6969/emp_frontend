@@ -9,18 +9,18 @@ import {
   CardBody,
   Select,
   Text,
-  Box
+  Box,
+  VStack
 } from "@chakra-ui/react";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import MyDatePicker from "../common/MyDatePicker";
-import { PiArrowsLeftRightFill } from "react-icons/pi";
-import { FaPlus, FaTrashCan } from "react-icons/fa6";
-import SelectProduct from "../common/SelectProduct";
-import SelectClient from "../common/SelectClient";
 import { useNavigate } from "react-router-dom";
 import { selectLeaveId } from "../../store/slice/LeaveSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+
 const RequiredIndicator = () => {
   return (
     <Text as="span" color="red.500" ml={1}>
@@ -29,176 +29,125 @@ const RequiredIndicator = () => {
   );
 };
 const UpdateLeave = () => {
-  const [clients, setClients] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [selectedClient, setSelectedClient] = useState("");
-  const [selectedGst, setSelectedGst] = useState(0);
-  const [services, setServices] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [productValue, setProductValue] = useState([]);
+  const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
   const navigate = useNavigate();
-    const leaveId = useSelector(selectLeaveId);
-    console.log(leaveId);
+  const leaveId = useSelector(selectLeaveId);
+  const [employee, setEmployee] = useState([]);
+  console.log(leaveId)
+  const [projectData, setProjectData] = useState({
+    employee_id: "",
+    type: "",
+    startDate: "",
+    endDate: "",
+    status: "",
+    reason: "",
+    createdAt: "",
+  });
 
   useEffect(() => {
-    fetchClients();
-    fetchProducts();
+    axios
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`)
+      .then((response) => {
+        setEmployee(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching clients:", error);
+      });
   }, []);
-
-  const addServiceRef = useRef(null);
-
   useEffect(() => {
-    if (addServiceRef.current && services.length > 1)
-      addServiceRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [services]);
+    axios
+      .get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getLeaveById/${leaveId}`
+      )
+      .then((response) => {
 
-  const fetchClients = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllClients`
-      );
-      const data = await response.json();
-      setClients(data);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE}/api/admin/getAllProducts`
-      );
-      const data = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
-
-  const handleClientChange = (event) => {
-    const _id = event.target.value;
-    const selectedClient = clients.find((client) => client._id === _id);
-    setSelectedClient(selectedClient);
-  };
-
-  // const handleProductSelect = (event) => {
-  //   const productId = event.target.value;
-  //   const selectedProduct = products.find(
-  //     (product) => product._id === productId
-  //   );
-  //   setSelectedProducts([...selectedProducts, selectedProduct]);
-  // };
-
-  const handleServiceChange = (index, field, value) => {
-    const updatedServices = [...services];
-    if (field === "productId") {
-      const selectedProduct = products.find((product) => product._id === value);
-
-      updatedServices[index]["product"] = selectedProduct;
-    } else {
-      updatedServices[index][field] = value;
-    }
-    setServices(updatedServices);
-  };
-
-  const handleAddService = () => {
-    setServices([
-      ...services,
-      {
-        product: "",
-        serviceDescription: "",
-        duration: "",
-        quantity: 1,
-        unitPrice: 0,
-        startDate: "",
-        endDate: "",
-      },
-    ]);
-  };
-
-  const handleRemoveService = (index) => {
-    const updatedServices = [...services];
-    updatedServices.splice(index, 1);
-    setServices(updatedServices);
-  };
-
-  const handleSubmit = async () => {
-    const requestData = {
-      client_id: selectedClient.client_id,
-      gst: parseInt(selectedGst),
-      services: services.map((service) => ({
-        product: service.product.product,
-        serviceDescription: service.serviceDescription,
-        duration: service.duration,
-        quantity: service.quantity,
-        unitPrice: service.product.unitPrice,
-        startDate: service.startDate.toISOString(),
-        endDate: service.endDate.toISOString(),
-      })),
-    };
-    const requiredFields = [
-      { key: "client_id", label: "Client" },
-      { key: "gst", label: "GST" },
-      { key: "services", label: "Services", isArray: true },
-    ];
-    const validateForm = (requestData, requiredFields) => {
-      for (let { key, label, isArray } of requiredFields) {
-        if (
-          isArray
-            ? !requestData[key] || requestData[key].length === 0
-            : !requestData[key]
-        ) {
-          return `${label} is required.`;
+        const leaveData = response.data.data[0];
+        // console.log(leaveData.data[0])
+        setProjectData((projectData) => ({
+          ...projectData,
+          employee_id: leaveData?.employee_id || projectData.employee_id,
+          type: leaveData?.type || projectData.type,
+          startDate: leaveData?.startDate || projectData.startDate,
+          endDate: leaveData?.endDate || projectData.endDate,
+          status: leaveData?.status || projectData.status,
+          reason: leaveData?.reason || projectData.reason,
+          createdAt: leaveData?.createdAt || projectData.createdAt,
+        }));
+        if (projectData.employee_id) {
+          const selectedEmployeeId = projectData.employee_id;
+          const selectedEmployee = employee.find(
+            (manager) => manager.employee_id === selectedEmployeeId
+          );
+          setSelectedEmployeeInfo(selectedEmployee);
+          setProjectData({ ...projectData, employee_id: selectedEmployeeId });
         }
-      }
-      return null; // Return null if all required fields are present
-    };
+        // setSelectedCountry(clientData.country);
+        // setSelectedState(clientData.state);
+        // setSelectSourceValue(clientData.source);
+        // setSelectedTagValue(clientData.requirement);
+      })
 
-    const errorMessage = validateForm(requestData, requiredFields);
-    if (errorMessage) {
-      toast.error(errorMessage);
-      return; // Stop further execution if validation fails
+      .catch((error) => {
+        console.error("Error fetching leave details:", error);
+        toast.error("Failed to fetch leave details");
+      });
+  }, [leaveId, selectedEmployeeInfo]);
+  const handleSelectManager = (event) => {
+    const selectedEmployeeId = event.target.value;
+    const selectedEmployee = employee.find(
+      (manager) => manager.employee_id === selectedEmployeeId
+    );
+    setSelectedEmployeeInfo(selectedEmployee);
+    setProjectData({ ...projectData, employee_id: selectedEmployeeId });
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProjectData({ ...projectData, [name]: value });
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const requestData = projectData;
+    const requiredFields = [
+      "employee_id",
+      "startDate",
+      "endDate",
+      "createdAt",
+      "status",
+      "type",
+      "reason"
+    ];
+
+    for (let field of requiredFields) {
+      if (!requestData[field]) {
+        toast.error(`${field} is required.`);
+        return; // Stop further execution if any required field is missing
+      }
     }
 
-    console.log(requestData);
-
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE}/api/admin/createInvoice`,
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_BASE}/api/admin/updateLeave/${leaveId}`,
+        requestData, // Simply pass the request data directly, no need to specify headers and stringify
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestData),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to download Invoice slip");
+      if (response.status !== 200) {
+        toast.error("failed to update leave");
       }
 
-      const pdfBlob = await response.blob();
-      const fileURL = URL.createObjectURL(pdfBlob);
-      const link = document.createElement("a");
-      link.href = fileURL;
-      link.setAttribute("download", "invoice_slip.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      setServices([]);
-      setSelectedGst("");
-      setProducts([]);
-      toast.success("Invoice Slip is downloaded successfully.", {
+      toast.success("Leave updated successfully.", {
         autoClose: 2000,
       });
       setTimeout(() => {
-        navigate("/getAllInvoice");
+        navigate("/getAllLeaves");
       }, 2000);
     } catch (error) {
-      console.error("Error creating invoice:", error);
-      toast.error("Failed to download Invoice slip.", {
+      console.log(error)
+      toast.error("Failed to update leave.", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -219,6 +168,12 @@ const UpdateLeave = () => {
     return `${day} ${month} ${year}`;
   };
 
+  // const startDateFormatted = projectData.startDate ? moment(projectData.startDate,'YYYY-MM-DDTHH:mm:ss.SSSZ').format('DD-MM-YY') : null;
+  // console.log(startDateFormatted)
+  const startDate = projectData.startDate ? moment(projectData.startDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ') : null;
+  const endDate = projectData.endDate ? moment(projectData.endDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ') : null;
+  const createdAt = projectData.createdAt ? moment(projectData.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSSZ') : null;
+  console.log(startDate)
   return (
     <Box
       mx="auto"
@@ -228,195 +183,139 @@ const UpdateLeave = () => {
       boxShadow="lg"
       m="4"
     >
-      <h1 className="text-2xl font-semibold">Update Leave with leave id {leaveId}</h1>
+      <h1 className="text-2xl font-semibold">Update Leave Request</h1>
       <p className="font-light mb-4">
-        Fill the below form to add a new invoice
+        Fill the below form to update a new Leave Request
       </p>
-      <Stack spacing={4}>
-        <FormControl maxWidth={300}>
-          <FormLabel>
-            Select Client <RequiredIndicator />
-          </FormLabel>
-          <Select placeholder="Select client" onChange={handleClientChange}>
-            {clients.map((client) => (
-              <option key={client._id} value={client._id}>
-                {client.brandName}
-              </option>
-            ))}
-          </Select>
-          {/* <SelectClient selectSourceValue={} setSelectSourceValue={} /> */}
-        </FormControl>
-        {selectedClient && (
-          <Card variant={"outline"}>
-            <CardBody>
-              <Text textTransform={"capitalize"}>
-                Client Name: {selectedClient.clientName}
-              </Text>
-              <Text>Client Company: {selectedClient.companyName}</Text>
-            </CardBody>
-          </Card>
-        )}
-        <FormControl maxWidth={50}>
-          <FormLabel>
-            GST <RequiredIndicator />
-          </FormLabel>
-          <Input
-            type="number"
-            placeholder="Enter GST"
-            value={selectedGst}
-            onChange={(e) => setSelectedGst(e.target.value)}
-          />
-        </FormControl>
-
-        {services.length > 0 && (
-          <div className="flex items-center max-w-[1200px] overflow-x-scroll pb-10 hide-scroll-bar">
-            <div className="flex flex-nowrap">
-              {services.map((service, index) => (
-                <div key={`card-${index}`} className="inline-block px-3">
-                  <div className="w-[300px] my-4 px-4 py-6 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <div
-                      onClick={() => handleRemoveService(index)}
-                      className="flex items-center justify-center w-10 h-10 hover:bg-red-600 transition-all bg-red-500 text-white gap-2 rounded-full mb-4 cursor-pointer"
-                    >
-                      <FaTrashCan />
-                    </div>
-
-                    <FormControl maxWidth={300}>
-                      <FormLabel>
-                        Select Product <RequiredIndicator />
-                      </FormLabel>
-                      <Select
-                        placeholder="Select product"
-                        onChange={(e) =>
-                          handleServiceChange(
-                            index,
-                            "productId",
-                            e.target.value
-                          )
-                        }
-                        value={service.productId}
-                      >
-                        {products.map((product) => (
-                          <option key={product._id} value={product._id}>
-                            {product.product} - Unit Price - {product.unitPrice}
-                          </option>
-                        ))}
-                      </Select>
-                      {/* <SelectProduct width={"100%"} selectSourceValue={productValue} setSelectSourceValue={setProductValue} /> */}
-                    </FormControl>
-
-                    <FormControl mt={4}>
-                      <FormLabel>
-                        Service Description
-                        <RequiredIndicator />
-                      </FormLabel>
-                      <Input
-                        value={service.serviceDescription}
-                        onChange={(e) =>
-                          handleServiceChange(
-                            index,
-                            "serviceDescription",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </FormControl>
-
-                    <div className="flex gap-4 items-center mt-4">
-                      <FormControl maxWidth={100}>
-                        <FormLabel>
-                          Start Date
-                          <RequiredIndicator />
-                        </FormLabel>
-                        <MyDatePicker
-                          selected={service.startDate}
-                          onChange={(date) =>
-                            handleServiceChange(index, "startDate", date)
-                          } // Corrected to use 'date' instead of 'startDate'
-                        />
-                        <div>{formatDate(service.startDate)}</div>
-                      </FormControl>
-                      <PiArrowsLeftRightFill size={20} />
-                      <FormControl maxWidth={100}>
-                        <FormLabel>
-                          End Date
-                          <RequiredIndicator />
-                        </FormLabel>
-                        <MyDatePicker
-                          selected={service.endDate}
-                          onChange={(date) =>
-                            handleServiceChange(index, "endDate", date)
-                          }
-                          // Corrected to use 'date' instead of 'endDate'
-                        />
-                        <div>{formatDate(service.endDate)}</div>
-                      </FormControl>
-                    </div>
-
-                    <div className="flex gap-4 items-center mt-4">
-                      <FormControl maxWidth={100}>
-                        <FormLabel>
-                          Quantity
-                          <RequiredIndicator />
-                        </FormLabel>
-                        <Input
-                          type="number"
-                          value={service.quantity}
-                          onChange={(e) =>
-                            handleServiceChange(
-                              index,
-                              "quantity",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </FormControl>
-                      <FormControl maxWidth={100}>
-                        <FormLabel>
-                          Duration
-                          <RequiredIndicator />
-                        </FormLabel>
-                        <Input
-                          type="text"
-                          value={service.duration}
-                          onChange={(e) =>
-                            handleServiceChange(
-                              index,
-                              "duration",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </FormControl>
-                    </div>
-                  </div>
-                </div>
+      <form onSubmit={handleSubmit}>
+        {employee.length > 0 && (<VStack spacing={4} align="stretch">
+          <FormControl id="manager_id" isRequired>
+            <FormLabel>Select Employee</FormLabel>
+            <select
+              onChange={handleSelectManager}
+              value={projectData.employee_id}
+            >
+              <option value="">Select Employee</option>
+              {employee.map((manager) => (
+                <option key={manager.employee_id} value={manager.employee_id}>
+                  {manager.name}
+                </option>
               ))}
-              <div
-                onClick={handleAddService}
-                ref={addServiceRef}
-                className="border-[1px] w-[300px] my-4 transition-all hover:shadow-lg bg-purple-200 hover:bg-purple-300 rounded-lg border-gray-100 text-purple-900 flex flex-col gap-4 items-center justify-center cursor-pointer"
-              >
-                <FaPlus size={40} />
-                Add Service
-              </div>
-            </div>
-          </div>
-        )}
+            </select>
+          </FormControl>
+          {selectedEmployeeInfo && (
+            <VStack align="start" spacing={2}>
+              <Text fontWeight="bold">Name: {selectedEmployeeInfo.name}</Text>
+              <Text fontWeight="bold">
+                Position: {selectedEmployeeInfo.position}
+              </Text>
+              <Text fontWeight="bold">
+                Department: {selectedEmployeeInfo.department}
+              </Text>
+            </VStack>
+          )}
 
-        {services.length === 0 && selectedClient && (
-          <Button
-            onClick={handleAddService}
-            variant={"outline"}
-            colorScheme="purple"
-          >
-            Add Service
+          <div className="flex flex-col md:flex-row gap-3">
+            <FormControl id="type">
+              <FormLabel>
+                Type
+                <RequiredIndicator />{" "}
+              </FormLabel>
+              <Select
+                width={300}
+                name="type"
+                onChange={handleChange}
+                placeholder="Select type"
+                value={projectData.type}
+              >
+                <option value="Annual">Annual</option>
+                <option value="Sick">Sick</option>
+                <option value="Maternity">Maternity</option>
+                <option value="Paternity">Paternity</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Other">Other</option>
+              </Select>
+            </FormControl>
+            <FormControl id="startDate">
+              <FormLabel>Start Date <RequiredIndicator /> </FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={projectData.startDate}
+                onChange={(date) =>
+                  setProjectData({ ...projectData, startDate: date })
+                }
+                value={startDate}
+                format={"DD/MM/YYYY"}
+              />
+              <br />
+              <div>{formatDate(projectData.startDate)}</div>
+            </FormControl>
+            <FormControl id="endDate">
+              <FormLabel>End Date <RequiredIndicator /> </FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={projectData.endDate}
+                onChange={(date) =>
+                  setProjectData({ ...projectData, endDate: date })
+                }
+                value={endDate}
+                format={"DD/MM/YYYY"}
+              />
+              <br />
+              <div>{formatDate(projectData.endDate)}</div>
+            </FormControl>
+            <FormControl id="applicationDate">
+              <FormLabel>Application Date <RequiredIndicator /> </FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={projectData.createdAt}
+                onChange={(date) =>
+                  setProjectData({ ...projectData, createdAt: date })
+                }
+                value={createdAt}
+                format={"DD/MM/YYYY"}
+              />
+              <br />
+              <div>{formatDate(projectData.createdAt)}</div>
+            </FormControl>
+          </div>
+
+          <div className="flex gap-3">
+            <FormControl id="status">
+              <FormLabel>
+                Status
+                <RequiredIndicator />{" "}
+              </FormLabel>
+              <Select
+                width={300}
+                name="status"
+                onChange={handleChange}
+                placeholder="Select Status"
+                value={projectData.status}
+              >
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </Select>
+            </FormControl>
+          </div>
+
+          <div className="flex gap-3">
+            <FormControl id="Reason" isRequired>
+              <FormLabel>Reason</FormLabel>
+              <Input
+                name="reason"
+                onChange={handleChange}
+                value={projectData.reason}
+              />
+            </FormControl>
+          </div>
+
+          <Button mt={6} type="submit" colorScheme="purple">
+            Update Leave Request
           </Button>
-        )}
-        <Button onClick={handleSubmit} colorScheme="purple">
-          Create Invoice
-        </Button>
-      </Stack>
+        </VStack>)}
+      </form>
     </Box>
   );
 };
