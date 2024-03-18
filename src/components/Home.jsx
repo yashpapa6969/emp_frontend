@@ -14,6 +14,9 @@ import { CheckIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { GoVerified } from "react-icons/go";
 import { Link } from "react-router-dom";
 import UpcomingEventsCard from "./card/UpcomingEventsCard";
+import ConvertedLeads from "./card/ConvertedLeads";
+import ProjectCard from "./card/ProjectCard";
+import LeaveCard from "./card/LeaveCard";
 
 const theme = extendTheme({
   styles: {
@@ -43,80 +46,11 @@ function Home() {
   return (
     <ChakraProvider theme={theme}>
       <div className="px-4 mt-8 mb-10 flex flex-col gap-4">
-        <div className="flex gap-3 flex-col md:flex-row">
-          <Card className="w-full md:w-1/4">
-            <CardBody>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <div className="flex gap-4 items-center text-lg">
-                  <FaMoneyBills fontSize={18} />
-                  Invoices Awaiting Pay...
-                </div>
-                13/20
-              </Flex>
-              <Progress
-                value={(13 / 20) * 100}
-                colorScheme="red"
-                mt={4}
-                height={2}
-                rounded={"lg"}
-              />
-            </CardBody>
-          </Card>
-          <Card className="w-full md:w-1/4">
-            <CardBody>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <div className="flex gap-4 items-center text-lg">
-                  <HiMiniArrowTrendingUp fontSize={18} />
-                  Converted Leads
-                </div>
-                8/52
-              </Flex>
-              <Progress
-                value={(8 / 52) * 100}
-                colorScheme="green"
-                mt={4}
-                height={2}
-                rounded={"lg"}
-              />
-            </CardBody>
-          </Card>
-          <Card className="w-full md:w-1/4">
-            <CardBody>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <div className="flex gap-4 items-center text-lg">
-                  <GiProgression fontSize={18} />
-                  Projects In Progress
-                </div>
-                6/6
-              </Flex>
-              <Progress
-                value={(6 / 6) * 100}
-                colorScheme="blue"
-                mt={4}
-                height={2}
-                rounded={"lg"}
-              />
-            </CardBody>
-          </Card>
-          <Card className="w-full md:w-1/4">
-            <CardBody>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <div className="flex gap-4 items-center text-lg">
-                  <GrTask fontSize={18} />
-                  Tasks Not Finished
-                </div>
-                49/65
-              </Flex>
-              <Progress
-                value={(49 / 65) * 100}
-                colorScheme="gray"
-                mt={4}
-                height={2}
-                rounded={"lg"}
-              />
-            </CardBody>
-          </Card>
-        </div>
+        <Flex gap={4}>
+          <ConvertedLeads />
+          <ProjectCard />
+          <LeaveCard></LeaveCard>
+        </Flex>
         <div className="flex gap-4 flex-col md:flex-row">
           <Card className="w-full md:w-[65%]">
             <CardBody>

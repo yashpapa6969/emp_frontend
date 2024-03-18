@@ -126,10 +126,10 @@ const GetAllProject = () => {
                   Priority
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
-                  Brand Name
+                 Status
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
-                  Status
+                 Change Status
                 </Th>
                 <Th fontWeight="bold">Action</Th>
                 <Th fontWeight="bold"></Th>
