@@ -22,7 +22,7 @@ const CreateLeave = () => {
     employee_id: "",
     type: "",
     startDate: new Date(),
-    endDate: new Date(),
+    endDate: "",
     createdAt: new Date(),
     status: ""
   });
@@ -201,7 +201,6 @@ const CreateLeave = () => {
                   onChange={(date) =>
                     setProjectData({ ...projectData, endDate: date })
                   }
-                  defaultValue={moment()}
                   format={"DD/MM/YYYY"}
                 />
                 <br />

@@ -13,9 +13,9 @@ const LeaveCard = () => {
   useEffect(() => {
     // Fetch total lead count
     axios
-      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getTotalProjects`)
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getTotalLeaves`)
       .then((response) => {
-        setTotalLeads(response.data.totalProjectCount);
+        setTotalLeads(response.data.totalLeaveCount);
       })
       .catch((error) => {
         console.error("Error fetching total lead count:", error);
@@ -23,13 +23,12 @@ const LeaveCard = () => {
 
     // Fetch leads by status
     axios
-      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getProjectCountByStatus`)
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getLeavesByStatus`)
       .then((response) => {
         const leads = response.data;
-        const inProgressLead = leads.find((lead) => lead._id === "Not Started");
-        const convertedLead = leads.find((lead) => lead._id === "In Progress");
-        const lostLead = leads.find((lead) => lead._id === "Completed");
-        const rawLead = leads.find((lead) => lead._id === "On Hold");
+        const inProgressLead = leads.find((lead) => lead._id === "Approved");
+        const convertedLead = leads.find((lead) => lead._id === "Pending");
+        const lostLead = leads.find((lead) => lead._id === "Rejected");
 
         if (inProgressLead) {
           setLeadsInProgress(inProgressLead.count);
@@ -59,7 +58,7 @@ const LeaveCard = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
               <HiArrowNarrowUp fontSize={18} />
-              In progress
+              Pending
             </div>
             {convertedLeads}/{totalLeads}
           </Flex>
@@ -75,7 +74,7 @@ const LeaveCard = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
               <HiArrowNarrowUp fontSize={18} />
-              Not Started
+              Approved
             </div>
             {leadsInProgress}/{totalLeads}
           </Flex>
@@ -91,7 +90,7 @@ const LeaveCard = () => {
           <Flex alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
               <HiArrowNarrowUp fontSize={18} />
-              Completed
+              Rejected
             </div>
             {lostLeads}/{totalLeads}
           </Flex>
@@ -103,22 +102,7 @@ const LeaveCard = () => {
             rounded="lg"
           />
         </CardBody>
-        <CardBody>
-          <Flex alignItems="center" justifyContent="space-between">
-            <div className="flex gap-4 items-center text-lg">
-              <HiArrowNarrowUp fontSize={18} />
-              On Hold
-            </div>
-            {rawLeads}/{totalLeads}
-          </Flex>
-          <Progress
-            value={(rawLeads / totalLeads) * 100}
-            colorScheme="green"
-            mt={4}
-            height={2}
-            rounded="lg"
-          />
-        </CardBody>
+      
       </Card>
     </>
   );

@@ -14,6 +14,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import MyDatePicker from "./common/MyDatePicker";
 import { toast } from "react-toastify";
 import { convertDateFormatString } from "../helpers";
+import { useNavigate } from "react-router-dom";
+
 
 
 const CreateTask = () => {
@@ -22,6 +24,7 @@ const CreateTask = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate();
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -118,7 +121,9 @@ const CreateTask = () => {
       )
       .then((response) => {
         console.log("Task added successfully:", response.data);
-        // Clear form fields after successful submission
+         toast.success("Task added successfully", {
+           autoClose: 2000,
+         });
         setSelectedBrandName("");
         setSelectedProject("");
         setSelectedEmployee("");
@@ -127,6 +132,10 @@ const CreateTask = () => {
         setDeadline("");
         setStatus("");
         setPriority("");
+         
+          setTimeout(() => {
+            navigate("/getAllTask");
+          }, 2000);
       })
       .catch((error) => {
         console.error("Error adding task:", error);

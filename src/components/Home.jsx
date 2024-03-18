@@ -46,7 +46,7 @@ function Home() {
   return (
     <ChakraProvider theme={theme}>
       <div className="px-4 mt-8 mb-10 flex flex-col gap-4">
-        <Flex gap={4}>
+        <Flex gap={8}>
           <ConvertedLeads />
           <ProjectCard />
           <LeaveCard></LeaveCard>

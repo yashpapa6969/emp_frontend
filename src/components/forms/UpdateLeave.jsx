@@ -33,7 +33,6 @@ const UpdateLeave = () => {
   const navigate = useNavigate();
   const leaveId = useSelector(selectLeaveId);
   const [employee, setEmployee] = useState([]);
-  console.log(leaveId)
   const [projectData, setProjectData] = useState({
     employee_id: "",
     type: "",
@@ -43,7 +42,7 @@ const UpdateLeave = () => {
     reason: "",
     createdAt: "",
   });
-
+   
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllEmployees`)
@@ -73,12 +72,14 @@ const UpdateLeave = () => {
           reason: leaveData?.reason || projectData.reason,
           createdAt: leaveData?.createdAt || projectData.createdAt,
         }));
+        setSelectedEmployeeInfo(leaveData?.employee_id || projectData.employee_id);
         if (projectData.employee_id) {
           const selectedEmployeeId = projectData.employee_id;
           const selectedEmployee = employee.find(
             (manager) => manager.employee_id === selectedEmployeeId
           );
           setSelectedEmployeeInfo(selectedEmployee);
+          console.log(selectedEmployeeInfo);
           setProjectData({ ...projectData, employee_id: selectedEmployeeId });
         }
         // setSelectedCountry(clientData.country);
