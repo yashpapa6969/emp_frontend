@@ -145,13 +145,13 @@ const UpdateClient = () => {
     }));
   }, [selectSourceValue, selectedTagValue]);
 
-   const RequiredIndicator = () => {
-     return (
-       <Text as="span" color="red.500" ml={1}>
-         *
-       </Text>
-     );
-   };
+  const RequiredIndicator = () => {
+    return (
+      <Text as="span" color="red.500" ml={1}>
+        *
+      </Text>
+    );
+  };
   const removeTagById = (tagToRemove) => {
     setProjectData({
       ...projectData,
@@ -206,7 +206,7 @@ const UpdateClient = () => {
     const { singleFile, ...newData } = projectData;
     setProjectData({ ...newData });
   };
-  
+
   const handleDeleteMultipleFile = (index) => {
     console.log(multipleFileRef.current.value);
     const updatedFiles = [...projectData.multipleFiles];
@@ -306,11 +306,19 @@ const UpdateClient = () => {
         boxShadow="lg"
         m="4"
       >
-        <h1 className="text-md font-semibold">Update Client</h1>
-        <h1 className="text-2xl font-semibold">{client.clientName}</h1>
+        <div className="flex flex-col mb-4 md:flex-row justify-between gap-4 md:items-center">
+          <div>
+            <h1 className="text-md font-semibold">Update Client</h1>
+            <h1 className="text-2xl font-semibold">{client.clientName}</h1>
+          </div>
+
+          <Button maxWidth={150} variant={"outline"} colorScheme="blue">
+            View Lead Info
+          </Button>
+        </div>
 
         <form onSubmit={handleSubmit}>
-          <FormControl id="enquiryDate">
+          {/* <FormControl id="enquiryDate">
             <FormLabel>Enquiry Date</FormLabel>
             <MyDatePicker
               className="mb-1"
@@ -326,7 +334,7 @@ const UpdateClient = () => {
             {projectData.enquiryDate && (
               <p>{convertDateFormatString(enquiryDate)}</p>
             )}
-          </FormControl>
+          </FormControl> */}
           <div className="hidden md:block">
             <Tabs>
               <TabList>
@@ -630,22 +638,22 @@ const UpdateClient = () => {
                 <TabPanel>
                   <div>
                     <div>
-                      <h2>Existing Files</h2>
+                      <h2 className="font-semibold text-lg">Existing Files</h2>
                       <div className="flex gap-3">
                         {projectData.singleFileView && (
                           <div>
                             <div className="flex gap-1">
-                              <p>File : {projectData.singleFileView}</p>
+                              <p>{projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
                                 _hover={{ textDecoration: "none" }}
                                 variant="solid"
+                                size={"sm"}
                               >
                                 View
                               </Button>
@@ -655,6 +663,7 @@ const UpdateClient = () => {
                                     projectData.singleFileView
                                   );
                                 }}
+                                size={"sm"}
                               >
                                 Delete
                               </Button>
@@ -671,9 +680,8 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -695,41 +703,33 @@ const UpdateClient = () => {
                       </div>
                     </div>
                     <div>
-                      <h2>New Files</h2>
-                      {/* Display single file */}
-                      {projectData.singleFile && (
-                        <div>
-                          <p>Single File: {projectData.singleFile.name}</p>
-                          <Button onClick={handleDeleteSingleFile}>
-                            Delete
-                          </Button>
+                      <div className="flex flex-col gap-3 mb-2">
+                        <div className="flex gap-3">
+                          <FormControl>
+                            <FormLabel>Single File</FormLabel>
+                            <Input
+                              type="file"
+                              ref={singleFileRef}
+                              onChange={handleSingleFileChange}
+                            />
+                          </FormControl>
                         </div>
-                      )}
-                      <div className="flex gap-3">
-                        <FormControl mb="4">
-                          <FormLabel>Single File</FormLabel>
-                          <Input
-                            type="file"
-                            ref={singleFileRef}
-                            onChange={handleSingleFileChange}
-                          />
-                        </FormControl>
-                      </div>
-                      <div className="flex flex-col-reverse gap-3">
-                        {/* Display multiple files */}
-                        {projectData?.multipleFiles?.map((file, index) => (
-                          <div key={index}>
-                            <p>
-                              File {index + 1}: {file.name}
-                            </p>
-                            <Button
-                              onClick={() => handleDeleteMultipleFile(index)}
-                            >
-                              Delete
-                            </Button>
+                        {/* Display single file */}
+                        {projectData.singleFile && (
+                          <div className="mb-4 bg-purple-400 text-white rounded-md p-2">
+                            <h2 className="font-semibold text-lg">New files</h2>
+                            <div className="flex items-center gap-2">
+                              <p>{projectData.singleFile.name}</p>
+                              <Button onClick={handleDeleteSingleFile} size={"sm"}>
+                                Delete
+                              </Button>
+                            </div>
                           </div>
-                        ))}
-                        <FormControl mb="4">
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        {/* Display multiple files */}
+                        <FormControl>
                           <FormLabel>Multiple Files</FormLabel>
                           <Input
                             type="file"
@@ -738,6 +738,23 @@ const UpdateClient = () => {
                             onChange={handleMultipleFilesChange}
                           />
                         </FormControl>
+                        {projectData.multipleFiles.length > 0 && (
+                          <div className="mb-4 bg-purple-400 text-white rounded-md p-2">
+                            <h2 className="font-semibold text-lg">New files</h2>
+                            {projectData?.multipleFiles?.map((file, index) => (
+                              <div key={index} className="flex items-center gap-2">
+                                <p>
+                                  File {index + 1}: {file.name}
+                                </p>
+                                <Button
+                                  onClick={() => handleDeleteMultipleFile(index)}
+                                >
+                                  Delete
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <Button type="submit" colorScheme="purple" className="mt-5">
@@ -862,7 +879,7 @@ const UpdateClient = () => {
                       onChange={handleChange}
                       value={projectData.sourceInformation}
                     />
-                    
+
                   </FormControl>
 
                   <FormControl id="email1">
@@ -1039,9 +1056,8 @@ const UpdateClient = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -1072,9 +1088,8 @@ const UpdateClient = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"

@@ -216,10 +216,10 @@ const GetAllInvoices = () => {
                 setFilteredData={setFilteredInvoices}
                 data={invoices}
               >
-                <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
+                <Thead bg={"#F1F5F9"} zIndex={10}>
                   <Tr>
-                    <Th fontWeight="bold">Index</Th>
-                    <Th fontWeight="bold" className="md:table-cell hidden">
+                    <Th fontWeight="bold" className="md:table-cell hidden">Index</Th>
+                    <Th fontWeight="bold">
                       Brand Name
                     </Th>
                     <Th fontWeight="bold" className="md:table-cell hidden">
@@ -236,10 +236,10 @@ const GetAllInvoices = () => {
                   {searchText !== ""
                     ? filteredInvoices.map((invoice, index) => (
                         <Tr key={invoice._id}>
-                          <Td>{index + 1}</Td>
+                          <Td className="md:table-cell hidden">{index + 1}</Td>
                           <Td>{invoice.brandName}</Td>
-                          <Td>{invoice.date1}</Td>
-                          <Td>{invoice.time1}</Td>
+                          <Td className="md:table-cell hidden">{invoice.date1}</Td>
+                          <Td className="md:table-cell hidden">{invoice.time1}</Td>
 
                           <Td className="flex flex-col md:flex-row gap-2">
                             <Button
@@ -275,10 +275,10 @@ const GetAllInvoices = () => {
                       ))
                     : invoices.map((invoice,index) => (
                         <Tr key={invoice._id}>
-                          <Td>{index + 1}</Td>
+                          <Td className="md:table-cell hidden">{index + 1}</Td>
                           <Td>{invoice.brandName}</Td>
-                          <Td>{invoice.date1}</Td>
-                          <Td>{invoice.time1}</Td>
+                          <Td className="md:table-cell hidden">{invoice.date1}</Td>
+                          <Td className="md:table-cell hidden">{invoice.time1}</Td>
 
                           <Td className="flex flex-col md:flex-row gap-2">
                             <Button
