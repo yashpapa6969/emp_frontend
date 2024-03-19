@@ -36,8 +36,11 @@ import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
 import UpdateLead from "./components/forms/UpdateLead";
 import UpdateLeave from "./components/forms/UpdateLeave";
+import UpdateLetter from "./components/forms/UpdateLetter";
 import GetAllLeaves from "./components/GetAllLeaves";
+import GetAllLetters from "./components/GetAllLetters";
 import CreateLeave from "./components/CreateLeave";
+import CreateLetter from "./components/CreateLetter";
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   // const refreshPage = () => {
@@ -161,6 +164,17 @@ function App() {
             }
           />
           <Route
+            path="/getAllLetters"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllLetters"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllLetters/>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/getAllTodo"
             element={
               <AppLayout
@@ -216,6 +230,17 @@ function App() {
             }
           />
           <Route
+            path="/createLetter"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateLetter"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateLetter/>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/createClient"
             element={
               <AppLayout
@@ -256,6 +281,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <UpdateLeave></UpdateLeave>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLetter"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLetter></UpdateLetter>
               </AppLayout>
             }
           />
