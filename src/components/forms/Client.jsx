@@ -274,8 +274,8 @@ const Client = () => {
 
           <TabPanels>
             <TabPanel>
-              <div className="flex gap-2">
-                <FormControl id="companyAnniversary" maxWidth={150}>
+              <div className="flex gap-2 items-center">
+                <FormControl id="workStartDate" maxWidth={150}>
                   <FormLabel>Work Start Date</FormLabel>
                   <MyDatePicker
                     selected={projectData.workStartDate}
@@ -285,10 +285,10 @@ const Client = () => {
                     format={"DD/MM/YYYY"}
                   />
                 </FormControl>
+                <div className="mt-[28px]">{formatDate(projectData.workStartDate)}</div>
               </div>
-              <div>{formatDate(projectData.workStartDate)}</div>
 
-              <div className="flex gap-3 mb-2">
+              <div className="flex gap-3 my-2">
                 <FormControl id="title" maxWidth={130}>
                   <FormLabel>
                     Title <RequiredIndicator />
@@ -310,20 +310,6 @@ const Client = () => {
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="brandName">
-                  <FormLabel>
-                    Brand Name <RequiredIndicator />{" "}
-                  </FormLabel>
-                  <Input name="brandName" onChange={handleChange} />
-                </FormControl>
-                <FormControl id="companyName">
-                  <FormLabel>
-                    Company Name <RequiredIndicator />
-                  </FormLabel>
-                  <Input name="companyName" onChange={handleChange} />
-                </FormControl>
-              </div>
-              <div className="flex">
                 <FormControl id="gender" mr={3} maxWidth={100}>
                   <FormLabel>
                     Gender <RequiredIndicator />
@@ -339,6 +325,22 @@ const Client = () => {
                     <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
+              </div>
+              <div className="flex gap-3">
+                <FormControl id="brandName">
+                  <FormLabel>
+                    Brand Name <RequiredIndicator />{" "}
+                  </FormLabel>
+                  <Input name="brandName" onChange={handleChange} />
+                </FormControl>
+                <FormControl id="companyName">
+                  <FormLabel>
+                    Company Name <RequiredIndicator />
+                  </FormLabel>
+                  <Input name="companyName" onChange={handleChange} />
+                </FormControl>
+              </div>
+              <div className="flex gap-3">
                 <FormControl id="tags" maxWidth={250} mr={3}>
                   <FormLabel>
                     Source <RequiredIndicator />{" "}

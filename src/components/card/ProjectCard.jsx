@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { Card, CardBody, Flex, Progress,Text } from "@chakra-ui/react";
-import { HiArrowNarrowUp } from "react-icons/hi";
+import { Card, CardBody, Flex, Progress } from "@chakra-ui/react";
+import { Divider } from "antd";
 import axios from "axios";
+import { LiaProjectDiagramSolid } from "react-icons/lia";
+import { TfiBarChart } from "react-icons/tfi";
+import { CiWarning } from "react-icons/ci";
+import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { PiCardholderThin } from "react-icons/pi";
 
 const ProjectCard = () => {
   const [totalLeads, setTotalLeads] = useState(0);
@@ -51,46 +56,46 @@ const ProjectCard = () => {
 
   return (
     <>
-      <Card className="w-full md:w-1/4">
-        <Text fontSize="3xl" mb={4} textAlign="center">
-          Projects
-        </Text>
-        <CardBody>
-          <Flex alignItems="center" justifyContent="space-between">
+      <Card className="w-full md:w-1/3 p-4 pb-8">
+      <div className="flex items-center justify-between text-gray-600">
+          <h1 className="flex text-xl gap-2 items-center">
+          <LiaProjectDiagramSolid /> Projects
+          </h1>
+          <div className="bg-blue-500 rounded-full h-[25px] min-w-[25px] flex items-center justify-center text-white text-[10px]">{totalLeads}</div>
+        </div>
+        <Divider />
+        <CardBody m={0} p={0}>
+          <Flex color={"gray.500"} alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
-              <HiArrowNarrowUp fontSize={18} />
+              <TfiBarChart />
               In progress
             </div>
             {convertedLeads}/{totalLeads}
           </Flex>
           <Progress
             value={(convertedLeads / totalLeads) * 100}
-            colorScheme="green"
-            mt={4}
+            colorScheme="blue"
+            mt={2}
             height={2}
             rounded="lg"
           />
-        </CardBody>
-        <CardBody>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex color={"gray.500"} mt={4} alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
-              <HiArrowNarrowUp fontSize={18} />
+              <CiWarning />
               Not Started
             </div>
             {leadsInProgress}/{totalLeads}
           </Flex>
           <Progress
             value={(leadsInProgress / totalLeads) * 100}
-            colorScheme="green"
-            mt={4}
+            colorScheme="red"
+            mt={2}
             height={2}
             rounded="lg"
           />
-        </CardBody>
-        <CardBody>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex color={"gray.500"} mt={4} alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
-              <HiArrowNarrowUp fontSize={18} />
+              <IoCheckmarkDoneOutline />
               Completed
             </div>
             {lostLeads}/{totalLeads}
@@ -98,23 +103,21 @@ const ProjectCard = () => {
           <Progress
             value={(lostLeads / totalLeads) * 100}
             colorScheme="green"
-            mt={4}
+            mt={2}
             height={2}
             rounded="lg"
           />
-        </CardBody>
-        <CardBody>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex color={"gray.500"} mt={4} alignItems="center" justifyContent="space-between">
             <div className="flex gap-4 items-center text-lg">
-              <HiArrowNarrowUp fontSize={18} />
+              <PiCardholderThin />
               On Hold
             </div>
             {rawLeads}/{totalLeads}
           </Flex>
           <Progress
             value={(rawLeads / totalLeads) * 100}
-            colorScheme="green"
-            mt={4}
+            colorScheme="yellow"
+            mt={2}
             height={2}
             rounded="lg"
           />

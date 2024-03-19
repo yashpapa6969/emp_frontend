@@ -33,10 +33,7 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                     return elem.employeeName.toLowerCase().includes(searchText.toLowerCase());
                 }
                 if (formFor === "invoice") {
-                    const res = elem.services.map((item: any) => {
-                        return item.product.toLowerCase().includes(searchText.toLowerCase());
-                    })
-                    return res;
+                    return elem.brandName.toLowerCase().includes(searchText.toLowerCase());
                 }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));

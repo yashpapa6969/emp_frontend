@@ -87,9 +87,6 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
                   <Link to={"/createTask"} className='w-full py-2 px-4 flex items-center gap-3'><MdOutlineAddTask size={18} /> Task</Link>
                 </MenuItem>
                 <MenuItem p={0}>
-                  <Link to={"/createTag"} className='w-full py-2 px-4 flex items-center gap-3'><IoPricetagOutline /> Tag</Link>
-                </MenuItem>
-                <MenuItem p={0}>
                   <Link to={"/createSlip"} className='w-full py-2 px-4 flex items-center gap-3'><LuNewspaper /> Slip</Link>
                 </MenuItem>
               </MenuGroup>
