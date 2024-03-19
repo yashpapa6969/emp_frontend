@@ -884,6 +884,70 @@ if (modalFor === "leave")
     );
   }
 
+  if (modalFor === "letter")
+    return (
+      <Modal
+        size={"6xl"}
+        scrollBehavior="inside"
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{data?.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {data && (
+              <>
+                <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
+                </div>
+                <Divider />
+                <div className="flex gap-10">
+                  {data.createdAt && (
+                    <>
+                      <Text className="text-sm font-bold text-gray-500 mt-3">Created Date </Text>
+                      <Text className="text-lg capitalize">{new Date(data.createdAt).toLocaleDateString('en-GB')}</Text>
+                    </>
+                  )}
+                </div>
+                <div className="max-w-[200px] md:max-w-[300px]">
+                </div>
+                <div className="w-full mt-4">
+                  <div className="w-full flex gap-2 mt-2">
+                    {data.singleFile ? (
+                      <div>
+                        <Text fontWeight="bold">Letter: </Text>
+                        <Button
+                          as="a"
+                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}
+                          mb={2}
+                          variant="solid"
+                        >
+                          View Letter
+                        </Button>
+                      </div>
+                    ) : (
+                      <Text fontWeight="bold">No Letter Provided</Text>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="purple" onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
   if (modalFor === "lead")
     return (
       <Modal
