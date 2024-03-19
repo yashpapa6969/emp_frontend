@@ -29,7 +29,8 @@ const Invoice = () => {
   const [services, setServices] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productValue, setProductValue] = useState([]);
-  const navigate=useNavigate();
+  const [methodGSTorCash, setMethodGSTorCash] = useState('gst');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchClients();
@@ -131,22 +132,22 @@ const Invoice = () => {
       { key: 'client_id', label: 'Client' },
       { key: 'gst', label: 'GST' },
       { key: 'services', label: 'Services', isArray: true },
-  ];
-  const validateForm = (requestData, requiredFields) => {
-    for (let { key, label, isArray } of requiredFields) {
+    ];
+    const validateForm = (requestData, requiredFields) => {
+      for (let { key, label, isArray } of requiredFields) {
         if (isArray ? !requestData[key] || requestData[key].length === 0 : !requestData[key]) {
-            return `${label} is required.`;
+          return `${label} is required.`;
         }
-    }
-    return null; // Return null if all required fields are present
-};
+      }
+      return null; // Return null if all required fields are present
+    };
 
-  const errorMessage = validateForm(requestData, requiredFields);
-  if (errorMessage) {
+    const errorMessage = validateForm(requestData, requiredFields);
+    if (errorMessage) {
       toast.error(errorMessage);
       return; // Stop further execution if validation fails
-  }
-  
+    }
+
     console.log(requestData);
 
     try {
@@ -173,16 +174,16 @@ const Invoice = () => {
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
-       setServices([]);
-       setSelectedGst("");
-       setProducts([]);
-       toast.success("Invoice Slip is downloaded successfully.", {
-         autoClose: 2000,
-       });
-           setTimeout(() => {
-             navigate("/getAllInvoice");
-           }, 2000);
-           
+      setServices([]);
+      setSelectedGst("");
+      setProducts([]);
+      toast.success("Invoice Slip is downloaded successfully.", {
+        autoClose: 2000,
+      });
+      setTimeout(() => {
+        navigate("/getAllInvoice");
+      }, 2000);
+
     } catch (error) {
       console.error("Error creating invoice:", error);
       toast.error(
@@ -235,6 +236,18 @@ const Invoice = () => {
         </Card>
       )}
       <FormControl maxWidth={50}>
+        <Select
+          onChange={(e) => setMethodGSTorCash(e.target.value)}
+          value={methodGSTorCash}
+        >
+          <option value={'cash'}>
+            Cash
+          </option>
+          <option value={'gst'}>
+            GST
+          </option>
+        </Select>
+        {methodGSTorCash === 'gst' && (<>
         <FormLabel>GST <RequiredIndicator /></FormLabel>
         <Input
           type="number"
@@ -242,6 +255,16 @@ const Invoice = () => {
           value={selectedGst}
           onChange={(e) => setSelectedGst(e.target.value)}
         />
+        </>)}
+        {methodGSTorCash === 'cash' && (<>
+        <FormLabel>Cash <RequiredIndicator /></FormLabel>
+        <Input
+          type="number"
+          placeholder="Enter Cash"
+          value={selectedGst}
+          onChange={(e) => setSelectedGst(e.target.value)}
+        />
+        </>)}
       </FormControl>
 
       {services.length > 0 && (
@@ -268,49 +291,27 @@ const Invoice = () => {
                     >
                       {products.map((product) => (
                         <option key={product._id} value={product._id}>
-                          {product.product} - Unit Price - {product.unitPrice}
+                          {product.product}
                         </option>
                       ))}
                     </Select>
                     {/* <SelectProduct width={"100%"} selectSourceValue={productValue} setSelectSourceValue={setProductValue} /> */}
                   </FormControl>
 
-                  <FormControl mt={4}>
-                    <FormLabel>Service Description<RequiredIndicator /></FormLabel>
-                    <Input
-                      value={service.serviceDescription}
-                      onChange={(e) =>
-                        handleServiceChange(
-                          index,
-                          "serviceDescription",
-                          e.target.value
-                        )
-                      }
-                    />
-                  </FormControl>
-
                   <div className="flex gap-4 items-center mt-4">
                     <FormControl maxWidth={100}>
-                      <FormLabel>Start Date<RequiredIndicator /></FormLabel>
-                      <MyDatePicker
-                        selected={service.startDate}
-                        onChange={(date) =>
-                          handleServiceChange(index, "startDate", date)
-                        } // Corrected to use 'date' instead of 'startDate'
+                      <FormLabel>Unit Price<RequiredIndicator /></FormLabel>
+                      <Input
+                        value={service?.product?.unitPrice}
+                        disabled
                       />
-                      <div>{formatDate(service.startDate)}</div>
                     </FormControl>
-                    <PiArrowsLeftRightFill size={20} />
                     <FormControl maxWidth={100}>
-                      <FormLabel>End Date<RequiredIndicator /></FormLabel>
-                      <MyDatePicker
-                        selected={service.endDate}
-                        onChange={(date) =>
-                          handleServiceChange(index, "endDate", date)
-                        }
-                        // Corrected to use 'date' instead of 'endDate'
+                      <FormLabel>Total<RequiredIndicator /></FormLabel>
+                      <Input
+                        value={service?.product?.unitPrice * service?.quantity + (selectedGst * service?.product?.unitPrice / 100)}
+                        disabled
                       />
-                      <div>{formatDate(service.endDate)}</div>
                     </FormControl>
                   </div>
 
@@ -336,6 +337,45 @@ const Invoice = () => {
                       />
                     </FormControl>
                   </div>
+
+                  <div className="flex gap-4 items-center mt-4">
+                    <FormControl maxWidth={100}>
+                      <FormLabel>Start Date<RequiredIndicator /></FormLabel>
+                      <MyDatePicker
+                        selected={service.startDate}
+                        onChange={(date) =>
+                          handleServiceChange(index, "startDate", date)
+                        } // Corrected to use 'date' instead of 'startDate'
+                      />
+                      <div>{formatDate(service.startDate)}</div>
+                    </FormControl>
+                    <PiArrowsLeftRightFill size={20} />
+                    <FormControl maxWidth={100}>
+                      <FormLabel>End Date<RequiredIndicator /></FormLabel>
+                      <MyDatePicker
+                        selected={service.endDate}
+                        onChange={(date) =>
+                          handleServiceChange(index, "endDate", date)
+                        }
+                      // Corrected to use 'date' instead of 'endDate'
+                      />
+                      <div>{formatDate(service.endDate)}</div>
+                    </FormControl>
+                  </div>
+
+                  <FormControl mt={4}>
+                    <FormLabel>Service Description<RequiredIndicator /></FormLabel>
+                    <Input
+                      value={service.serviceDescription}
+                      onChange={(e) =>
+                        handleServiceChange(
+                          index,
+                          "serviceDescription",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </FormControl>
                 </div>
               </div>
             ))}
