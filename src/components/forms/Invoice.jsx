@@ -237,6 +237,7 @@ const Invoice = () => {
       )}
       <FormControl maxWidth={50}>
         <Select
+          width={100}
           onChange={(e) => setMethodGSTorCash(e.target.value)}
           value={methodGSTorCash}
         >
@@ -247,23 +248,24 @@ const Invoice = () => {
             GST
           </option>
         </Select>
+        <RequiredIndicator />
         {methodGSTorCash === 'gst' && (<>
-        <FormLabel>GST <RequiredIndicator /></FormLabel>
-        <Input
-          type="number"
-          placeholder="Enter GST"
-          value={selectedGst}
-          onChange={(e) => setSelectedGst(e.target.value)}
-        />
+          {/* <FormLabel>GST </FormLabel> */}
+          <Input
+            type="number"
+            placeholder="Enter GST"
+            value={selectedGst}
+            onChange={(e) => setSelectedGst(e.target.value)}
+          />
         </>)}
         {methodGSTorCash === 'cash' && (<>
-        <FormLabel>Cash <RequiredIndicator /></FormLabel>
-        <Input
-          type="number"
-          placeholder="Enter Cash"
-          value={selectedGst}
-          onChange={(e) => setSelectedGst(e.target.value)}
-        />
+          {/* <FormLabel>Cash <RequiredIndicator /></FormLabel> */}
+          <Input
+            type="number"
+            placeholder="Enter Cash"
+            value={selectedGst}
+            onChange={(e) => setSelectedGst(e.target.value)}
+          />
         </>)}
       </FormControl>
 
