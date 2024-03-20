@@ -76,7 +76,7 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
                         <Link to="/getAllLeaves" onClick={handleNavClose} className={`flex mb-4 md:mb-0 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLeaves' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <MdOutlineCalendarMonth size={20} />  <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Leave {!isPhoneView && "Management"}</span>
                         </Link>
-                        <Link to="/getLetter" onClick={handleNavClose} className={`flex pb-4 mb-2 md:mb-0 md:pb-0 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getLetter' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
+                        <Link to="/getAllLetters" onClick={handleNavClose} className={`flex pb-4 mb-2 md:mb-0 md:pb-0 flex-col md:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getAllLetters' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
                             <FaEnvelopeOpen />  <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Letter</span>
                         </Link>
                     </AccordionPanel>
