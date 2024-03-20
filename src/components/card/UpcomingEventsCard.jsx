@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Box, Card, CardBody, Divider, Text, VStack } from "@chakra-ui/react";
+import { Card, CardBody, Divider, Text, VStack } from "@chakra-ui/react";
 import { RxCalendar } from "react-icons/rx";
 import axios from "axios";
 
 const UpcomingEventsCard = () => {
   const [clients, setClients] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
   function parseUpcomingEvents(clientData) {
     const eventNames = {
@@ -20,6 +21,8 @@ const UpcomingEventsCard = () => {
       return `${eventName}: ${eventDate}`;
     });
   }
+
+  console.log(clients);
   
   useEffect(() => {
     const fetchData = async () => {

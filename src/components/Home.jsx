@@ -365,10 +365,10 @@ function Home() {
                 </div>
               </CardBody>
             </Card>
-            <div className="mt-4">
-              <UpcomingEventsCard />
-            </div>
           </div>
+        </div>
+        <div className="mt-4">
+          <UpcomingEventsCard />
         </div>
         <CalendarComponent />
       </div>

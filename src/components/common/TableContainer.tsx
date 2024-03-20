@@ -2,6 +2,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { Box, Flex, Table } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
+import Search from 'antd/es/input/Search';
 
 interface Props {
     children: ReactNode;
@@ -13,8 +14,8 @@ interface Props {
 }
 
 const TableContainer = ({ children, searchText, setSearchText, setFilteredData, data, formFor }: Props) => {
-    const handleSearch = (e) => {
-        setSearchText(e.target.value);
+    const handleSearch = (value: string) => {
+        setSearchText(value);
         if (searchText != '') {
             setFilteredData(data.filter((elem) => {
                 if (formFor === "client") {
@@ -44,7 +45,7 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
         <>
             <div className='flex gap-3 mb-6 items-center md:justify-end justify-center'>
                 <SearchIcon fontSize={20} color={"#cecece"} />
-                <Input value={searchText} onChange={(e) => handleSearch(e)} className="max-w-[250px]" placeholder='Type to search' />
+                <Input value={searchText} onChange={(e) => handleSearch(e.target.value)} className="max-w-[250px]" placeholder='Type to search' />
             </div>
 
             <Box className='md:overflow-y-scroll md:max-h-[400px]'>
