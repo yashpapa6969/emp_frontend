@@ -20,7 +20,6 @@ import { setClientId } from "../../store/slice/ClientSlice";
 import { setProjectId } from "../../store/slice/ProjectSlice";
 import { useEffect } from "react";
 import { Divider, Tag } from "antd";
-import { CheckCircleIcon, ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
   const dispatch = useDispatch();
@@ -392,7 +391,7 @@ const InfoModal = ({ modalFor, data, onClose, isOpen }) => {
         </ModalContent>
       </Modal>
     );
-if (modalFor === "leave")
+  if (modalFor === "leave")
     return (
       <Modal
         size={"6xl"}
@@ -896,44 +895,66 @@ if (modalFor === "leave")
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{data?.name}</ModalHeader>
+          <ModalHeader textTransform={"capitalize"}>{data?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {data && (
               <>
                 <div className="flex flex-col md:flex-row gap-2 items-end md:items-center justify-end">
+                  {data.singleFile ? (
+                    <>
+                      <h2 className="text-lg mr-2">View:</h2>
+                      <Button
+                        as="a"
+                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        textDecoration="none"
+                        _hover={{ textDecoration: "none" }}
+                        mb={2}
+                        variant="solid"
+                        colorScheme="green"
+                      >
+                        View Letter
+                      </Button>
+                    </>
+                  ) : (
+                    <Text fontWeight="bold">No Letter Provided</Text>
+                  )}
+                  {/* <Divider type="vertical" />
+                  <Menu>
+                    <MenuButton as={Button} variant={"outline"} rightIcon={<ChevronDownIcon />}>
+                      Actions
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleTaskDelete()}>
+                          <DeleteIcon mr={2} /> Delete
+                        </div>
+                      </MenuItem>
+                      <MenuItem>
+                        <div className="w-full flex items-center" onClick={() => handleChangeTaskStatus()}>
+                          <CheckCircleIcon mr={2} /> Change Status
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu> */}
                 </div>
                 <Divider />
                 <div className="flex gap-10">
-                  {data.createdAt && (
-                    <>
-                      <Text className="text-sm font-bold text-gray-500 mt-3">Created Date </Text>
-                      <Text className="text-lg capitalize">{new Date(data.createdAt).toLocaleDateString('en-GB')}</Text>
-                    </>
-                  )}
-                </div>
-                <div className="max-w-[200px] md:max-w-[300px]">
-                </div>
-                <div className="w-full mt-4">
-                  <div className="w-full flex gap-2 mt-2">
-                    {data.singleFile ? (
-                      <div>
-                        <Text fontWeight="bold">Letter: </Text>
-                        <Button
-                          as="a"
-                          href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          textDecoration="none"
-                          _hover={{ textDecoration: "none" }}
-                          mb={2}
-                          variant="solid"
-                        >
-                          View Letter
-                        </Button>
-                      </div>
-                    ) : (
-                      <Text fontWeight="bold">No Letter Provided</Text>
+                  <div className="max-w-[200px] md:max-w-[300px]">
+                    <h1 className="text-lg font-semibold bg-gray-100 text-gray-500 rounded-md w-full px-3 py-1 mb-4">Letter Information</h1>
+                    {data.name && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Name </Text>
+                        <Text className="text-lg capitalize">{data.name}</Text>
+                      </>
+                    )}
+                    {data.createdAt && (
+                      <>
+                        <Text className="text-sm font-bold text-gray-500 mt-3">Date </Text>
+                        <Text className="text-lg capitalize">{new Date(data.createdAt).toLocaleDateString('en-GB')}</Text>
+                      </>
                     )}
                   </div>
                 </div>

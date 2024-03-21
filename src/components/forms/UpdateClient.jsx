@@ -716,7 +716,7 @@ const UpdateClient = () => {
                         </div>
                         {/* Display single file */}
                         {projectData.singleFile && (
-                          <div className="mb-4 bg-purple-400 text-white rounded-md p-2">
+                          <div className="mb-4 bg-gray-200 rounded-md p-2">
                             <h2 className="font-semibold text-lg">New files</h2>
                             <div className="flex items-center gap-2">
                               <p>{projectData.singleFile.name}</p>
@@ -739,7 +739,7 @@ const UpdateClient = () => {
                           />
                         </FormControl>
                         {projectData.multipleFiles.length > 0 && (
-                          <div className="mb-4 bg-purple-400 text-white rounded-md p-2">
+                          <div className="mb-4 bg-gray-200 rounded-md p-2">
                             <h2 className="font-semibold text-lg">New files</h2>
                             {projectData?.multipleFiles?.map((file, index) => (
                               <div key={index} className="flex items-center gap-2">

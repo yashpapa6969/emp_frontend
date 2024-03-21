@@ -36,6 +36,9 @@ const TableContainer = ({ children, searchText, setSearchText, setFilteredData, 
                 if (formFor === "invoice") {
                     return elem.brandName.toLowerCase().includes(searchText.toLowerCase());
                 }
+                if (formFor === "letters") {
+                    return elem.name.toLowerCase().includes(searchText.toLowerCase());
+                }
                 return elem.name.toLowerCase().includes(searchText.toLowerCase());
             }));
         }

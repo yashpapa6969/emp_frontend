@@ -90,6 +90,15 @@ const GetAllLetters = () => {
     const handleUpdateLetter = (letterId) => {
         dispatch(setLetterId(letterId));
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Spinner size="xl" color="purple.500" />
+            </div>
+        );
+    }
+
     return (
         <>
             <div className="w-full p-8 md:block flex flex-col items-center">
@@ -114,7 +123,7 @@ const GetAllLetters = () => {
                     />
                 ) : (
                     <TableContainer
-                        formFor="leave"
+                        formFor="letters"
                         searchText={searchText}
                         setSearchText={setSearchText}
                         setFilteredData={setFilteredLetter}
@@ -129,23 +138,27 @@ const GetAllLetters = () => {
                                 <Th fontWeight="bold" className="md:table-cell hidden">
                                     File
                                 </Th>
+                                <Th fontWeight="bold">
+                                    Actions
+                                </Th>
+                                <Th fontWeight="bold"></Th>
                             </Tr>
                         </Thead>
                         <Tbody>
                             {searchText !== ""
-                                ? filteredLetters.map((letter, index) => (
+                                ? filteredLetters.map((letter) => (
                                     <Tr key={letter._id}>
                                         <Td>{letter.name}</Td>
                                         <Td className="md:table-cell hidden">
                                             {letter.createdAt}
                                         </Td>
-                                        <Td>
+                                        <Td className="md:table-cell hidden">
                                             {letter.singleFile && (
                                                 <div>
                                                     <Text fontWeight="bold">Single File: </Text>
                                                     <Button
                                                         as="a"
-                                                        href={`${import.meta.env.VITE_API_BASE}/uploads/${data.singleFile}`}
+                                                        href={`${import.meta.env.VITE_API_BASE}/uploads/${letter.singleFile}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         textDecoration="none"
@@ -188,13 +201,13 @@ const GetAllLetters = () => {
                                         </Td>
                                     </Tr>
                                 ))
-                                : letters?.map((letter, index) => (
+                                : letters?.map((letter) => (
                                     <Tr key={letter._id}>
                                         <Td>{letter.name}</Td>
                                         <Td className="md:table-cell hidden">
                                             {format(new Date(letter.createdAt), "dd/MM/yyyy")}
                                         </Td>
-                                        <Td>
+                                        <Td className="md:table-cell hidden">
                                             {letter.singleFile && (
                                                 <div>
                                                     <Button
