@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { IoMdHome, IoMdPerson } from 'react-icons/io';
-import { IoPeopleSharp, IoPricetag } from "react-icons/io5";
+import { IoLockOpen, IoPeopleSharp, IoPricetag } from "react-icons/io5";
 import { GoPersonFill } from 'react-icons/go';
-import { FaDiagramProject, FaEnvelopeOpen, FaTty } from 'react-icons/fa6';
+import { FaBuilding, FaDiagramProject, FaEnvelopeOpen, FaTty } from 'react-icons/fa6';
 import { GrTask } from 'react-icons/gr';
 import { LuNewspaper } from "react-icons/lu";
 import { GiReceiveMoney } from "react-icons/gi";
@@ -97,7 +97,7 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
                 <AccordionItem width={"full"} border={"none"} onClick={() => accordionClick(2)}>
                     <AccordionButton className='flex w-full justify-center md:justify-between'>
                         <div className='flex flex-col items-center justify-center md:flex-row text-center md:text-left gap-2'>
-                            <GiReceiveMoney size={20} /> <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Permissions</span>
+                            <IoLockOpen /> <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Permissions</span>
                         </div>
                         {(!isPhoneView && showSidebar) && <AccordionIcon />}
                     </AccordionButton>
@@ -106,7 +106,7 @@ const Sidebar = ({ isPhoneView, showSidebar, setShowSidebar, activeLink, setActi
                             <GoPersonFill />  <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Manager {!isPhoneView && "Management"}</span>
                         </Link>
                         <Link to="/getDepartment" onClick={handleNavClose} className={`flex md:pt-0 pb-3 md:pb-0 pt-4 flex-colmd:flex-row text-center md:text-left items-center md:h-[45px] gap-2 px-4 rounded-md transition-all cursor-pointer ${activeLink === 'getDepartment' ? 'bg-gray-500' : "hover:bg-gray-700"}`}>
-                            <GoPersonFill />  <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Department {!isPhoneView && "Manager"}</span>
+                            <FaBuilding /> <span className={`md:text-[16px] text-[10px] md:${showSidebar ? "visible" : "hidden"}`}>Department {!isPhoneView && "Manager"}</span>
                         </Link>
                     </AccordionPanel>
                 </AccordionItem>
