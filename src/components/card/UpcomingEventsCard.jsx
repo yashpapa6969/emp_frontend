@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { Card, CardBody, Divider, Text, VStack } from "@chakra-ui/react";
+import { Card, CardBody, Divider, Text } from "@chakra-ui/react";
 import { RxCalendar } from "react-icons/rx";
 import axios from "axios";
 
 const UpcomingEventsCard = () => {
   const [clients, setClients] = useState([]);
-  const [employees, setEmployees] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
   function parseUpcomingEvents(clientData) {
     const eventNames = {
@@ -64,13 +63,13 @@ const UpcomingEventsCard = () => {
     </div>
 
     {selectedClient === client._id && (
-      <VStack align="start" spacing="2">
+      <div className="mb-3 mt-1">
         {parseUpcomingEvents(client).map((event, index) => (
           <Text key={index} fontSize="sm">
             {event}
           </Text>
         ))}
-      </VStack>
+      </div>
     )}
   </div>
 ))}

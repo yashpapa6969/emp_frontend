@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardBody, Flex, Progress, Select } from "@chakra-ui/react";
+import { Button, Card, CardBody, Flex, Progress, Select } from "@chakra-ui/react";
 import axios from "axios";
 import { FaTty } from "react-icons/fa6";
 import { HiArrowTrendingUp } from "react-icons/hi2";
@@ -17,6 +17,10 @@ const ConvertedLeads = () => {
   const [selectedYear, setSelectedYear] = useState(null);
 
   useEffect(() => {
+    fetchDataDefault();
+  }, []);
+
+  const fetchDataDefault = () => {
     // Fetch total lead count
     axios
       .get(`${import.meta.env.VITE_API_BASE}/api/admin/getTotalLeads`)
@@ -53,39 +57,45 @@ const ConvertedLeads = () => {
       .catch((error) => {
         console.error("Error fetching leads by status:", error);
       });
+  }
 
-    // Fetch leads according to selected year
-    if (selectedYear) {
-      axios
-        .get(`${import.meta.env.VITE_API_BASE}/api/admin/getLeadsByStatus`)
-        // .filter((data) => {
-        //   return data.workStartDate === selectedYear.strip(2,3);
-        // })
-        .then((response) => {
-          const leads = response.data;
-          const inProgressLead = leads.find((lead) => lead._id === "In-Progress");
-          const convertedLead = leads.find((lead) => lead._id === "Client");
-          const lostLead = leads.find((lead) => lead._id === "Lost");
-          const rawLead = leads.find((lead) => lead._id === "Raw");
+  const fetchData = (year) => {
+    axios
+      .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`)
+      .then((response) => {
+        const leads = response.data.filter((i) => i.enquiryDate?.split('-')[2] === year.slice(2, 4));
+        console.log(leads);
+        const inProgressLead = leads.filter((i) => i.status === "In-Progress");
+        const convertedLead = leads.filter((i) => i.status === "Client");
+        const lostLead = leads.filter((i) => i.status === "Lost");
+        const rawLead = leads.filter((i) => i.status === "Raw");
 
-          if (inProgressLead) {
-            setLeadsInProgress(inProgressLead.count);
-          }
-          if (convertedLead) {
-            setConvertedLeads(convertedLead.count);
-          }
-          if (lostLead) {
-            setLostLeads(lostLead.count);
-          }
-          if (rawLead) {
-            setRawLeads(rawLead.count);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching leads by status:", error);
-        });
-    }
-  }, []);
+        if (inProgressLead) {
+          setLeadsInProgress(inProgressLead.length);
+        }
+        if (convertedLead) {
+          setConvertedLeads(convertedLead.length);
+        }
+        if (lostLead) {
+          setLostLeads(lostLead.length);
+        }
+        if (rawLead) {
+          setRawLeads(rawLead.length);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching leads by status:", error);
+      });
+  }
+
+  useEffect(() => {
+    fetchData(selectedYear);
+  }, [selectedYear])
+
+  const handleYearClear = () => {
+    setSelectedYear(null);
+    fetchDataDefault();
+  }
 
   return (
     <>
@@ -96,28 +106,30 @@ const ConvertedLeads = () => {
           </h1>
           <div className="bg-blue-500 rounded-full h-[25px] min-w-[25px] flex items-center justify-center text-white text-[10px]">{totalLeads}</div>
         </div>
-        <Select
-          placeholder='Select Year'
-          mt={4}
-          value={selectedYear || ""}
-          onChange={(e) => setSelectedYear(e.target.value)}
-        >
-          <option value="2025">2025-2026</option>
-          <option value="2024">2024-2025</option>
-          <option value="2023">2023-2024</option>
-          <option value="2022">2022-2023</option>
-          <option value="2021">2021-2022</option>
-          <option value="2020">2020-2021</option>
-          <option value="2020">2019-2020</option>
-          <option value="2019">2018-2019</option>
-          <option value="2018">2017-2018</option>
-          <option value="2017">2016-2017</option>
-          <option value="2015">2015-2016</option>
-          <option value="2014">2014-2015</option>
-          <option value="2013">2013-2014</option>
-          <option value="2012">2012-2013</option>
-          <option value="2011">2011-2012</option>
-        </Select>
+        <div className="flex gap-2 items-center mt-4">
+          <Select
+            placeholder='Select Year'
+            value={selectedYear || ""}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="2025">2025-2026</option>
+            <option value="2024">2024-2025</option>
+            <option value="2023">2023-2024</option>
+            <option value="2022">2022-2023</option>
+            <option value="2021">2021-2022</option>
+            <option value="2020">2020-2021</option>
+            <option value="2020">2019-2020</option>
+            <option value="2019">2018-2019</option>
+            <option value="2018">2017-2018</option>
+            <option value="2017">2016-2017</option>
+            <option value="2015">2015-2016</option>
+            <option value="2014">2014-2015</option>
+            <option value="2013">2013-2014</option>
+            <option value="2012">2012-2013</option>
+            <option value="2011">2011-2012</option>
+          </Select>
+          {selectedYear && <Button onClick={handleYearClear}>Clear</Button>}
+        </div>
         <Divider />
         <CardBody m={0} p={0}>
           <Flex color={"gray.500"} alignItems="center" justifyContent="space-between">
