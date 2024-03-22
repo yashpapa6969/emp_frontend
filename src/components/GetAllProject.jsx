@@ -15,6 +15,10 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogCloseButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -35,19 +39,20 @@ const GetAllProject = () => {
   const [deleteProjectId, setDeleteProjectId] = useState(null);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
-        );
-        setProjects(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      }
+  async function fetchData() {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+      );
+      setProjects(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setIsLoading(false);
     }
+  }
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -82,6 +87,14 @@ const GetAllProject = () => {
     setIsDeleteAlertOpen(false);
   };
 
+  const handleStatusUpdate = (id, status) => {
+    axios.get(`${import.meta.env.VITE_API_BASE}/api/admin/updateProjectStatus/${id}/${status}`)
+    .then((res) => {
+      console.log(res);
+      fetchData();
+    });
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -89,6 +102,8 @@ const GetAllProject = () => {
       </div>
     );
   }
+
+  console.log(projects);
 
   return (
     <>
@@ -126,10 +141,10 @@ const GetAllProject = () => {
                   Priority
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
-                 Status
+                  Status
                 </Th>
                 <Th fontWeight="bold" className="md:table-cell hidden">
-                 Change Status
+                  Change Status
                 </Th>
                 <Th fontWeight="bold">Action</Th>
                 <Th fontWeight="bold"></Th>
@@ -138,120 +153,145 @@ const GetAllProject = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className={`md:table-cell hidden capitalize`}>
-                        <span
-                          className={`
-    p-1 text-center 
-    ${project?.priority.toLowerCase() === "urgent" && "text-red-500"}
-    ${project?.priority.toLowerCase() === "high" && "text-orange-500"}
-    ${project?.priority.toLowerCase() === "medium" && "text-blue-500"}
-    ${project?.priority.toLowerCase() === "low" && "text-gray-500"}
-    font-bold
-  `}
-                        >
-                          {project?.priority}
-                        </span>
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        <div className="flex gap-2 items-center">
-                          {project.status === "Not Started" ? (
-                            <div className="h-3 w-3 rounded-full bg-red-600" />
-                          ) : project.status === "Working" ? (
-                            <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                          ) : project.status === "Awaited Feedback" ? (
-                            <div className="h-3 w-3 rounded-full bg-blue-600" />
-                          ) : (
-                            <div className="h-3 w-3 rounded-full bg-green-600" />
-                          )}{" "}
-                          {project.status}
-                        </div>
-                      </Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                      </Td>
-                      <Td>
-                        {" "}
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          ml={2}
-                          onClick={() =>
-                            handleDeleteConfirmation(project.project_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className={`md:table-cell hidden capitalize`}>
+                      <Button
+                        className={`
+                                  p-1 text-center 
+                                  ${project?.priority.toLowerCase() === "urgent" && "text-red-500"}
+                                  ${project?.priority.toLowerCase() === "high" && "text-orange-500"}
+                                  ${project?.priority.toLowerCase() === "medium" && "text-blue-500"}
+                                  ${project?.priority.toLowerCase() === "low" && "text-gray-500"}
+                                  font-bold
+                        `}
+                      >
+                        {project?.priority}
+                      </Button>
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      <div className="flex gap-2 items-center">
+                        {project.status === "Not Started" ? (
+                          <div className="h-3 w-3 rounded-full bg-red-600" />
+                        ) : project.status === "Working" ? (
+                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                        ) : project.status === "Awaited Feedback" ? (
+                          <div className="h-3 w-3 rounded-full bg-blue-600" />
+                        ) : (
+                          <div className="h-3 w-3 rounded-full bg-green-600" />
+                        )}{" "}
+                        {project.status}
+                      </div>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                    <Td>
+                      {" "}
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteConfirmation(project.project_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : projects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td>{index + 1}</Td>
-                      <Td>{project.projectName}</Td>
-                      <Td className={`md:table-cell hidden capitalize`}>
-                        <span
-                          className={`
-    p-1 text-center 
-    ${project?.priority.toLowerCase() === "urgent" && "text-red-500"}
-    ${project?.priority.toLowerCase() === "high" && "text-orange-500"}
-    ${project?.priority.toLowerCase() === "medium" && "text-blue-500"}
-    ${project?.priority.toLowerCase() === "low" && "text-gray-500"}
-    font-bold
-  `}
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className={`md:table-cell hidden capitalize`}>
+                      <Menu>
+                        <MenuButton
+                          color={project?.priority.toLowerCase() === "urgent" ? "red.500" :
+                            (project?.priority.toLowerCase() === "high" ? "orange.500"
+                              : (project?.priority.toLowerCase() === "medium" ? "blue.500"
+                                : "gray.500"))}
+                          px={2}
+                          py={1}
+                          borderRadius='md'
+                          borderWidth='1px'
+                          _hover={{ bg: 'gray.200' }}
                         >
                           {project?.priority}
-                        </span>
-                      </Td>
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem color={"gray.500"}>Low</MenuItem>
+                          <MenuItem color={"blue.500"}>Medium</MenuItem>
+                          <MenuItem color={"orange.500"}>High</MenuItem>
+                          <MenuItem color={"red.500"}>Urgent</MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </Td>
 
-                      <Td className="md:table-cell hidden">
-                        <div className="flex gap-2 items-center">
-                          {project.status === "Not Started" ? (
-                            <div className="h-3 w-3 rounded-full bg-red-600" />
-                          ) : project.status === "Working" ? (
-                            <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                          ) : project.status === "Awaited Feedback" ? (
-                            <div className="h-3 w-3 rounded-full bg-blue-600" />
-                          ) : (
-                            <div className="h-3 w-3 rounded-full bg-green-600" />
-                          )}{" "}
-                          {project.status}
-                        </div>
-                      </Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
+                    <Td className="md:table-cell hidden">
+                      <Menu>
+                        <MenuButton
+                          px={2}
+                          py={1}
+                          borderRadius='md'
+                          borderWidth='1px'
+                          _hover={{ bg: 'gray.200' }}
                         >
-                          More Info
-                        </Button>
-                      </Td>
-                      <Td>
-                        {" "}
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          ml={2}
-                          onClick={() =>
-                            handleDeleteConfirmation(project.project_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                          <div className="flex gap-2 items-center">
+                            {project.status === "Not Started" ? (
+                              <div className="h-3 w-3 rounded-full bg-red-600" />
+                            ) : project.status === "Working" ? (
+                              <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                            ) : project.status === "Awaited Feedback" ? (
+                              <div className="h-3 w-3 rounded-full bg-blue-600" />
+                            ) : (
+                              <div className="h-3 w-3 rounded-full bg-green-600" />
+                            )}{" "}
+                            {project.status}
+                          </div>
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem color={"red.600"} onClick={() => handleStatusUpdate(project.project_id, "Not Started")}>Not Started</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusUpdate(project.project_id, "Working")}>Working</MenuItem>
+                          <MenuItem color={"blue.600"}>Awaited Feedback</MenuItem>
+                          <MenuItem color={"green.600"}>Completed</MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                    <Td>
+                      {" "}
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteConfirmation(project.project_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}
