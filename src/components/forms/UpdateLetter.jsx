@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import {
-    Stack,
     Input,
     Button,
     FormControl,
@@ -151,7 +150,7 @@ const UpdateLetter = () => {
                         />
                     </FormControl>
                     <div>
-                        <h2>Existing Letter</h2>
+                        <h2 className="font-semibold text-lg">Existing Letter</h2>
                         <div className="flex gap-3">
                             {letterData.singleFileView && (
                                 <div>
@@ -184,17 +183,7 @@ const UpdateLetter = () => {
                             )}
                         </div>
                     </div>
-                    <h2>New Letter</h2>
-                    <div className="flex gap-3">
-                        {/* Display single file */}
-                        {letterData.singleFile && (
-                            <div>
-                                <p>{letterData.singleFile.name}</p>
-                                <Button onClick={handleDeleteSingleFile}>
-                                    Delete
-                                </Button>
-                            </div>
-                        )}
+                    <div className="flex flex-col gap-3">
                         <FormControl mb="4">
                             <FormLabel>Add New Letter</FormLabel>
                             <Input
@@ -203,6 +192,15 @@ const UpdateLetter = () => {
                                 onChange={handleSingleFileChange}
                             />
                         </FormControl>
+                        {/* Display single file */}
+                        {letterData.singleFile && (
+                            <div className="mb-4 bg-gray-200 rounded-md p-2 flex gap-2">
+                                <p>{letterData.singleFile.name}</p>
+                                <Button onClick={handleDeleteSingleFile} size={"sm"}>
+                                    Delete
+                                </Button>
+                            </div>
+                        )}
                     </div>
                     <Button mt={6} type="submit" colorScheme="purple">
                         Update Letter
