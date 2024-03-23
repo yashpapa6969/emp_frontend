@@ -181,7 +181,7 @@ const GetAllInvoices = () => {
 
           <div className="flex items-center justify-end mb-2">
             <select
-              className="p-2 border rounded-md mr-2"
+              className="px-2 py-1 border mr-1 rounded-lg"
               value={selectedYear || ""}
               onChange={(e) => setSelectedYear(e.target.value)}
             >
@@ -206,7 +206,7 @@ const GetAllInvoices = () => {
             </select>
             {selectedYear && (
               <select
-                className="p-2 border rounded-md"
+                className="px-2 py-1 border rounded-md"
                 defaultValue=""
                 onChange={(e) => setSelectedMonth(e.target.value)}
               >
@@ -227,18 +227,19 @@ const GetAllInvoices = () => {
                 <option value="12">December</option>
               </select>
             )}
-            <Button className="ml-2" colorScheme="gray" onClick={handleReset}>
+            <Button className="ml-2" size={"sm"} colorScheme="gray" onClick={handleReset}>
               Reset
             </Button>
           </div>
         </div>
-        <div className="flex justify-end gap-3 mb-2">
+        <div className="flex gap-3 mb-2">
           <Input
             value={brandName}
             onChange={() => setBrandName()}
             maxWidth={250}
             placeholder="Enter brand name"
             size={"sm"}
+            rounded={"lg"}
           />
           {/* <Select
             showSearch

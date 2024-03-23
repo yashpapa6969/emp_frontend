@@ -115,6 +115,8 @@ const ConvertedLeads = () => {
             placeholder='Select Year'
             value={selectedYear || ""}
             onChange={(e) => setSelectedYear(e.target.value)}
+            size={"sm"}
+            rounded={"lg"}
           >
             <option value="2025">2025-2026</option>
             <option value="2024">2024-2025</option>
@@ -137,13 +139,15 @@ const ConvertedLeads = () => {
               placeholder='Select Month'
               value={selectedMonth || ""}
               onChange={(e) => setSelectedMonth(e.target.value)}
+              size={"sm"}
+              rounded={"lg"}
             >
               {allMonths.map((month, index) => (
                 <option key={month} value={index + 1}>{month}</option>
               ))}
             </Select>
           )}
-          {selectedYear && <Button onClick={handleYearClear}>Clear</Button>}
+          {selectedYear && <Button width={100} size={"sm"} onClick={handleYearClear}>Clear</Button>}
         </div>
         <Divider />
         <CardBody m={0} p={0}>

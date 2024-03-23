@@ -84,7 +84,7 @@ const LeaveCard = () => {
           <div className="bg-blue-500 rounded-full h-[25px] min-w-[25px] flex items-center justify-center text-white text-[10px]">{totalLeads}</div>
         </div>
         
-        <div className="flex gap-2 items-center mt-4">
+        {/* <div className="flex gap-2 items-center mt-4">
           <Select
             placeholder='Select Year'
             value={selectedYear || ""}
@@ -107,9 +107,9 @@ const LeaveCard = () => {
             <option value="2011">2011-2012</option>
           </Select>
           {selectedYear && <Button onClick={handleYearClear}>Clear</Button>}
-        </div>
+        </div> */}
         <Divider />
-        <CardBody m={0} p={0} className="flex flex-col gap-4 justify-between">
+        <CardBody m={0} p={0} className="flex flex-col gap-6">
           <div>
             <Flex color={"gray.500"} alignItems="center" justifyContent="space-between">
               <div className="flex gap-4 items-center text-lg">
