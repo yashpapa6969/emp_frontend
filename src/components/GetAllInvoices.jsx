@@ -153,15 +153,15 @@ const GetAllInvoices = () => {
   }
 
   const handleGetInvoiceByBrand = () => {
-    if (!brandName) {
-      toast({
-        description: "Please enter brand name",
-        status: 'warning',
-        duration: 3000,
-        isClosable: true,
-      })
-      return;
-    }
+    // if (!brandName) {
+    //   toast({
+    //     description: "Please enter brand name",
+    //     status: 'warning',
+    //     duration: 3000,
+    //     isClosable: true,
+    //   })
+    //   return;
+    // }
     try {
       axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`, { brandName: brandName })
         .then((res) => {

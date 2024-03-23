@@ -189,100 +189,9 @@ const GetAllProject = () => {
                           <div
                             className={`
                                   p-1 text-center flex gap-2 items-center capitalize
-                                  ${project.priority.toLowerCase() === "urgent" && "text-red-500"}
-                                  ${project.priority.toLowerCase() === "high" && "text-orange-500"}
+                                  ${project.priority.toLowerCase() === "high" && "text-red-500"}
                                   ${project.priority.toLowerCase() === "medium" && "text-blue-500"}
-                                  ${project.priority.toLowerCase() === "low" && "text-gray-500"}
-                                  font-bold
-                                `}
-                            style={{
-                              backgroundColor: "transparent", // Set background color to transparent
-                            }}
-                          >
-                            {project?.priority}
-                          </div>
-                        </MenuButton>
-                        <MenuList>
-                          {priorityArray.map((priority, index) => (
-                            <MenuItem key={index} color={"gray.500"} onClick={() => handlePriorityChange(project.project_id, index)}>{priority}</MenuItem>
-                          ))}
-                        </MenuList>
-                      </Menu>
-                    </Td>
-
-                    <Td className="md:table-cell hidden">
-                      <Menu>
-                        <MenuButton
-                          px={2}
-                          py={1}
-                          borderRadius='md'
-                          borderWidth='1px'
-                          _hover={{ bg: 'gray.200' }}
-                        >
-                          <div className="flex gap-2 items-center">
-                            {project.status === "Not Started" ? (
-                              <div className="h-3 w-3 rounded-full bg-red-600" />
-                            ) : project.status === "Working" ? (
-                              <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                            ) : project.status === "Awaited Feedback" ? (
-                              <div className="h-3 w-3 rounded-full bg-blue-600" />
-                            ) : (
-                              <div className="h-3 w-3 rounded-full bg-green-600" />
-                            )}{" "}
-                            {project.status}
-                          </div>
-                        </MenuButton>
-                        <MenuList>
-                          <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
-                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>In Progress</MenuItem>
-                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 2)}>On Hold</MenuItem>
-                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
-                        </MenuList>
-                      </Menu>
-                    </Td>
-                    <Td>
-                      <Button
-                        size={"sm"}
-                        colorScheme="purple"
-                        onClick={() => handleMoreInfo(project)}
-                      >
-                        More Info
-                      </Button>
-                    </Td>
-                    <Td>
-                      {" "}
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        colorScheme="red"
-                        ml={2}
-                        onClick={() =>
-                          handleDeleteConfirmation(project.project_id)
-                        }
-                      >
-                        <DeleteIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
-                : projects.map((project, index) => (
-                  <Tr key={project._id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{project.projectName}</Td>
-                    <Td className={`md:table-cell hidden capitalize`}>
-                      <Menu>
-                        <MenuButton
-                          size={"sm"}
-                          as={Button}
-                          variant={"outline"}
-                        >
-                          <div
-                            className={`
-                                  p-1 text-center flex gap-2 items-center capitalize
-                                  ${project.priority.toLowerCase() === "urgent" && "text-red-500"}
-                                  ${project.priority.toLowerCase() === "high" && "text-orange-500"}
-                                  ${project.priority.toLowerCase() === "medium" && "text-blue-500"}
-                                  ${project.priority.toLowerCase() === "low" && "text-gray-500"}
+                                  ${project.priority.toLowerCase() === "low" && "text-green-500"}
                                   font-bold
                                 `}
                             style={{
@@ -325,8 +234,97 @@ const GetAllProject = () => {
                         <MenuList>
                           <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
                           <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>In Progress</MenuItem>
-                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 2)}>On Hold</MenuItem>
-                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Completed</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>On Hold</MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(project)}
+                      >
+                        More Info
+                      </Button>
+                    </Td>
+                    <Td>
+                      {" "}
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="red"
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteConfirmation(project.project_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
+                : projects.map((project, index) => (
+                  <Tr key={project._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{project.projectName}</Td>
+                    <Td className={`md:table-cell hidden capitalize`}>
+                      <Menu>
+                        <MenuButton
+                          size={"sm"}
+                          as={Button}
+                          variant={"outline"}
+                        >
+                          <div
+                            className={`
+                                  p-1 text-center flex gap-2 items-center capitalize
+                                  ${project.priority.toLowerCase() === "high" && "text-red-500"}
+                                  ${project.priority.toLowerCase() === "medium" && "text-blue-500"}
+                                  ${project.priority.toLowerCase() === "low" && "text-green-500"}
+                                  font-bold
+                                `}
+                            style={{
+                              backgroundColor: "transparent", // Set background color to transparent
+                            }}
+                          >
+                            {project?.priority}
+                          </div>
+                        </MenuButton>
+                        <MenuList>
+                          {priorityArray.map((priority, index) => (
+                            <MenuItem key={index} color={"gray.500"} onClick={() => handlePriorityChange(project.project_id, index)}>{priority}</MenuItem>
+                          ))}
+                        </MenuList>
+                      </Menu>
+                    </Td>
+
+                    <Td className="md:table-cell hidden">
+                      <Menu>
+                        <MenuButton
+                          px={2}
+                          py={1}
+                          borderRadius='md'
+                          borderWidth='1px'
+                          _hover={{ bg: 'gray.200' }}
+                        >
+                          <div className="flex gap-2 items-center">
+                            {project.status === "Not Started" ? (
+                              <div className="h-3 w-3 rounded-full bg-red-600" />
+                            ) : project.status === "In Progress" ? (
+                              <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                            ) : project.status === "Completed" ? (
+                              <div className="h-3 w-3 rounded-full bg-blue-600" />
+                            ) : (
+                              <div className="h-3 w-3 rounded-full bg-green-600" />
+                            )}{" "}
+                            {project.status}
+                          </div>
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>In Progress</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Completed</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>On Hold</MenuItem>
                         </MenuList>
                       </Menu>
                     </Td>

@@ -78,7 +78,7 @@ const CreateTag = () => {
 
   const handleAddProduct = async () => {
     try {
-      if (newProduct === "" || newProductPrice === 0) {
+      if (newProduct === "") {
         toast({
           title: "Error",
           description: "Please fill all the fields",
@@ -92,7 +92,7 @@ const CreateTag = () => {
           { product: newProduct, unitPrice: newProductPrice }
         );
         setNewProduct("");
-        setNewProductPrice(0);
+        // setNewProductPrice(0);
         fetchProducts();
       }
     } catch (error) {
@@ -221,17 +221,17 @@ const CreateTag = () => {
           value={newProduct}
           onChange={(e) => setNewProduct(e.target.value)}
         />
-        <Input
+        {/* <Input
           placeholder="Unit price"
           value={newProductPrice}
           onChange={(e) => setNewProductPrice(e.target.value)}
-        />
+        /> */}
         <Button
           colorScheme="cyan"
           variant={"outline"}
           onClick={handleAddProduct}
         >
-          <FaPlus size={36} />
+          <FaPlus />
         </Button>
       </div>
       <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"}>

@@ -17,7 +17,6 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  AlertDialogCloseButton,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -27,7 +26,7 @@ import { Link } from "react-router-dom";
 import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
-import { IoFlag } from "react-icons/io5";
+import { priorityArray } from "../helpers";
 
 const GetAllTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -37,8 +36,6 @@ const GetAllTask = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
-
-  const priorityArray = ["low", "medium", "high", "urgent"];
 
   useEffect(() => {
     async function fetchData() {
@@ -187,11 +184,10 @@ const GetAllTask = () => {
                         >
                           <div
                             className={`
-                                    p-1 text-center flex gap-2 items-center
-                                    ${priorityArray[task.priority] === "urgent" && "text-red-500"}
-                                    ${priorityArray[task.priority] === "high" && "text-orange-500"}
-                                    ${priorityArray[task.priority] === "medium" && "text-blue-500"}
-                                    ${priorityArray[task.priority] === "low" && "text-gray-500"}
+                                    p-1 text-center flex gap-2 items-center capitalize
+                                    ${(priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") && "text-red-500"}
+                                    ${(priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") && "text-blue-500"}
+                                    ${(priorityArray[task.priority] === "low" || task.priority.toLowerCase() === "low") && "text-green-500"}
                                     font-bold
                                   `}
                             style={{
@@ -326,10 +322,9 @@ const GetAllTask = () => {
                           <div
                             className={`
                                     p-1 text-center flex gap-2 items-center capitalize
-                                    ${priorityArray[task.priority] === "urgent" && "text-red-500"}
-                                    ${priorityArray[task.priority] === "high" && "text-orange-500"}
-                                    ${priorityArray[task.priority] === "medium" && "text-blue-500"}
-                                    ${priorityArray[task.priority] === "low" && "text-gray-500"}
+                                    ${(priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") && "text-red-500"}
+                                    ${(priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") && "text-blue-500"}
+                                    ${(priorityArray[task.priority] === "low" || task.priority.toLowerCase() === "low") && "text-green-500"}
                                     font-bold
                                   `}
                             style={{

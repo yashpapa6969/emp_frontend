@@ -74,6 +74,8 @@ const LeaveCard = () => {
       })
   }
 
+  console.log(totalLeads)
+
   return (
     <>
       <Card className="w-full md:w-1/3 p-4 pb-8">
