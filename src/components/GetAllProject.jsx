@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { priorityArray } from "../helpers";
 
 const GetAllProject = () => {
   const [projects, setProjects] = useState([]);
@@ -87,13 +88,38 @@ const GetAllProject = () => {
     setIsDeleteAlertOpen(false);
   };
 
-  const handleStatusUpdate = (id, status) => {
-    axios.get(`${import.meta.env.VITE_API_BASE}/api/admin/updateProjectStatus/${id}/${status}`)
-    .then((res) => {
-      console.log(res);
-      fetchData();
-    });
-  }
+  const handleStatusChange = async (id, statusNo) => {
+    try {
+      await axios.get(
+        `${import.meta.env.VITE_API_BASE
+        }/api/admin/updateProjectStatus/${id}/${statusNo}`
+      );
+      // Fetch data again after updating status
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+      );
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert(error.response.data.message);
+    }
+  };
+  const handlePriorityChange = async (id, priority) => {
+    try {
+      await axios.get(
+        `${import.meta.env.VITE_API_BASE
+        }/api/admin/updateProjectPriority/${id}/${priority}`
+      );
+      // Fetch data again after updating status
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`
+      );
+      setProjects(response.data);
+    } catch (error) {
+      console.error("Error updating priority:", error);
+      alert(error.response.data.message);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -143,9 +169,6 @@ const GetAllProject = () => {
                 <Th fontWeight="bold" className="md:table-cell hidden">
                   Status
                 </Th>
-                <Th fontWeight="bold" className="md:table-cell hidden">
-                  Change Status
-                </Th>
                 <Th fontWeight="bold">Action</Th>
                 <Th fontWeight="bold"></Th>
               </Tr>
@@ -157,32 +180,65 @@ const GetAllProject = () => {
                     <Td>{index + 1}</Td>
                     <Td>{project.projectName}</Td>
                     <Td className={`md:table-cell hidden capitalize`}>
-                      <Button
-                        className={`
-                                  p-1 text-center 
-                                  ${project?.priority.toLowerCase() === "urgent" && "text-red-500"}
-                                  ${project?.priority.toLowerCase() === "high" && "text-orange-500"}
-                                  ${project?.priority.toLowerCase() === "medium" && "text-blue-500"}
-                                  ${project?.priority.toLowerCase() === "low" && "text-gray-500"}
+                      <Menu>
+                        <MenuButton
+                          size={"sm"}
+                          as={Button}
+                          variant={"outline"}
+                        >
+                          <div
+                            className={`
+                                  p-1 text-center flex gap-2 items-center capitalize
+                                  ${project.priority.toLowerCase() === "urgent" && "text-red-500"}
+                                  ${project.priority.toLowerCase() === "high" && "text-orange-500"}
+                                  ${project.priority.toLowerCase() === "medium" && "text-blue-500"}
+                                  ${project.priority.toLowerCase() === "low" && "text-gray-500"}
                                   font-bold
-                        `}
-                      >
-                        {project?.priority}
-                      </Button>
+                                `}
+                            style={{
+                              backgroundColor: "transparent", // Set background color to transparent
+                            }}
+                          >
+                            {project?.priority}
+                          </div>
+                        </MenuButton>
+                        <MenuList>
+                          {priorityArray.map((priority, index) => (
+                            <MenuItem key={index} color={"gray.500"} onClick={() => handlePriorityChange(project.project_id, index)}>{priority}</MenuItem>
+                          ))}
+                        </MenuList>
+                      </Menu>
                     </Td>
+
                     <Td className="md:table-cell hidden">
-                      <div className="flex gap-2 items-center">
-                        {project.status === "Not Started" ? (
-                          <div className="h-3 w-3 rounded-full bg-red-600" />
-                        ) : project.status === "Working" ? (
-                          <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                        ) : project.status === "Awaited Feedback" ? (
-                          <div className="h-3 w-3 rounded-full bg-blue-600" />
-                        ) : (
-                          <div className="h-3 w-3 rounded-full bg-green-600" />
-                        )}{" "}
-                        {project.status}
-                      </div>
+                      <Menu>
+                        <MenuButton
+                          px={2}
+                          py={1}
+                          borderRadius='md'
+                          borderWidth='1px'
+                          _hover={{ bg: 'gray.200' }}
+                        >
+                          <div className="flex gap-2 items-center">
+                            {project.status === "Not Started" ? (
+                              <div className="h-3 w-3 rounded-full bg-red-600" />
+                            ) : project.status === "Working" ? (
+                              <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                            ) : project.status === "Awaited Feedback" ? (
+                              <div className="h-3 w-3 rounded-full bg-blue-600" />
+                            ) : (
+                              <div className="h-3 w-3 rounded-full bg-green-600" />
+                            )}{" "}
+                            {project.status}
+                          </div>
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>Working</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Awaited Feedback</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
+                        </MenuList>
+                      </Menu>
                     </Td>
                     <Td>
                       <Button
@@ -216,23 +272,30 @@ const GetAllProject = () => {
                     <Td className={`md:table-cell hidden capitalize`}>
                       <Menu>
                         <MenuButton
-                          color={project?.priority.toLowerCase() === "urgent" ? "red.500" :
-                            (project?.priority.toLowerCase() === "high" ? "orange.500"
-                              : (project?.priority.toLowerCase() === "medium" ? "blue.500"
-                                : "gray.500"))}
-                          px={2}
-                          py={1}
-                          borderRadius='md'
-                          borderWidth='1px'
-                          _hover={{ bg: 'gray.200' }}
+                          size={"sm"}
+                          as={Button}
+                          variant={"outline"}
                         >
-                          {project?.priority}
+                          <div
+                            className={`
+                                  p-1 text-center flex gap-2 items-center capitalize
+                                  ${project.priority.toLowerCase() === "urgent" && "text-red-500"}
+                                  ${project.priority.toLowerCase() === "high" && "text-orange-500"}
+                                  ${project.priority.toLowerCase() === "medium" && "text-blue-500"}
+                                  ${project.priority.toLowerCase() === "low" && "text-gray-500"}
+                                  font-bold
+                                `}
+                            style={{
+                              backgroundColor: "transparent", // Set background color to transparent
+                            }}
+                          >
+                            {project?.priority}
+                          </div>
                         </MenuButton>
                         <MenuList>
-                          <MenuItem color={"gray.500"}>Low</MenuItem>
-                          <MenuItem color={"blue.500"}>Medium</MenuItem>
-                          <MenuItem color={"orange.500"}>High</MenuItem>
-                          <MenuItem color={"red.500"}>Urgent</MenuItem>
+                          {priorityArray.map((priority, index) => (
+                            <MenuItem key={index} color={"gray.500"} onClick={() => handlePriorityChange(project.project_id, index)}>{priority}</MenuItem>
+                          ))}
                         </MenuList>
                       </Menu>
                     </Td>
@@ -260,10 +323,10 @@ const GetAllProject = () => {
                           </div>
                         </MenuButton>
                         <MenuList>
-                          <MenuItem color={"red.600"} onClick={() => handleStatusUpdate(project.project_id, "Not Started")}>Not Started</MenuItem>
-                          <MenuItem color={"yellow.400"} onClick={() => handleStatusUpdate(project.project_id, "Working")}>Working</MenuItem>
-                          <MenuItem color={"blue.600"}>Awaited Feedback</MenuItem>
-                          <MenuItem color={"green.600"}>Completed</MenuItem>
+                          <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>Working</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Awaited Feedback</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
                         </MenuList>
                       </Menu>
                     </Td>

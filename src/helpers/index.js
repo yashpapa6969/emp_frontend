@@ -12,3 +12,5 @@ export const converDateStringFormat = (date) => {
 export const allMonths = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
+
+export const priorityArray = ["low", "medium", "high", "urgent"];
