@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updatePassword } from '../store/slice/UserSlice';
+import { FaKey } from 'react-icons/fa6';
+import { useToast } from '@chakra-ui/react';
 
 const Settings = () => {
   const [newPassword, setNewPassword] = useState('');
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const handleChangePassword = () => {
     // Fetch the userData from local storage
@@ -14,19 +17,24 @@ const Settings = () => {
 
     if (employee_id && newPassword) {
       dispatch(updatePassword({ employee_id, newPassword }));
+      toast({
+        title: 'Password Changed.',
+        description: "User password changed successfully",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
       setNewPassword(''); // Clear the input after dispatching
     } else {
       alert("User data is not available. Please log in.");
     }
   };
 
- 
+
   const styles = {
     container: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       padding: '20px',
       borderRadius: '8px',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
@@ -53,12 +61,17 @@ const Settings = () => {
     },
     title: {
       color: '#333',
+      fontSize: "24px",
+      fontWeight: "bold",
+      display: "flex",
+      gap: "10px",
+      alignItems: "center",
     }
   };
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Change Password</h2>
+      <h2 style={styles.title} className='mb-4'><FaKey /> Change Password</h2>
       <input
         type="password"
         placeholder="Enter new password"
@@ -73,7 +86,7 @@ const Settings = () => {
   );
 };
 
-  
+
 
 
 export default Settings;

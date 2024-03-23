@@ -16,6 +16,7 @@ import {
   AlertDialogFooter,
   AlertDialogCloseButton,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
@@ -42,6 +43,8 @@ const GetAllInvoices = () => {
   const [downloading, setDownloading] = useState(null);
   const [invoiceIDs, setInvoiceIDs] = useState([]);
   const [brandName, setBrandName] = useState("");
+
+  const toast = useToast();
 
   async function fetchData(year, month) {
     setIsLoading(true);
@@ -150,11 +153,24 @@ const GetAllInvoices = () => {
   }
 
   const handleGetInvoiceByBrand = () => {
-    axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`, { brandName: brandName })
-      .then((res) => {
-        setInvoiceIDs(res.data.invoiceIds);
-        console.log(invoiceIDs);
-      });
+    if (!brandName) {
+      toast({
+        description: "Please enter brand name",
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      })
+      return;
+    }
+    try {
+      axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`, { brandName: brandName })
+        .then((res) => {
+          setInvoiceIDs(res.data.invoiceIds);
+          console.log(invoiceIDs);
+        });
+    } catch (error) {
+      console.log(`Error getting invoice by brand: ${error}`)
+    }
 
     if (invoiceIDs) handleCumulativeInvoices();
   }

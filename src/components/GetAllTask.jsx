@@ -325,7 +325,7 @@ const GetAllTask = () => {
                         >
                           <div
                             className={`
-                                    p-1 text-center flex gap-2 items-center
+                                    p-1 text-center flex gap-2 items-center capitalize
                                     ${priorityArray[task.priority] === "urgent" && "text-red-500"}
                                     ${priorityArray[task.priority] === "high" && "text-orange-500"}
                                     ${priorityArray[task.priority] === "medium" && "text-blue-500"}

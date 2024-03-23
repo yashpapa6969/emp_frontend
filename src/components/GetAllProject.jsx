@@ -234,9 +234,9 @@ const GetAllProject = () => {
                         </MenuButton>
                         <MenuList>
                           <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
-                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>Working</MenuItem>
-                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Awaited Feedback</MenuItem>
-                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>In Progress</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 2)}>On Hold</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
                         </MenuList>
                       </Menu>
                     </Td>
@@ -312,9 +312,9 @@ const GetAllProject = () => {
                           <div className="flex gap-2 items-center">
                             {project.status === "Not Started" ? (
                               <div className="h-3 w-3 rounded-full bg-red-600" />
-                            ) : project.status === "Working" ? (
+                            ) : project.status === "In Progress" ? (
                               <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                            ) : project.status === "Awaited Feedback" ? (
+                            ) : project.status === "Completed" ? (
                               <div className="h-3 w-3 rounded-full bg-blue-600" />
                             ) : (
                               <div className="h-3 w-3 rounded-full bg-green-600" />
@@ -324,9 +324,9 @@ const GetAllProject = () => {
                         </MenuButton>
                         <MenuList>
                           <MenuItem color={"red.600"} onClick={() => handleStatusChange(project.project_id, 0)}>Not Started</MenuItem>
-                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>Working</MenuItem>
-                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 2)}>Awaited Feedback</MenuItem>
-                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
+                          <MenuItem color={"yellow.400"} onClick={() => handleStatusChange(project.project_id, 1)}>In Progress</MenuItem>
+                          <MenuItem color={"green.600"} onClick={() => handleStatusChange(project.project_id, 2)}>On Hold</MenuItem>
+                          <MenuItem color={"blue.600"} onClick={() => handleStatusChange(project.project_id, 3)}>Completed</MenuItem>
                         </MenuList>
                       </Menu>
                     </Td>
