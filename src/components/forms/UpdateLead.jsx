@@ -218,7 +218,7 @@ const UpdateLead = () => {
 
 
   const handleDeleteMultipleFile = (index) => {
-    multipleFileRef.current.value ="";
+    multipleFileRef.current.value = "";
     const updatedFiles = [...projectData.multipleFiles];
     updatedFiles.splice(index, 1);
     setProjectData({ ...projectData, multipleFiles: updatedFiles });
@@ -556,7 +556,7 @@ const UpdateLead = () => {
                 <TabPanel>
                   <div>
                     <div>
-                      <h2>Existing Files</h2>
+                      <h2 className="font-semibold text-lg">Existing Files</h2>
                       <div className="flex gap-3">
                         {projectData.singleFileView && (
                           <div>
@@ -564,9 +564,8 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -598,9 +597,8 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -625,41 +623,32 @@ const UpdateLead = () => {
                       </div>
                     </div>
                     <div>
-                      <h2>New Files</h2>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col gap-3 mb-2">
+                        <div className="flex gap-3">
+                          <FormControl>
+                            <FormLabel>Single File</FormLabel>
+                            <Input
+                              type="file"
+                              ref={singleFileRef}
+                              onChange={handleSingleFileChange}
+                            />
+                          </FormControl>
+                        </div>
                         {/* Display single file */}
                         {projectData.singleFile && (
-                          <div>
-                            <p>Single File: {projectData.singleFile.name}</p>
-                            <Button onClick={handleDeleteSingleFile}>
-                              Delete
-                            </Button>
+                          <div className="mb-4 bg-gray-200 rounded-md p-2">
+                            <h2 className="font-semibold text-lg">New files</h2>
+                            <div className="flex items-center gap-2">
+                              <p>{projectData.singleFile.name}</p>
+                              <Button onClick={handleDeleteSingleFile} size={"sm"}>
+                                Delete
+                              </Button>
+                            </div>
                           </div>
                         )}
-                        <FormControl mb="4">
-                          <FormLabel>Single File</FormLabel>
-                          <Input
-                            type="file"
-                            ref={singleFileRef}
-                            onChange={handleSingleFileChange}
-                          />
-                        </FormControl>
                       </div>
-                      <div className="flex gap-3">
-                        {/* Display multiple files */}
-                        {projectData.multipleFiles.map((file, index) => (
-                          <div key={index}>
-                            <p>
-                              File {index + 1}: {file.name}
-                            </p>
-                            <Button
-                              onClick={() => handleDeleteMultipleFile(index)}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        ))}
-                        <FormControl mb="4">
+                      <div className="flex flex-col gap-3 mb-2">
+                        <FormControl>
                           <FormLabel>Multiple Files</FormLabel>
                           <Input
                             type="file"
@@ -668,6 +657,22 @@ const UpdateLead = () => {
                             onChange={handleMultipleFilesChange}
                           />
                         </FormControl>
+                        {/* Display multiple files */}
+                        {projectData.multipleFiles.map((file, index) => (
+                          <div key={index} className="mb-4 bg-gray-200 rounded-md p-2">
+                            <h2 className="font-semibold text-lg">New files</h2>
+                            <div className="flex items-center gap-2">
+                              <p>
+                                File {index + 1}: {file.name}
+                              </p>
+                              <Button
+                                onClick={() => handleDeleteMultipleFile(index)}
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <Button type="submit" colorScheme="purple" className="mt-5">
@@ -912,9 +917,8 @@ const UpdateLead = () => {
                               <p>File : {projectData.singleFileView}</p>
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${projectData.singleFileView}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${projectData.singleFileView}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
@@ -946,9 +950,8 @@ const UpdateLead = () => {
                             <div className="flex gap-1">
                               <Button
                                 as="a"
-                                href={`${
-                                  import.meta.env.VITE_API_BASE
-                                }/uploads/${file}`}
+                                href={`${import.meta.env.VITE_API_BASE
+                                  }/uploads/${file}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 textDecoration="none"
