@@ -322,20 +322,22 @@ const GetAllInvoices = () => {
                           <Button
                             size={"sm"}
                             variant={"outline"}
-                            // isLoading={index === downloading}
+                            isLoading={downloading === index}
                             colorScheme="purple"
                             onClick={() =>
-                              handleDownload(invoice.invoive_id, index)
+                              handleDownload(invoice.invoice_id, index)
                             }
                           >
                             <DownloadIcon />
                           </Button>
+                        </Td>
+                        <Td>
                           <Button
                             size={"sm"}
                             variant={"outline"}
                             colorScheme="red"
                             onClick={() =>
-                              handleDeleteInvoice(invoice.invoive_id)
+                              handleDeleteConfirmation(invoice.invoice_id)
                             }
                           >
                             <DeleteIcon />
@@ -361,10 +363,10 @@ const GetAllInvoices = () => {
                           <Button
                             size={"sm"}
                             variant={"outline"}
-                            // isLoading={index === downloading}
+                            isLoading={downloading === index}
                             colorScheme="purple"
                             onClick={() =>
-                              handleDownload(invoice.invoive_id, index)
+                              handleDownload(invoice.invoice_id, index)
                             }
                           >
                             <DownloadIcon />
@@ -376,7 +378,7 @@ const GetAllInvoices = () => {
                             variant={"outline"}
                             colorScheme="red"
                             onClick={() =>
-                              handleDeleteConfirmation(invoice.invoive_id)
+                              handleDeleteConfirmation(invoice.invoice_id)
                             }
                           >
                             <DeleteIcon />
