@@ -7,6 +7,7 @@ import { TfiBarChart } from "react-icons/tfi";
 import { CiWarning } from "react-icons/ci";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { PiCardholderThin } from "react-icons/pi";
+import { allMonths } from "../../helpers";
 
 const ProjectCard = () => {
   const [totalLeads, setTotalLeads] = useState(0);
@@ -15,6 +16,7 @@ const ProjectCard = () => {
   const [lostLeads, setLostLeads] = useState(0);
   const [rawLeads, setRawLeads] = useState(0);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   useEffect(() => {
     fetchDataDefault();
@@ -32,7 +34,7 @@ const ProjectCard = () => {
       });
 
     fetchData(selectedYear);
-  }, [selectedYear])
+  }, [selectedYear, selectedMonth])
 
   const fetchDataDefault = () => {
     // Fetch leads by status
@@ -68,7 +70,8 @@ const ProjectCard = () => {
     axios
       .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllProjects`)
       .then((response) => {
-        const leads = response.data.filter((i) => i.deadline?.split('-')[0].slice(2,4) === year.slice(2,4));
+        let leads = response.data.filter((i) => i.deadline?.split('-')[0].slice(2,4) === year.slice(2,4));
+        if (selectedMonth) leads = leads.filter((i) => i.deadline?.split('-')[1] === `${selectedMonth.length === 1 ? "0" + selectedMonth : selectedMonth}`);
         const inProgressLead = leads.filter((i) => i.status === "Not Started");
         const convertedLead = leads.filter((i) => i.status === "In Progress");
         const lostLead = leads.filter((i) => i.status === "Completed");
@@ -95,6 +98,7 @@ const ProjectCard = () => {
 
   const handleYearClear = () => {
     setSelectedYear(null);
+    setSelectedMonth(null);
     fetchDataDefault();
   }
 
@@ -130,6 +134,17 @@ const ProjectCard = () => {
             <option value="2012">2012-2013</option>
             <option value="2011">2011-2012</option>
           </Select>
+          {selectedYear && (
+            <Select
+              placeholder='Select Month'
+              value={selectedMonth || ""}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+            >
+              {allMonths.map((month, index) => (
+                <option key={month} value={index + 1}>{month}</option>
+              ))}
+            </Select>
+          )}
           {selectedYear && <Button onClick={handleYearClear}>Clear</Button>}
         </div>
         <Divider />

@@ -8,3 +8,7 @@ export const converDateStringFormat = (date) => {
     const dateArr = date.split(" ");
     return dateArr[1] + " " + dateArr[0] + " " + dateArr[2];
 }
+
+export const allMonths = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];

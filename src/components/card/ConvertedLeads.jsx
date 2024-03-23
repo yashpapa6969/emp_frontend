@@ -7,6 +7,7 @@ import { TfiBarChart } from "react-icons/tfi";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { SlDrawer } from "react-icons/sl"
 import { Divider } from "antd";
+import { allMonths } from "../../helpers";
 
 const ConvertedLeads = () => {
   const [totalLeads, setTotalLeads] = useState(0);
@@ -15,6 +16,7 @@ const ConvertedLeads = () => {
   const [lostLeads, setLostLeads] = useState(0);
   const [rawLeads, setRawLeads] = useState(0);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
 
   useEffect(() => {
     fetchDataDefault();
@@ -59,11 +61,12 @@ const ConvertedLeads = () => {
       });
   }
 
-  const fetchData = (year) => {
+  const fetchData = (year, month) => {
     axios
       .get(`${import.meta.env.VITE_API_BASE}/api/admin/getAllLeads`)
       .then((response) => {
-        const leads = response.data.filter((i) => i.enquiryDate?.split('-')[2] === year.slice(2, 4));
+        let leads = response.data.filter((i) => i.enquiryDate?.split('-')[2] === year.slice(2, 4));
+        if (month) leads = leads.filter((i) => i.enquiryDate?.split('-')[1] === `${month.length === 1 ? "0" + month : month}`);
         console.log(leads);
         const inProgressLead = leads.filter((i) => i.status === "In-Progress");
         const convertedLead = leads.filter((i) => i.status === "Client");
@@ -89,11 +92,12 @@ const ConvertedLeads = () => {
   }
 
   useEffect(() => {
-    fetchData(selectedYear);
-  }, [selectedYear])
+    fetchData(selectedYear, selectedMonth);
+  }, [selectedYear, selectedMonth])
 
   const handleYearClear = () => {
     setSelectedYear(null);
+    setSelectedMonth(null);
     fetchDataDefault();
   }
 
@@ -128,6 +132,17 @@ const ConvertedLeads = () => {
             <option value="2012">2012-2013</option>
             <option value="2011">2011-2012</option>
           </Select>
+          {selectedYear && (
+            <Select
+              placeholder='Select Month'
+              value={selectedMonth || ""}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+            >
+              {allMonths.map((month, index) => (
+                <option key={month} value={index + 1}>{month}</option>
+              ))}
+            </Select>
+          )}
           {selectedYear && <Button onClick={handleYearClear}>Clear</Button>}
         </div>
         <Divider />

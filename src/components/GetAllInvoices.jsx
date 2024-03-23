@@ -15,15 +15,18 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogCloseButton,
+  Input,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
-import { Empty } from "antd";
+import { Empty, Select } from "antd";
 import { Link } from "react-router-dom";
 import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
 import { GoPlus } from "react-icons/go";
+import download from "downloadjs";
+import { allMonths } from "../helpers";
 
 const GetAllInvoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -37,6 +40,8 @@ const GetAllInvoices = () => {
   const [deleteInvoiceId, setDeleteInvoiceId] = useState(null);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const [downloading, setDownloading] = useState(null);
+  const [invoiceIDs, setInvoiceIDs] = useState([]);
+  const [brandName, setBrandName] = useState("");
 
   async function fetchData(year, month) {
     setIsLoading(true);
@@ -65,8 +70,8 @@ const GetAllInvoices = () => {
   const handleDownload = (id, index) => {
     const url = `${import.meta.env.VITE_API_BASE
       }/api/admin/downloadInvoice/${id}`;
-        axiosDownloadFile(url, `${id}.pdf`);
-        setDownloading(index);
+    axiosDownloadFile(url, `${id}.pdf`);
+    setDownloading(index);
   };
 
   const handleMoreInfo = (invoice) => {
@@ -127,6 +132,37 @@ const GetAllInvoices = () => {
         setDownloading(false);
       });
   }
+
+  const handleCumulativeInvoices = () => {
+    const url = `${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`;
+    axios({
+      url,
+      method: "POST",
+      responseType: "blob",
+      data: { invoiceIds: invoiceIDs },
+    })
+      .then((response) => {
+        const content = response.headers['content-type'];
+        const currDate = new Date();
+        const file_name = `invoice-${currDate}.pdf`;
+        download(response, file_name, content);
+      });
+  }
+
+  const handleGetInvoiceByBrand = () => {
+    axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`, { brandName: brandName })
+      .then((res) => {
+        setInvoiceIDs(res.data.invoiceIds);
+        console.log(invoiceIDs);
+      });
+
+    if (invoiceIDs) handleCumulativeInvoices();
+  }
+
+  const onBrandSearch = () => {
+    console.log("brand search");
+  }
+
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
@@ -143,7 +179,7 @@ const GetAllInvoices = () => {
             </Button>
           </Link>
 
-          <div className="flex items-center justify-end mb-5">
+          <div className="flex items-center justify-end mb-2">
             <select
               className="p-2 border rounded-md mr-2"
               value={selectedYear || ""}
@@ -196,6 +232,39 @@ const GetAllInvoices = () => {
             </Button>
           </div>
         </div>
+        <div className="flex justify-end gap-3 mb-2">
+          <Input
+            value={brandName}
+            onChange={() => setBrandName()}
+            maxWidth={250}
+            placeholder="Enter brand name"
+            size={"sm"}
+          />
+          {/* <Select
+            showSearch
+            optionFilterProp="children"
+            onSearch={onBrandSearch}
+            filterOption={(input, option) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              || option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            placeholder="Choose a brand"
+          >
+            {allMonths.map((month) => (
+              <option key={month} value={month}>{month}</option>
+            ))}
+          </Select> */}
+          <Button
+            colorScheme="blue"
+            size={"sm"}
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+            onClick={() => handleGetInvoiceByBrand()}
+          >
+            Get by Brand Name
+          </Button>
+        </div>
 
         {isLoading ? (
           <div className="flex items-center justify-center h-screen">
@@ -235,85 +304,85 @@ const GetAllInvoices = () => {
                 <Tbody>
                   {searchText !== ""
                     ? filteredInvoices.map((invoice, index) => (
-                        <Tr key={invoice._id}>
-                          <Td className="md:table-cell hidden">{index + 1}</Td>
-                          <Td>{invoice.brandName}</Td>
-                          <Td className="md:table-cell hidden">{invoice.date1}</Td>
-                          <Td className="md:table-cell hidden">{invoice.time1}</Td>
+                      <Tr key={invoice._id}>
+                        <Td className="md:table-cell hidden">{index + 1}</Td>
+                        <Td>{invoice.brandName}</Td>
+                        <Td className="md:table-cell hidden">{invoice.date1}</Td>
+                        <Td className="md:table-cell hidden">{invoice.time1}</Td>
 
-                          <Td className="flex flex-col md:flex-row gap-2">
-                            <Button
-                              size={"sm"}
-                              colorScheme="purple"
-                              onClick={() => handleMoreInfo(invoice)}
-                            >
-                              More Info
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              // isLoading={index === downloading}
-                              colorScheme="purple"
-                              onClick={() =>
-                                handleDownload(invoice.invoive_id, index)
-                              }
-                            >
-                              <DownloadIcon />
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              colorScheme="red"
-                              onClick={() =>
-                                handleDeleteInvoice(invoice.invoive_id)
-                              }
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      ))
-                    : invoices.map((invoice,index) => (
-                        <Tr key={invoice._id}>
-                          <Td className="md:table-cell hidden">{index + 1}</Td>
-                          <Td>{invoice.brandName}</Td>
-                          <Td className="md:table-cell hidden">{invoice.date1}</Td>
-                          <Td className="md:table-cell hidden">{invoice.time1}</Td>
+                        <Td className="flex flex-col md:flex-row gap-2">
+                          <Button
+                            size={"sm"}
+                            colorScheme="purple"
+                            onClick={() => handleMoreInfo(invoice)}
+                          >
+                            More Info
+                          </Button>
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            // isLoading={index === downloading}
+                            colorScheme="purple"
+                            onClick={() =>
+                              handleDownload(invoice.invoive_id, index)
+                            }
+                          >
+                            <DownloadIcon />
+                          </Button>
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            colorScheme="red"
+                            onClick={() =>
+                              handleDeleteInvoice(invoice.invoive_id)
+                            }
+                          >
+                            <DeleteIcon />
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ))
+                    : invoices.map((invoice, index) => (
+                      <Tr key={invoice._id}>
+                        <Td className="md:table-cell hidden">{index + 1}</Td>
+                        <Td>{invoice.brandName}</Td>
+                        <Td className="md:table-cell hidden">{invoice.date1}</Td>
+                        <Td className="md:table-cell hidden">{invoice.time1}</Td>
 
-                          <Td className="flex flex-col md:flex-row gap-2">
-                            <Button
-                              size={"sm"}
-                              colorScheme="purple"
-                              onClick={() => handleMoreInfo(invoice)}
-                            >
-                              More Info
-                            </Button>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              // isLoading={index === downloading}
-                              colorScheme="purple"
-                              onClick={() =>
-                                handleDownload(invoice.invoive_id, index)
-                              }
-                            >
-                              <DownloadIcon />
-                            </Button>
-                          </Td>
-                          <Td>
-                            <Button
-                              size={"sm"}
-                              variant={"outline"}
-                              colorScheme="red"
-                              onClick={() =>
-                                handleDeleteConfirmation(invoice.invoive_id)
-                              }
-                            >
-                              <DeleteIcon />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      ))}
+                        <Td className="flex flex-col md:flex-row gap-2">
+                          <Button
+                            size={"sm"}
+                            colorScheme="purple"
+                            onClick={() => handleMoreInfo(invoice)}
+                          >
+                            More Info
+                          </Button>
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            // isLoading={index === downloading}
+                            colorScheme="purple"
+                            onClick={() =>
+                              handleDownload(invoice.invoive_id, index)
+                            }
+                          >
+                            <DownloadIcon />
+                          </Button>
+                        </Td>
+                        <Td>
+                          <Button
+                            size={"sm"}
+                            variant={"outline"}
+                            colorScheme="red"
+                            onClick={() =>
+                              handleDeleteConfirmation(invoice.invoive_id)
+                            }
+                          >
+                            <DeleteIcon />
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ))}
                 </Tbody>
               </TableContainer>
             )}

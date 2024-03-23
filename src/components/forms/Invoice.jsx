@@ -210,8 +210,6 @@ const Invoice = () => {
     return `${day} ${month} ${year}`;
   };
 
-
-
   return (
     <Stack spacing={4}>
       <FormControl maxWidth={300} >
@@ -312,13 +310,17 @@ const Invoice = () => {
                       <FormLabel>Discount<RequiredIndicator /></FormLabel>
                       <Input
                         maxWidth={50}
-                        value={service?.product?.unitPrice}
+                        value={service?.product?.discount}
                       />
                     </FormControl>
                     <FormControl maxWidth={100}>
                       <FormLabel>Total<RequiredIndicator /></FormLabel>
                       <Input
-                        value={(service?.product?.unitPrice * service?.quantity + (selectedGst * service?.product?.unitPrice / 100))}
+                        value={
+                          (service?.product?.unitPrice * service?.quantity
+                            + (selectedGst * service?.product?.unitPrice / 100))
+                          - (service?.product?.discount * service?.product?.unitPrice / 100)
+                        }
                         disabled
                       />
                     </FormControl>
