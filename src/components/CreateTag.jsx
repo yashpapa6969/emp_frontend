@@ -12,6 +12,8 @@ const CreateTag = () => {
   const [newProduct, setNewProduct] = useState("");
   const [newProductPrice, setNewProductPrice] = useState(0);
   const [newSource, setNewSource] = useState("");
+  const [years, setYears] = useState(null);
+  const [newYear, setNewYear] = useState(null);
 
   const toast = useToast();
 
@@ -19,6 +21,7 @@ const CreateTag = () => {
     fetchTags();
     fetchProducts();
     fetchSources();
+    fetchYears();
   }, []);
 
   const fetchTags = async () => {
@@ -29,6 +32,17 @@ const CreateTag = () => {
       setTags(response.data);
     } catch (error) {
       console.error("Error fetching tags:", error);
+    }
+  };
+
+  const fetchYears = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllYears`
+      );
+      setYears(response.data);
+    } catch (error) {
+      console.error("Error fetching years:", error);
     }
   };
 
@@ -94,6 +108,29 @@ const CreateTag = () => {
         setNewProduct("");
         // setNewProductPrice(0);
         fetchProducts();
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
+
+  const handleAddYear = async () => {
+    try {
+      if (newYear === "") {
+        toast({
+          title: "Error",
+          description: "Please fill all the fields",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE}/api/admin/addYears`,
+          { financial_year: newYear }
+        );
+        setNewYear("");
+        fetchYears();
       }
     } catch (error) {
       console.error("Error adding product:", error);
@@ -279,6 +316,39 @@ const CreateTag = () => {
               <div
                 className="p-[7px] transition-all bg-orange-500 hover:bg-orange-400 rounded-full cursor-pointer"
                 onClick={() => handleDeleteSource(source.source_tag_id)}
+              >
+                <FaTrash size={12} />
+              </div>
+            </div>
+          </Tag>
+        ))}
+      </Box>
+      <h1 className="text-lg font-semibold mt-10 mb-4">Years</h1>
+      <div className="flex justify-start gap-2 max-w-[400px]">
+        <Input
+          placeholder="Enter New Source"
+          value={newYear}
+          onChange={(e) => setNewYear(e.target.value)}
+        />
+        <Button
+          colorScheme="orange"
+          variant={"outline"}
+          onClick={handleAddYear}
+        >
+          <FaPlus />
+        </Button>
+      </div>
+      <Box mt={6} p={4} boxShadow={"md"} rounded={"lg"} width={"full"}>
+        {years?.map((year) => (
+          <Tag
+            key={year._id}
+            className="px-2 py-1 mb-2 bg-orange-400 border-orange-600 text-[16px] font-semibold text-white"
+          >
+            <div className="flex gap-5 items-center">
+              {year?.financial_year}
+              <div
+                className="p-[7px] transition-all bg-orange-500 hover:bg-orange-400 rounded-full cursor-pointer"
+                onClick={() => handleDeleteSource(year?.year_id)}
               >
                 <FaTrash size={12} />
               </div>

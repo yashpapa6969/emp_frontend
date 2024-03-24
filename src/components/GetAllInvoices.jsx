@@ -15,19 +15,18 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogCloseButton,
-  Input,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import InfoModal from "./common/InfoModal";
 import TableContainer from "./common/TableContainer";
-import { Empty, Select } from "antd";
+import { Empty } from "antd";
 import { Link } from "react-router-dom";
 import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
-import { toast } from "react-toastify";
 import { GoPlus } from "react-icons/go";
 import download from "downloadjs";
 import { allMonths } from "../helpers";
+import GetInvoiceByBrandName from "./common/GetInvoiceByBrandName";
 
 const GetAllInvoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -43,6 +42,7 @@ const GetAllInvoices = () => {
   const [downloading, setDownloading] = useState(null);
   const [invoiceIDs, setInvoiceIDs] = useState([]);
   const [brandName, setBrandName] = useState("");
+  const [getInvoiceByBrandName, setGetInvoiceByBrandName] = useState(false);
 
   const toast = useToast();
 
@@ -184,16 +184,24 @@ const GetAllInvoices = () => {
       <div className="w-full p-8 md:block flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-4">Invoice Information</h1>
         <div className="flex flex-wrap justify-center md:justify-between md:gap-0 gap-4 items-center mb-5">
-          <Link to="/CreateInvoice">
+          <div className="flex gap-2">
+            <Link to="/CreateInvoice">
+              <Button
+                colorScheme="blue"
+                _hover={{ bg: "blue.600" }}
+                mb="2"
+                className="flex gap-2 items-center"
+              >
+                <GoPlus /> Add an Invoice
+              </Button>
+            </Link>
             <Button
-              colorScheme="blue"
-              _hover={{ bg: "blue.600" }}
-              mb="2"
+              onClick={() => setGetInvoiceByBrandName(true)}
               className="flex gap-2 items-center"
             >
-              <GoPlus /> Add an Invoice
+              Get by Brand Name
             </Button>
-          </Link>
+          </div>
 
           <div className="flex items-center justify-end mb-2">
             <select
@@ -248,7 +256,7 @@ const GetAllInvoices = () => {
             </Button>
           </div>
         </div>
-        <div className="flex gap-3 mb-2">
+        {/* <div className="flex gap-3 mb-2">
           <Input
             value={brandName}
             onChange={() => setBrandName()}
@@ -257,7 +265,7 @@ const GetAllInvoices = () => {
             size={"sm"}
             rounded={"lg"}
           />
-          {/* <Select
+          <Select
             showSearch
             optionFilterProp="children"
             onSearch={onBrandSearch}
@@ -270,7 +278,7 @@ const GetAllInvoices = () => {
             {allMonths.map((month) => (
               <option key={month} value={month}>{month}</option>
             ))}
-          </Select> */}
+          </Select>
           <Button
             colorScheme="blue"
             size={"sm"}
@@ -281,7 +289,7 @@ const GetAllInvoices = () => {
           >
             Get by Brand Name
           </Button>
-        </div>
+        </div> */}
 
         {isLoading ? (
           <div className="flex items-center justify-center h-screen">
@@ -408,6 +416,8 @@ const GetAllInvoices = () => {
           </>
         )}
       </div>
+
+      <GetInvoiceByBrandName open={getInvoiceByBrandName} setOpen={setGetInvoiceByBrandName} />
 
       <InfoModal
         modalFor="invoice"

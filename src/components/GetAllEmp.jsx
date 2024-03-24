@@ -104,6 +104,7 @@ const GetAllEmp = () => {
             <GoPlus /> Add an Employee
           </Button>
         </Link>
+        
         {employees.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
