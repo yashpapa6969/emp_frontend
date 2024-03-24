@@ -153,12 +153,16 @@ const GetAllEmp = () => {
                       >
                         More Info
                       </Button>
+                    </Td>
+                    <Td>
                       <Button
                         size={"sm"}
                         variant={"outline"}
                         colorScheme="red"
                         ml={2}
-                        onClick={() => handleDeleteEmployee(emp.employee._id)}
+                        onClick={() =>
+                          handleDeleteConfirmation(emp.employee_id)
+                        }
                       >
                         <DeleteIcon />
                       </Button>

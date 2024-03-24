@@ -16,7 +16,7 @@ import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { GoPlus } from "react-icons/go"; 
+import { GoPlus } from "react-icons/go";
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
@@ -53,22 +53,21 @@ const GetAllManagers = () => {
       </div>
     );
   }
-   const handleDeleteManager = async (projectId) => {
-     try {
-       await axios.delete(
-         `${
-           import.meta.env.VITE_API_BASE
-         }/api/admin/deleteManagerById/${projectId}`
-       );
-       toast.success("Successfully deleted Manager");
-       const response = await axios.get(
-         `${import.meta.env.VITE_API_BASE}/api/admin/getAllManagers`
-       );
-       setManagers(response.data);
-     } catch (error) {
-       console.error("Error deleting project:", error);
-     }
-   };
+  const handleDeleteManager = async (projectId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE
+        }/api/admin/deleteManagerById/${projectId}`
+      );
+      toast.success("Successfully deleted Manager");
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getAllManagers`
+      );
+      setManagers(response.data);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
 
   return (
     <>
@@ -118,75 +117,75 @@ const GetAllManagers = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredManagers.map((manager) => (
-                    <Tr key={manager._id}>
-                      <Td>{manager.manager_id}</Td>
-                      <Td>{manager.name}</Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.position}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.department}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.joiningDate}
-                      </Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(manager)}
-                        >
-                          More Info
-                        </Button>
-                        <Button
-                          size={"sm"}
-                          colorScheme="red"
-                          variant={"outline"}
-                          ml={2}
-                          onClick={() =>
-                            handleDeleteManager(manager.manager_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))
+                  <Tr key={manager._id}>
+                    <Td>{manager.manager_id}</Td>
+                    <Td>{manager.name}</Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.position}
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.department}
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.joiningDate}
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(manager)}
+                      >
+                        More Info
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        colorScheme="red"
+                        variant={"outline"}
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteManager(manager.manager_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
                 : managers.map((manager) => (
-                    <Tr key={manager._id}>
-                      <Td>{manager.manager_id}</Td>
-                      <Td>{manager.name}</Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.position}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.department}
-                      </Td>
-                      <Td className="md:table-cell hidden">
-                        {manager.joiningDate}
-                      </Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(manager)}
-                        >
-                          More Info
-                        </Button>
-                        <Button
-                          size={"sm"}
-                          colorScheme="red"
-                          variant={"outline"}
-                          ml={2}
-                          onClick={() =>
-                            handleDeleteManager(manager.manager_id)
-                          }
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  <Tr key={manager._id}>
+                    <Td>{manager.manager_id}</Td>
+                    <Td>{manager.name}</Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.position}
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.department}
+                    </Td>
+                    <Td className="md:table-cell hidden">
+                      {manager.joiningDate}
+                    </Td>
+                    <Td>
+                      <Button
+                        size={"sm"}
+                        colorScheme="purple"
+                        onClick={() => handleMoreInfo(manager)}
+                      >
+                        More Info
+                      </Button>
+                      <Button
+                        size={"sm"}
+                        colorScheme="red"
+                        variant={"outline"}
+                        ml={2}
+                        onClick={() =>
+                          handleDeleteManager(manager.manager_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
             </Tbody>
           </TableContainer>
         )}

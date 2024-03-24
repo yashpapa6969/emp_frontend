@@ -152,33 +152,6 @@ const GetAllInvoices = () => {
       });
   }
 
-  const handleGetInvoiceByBrand = () => {
-    // if (!brandName) {
-    //   toast({
-    //     description: "Please enter brand name",
-    //     status: 'warning',
-    //     duration: 3000,
-    //     isClosable: true,
-    //   })
-    //   return;
-    // }
-    try {
-      axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/getAllInvoiceByBrand`, { brandName: brandName })
-        .then((res) => {
-          setInvoiceIDs(res.data.invoiceIds);
-          console.log(invoiceIDs);
-        });
-    } catch (error) {
-      console.log(`Error getting invoice by brand: ${error}`)
-    }
-
-    if (invoiceIDs) handleCumulativeInvoices();
-  }
-
-  const onBrandSearch = () => {
-    console.log("brand search");
-  }
-
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
@@ -197,7 +170,7 @@ const GetAllInvoices = () => {
             </Link>
             <Button
               onClick={() => setGetInvoiceByBrandName(true)}
-              className="flex gap-2 items-center"
+              variant={"solid"}
             >
               Get by Brand Name
             </Button>

@@ -54,11 +54,12 @@ const GetInvoiceByBrandName = ({ open, setOpen }) => {
             placement="bottom"
             width="100VW"
             height="100vh"
+            title="Cumulative Invoices"
             extra={
                 <Space>
                     <Button onClick={() => setOpen(!open)}>Cancel</Button>
                     <Button onClick={handleCumulativeInvoices} type="primary" className="bg-blue-500">
-                        Get Invoices
+                        Get Cumulative Invoices
                     </Button>
                 </Space>
             }

@@ -102,7 +102,7 @@ const GetAllLetters = () => {
     return (
         <>
             <div className="w-full p-8 md:block flex flex-col items-center">
-                <h1 className="text-4xl font-bold mb-4">Letter Information</h1>
+                <h1 className="text-3xl font-bold mb-4">Letter Information</h1>
 
                 <Link to="/createLetter">
                     <Button
@@ -150,12 +150,11 @@ const GetAllLetters = () => {
                                     <Tr key={letter._id}>
                                         <Td>{letter.name}</Td>
                                         <Td className="md:table-cell hidden">
-                                            {letter.createdAt}
+                                            {format(new Date(letter.createdAt), "dd/MM/yyyy")}
                                         </Td>
                                         <Td className="md:table-cell hidden">
                                             {letter.singleFile && (
                                                 <div>
-                                                    <Text fontWeight="bold">Single File: </Text>
                                                     <Button
                                                         as="a"
                                                         href={`${import.meta.env.VITE_API_BASE}/uploads/${letter.singleFile}`}
@@ -166,7 +165,7 @@ const GetAllLetters = () => {
                                                         mb={2}
                                                         variant="solid"
                                                     >
-                                                        View Single File
+                                                        View
                                                     </Button>
                                                 </div>
                                             )}
@@ -190,11 +189,16 @@ const GetAllLetters = () => {
                                                     Update
                                                 </Button>
                                             </Link>
+                                        </Td>
+                                        <Td>
+                                            {" "}
                                             <Button
                                                 size={"sm"}
                                                 variant={"outline"}
                                                 colorScheme="red"
-                                                onClick={() => handleDeleteLeave(letter.letter_id)}
+                                                onClick={() =>
+                                                    handleDeleteConfirmation(letter.letter_id)
+                                                }
                                             >
                                                 <DeleteIcon />
                                             </Button>

@@ -90,7 +90,7 @@ const GetAllLeaves = () => {
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
-        <h1 className="text-4xl font-bold mb-4">Leave Information</h1>
+        <h1 className="text-3xl font-bold mb-4">Leave Information</h1>
 
         <Link to="/createLeave">
           <Button
@@ -144,47 +144,57 @@ const GetAllLeaves = () => {
             </Thead>
             <Tbody>
               {searchText !== ""
-                ? filteredLeaves.map((leave, index) => (
-                    <Tr key={leave._id}>
-                      <Td>{leave.employee_name}</Td>
-                      <Td className="md:table-cell hidden">{leave.type}</Td>
-                      <Td className="md:table-cell hidden">
-                        {leave.startDate}
-                      </Td>
-                      <Td className="md:table-cell hidden">{leave.endDate}</Td>
-                      <Td className="md:table-cell hidden">{leave.status}</Td>
-                      <Td className="md:table-cell hidden">{leave.reason}</Td>
-                      <Td>
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(leave)}
-                        >
-                          More Info
-                        </Button>
-                        <Link to="/UpdateLeave">
-                          <Button
-                            size={"sm"}
-                            variant={"outline"}
-                            colorScheme="blue"
-                            ml={2}
-                            onClick={() => handleUpdateClient(lead.leave_id)}
-                          >
-                            Update
-                          </Button>
-                        </Link>
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          onClick={() => handleDeleteLeave(leave.leave_id)}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
+                ? filteredLeaves.map((leave) => (
+                  <Tr key={leave._id}>
+                  <Td>{leave.employee_name}</Td>
+                  <Td className="md:table-cell hidden">{leave.type}</Td>
+                  <Td className="md:table-cell hidden">
+                    {format(new Date(leave.startDate), "dd/MM/yyyy")}
+                  </Td>
+                  <Td className="md:table-cell hidden">
+                    {format(new Date(leave.endDate), "dd/MM/yyyy")}
+                  </Td>
+                  <Td className="md:table-cell hidden">
+                    {format(new Date(leave.createdAt), "dd/MM/yyyy")}
+                  </Td>
+                  <Td className="md:table-cell hidden">{leave.status}</Td>
+                  <Td className="md:table-cell hidden">{leave.reason}</Td>
+                  <Td>
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(leave)}
+                    >
+                      More Info
+                    </Button>
+                    <Link to="/UpdateLeave">
+                      <Button
+                        size={"sm"}
+                        variant={"outline"}
+                        colorScheme="blue"
+                        ml={2}
+                        onClick={() => handleUpdateClient(leave.leave_id)}
+                      >
+                        Update
+                      </Button>
+                    </Link>
+                  </Td>
+                  <Td>
+                    {" "}
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      colorScheme="red"
+                      onClick={() =>
+                        handleDeleteConfirmation(leave.leave_id)
+                      }
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Td>
+                </Tr>
                   ))
-                : leaves.map((leave, index) => (
+                : leaves.map((leave) => (
                     <Tr key={leave._id}>
                       <Td>{leave.employee_name}</Td>
                       <Td className="md:table-cell hidden">{leave.type}</Td>

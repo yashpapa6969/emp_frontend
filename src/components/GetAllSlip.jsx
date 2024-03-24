@@ -180,43 +180,46 @@ const GetAllSlip = () => {
             <Tbody>
               {searchText !== ""
                 ? filteredProjects.map((project, index) => (
-                    <Tr key={project._id}>
-                      <Td className="md:table-cell hidden">{index + 1}</Td>
-                      <Td>{index + 1}</Td>
-                      <Td className="md:table-cell hidden">{project.basicPay}</Td>
-                      <Td className="md:table-cell hidden">
-                        {project.travelPay}
-                      </Td>
-                      <Td className="md:table-cell hidden">{project.bonus}</Td>
-                      <Td className="flex gap-2 flex-col md:flex-row">
-                        <Button
-                          size={"sm"}
-                          colorScheme="purple"
-                          onClick={() => handleMoreInfo(project)}
-                        >
-                          More Info
-                        </Button>
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          isLoading={index === downloading}
-                          colorScheme="purple"
-                          onClick={() => handleDownload(project.slip_id, index)}
-                        >
-                          <DownloadIcon />
-                        </Button>
-                        <Button
-                          size={"sm"}
-                          variant={"outline"}
-                          colorScheme="red"
-                          onClick={() =>
-                            handleDeleteConfirmation(project.slip_id)
-                          } // Open delete confirmation dialog
-                        >
-                          <DeleteIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
+                  <Tr key={project._id}>
+                  <Td className="md:table-cell hidden">{index + 1}</Td>
+                  <Td>{project.name}</Td>
+                  <Td className="md:table-cell hidden">{project.basicPay}</Td>
+                  <Td className="md:table-cell hidden">
+                    {project.travelPay}
+                  </Td>
+                  <Td className="md:table-cell hidden">{project.bonus}</Td>
+                  <Td className="flex gap-2 flex-col md:flex-row">
+                    <Button
+                      size={"sm"}
+                      colorScheme="purple"
+                      onClick={() => handleMoreInfo(project)}
+                    >
+                      More Info
+                    </Button>
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      isLoading={index === downloading}
+                      colorScheme="purple"
+                      onClick={() => handleDownload(project.slip_id, index)}
+                    >
+                      <DownloadIcon />
+                    </Button>
+                  </Td>
+                  <Td>
+                    {" "}
+                    <Button
+                      size={"sm"}
+                      variant={"outline"}
+                      colorScheme="red"
+                      onClick={() =>
+                        handleDeleteConfirmation(project.slip_id)
+                      } // Open delete confirmation dialog
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Td>
+                </Tr>
                   ))
                 : projects.map((project, index) => (
                     <Tr key={project._id}>
