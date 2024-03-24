@@ -126,6 +126,8 @@ const GetAllSlip = () => {
     }
   };
 
+  console.log(projects)
+
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">

@@ -86,6 +86,7 @@ const GetAllLeaves = () => {
      const handleUpdateClient = (leadId) => {
        dispatch(setLeaveId(leadId));
      };
+
   return (
     <>
       <div className="w-full p-8 md:block flex flex-col items-center">
@@ -110,7 +111,7 @@ const GetAllLeaves = () => {
           />
         ) : (
           <TableContainer
-            formFor="leave"
+            formFor="leaves"
             searchText={searchText}
             setSearchText={setSearchText}
             setFilteredData={setFilteredLeaves}
