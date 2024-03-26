@@ -1,7 +1,9 @@
-import { Button, Checkbox, Drawer, Select, Space } from "antd";
+import { CloseIcon } from "@chakra-ui/icons";
+import { Button, Checkbox, Drawer, Flex, Select, Tag } from "antd";
 import axios from "axios";
 import download from "downloadjs";
 import { useEffect, useState } from "react";
+import { LiaFileInvoiceSolid } from "react-icons/lia";
 
 const GetInvoiceByBrandName = ({ open, setOpen }) => {
     const onBrandSearch = () => { }
@@ -50,18 +52,26 @@ const GetInvoiceByBrandName = ({ open, setOpen }) => {
     return (
         <Drawer
             open={open}
+            closable={false}
             onClose={() => setOpen(false)}
             placement="bottom"
             width="100VW"
             height="100vh"
-            title="Cumulative Invoices"
+            title={
+                <h1 className="text-[24px] flex gap-2 items-center text-gray-700"><LiaFileInvoiceSolid /> Cumulative Invoices</h1>
+            }
             extra={
-                <Space>
-                    <Button onClick={() => setOpen(!open)}>Cancel</Button>
-                    <Button onClick={handleCumulativeInvoices} type="primary" className="bg-blue-500">
-                        Get Cumulative Invoices
-                    </Button>
-                </Space>
+                <Button type="text" onClick={() => setOpen(!open)} className="flex items-center justify-center"><CloseIcon /></Button>
+            }
+            footer={
+                <Flex justify="center">
+                    <div className="flex gap-2 max-w-[800px] w-full justify-end mt-1 mb-3">
+                        <Button onClick={() => setOpen(!open)}>Cancel</Button>
+                        <Button disabled={selectedInvoiceIds?.length === 0} onClick={handleCumulativeInvoices} type="primary" className="bg-blue-500">
+                            Get Cumulative Invoices
+                        </Button>
+                    </div>
+                </Flex>
             }
         >
             <div className="flex items-center justify-center">
@@ -89,19 +99,23 @@ const GetInvoiceByBrandName = ({ open, setOpen }) => {
                     {selectedBrand &&
                         fetchedItems?.invoices?.map((item, index) => (
                             <div key={`item-${index}`} className="flex flex-col gap-2 mt-5">
-                                <div className="w-full p-3 flex gap-6 bg-gray-100 rounded-md">
+                                <div className="w-full p-3 flex items-start gap-6 bg-gray-50 rounded-md">
                                     <Checkbox
                                         onClick={() => handleSelect(item.invoice_id)}
                                     />
-                                    <div>
-                                        {item?.brandName}
-                                        <p>{item?.billtype}</p>
-                                        <p>{item?.createdAt}</p>
-                                        <p>{item?.date1}</p>
-                                        <p>{item?.discount}</p>
-                                        <p>{item?.gst}</p>
-                                        <p>{item?.subtotal}</p>
-                                        <p>{item?.time1}</p>
+                                    <div className="flex flex-col w-full">
+                                        <div className="text-sm font-semibold text-gray-500">Date: {item?.date1}</div>
+                                        <div className="grid grid-cols-2 w-full">
+                                            <div>Bill Type: {item?.billtype}</div>
+                                            <div>Discount: {item?.discount}</div>
+                                            <div>Gst: {item?.gst}</div>
+                                            <div>Subtotal: {item?.subtotal}</div>
+                                        </div>
+                                        <div className="mt-3">
+                                            <Tag color="purple" className="mb-2">Brand: {item?.brandName}</Tag>
+                                            <div>Time: {item?.time1}</div>
+                                            <div>Created At: {item?.createdAt}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

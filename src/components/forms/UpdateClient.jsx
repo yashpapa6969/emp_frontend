@@ -24,6 +24,7 @@ import { selectClientId, clearClientId } from "../../store/slice/ClientSlice";
 import moment from "moment";
 import { convertDateFormatString } from "../../helpers";
 import { useNavigate } from "react-router-dom";
+import ViewLeadByBrand from "../common/ViewLeadByBrand";
 
 const UpdateClient = () => {
   const singleFileRef = useRef();
@@ -133,6 +134,8 @@ const UpdateClient = () => {
   const [tags, setTags] = useState([]);
   const [selectSourceValue, setSelectSourceValue] = useState([]);
   const [selectedTagValue, setSelectedTagValue] = useState([]);
+
+  const [viewLeadByBrand, setViewLeadByBrand] = useState(false);
 
   const handleSelectOption = (name, value) => {
     setProjectData({ ...projectData, [name]: value });
@@ -312,9 +315,11 @@ const UpdateClient = () => {
             <h1 className="text-2xl font-semibold">{client.clientName}</h1>
           </div>
 
-          <Button maxWidth={150} variant={"outline"} colorScheme="blue">
+          <Button maxWidth={150} variant={"outline"} colorScheme="blue" onClick={() => setViewLeadByBrand(true)}>
             View Lead Info
           </Button>
+
+            <ViewLeadByBrand open={viewLeadByBrand} setOpen={setViewLeadByBrand} brandName={projectData.brandName} />
         </div>
 
         <form onSubmit={handleSubmit}>
