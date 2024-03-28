@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { Empty } from "antd";
 import { DownloadIcon, DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
+import { IoMdEye } from "react-icons/io";
 
 const GetAllSlip = () => {
   const [projects, setProjects] = useState([]);
@@ -194,7 +195,7 @@ const GetAllSlip = () => {
                       colorScheme="purple"
                       onClick={() => handleMoreInfo(project)}
                     >
-                      More Info
+                      <IoMdEye />
                     </Button>
                     <Button
                       size={"sm"}
@@ -236,7 +237,7 @@ const GetAllSlip = () => {
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(project)}
                         >
-                          More Info
+                          <IoMdEye />
                         </Button>
                         <Button
                           size={"sm"}

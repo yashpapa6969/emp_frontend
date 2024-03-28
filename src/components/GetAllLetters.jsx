@@ -28,6 +28,8 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setLetterId } from "../store/slice/LetterSlice";
+import { IoMdEye } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
 
 const GetAllLetters = () => {
     const [letters, setLetters] = useState([]);
@@ -176,7 +178,7 @@ const GetAllLetters = () => {
                                                 colorScheme="purple"
                                                 onClick={() => handleMoreInfo(letter)}
                                             >
-                                                More Info
+                                                <IoMdEye />
                                             </Button>
                                             <Link to="/UpdateLetter">
                                                 <Button
@@ -184,9 +186,10 @@ const GetAllLetters = () => {
                                                     variant={"outline"}
                                                     colorScheme="blue"
                                                     ml={2}
+                                                    p={0}
                                                     onClick={() => handleUpdateLetter(letter.letter_id)}
                                                 >
-                                                    Update
+                                                <MdModeEditOutline size={18} />
                                                 </Button>
                                             </Link>
                                         </Td>
@@ -235,7 +238,7 @@ const GetAllLetters = () => {
                                                 colorScheme="purple"
                                                 onClick={() => handleMoreInfo(letter)}
                                             >
-                                                More Info
+                                                <IoMdEye />
                                             </Button>
                                             <Link to="/UpdateLetter">
                                                 <Button
@@ -243,9 +246,10 @@ const GetAllLetters = () => {
                                                     variant={"outline"}
                                                     colorScheme="blue"
                                                     ml={2}
+                                                    p={0}
                                                     onClick={() => handleUpdateLetter(letter.letter_id)}
                                                 >
-                                                    Update
+                                                <MdModeEditOutline size={18} />
                                                 </Button>
                                             </Link>
                                         </Td>

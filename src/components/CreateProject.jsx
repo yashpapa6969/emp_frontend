@@ -95,9 +95,9 @@ const CreateProject = () => {
       ...projectData,
       client_id: clientId,
       brandName: selectedClient.brandName,
-      employees:[],
+      employees: [],
     });
-    document.getElementById("employees").value ="";
+    document.getElementById("employees").value = "";
   };
 
   const handleTagChange = (e) => {
@@ -131,7 +131,7 @@ const CreateProject = () => {
       ...projectData,
       employees: [...projectData.employees, ...selectedIds],
     });
-     document.getElementById("employees").value = "";
+    document.getElementById("employees").value = "";
   };
 
   const removeEmployeeById = (employeeIdToRemove) => {
@@ -155,7 +155,7 @@ const CreateProject = () => {
       { key: 'employees', label: 'Employees', isArray: true },
 
     ];
-   
+
     for (let { key, label, isArray } of requiredFields) {
       if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
         toast.error(`${label} is required.`);
@@ -173,7 +173,7 @@ const CreateProject = () => {
         }
       )
       .then((response) => {
-        if (response.status === 200 || response.status ===201) {
+        if (response.status === 200 || response.status === 201) {
           toast.success(response.data.message);
           setSelectedClient(null);
           setProjectData({
@@ -185,12 +185,12 @@ const CreateProject = () => {
             description: "",
             employees: [],
           });
-           toast.success(response.data.message, {
-             autoClose: 2000,
-           });
-               setTimeout(() => {
-                 navigate("/getAllProject");
-               }, 2000);
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/getAllProject");
+          }, 2000);
 
         } else {
           console.error("Failed to create project");
@@ -340,7 +340,7 @@ const CreateProject = () => {
                   Select employees
                 </option>
                 {employees.map((employee) => (
-                  <option key={employee._id} value={employee.employee_id}>
+                  <option key={employee._id} disabled={projectData.employees.includes(employee.employee_id)} value={employee.employee_id}>
                     {employee.name}
                   </option>
                 ))}

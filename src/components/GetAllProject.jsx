@@ -29,6 +29,7 @@ import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { priorityArray } from "../helpers";
+import { IoMdEye } from "react-icons/io";
 
 const GetAllProject = () => {
   const [projects, setProjects] = useState([]);
@@ -245,7 +246,7 @@ const GetAllProject = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>
@@ -334,7 +335,7 @@ const GetAllProject = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(project)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>

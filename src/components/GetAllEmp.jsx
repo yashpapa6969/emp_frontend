@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { IoMdEye } from "react-icons/io";
 
 const GetAllEmp = () => {
   const [employees, setEmployees] = useState([]);
@@ -151,7 +152,7 @@ const GetAllEmp = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(emp)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>
@@ -184,7 +185,7 @@ const GetAllEmp = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(emp)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>

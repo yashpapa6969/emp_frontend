@@ -27,6 +27,7 @@ import { GoPlus } from "react-icons/go";
 import download from "downloadjs";
 import { allMonths } from "../helpers";
 import GetInvoiceByBrandName from "./common/GetInvoiceByBrandName";
+import { IoMdEye } from "react-icons/io";
 
 const GetAllInvoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -283,7 +284,7 @@ const GetAllInvoices = () => {
                 setFilteredData={setFilteredInvoices}
                 data={invoices}
               >
-                <Thead bg={"#F1F5F9"} zIndex={10}>
+                <Thead position="sticky" top={0} bg={"#F1F5F9"} zIndex={10}>
                   <Tr>
                     <Th fontWeight="bold" className="md:table-cell hidden">Index</Th>
                     <Th fontWeight="bold">
@@ -314,7 +315,7 @@ const GetAllInvoices = () => {
                             colorScheme="purple"
                             onClick={() => handleMoreInfo(invoice)}
                           >
-                            More Info
+                            <IoMdEye />
                           </Button>
                           <Button
                             size={"sm"}
@@ -355,7 +356,7 @@ const GetAllInvoices = () => {
                             colorScheme="purple"
                             onClick={() => handleMoreInfo(invoice)}
                           >
-                            More Info
+                            <IoMdEye />
                           </Button>
                           <Button
                             size={"sm"}

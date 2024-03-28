@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoIosLogOut, IoMdHome } from "react-icons/io";
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
+import { IoCalendarOutline, IoPeopleOutline, IoPersonAddOutline, IoPricetagOutline } from 'react-icons/io5';
 import { LiaProjectDiagramSolid, LiaTtySolid } from 'react-icons/lia';
 import { MdOutlineAddTask } from 'react-icons/md';
 import { LuNewspaper } from 'react-icons/lu';
@@ -43,7 +43,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
   const ampm = hours > 12 ? 'pm' : 'am';
   hours = hours % 12;
   const minutes = currentDate.getMinutes();
-  const timeString = (hours ? hours : 12) + ':' + (minutes < 10 ? '0'+ minutes : minutes) + ampm;
+  const timeString = (hours ? hours : 12) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ampm;
   // const istOffset = 5.5 * 60 * 60 * 1000;
   // const istDate = new Date(currentDate.getTime() + istOffset);
 
@@ -81,6 +81,9 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
                   <Link to={"/createClient"} className='w-full py-2 px-4 flex items-center gap-3'><IoPeopleOutline size={18} /> Client</Link>
                 </MenuItem>
                 <MenuItem p={0}>
+                  <Link to={"/createLeave"} className='w-full py-2 px-4 flex items-center gap-3'><IoCalendarOutline /> Leave</Link>
+                </MenuItem>
+                <MenuItem p={0}>
                   <Link to={"/createLead"} className='w-full py-2 px-4 flex items-center gap-3'><LiaTtySolid /> Lead</Link>
                 </MenuItem>
                 <MenuItem p={0}>
@@ -105,7 +108,7 @@ const Navbar = ({ showSidebar, setShowSidebar }) => {
               <MenuItem>
                 <Link to="/UserInfo" className='w-full'>My Profile</Link>
               </MenuItem>
-              
+
               <MenuItem>
                 <Link to="/getAllTodo" className='w-full'>To do List</Link>
               </MenuItem>

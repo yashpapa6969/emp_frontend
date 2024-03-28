@@ -27,6 +27,8 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setLeaveId } from "../store/slice/LeaveSlice";
+import { IoMdEye } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
 const GetAllLeaves = () => {
   const [leaves, setLeaves] = useState([]);
   const dispatch = useDispatch();
@@ -165,7 +167,7 @@ const GetAllLeaves = () => {
                       colorScheme="purple"
                       onClick={() => handleMoreInfo(leave)}
                     >
-                      More Info
+                      <IoMdEye />
                     </Button>
                     <Link to="/UpdateLeave">
                       <Button
@@ -173,9 +175,10 @@ const GetAllLeaves = () => {
                         variant={"outline"}
                         colorScheme="blue"
                         ml={2}
+                        p={0}
                         onClick={() => handleUpdateClient(leave.leave_id)}
                       >
-                        Update
+                        <MdModeEditOutline size={18} />
                       </Button>
                     </Link>
                   </Td>
@@ -215,7 +218,7 @@ const GetAllLeaves = () => {
                           colorScheme="purple"
                           onClick={() => handleMoreInfo(leave)}
                         >
-                          More Info
+                          <IoMdEye />
                         </Button>
                         <Link to="/UpdateLeave">
                           <Button
@@ -223,9 +226,10 @@ const GetAllLeaves = () => {
                             variant={"outline"}
                             colorScheme="blue"
                             ml={2}
+                            p={0}
                             onClick={() => handleUpdateClient(leave.leave_id)}
                           >
-                            Update
+                          <MdModeEditOutline size={18} />
                           </Button>
                         </Link>
                       </Td>

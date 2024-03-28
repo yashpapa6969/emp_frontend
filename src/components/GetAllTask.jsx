@@ -27,6 +27,7 @@ import { Empty } from "antd";
 import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { priorityArray } from "../helpers";
+import { IoMdEye } from "react-icons/io";
 
 const GetAllTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -178,24 +179,19 @@ const GetAllTask = () => {
                     <Td className={`md:table-cell hidden capitalize`}>
                       <Menu>
                         <MenuButton
-                          size={"sm"}
                           as={Button}
-                          variant={"outline"}
+                          bg={
+                            (priorityArray[task.priority] === "urgent" || task.priority.toLowerCase() === "urgent") ? "red" :
+                              ((priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") ? "orange.500" :
+                                (priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") ? "gold" :
+                                  "green.300")
+                          }
+                          _hover={{ color: "black" }}
+                          fontWeight={"bold"}
+                          textTransform={"capitalize"}
+                          color={"white"}
                         >
-                          <div
-                            className={`
-                                    p-1 text-center flex gap-2 items-center capitalize
-                                    ${(priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") && "text-red-500"}
-                                    ${(priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") && "text-blue-500"}
-                                    ${(priorityArray[task.priority] === "low" || task.priority.toLowerCase() === "low") && "text-green-500"}
-                                    font-bold
-                                  `}
-                            style={{
-                              backgroundColor: "transparent", // Set background color to transparent
-                            }}
-                          >
-                            {priorityArray[task.priority] || task.priority}
-                          </div>
+                          {priorityArray[task.priority] || task.priority}
                         </MenuButton>
                         <MenuList>
                           {priorityArray.map((priority, index) => (
@@ -288,7 +284,7 @@ const GetAllTask = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(task)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>
@@ -317,22 +313,17 @@ const GetAllTask = () => {
                         <MenuButton
                           size={"sm"}
                           as={Button}
-                          variant={"outline"}
+                          bg={
+                            (priorityArray[task.priority] === "urgent" || task.priority.toLowerCase() === "urgent") ? "red" :
+                              ((priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") ? "orange.500" :
+                                (priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") ? "gold" :
+                                  "green.300")
+                          }
+                          fontWeight={"bold"}
+                          textTransform={"capitalize"}
+                          color={"white"}
                         >
-                          <div
-                            className={`
-                                    p-1 text-center flex gap-2 items-center capitalize
-                                    ${(priorityArray[task.priority] === "high" || task.priority.toLowerCase() === "high") && "text-red-500"}
-                                    ${(priorityArray[task.priority] === "medium" || task.priority.toLowerCase() === "medium") && "text-blue-500"}
-                                    ${(priorityArray[task.priority] === "low" || task.priority.toLowerCase() === "low") && "text-green-500"}
-                                    font-bold
-                                  `}
-                            style={{
-                              backgroundColor: "transparent", // Set background color to transparent
-                            }}
-                          >
-                            {priorityArray[task.priority] || task.priority}
-                          </div>
+                          {priorityArray[task.priority] || task.priority}
                         </MenuButton>
                         <MenuList>
                           {priorityArray.map((priority, index) => (
@@ -425,7 +416,7 @@ const GetAllTask = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(task)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                     </Td>
                     <Td>

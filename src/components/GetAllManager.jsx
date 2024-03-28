@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
+import { IoMdEye } from "react-icons/io";
 const GetAllManagers = () => {
   const [managers, setManagers] = useState([]);
   const [selectedManager, setSelectedManager] = useState(null);
@@ -135,7 +136,7 @@ const GetAllManagers = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(manager)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                       <Button
                         size={"sm"}
@@ -170,7 +171,7 @@ const GetAllManagers = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(manager)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
                       <Button
                         size={"sm"}

@@ -331,7 +331,7 @@ const CreateTag = () => {
           onChange={(e) => setNewYear(e.target.value)}
         />
         <Button
-          colorScheme="orange"
+          colorScheme="blue"
           variant={"outline"}
           onClick={handleAddYear}
         >
@@ -342,12 +342,12 @@ const CreateTag = () => {
         {years?.map((year) => (
           <Tag
             key={year._id}
-            className="px-2 py-1 mb-2 bg-orange-400 border-orange-600 text-[16px] font-semibold text-white"
+            className="px-2 py-1 mb-2 bg-blue-400 border-blue-600 text-[16px] font-semibold text-white"
           >
             <div className="flex gap-5 items-center">
               {year?.financial_year}
               <div
-                className="p-[7px] transition-all bg-orange-500 hover:bg-orange-400 rounded-full cursor-pointer"
+                className="p-[7px] transition-all bg-blue-500 hover:bg-blue-400 rounded-full cursor-pointer"
                 onClick={() => handleDeleteSource(year?.year_id)}
               >
                 <FaTrash size={12} />

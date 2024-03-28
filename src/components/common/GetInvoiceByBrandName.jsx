@@ -49,6 +49,12 @@ const GetInvoiceByBrandName = ({ open, setOpen }) => {
         else setSelectedInvoiceIds([...selectedInvoiceIds, invoice_id]);
     }
 
+    const handleClose = () => {
+        setOpen(!open);
+        setSelectedBrand(null);
+        setFetchedItems(null);
+    }
+
     return (
         <Drawer
             open={open}
@@ -66,7 +72,7 @@ const GetInvoiceByBrandName = ({ open, setOpen }) => {
             footer={
                 <Flex justify="center">
                     <div className="flex gap-2 max-w-[800px] w-full justify-end mt-1 mb-3">
-                        <Button onClick={() => setOpen(!open)}>Cancel</Button>
+                        <Button onClick={handleClose}>Cancel</Button>
                         <Button disabled={selectedInvoiceIds?.length === 0} onClick={handleCumulativeInvoices} type="primary" className="bg-blue-500">
                             Get Cumulative Invoices
                         </Button>

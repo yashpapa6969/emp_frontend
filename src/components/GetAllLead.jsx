@@ -26,6 +26,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setLeadId } from "../store/slice/LeadSlice";
 import { Link } from "react-router-dom";
+import { IoMdEye } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
 
 const GetAllLead = () => {
   const [leads, setLeads] = useState([]);
@@ -208,7 +210,7 @@ const GetAllLead = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(lead)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
 
                       <Link to="/UpdateLead">
@@ -219,7 +221,7 @@ const GetAllLead = () => {
                           ml={2}
                           onClick={() => handleUpdateClient(lead.lead_id)}
                         >
-                          Update
+                        <MdModeEditOutline size={18} />
                         </Button>
                       </Link>
                     </Td>
@@ -230,6 +232,7 @@ const GetAllLead = () => {
                         variant={"outline"}
                         colorScheme="red"
                         ml={2}
+                        p={0}
                         onClick={() => handleDeleteConfirmation(lead.lead_id)} // Open delete confirmation dialog
                       >
                         <DeleteIcon />
@@ -243,10 +246,6 @@ const GetAllLead = () => {
                     <Td>{lead.companyName}</Td>
                     <Td className="md:table-cell hidden">{lead.brandName}</Td>
                     <Td className="md:table-cell hidden">
-                      {lead.status === 0 && "Raw"}
-                      {lead.status === 1 && "In-Progress"}
-                      {lead.status === 2 && "Converted"}
-                      {lead.status === 3 && "Lost"}
                       <Menu>
                         <MenuButton
                           size={"sm"}
@@ -254,11 +253,11 @@ const GetAllLead = () => {
                           variant={"outline"}
                         >
                           <div className="flex gap-2 items-center">
-                            {lead.status === "Raw" || lead.status === 0 ? (
+                            {(lead.status.toLowerCase() === "raw" || lead.status === 0) ? (
                               <div className="h-3 w-3 rounded-full bg-red-600" />
-                            ) : lead.status === "In Progress" || lead.status === 1 ? (
+                            ) : (lead.status.toLowerCase() === "in-progress" || lead.status === 1) ? (
                               <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                            ) : lead.status === "Converted" || lead.status === 2 ? (
+                            ) : (lead.status.toLowerCase() === "converted" || lead.status === 2) ? (
                               <div className="h-3 w-3 rounded-full bg-blue-600" />
                             ) : (
                               <div className="h-3 w-3 rounded-full bg-green-600" />
@@ -304,7 +303,7 @@ const GetAllLead = () => {
                         colorScheme="purple"
                         onClick={() => handleMoreInfo(lead)}
                       >
-                        More Info
+                        <IoMdEye />
                       </Button>
 
                       <Link to="/UpdateLead">
@@ -313,9 +312,10 @@ const GetAllLead = () => {
                           variant={"outline"}
                           colorScheme="blue"
                           ml={2}
+                          p={0}
                           onClick={() => handleUpdateClient(lead.lead_id)}
                         >
-                          Update
+                        <MdModeEditOutline size={18} />
                         </Button>
                       </Link>
                     </Td>

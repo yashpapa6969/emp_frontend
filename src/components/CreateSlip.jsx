@@ -7,6 +7,12 @@ import {
   FormLabel,
   Input,
   VStack,
+  TabPanel,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  Select,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -16,7 +22,7 @@ const RequiredIndicator = () => {
 };
 const CreateSlip = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     employee_id: "",
     basicPay: "",
@@ -77,7 +83,7 @@ const CreateSlip = () => {
       { key: 'totalLeaves', label: 'Total Leaves' },
       { key: 'advanceSalary', label: 'Advance Salary' },
     ];
-  
+
     for (let { key, label, isArray } of requiredFields) {
       if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
         toast.error(`${label} is required.`);
@@ -111,20 +117,20 @@ const CreateSlip = () => {
         if (response.status === 200 || response.status === 201) {
           setSelectedEmployeeInfo(null);
           setProjectData({
-    employee_id: "",
-    basicPay: "",
-    travelPay: "",
-    bonus: "",
-    paidLeave: "",
-    tds: "",
-    totalLeaves: "",
-    advanceSalary: "",
-  })
-   toast.success("Salary slip downloaded successfully.", {
-     autoClose: 2000,
-   });    setTimeout(() => {
-     navigate("/getAllSlip");
-   }, 2000);
+            employee_id: "",
+            basicPay: "",
+            travelPay: "",
+            bonus: "",
+            paidLeave: "",
+            tds: "",
+            totalLeaves: "",
+            advanceSalary: "",
+          })
+          toast.success("Salary slip downloaded successfully.", {
+            autoClose: 2000,
+          }); setTimeout(() => {
+            navigate("/getAllSlip");
+          }, 2000);
         } else {
           console.error("Failed to download slip");
           toast.error('Failed to download slip.');
@@ -155,92 +161,105 @@ const CreateSlip = () => {
         </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="manager_id" >
-              <FormLabel>Select Employee <RequiredIndicator /></FormLabel>
-              <select
-                onChange={handleSelectManager}
-                value={projectData.employee_id}
-              >
-                <option value="">Select Employee</option>
-                {employee.map((manager) => (
-                  <option key={manager.employee_id} value={manager.employee_id}>
-                    {manager.name}
-                  </option>
-                ))}
-              </select>
-            </FormControl>
-            {selectedEmployeeInfo && (
-              <VStack align="start" spacing={2}>
-                <Text fontWeight="bold">Name: {selectedEmployeeInfo.name}</Text>
-                <Text fontWeight="bold">
-                  Position: {selectedEmployeeInfo.position}
-                </Text>
-                <Text fontWeight="bold">
-                  Department: {selectedEmployeeInfo.department}
-                </Text>
-              </VStack>
-            )}
+            <Tabs>
+              <TabList>
+                <Tab>Incomes</Tab>
+                <Tab>Deductions</Tab>
+              </TabList>
 
-            <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" >
-                <FormLabel>Basic Pay<RequiredIndicator /></FormLabel>
-                <Input
-                  name="basicPay"
-                  onChange={handleChange}
-                  value={projectData.basicPay}
-                />
-              </FormControl>
-              <FormControl id="travelPay" >
-                <FormLabel>Travel Pay<RequiredIndicator /></FormLabel>
-                <Input
-                  name="travelPay"
-                  onChange={handleChange}
-                  value={projectData.travelPay}
-                />
-              </FormControl>
-              <FormControl id="Bonus" >
-                <FormLabel>Bonus<RequiredIndicator /></FormLabel>
-                <Input
-                  name="bonus"
-                  onChange={handleChange}
-                  value={projectData.bonus}
-                />
-              </FormControl>
-            </div>
-            <div className="flex gap-3">
-              <FormControl id="paidLeave" >
-                <FormLabel>Paid Leave<RequiredIndicator /></FormLabel>
-                <Input
-                  name="paidLeave"
-                  onChange={handleChange}
-                  value={projectData.paidLeave}
-                />
-              </FormControl>
-              <FormControl id="tds" >
-                <FormLabel>TDS<RequiredIndicator /></FormLabel>
-                <Input
-                  name="tds"
-                  onChange={handleChange}
-                  value={projectData.tds}
-                />
-              </FormControl>
-              <FormControl id="totaleaves" >
-                <FormLabel>Total Leaves<RequiredIndicator /></FormLabel>
-                <Input
-                  name="totalLeaves"
-                  onChange={handleChange}
-                  value={projectData.totalLeaves}
-                />
-              </FormControl>
-            </div>
-            <FormControl id="advanceSalary" maxWidth={400} >
-              <FormLabel>Advance Salary<RequiredIndicator /></FormLabel>
-              <Input
-                name="advanceSalary"
-                onChange={handleChange}
-                value={projectData.advanceSalary}
-              />
-            </FormControl>
+              <TabPanels>
+                <TabPanel>
+                  <FormControl id="manager_id" maxWidth={300} mb={4}>
+                    <FormLabel>Select Employee <RequiredIndicator /></FormLabel>
+                    <Select
+                      onChange={handleSelectManager}
+                      value={projectData.employee_id}
+                    >
+                      <option value="">Select Employee</option>
+                      {employee.map((manager) => (
+                        <option key={manager.employee_id} value={manager.employee_id}>
+                          {manager.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  {selectedEmployeeInfo && (
+                    <div className="mb-6">
+                      <Text fontWeight="bold">Name: {selectedEmployeeInfo.name}</Text>
+                      <Text fontWeight="bold">
+                        Position: {selectedEmployeeInfo.position}
+                      </Text>
+                      <Text fontWeight="bold">
+                        Department: {selectedEmployeeInfo.department}
+                      </Text>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col md:flex-row gap-3 mb-4">
+                    <FormControl id="basicPay" >
+                      <FormLabel>Basic Pay<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="basicPay"
+                        onChange={handleChange}
+                        value={projectData.basicPay}
+                      />
+                    </FormControl>
+                    <FormControl id="travelPay" >
+                      <FormLabel>Travel Pay<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="travelPay"
+                        onChange={handleChange}
+                        value={projectData.travelPay}
+                      />
+                    </FormControl>
+                    <FormControl id="Bonus" >
+                      <FormLabel>Bonus<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="bonus"
+                        onChange={handleChange}
+                        value={projectData.bonus}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormControl id="paidLeave" maxWidth={300}>
+                    <FormLabel>Paid Leave<RequiredIndicator /></FormLabel>
+                    <Input
+                      name="paidLeave"
+                      onChange={handleChange}
+                      value={projectData.paidLeave}
+                    />
+                  </FormControl>
+                </TabPanel>
+                <TabPanel>
+                  <div className="flex gap-3 mb-4">
+                    <FormControl id="tds" maxWidth={250}>
+                      <FormLabel>TDS<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="tds"
+                        onChange={handleChange}
+                        value={projectData.tds}
+                      />
+                    </FormControl>
+                    <FormControl id="totaleaves" maxWidth={250}>
+                      <FormLabel>Total Leaves<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="totalLeaves"
+                        onChange={handleChange}
+                        value={projectData.totalLeaves}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormControl id="advanceSalary" maxWidth={400} >
+                    <FormLabel>Advance Salary<RequiredIndicator /></FormLabel>
+                    <Input
+                      name="advanceSalary"
+                      onChange={handleChange}
+                      value={projectData.advanceSalary}
+                    />
+                  </FormControl>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
 
             <Button mt={6} type="submit" colorScheme="purple">
               Create Salary Slip

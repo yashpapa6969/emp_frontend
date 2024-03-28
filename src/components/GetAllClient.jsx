@@ -26,6 +26,8 @@ import { toast } from "react-toastify";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { setClientId } from "../store/slice/ClientSlice";
 import { useDispatch } from "react-redux";
+import { IoMdEye } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
 
 const GetAllClient = () => {
   const [clients, setClients] = useState([]);
@@ -158,7 +160,7 @@ const GetAllClient = () => {
                       colorScheme="purple"
                       onClick={() => handleMoreInfo(client)}
                     >
-                      More Info
+                      <IoMdEye />
                     </Button>
                     <Button
                       size={"sm"}
@@ -177,9 +179,10 @@ const GetAllClient = () => {
                         variant={"outline"}
                         colorScheme="blue"
                         ml={2}
+                        p={0}
                         onClick={() => handleUpdateClient(client.client_id)}
                       >
-                        Update
+                      <MdModeEditOutline size={18} />
                       </Button>
                     </Link>
                   </Td>
@@ -200,7 +203,7 @@ const GetAllClient = () => {
                       colorScheme="purple"
                       onClick={() => handleMoreInfo(client)}
                     >
-                      More Info
+                      <IoMdEye />
                     </Button>
 
                     <Link to="/UpdateClient">
@@ -209,9 +212,10 @@ const GetAllClient = () => {
                         variant={"outline"}
                         colorScheme="blue"
                         ml={2}
+                        p={0}
                         onClick={() => handleUpdateClient(client.client_id)}
                       >
-                        Update
+                        <MdModeEditOutline size={18} />
                       </Button>
                     </Link>
                   </Td>
