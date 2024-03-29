@@ -47,67 +47,86 @@ const SelectSource = ({ selectSourceValue, setSelectSourceValue, width }) => {
         fetchSourceTags();
     }, [])
 
-    const handleAddSource = (e) => {
+    const handleAddSource = async (e) => {
         e.preventDefault();
-        axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: name })
-            .then(() => {
-                fetchSourceTags();
-                toast({
-                    title: "Success",
-                    description: "Added a new source tag",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                })
-            })
-        setName('');
-        setTimeout(() => {
+        try {
+         const res =   await axios.post(`${import.meta.env.VITE_API_BASE}/api/admin/sourceAddTag`, { sourceTagName: name });
+            await fetchSourceTags(); // Fetch updated tags after addition
+            toast({
+                title: "Success",
+                description: "Added a new source tag",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+            setName('');
             inputRef.current?.focus();
-        }, 0);
+    
+            // Add the newly added source tag to the selectSourceValue
+     
+            setSelectSourceValue((prevValue) => [...prevValue, res.data.result.sourceTagName]);
+
+        } catch (error) {
+            console.error("Error adding source tag:", error);
+            toast({
+                title: "Error",
+                description: "Failed to add source tag",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
+        }
     };
+    
 
     return (
         <Select
-            mode="multiple"
-            tagRender={TagRender}
-            style={{
-                width: width ? width : 300,
-            }}
-            value={selectSourceValue}
-            onChange={setSelectSourceValue}
-            placeholder="Choose a value"
-            dropdownRender={(menu) => (
-                <>
-                    <Space
-                        style={{
-                            padding: '0 8px 4px',
-                        }}
-                    >
-                        <Input
-                            placeholder="Please enter item"
-                            ref={inputRef}
-                            value={name}
-                            onChange={onNameChange}
-                            onKeyDown={(e) => e.stopPropagation()}
-                        />
-                        <Button type="text" disabled={!name} icon={<PlusOutlined />} onClick={handleAddSource}>
-                            Add item
-                        </Button>
-                    </Space>
-                    <Divider
-                        style={{
-                            margin: '8px 0',
-                        }}
+        mode="multiple"
+        tagRender={TagRender}
+        style={{
+            width: width ? width : 300,
+        }}
+        value={selectSourceValue}
+        onChange={setSelectSourceValue}
+        placeholder="Choose a value"
+        dropdownRender={(menu) => (
+            <>
+                <Space
+                    style={{
+                        padding: '0 8px 4px',
+                    }}
+                >
+                    <Input
+                        placeholder="Please enter item"
+                        ref={inputRef}
+                        value={name}
+                        onChange={onNameChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                     />
-                    {menu}
-                </>
-            )}
-            options={items.map((item) => ({
-                key: `item-${item.source_tag_id}`,
-                label: item.sourceTagName,
-                value: item.sourceTagName,
-            }))}
-        />
+                    <Button
+                        type="text"
+                        disabled={!name}
+                        icon={<PlusOutlined />}
+                        onClick={handleAddSource}
+                    >
+                        Add item
+                    </Button>
+                </Space>
+                <Divider
+                    style={{
+                        margin: '8px 0',
+                    }}
+                />
+                {menu}
+            </>
+        )}
+        options={items.map((item) => ({
+            key: `item-${item.source_tag_id}`,
+            label: item.sourceTagName,
+            value: item.sourceTagName,
+        }))}
+    />
+    
     );
 };
 export default SelectSource;

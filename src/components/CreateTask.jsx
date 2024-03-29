@@ -6,12 +6,16 @@ import {
   FormLabel,
   Select,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import MyDatePicker from "./common/MyDatePicker";
 import { toast } from "react-toastify";
+import { convertDateFormatString } from "../helpers";
+import { useNavigate } from "react-router-dom";
+
 
 
 const CreateTask = () => {
@@ -20,13 +24,16 @@ const CreateTask = () => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [employees, setEmployees] = useState([]);
+  const navigate = useNavigate();
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [deadline, setDeadline] = useState("");
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
-
+  const RequiredIndicator = () => {
+    return <Text as="span" color="red.500" ml={1}>*</Text>;
+  };
   useEffect(() => {
     // Fetch brand names
     axios
@@ -45,19 +52,19 @@ const CreateTask = () => {
     const selectedBrand = event.target.value;
     setSelectedBrandName(selectedBrand);
 
-   axios
-     .post(
-       `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
-       { brandName: selectedBrand }
-     )
-     .then((response) => {
-       setProjects(response.data);
-       
-     })
-     .catch((error) => {
-       console.error("Error fetching projects:", error);
-       toast.error(error.response.data.message);
-     });
+    axios
+      .post(
+        `${import.meta.env.VITE_API_BASE}/api/admin/getProjectsByBrandName`,
+        { brandName: selectedBrand }
+      )
+      .then((response) => {
+        setProjects(response.data);
+
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+        toast.error(error.response.data.message);
+      });
 
   };
 
@@ -80,7 +87,17 @@ const CreateTask = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Make API call to post task data
+    const requiredFields = [
+      { key: 'brandName', label: 'Brand Name' },
+      { key: 'client_id', label: 'Project' },
+      { key: 'deadline', label: 'Deadline' },
+      { key: 'description', label: 'Description' },
+      { key: 'employee_id', label: 'Employee' },
+      { key: 'priority', label: 'Priority' },
+      { key: 'startDate', label: 'startDate' },
+
+    ];
+
     const taskData = {
       brandName: selectedBrandName,
       project_id: selectedProject,
@@ -91,6 +108,12 @@ const CreateTask = () => {
       deadline: deadline,
       priority: priority,
     };
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !taskData[key] || taskData[key].length === 0 : !taskData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/addTask`,
@@ -98,7 +121,9 @@ const CreateTask = () => {
       )
       .then((response) => {
         console.log("Task added successfully:", response.data);
-        // Clear form fields after successful submission
+         toast.success("Task added successfully", {
+           autoClose: 2000,
+         });
         setSelectedBrandName("");
         setSelectedProject("");
         setSelectedEmployee("");
@@ -107,6 +132,10 @@ const CreateTask = () => {
         setDeadline("");
         setStatus("");
         setPriority("");
+         
+          setTimeout(() => {
+            navigate("/getAllTask");
+          }, 2000);
       })
       .catch((error) => {
         console.error("Error adding task:", error);
@@ -132,8 +161,8 @@ const CreateTask = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row gap-3 mb-3">
-          <FormControl>
-            <FormLabel>Brand Name</FormLabel>
+          <FormControl >
+            <FormLabel>Brand Name <RequiredIndicator /></FormLabel>
             <Select value={selectedBrandName} onChange={handleBrandChange}>
               <option disabled value="">
                 Select Brand
@@ -146,8 +175,8 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl>
-            <FormLabel>Project</FormLabel>
+          <FormControl >
+            <FormLabel>Project <RequiredIndicator /></FormLabel>
             <Select value={selectedProject} onChange={handleProjectChange}>
               <option disabled value="">
                 Select Project
@@ -160,8 +189,8 @@ const CreateTask = () => {
             </Select>
           </FormControl>
 
-          <FormControl>
-            <FormLabel>Employee</FormLabel>
+          <FormControl >
+            <FormLabel>Employee<RequiredIndicator /></FormLabel>
             <Select
               value={selectedEmployee}
               onChange={(e) => setSelectedEmployee(e.target.value)}
@@ -178,17 +207,17 @@ const CreateTask = () => {
           </FormControl>
         </div>
 
-        <FormControl>
-          <FormLabel>Description</FormLabel>
+        <FormControl >
+          <FormLabel>Description<RequiredIndicator /></FormLabel>
           <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </FormControl>
 
-        <div className="flex gap-3 my-3">
-          <FormControl>
-            <FormLabel>Priority</FormLabel>
+        <div className="flex flex-col md:flex-row gap-3 my-3">
+          <FormControl >
+            <FormLabel>Priority<RequiredIndicator /></FormLabel>
             <Select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
@@ -201,31 +230,33 @@ const CreateTask = () => {
               <option value="0">Low</option>
             </Select>
           </FormControl>
-          <FormControl maxWidth={200}>
-            <FormLabel>Start Date</FormLabel>
-            <MyDatePicker
-              className="mb-1"
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              format={"DD/MM/YYYY"}
-              placeholderText="Pick Date"
-            />
-            <br />
-            {startDate?._d && <>{`${startDate?._d}`.slice(4, 16)}</>}
-          </FormControl>
+          <div className="flex">
+            <FormControl maxWidth={200} >
+              <FormLabel>Start Date<RequiredIndicator /> </FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+              <br />
+              {startDate && <p>{convertDateFormatString(startDate)}</p>}
+            </FormControl>
 
-          <FormControl maxWidth={200}>
-            <FormLabel>Deadline</FormLabel>
-            <MyDatePicker
-              className="mb-1"
-              selected={deadline}
-              onChange={(date) => setDeadline(date)}
-              format={"DD/MM/YYYY"}
-              placeholderText="Pick Date"
-            />
-            <br />
-            {deadline?._d && <>{`${deadline?._d}`.slice(4, 16)}</>}
-          </FormControl>
+            <FormControl maxWidth={200} >
+              <FormLabel>Deadline<RequiredIndicator /></FormLabel>
+              <MyDatePicker
+                className="mb-1"
+                selected={deadline}
+                onChange={(date) => setDeadline(date)}
+                format={"DD/MM/YYYY"}
+                placeholderText="Pick Date"
+              />
+              <br />
+              {deadline && <p>{convertDateFormatString(deadline)}</p>}
+            </FormControl>
+          </div>
         </div>
 
         <Button mt={4} width={"full"} colorScheme="purple" type="submit">

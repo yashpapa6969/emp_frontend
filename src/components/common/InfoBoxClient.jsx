@@ -35,8 +35,8 @@ const InfoBoxClient = () => {
       {clientDetails ? (
         <div className="w-full flex flex-col gap-3 mt-6">
           {segmentedValue === 'Personal Information' && (<>
-            <div className="flex gap-3 w-full">
-              {clientDetails.clientName && (<Card className="w-1/3">
+            <div className="flex flex-col md:flex-row gap-3 w-full">
+              {clientDetails.clientName && (<Card className="md:w-1/3 w-full">
                 <CardBody>
                   <Heading pb={4} size='xs'>
                     Client Name:
@@ -45,7 +45,7 @@ const InfoBoxClient = () => {
                   <Text fontSize={18} textTransform={"capitalize"}>{clientDetails.clientName}</Text>
                 </CardBody>
               </Card>)}
-              {clientDetails.companyName && (<Card className="w-1/3">
+              {clientDetails.companyName && (<Card className="md:w-1/3 w-full">
                 <CardBody>
                   <Heading pb={4} size='xs'>
                     Company Name:
@@ -54,7 +54,7 @@ const InfoBoxClient = () => {
                   <Text fontSize={18} textTransform={"capitalize"}>{clientDetails.companyName}</Text>
                 </CardBody>
               </Card>)}
-              {clientDetails.enquiryDate && (<Card className="w-1/3">
+              {clientDetails.enquiryDate && (<Card className="md:w-1/3 w-full">
                 <CardBody>
                   <Heading pb={4} size='xs'>
                     Enquiry Date:
@@ -82,8 +82,8 @@ const InfoBoxClient = () => {
                 <div className="flex gap-2">{clientDetails.source.map((el, index) => <Tag key={`req-${index}`} color="geekblue" className="text-lg">{el}</Tag>)}</div>
               </CardBody>
             </Card>)}
-            <div className="flex gap-3">
-              {clientDetails.additionalInformation && (<Card className="w-1/3">
+            <div className="flex flex-col md:flex-row gap-3">
+              {clientDetails.additionalInformation && (<Card className="md:w-1/3 w-full">
                 <CardBody>
                   <Heading pb={4} size='xs'>
                     Additional Information:

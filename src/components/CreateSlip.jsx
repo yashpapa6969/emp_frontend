@@ -7,12 +7,22 @@ import {
   FormLabel,
   Input,
   VStack,
+  TabPanel,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  Select,
 } from "@chakra-ui/react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+const RequiredIndicator = () => {
+  return <Text as="span" color="red.500" ml={1}>*</Text>;
+};
 const CreateSlip = () => {
   const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState(null);
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     employee_id: "",
     basicPay: "",
@@ -63,6 +73,23 @@ const CreateSlip = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const requiredFields = [
+      { key: 'employee_id', label: 'Select Employee' },
+      { key: 'basicPay', label: 'Basic Pay' },
+      { key: 'travelPay', label: 'Travel Pay' },
+      { key: 'bonus', label: 'Bonus' },
+      { key: 'paidLeave', label: 'Paid Leave' },
+      { key: 'tds', label: 'TDS' },
+      { key: 'totalLeaves', label: 'Total Leaves' },
+      { key: 'advanceSalary', label: 'Advance Salary' },
+    ];
+
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
     axios
       .post(
         `${import.meta.env.VITE_API_BASE}/api/admin/createSalarySlip`,
@@ -87,8 +114,23 @@ const CreateSlip = () => {
         link.click();
         link.parentNode.removeChild(link);
 
-        if (response.status === 200) {
-          toast.success('Salary slip downloaded successfully.');
+        if (response.status === 200 || response.status === 201) {
+          setSelectedEmployeeInfo(null);
+          setProjectData({
+            employee_id: "",
+            basicPay: "",
+            travelPay: "",
+            bonus: "",
+            paidLeave: "",
+            tds: "",
+            totalLeaves: "",
+            advanceSalary: "",
+          })
+          toast.success("Salary slip downloaded successfully.", {
+            autoClose: 2000,
+          }); setTimeout(() => {
+            navigate("/getAllSlip");
+          }, 2000);
         } else {
           console.error("Failed to download slip");
           toast.error('Failed to download slip.');
@@ -114,64 +156,110 @@ const CreateSlip = () => {
         m="4"
       >
         <h1 className="text-2xl font-semibold">Add Salary Slip</h1>
-        <p className="font-light mb-4">Fill the below form to add a new Salary Slip</p>
+        <p className="font-light mb-4">
+          Fill the below form to add a new Salary Slip
+        </p>
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="stretch">
-            <FormControl id="manager_id">
-              <FormLabel>Select Employee</FormLabel>
-              <select
-                onChange={handleSelectManager}
-                value={projectData.employee_id}
-              >
-                <option value="">Select Employee</option>
-                {employee.map((manager) => (
-                  <option key={manager.employee_id} value={manager.employee_id}>
-                    {manager.name}
-                  </option>
-                ))}
-              </select>
-            </FormControl>
-            {selectedEmployeeInfo && (
-              <VStack align="start" spacing={2}>
-                <Text fontWeight="bold">Name: {selectedEmployeeInfo.name}</Text>
-                <Text fontWeight="bold">Position: {selectedEmployeeInfo.position}</Text>
-                <Text fontWeight="bold">Department: {selectedEmployeeInfo.department}</Text>
-              </VStack>
-            )}
+            <Tabs>
+              <TabList>
+                <Tab>Incomes</Tab>
+                <Tab>Deductions</Tab>
+              </TabList>
 
+              <TabPanels>
+                <TabPanel>
+                  <FormControl id="manager_id" maxWidth={300} mb={4}>
+                    <FormLabel>Select Employee <RequiredIndicator /></FormLabel>
+                    <Select
+                      onChange={handleSelectManager}
+                      value={projectData.employee_id}
+                    >
+                      <option value="">Select Employee</option>
+                      {employee.map((manager) => (
+                        <option key={manager.employee_id} value={manager.employee_id}>
+                          {manager.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  {selectedEmployeeInfo && (
+                    <div className="mb-6">
+                      <Text fontWeight="bold">Name: {selectedEmployeeInfo.name}</Text>
+                      <Text fontWeight="bold">
+                        Position: {selectedEmployeeInfo.position}
+                      </Text>
+                      <Text fontWeight="bold">
+                        Department: {selectedEmployeeInfo.department}
+                      </Text>
+                    </div>
+                  )}
 
-            <div className="flex flex-col md:flex-row gap-3">
-              <FormControl id="basicPay" >
-                <FormLabel>Basic Pay</FormLabel>
-                <Input name="basicPay" onChange={handleChange} />
-              </FormControl>
-              <FormControl id="travelPay">
-                <FormLabel>Travel Pay</FormLabel>
-                <Input name="travelPay" onChange={handleChange} />
-              </FormControl>
-              <FormControl id="Bonus" >
-                <FormLabel>Bonus</FormLabel>
-                <Input name="bonus" onChange={handleChange} />
-              </FormControl>
-            </div>
-            <div className="flex gap-3">
-              <FormControl id="paidLeave" >
-                <FormLabel>Paid Leave</FormLabel>
-                <Input name="paidLeave" onChange={handleChange} />
-              </FormControl>
-              <FormControl id="tds" >
-                <FormLabel>TDS</FormLabel>
-                <Input name="tds" onChange={handleChange} />
-              </FormControl>
-              <FormControl id="totaleaves">
-                <FormLabel>Total Leaves</FormLabel>
-                <Input name="totalLeaves" onChange={handleChange} />
-              </FormControl>
-            </div>
-            <FormControl id="advanceSalary" maxWidth={400}>
-              <FormLabel>Advance Salary</FormLabel>
-              <Input name="advanceSalary" onChange={handleChange} />
-            </FormControl>
+                  <div className="flex flex-col md:flex-row gap-3 mb-4">
+                    <FormControl id="basicPay" >
+                      <FormLabel>Basic Pay<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="basicPay"
+                        onChange={handleChange}
+                        value={projectData.basicPay}
+                      />
+                    </FormControl>
+                    <FormControl id="travelPay" >
+                      <FormLabel>Travel Pay<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="travelPay"
+                        onChange={handleChange}
+                        value={projectData.travelPay}
+                      />
+                    </FormControl>
+                    <FormControl id="Bonus" >
+                      <FormLabel>Bonus<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="bonus"
+                        onChange={handleChange}
+                        value={projectData.bonus}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormControl id="paidLeave" maxWidth={300}>
+                    <FormLabel>Paid Leave<RequiredIndicator /></FormLabel>
+                    <Input
+                      name="paidLeave"
+                      onChange={handleChange}
+                      value={projectData.paidLeave}
+                    />
+                  </FormControl>
+                </TabPanel>
+                <TabPanel>
+                  <div className="flex gap-3 mb-4">
+                    <FormControl id="tds" maxWidth={250}>
+                      <FormLabel>TDS<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="tds"
+                        onChange={handleChange}
+                        value={projectData.tds}
+                      />
+                    </FormControl>
+                    <FormControl id="totaleaves" maxWidth={250}>
+                      <FormLabel>Total Leaves<RequiredIndicator /></FormLabel>
+                      <Input
+                        name="totalLeaves"
+                        onChange={handleChange}
+                        value={projectData.totalLeaves}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormControl id="advanceSalary" maxWidth={400} >
+                    <FormLabel>Advance Salary<RequiredIndicator /></FormLabel>
+                    <Input
+                      name="advanceSalary"
+                      onChange={handleChange}
+                      value={projectData.advanceSalary}
+                    />
+                  </FormControl>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
 
             <Button mt={6} type="submit" colorScheme="purple">
               Create Salary Slip

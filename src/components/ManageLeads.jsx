@@ -3,20 +3,16 @@ import { useEffect, useState } from "react";
 import { CustomKanban } from "./kanban/Board";
 import { Spinner } from "@chakra-ui/react";
 import {
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Button,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
+import GetAllLead from "./GetAllLead";
 
 const ManageLeads = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("manage");
 
   const fetchLeads = async () => {
     try {
@@ -41,25 +37,35 @@ const ManageLeads = () => {
     </div>
   )
 
-  const CreateProjectButton = ({ onOpen }) => {
-    return (
-      <Link to="/getAllLead">
-        <Button
-          colorScheme="purple"
-          onClick={onOpen}
-          className="flex gap-2 items-center mt-5 ml-3"
-        >
-          View All Leads
-        </Button>
-      </Link>
-    );
-  };
-
   return (
-    <>
-      <div className="flex items-end justify-end w-full pr-8"><CreateProjectButton /></div>
-      <CustomKanban data={leads} />
-    </>
+    <div className="p-6">
+      <div className="w-full flex items-center justify-between mb-6">
+        <Link to="/CreateLead">
+          <Button
+            colorScheme="blue"
+            _hover={{ bg: "blue.600" }}
+            mb="2"
+            className="flex gap-2 items-center"
+          >
+            <GoPlus /> Add a Lead
+          </Button>
+        </Link>
+        <div className="flex flex-col md:flex-row justify-end mb-3">
+          <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "manage" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("manage")}>
+            Pipeline View
+          </div>
+          <div className={`py-2 px-3 cursor-pointer border-b-[3px] rounded-t-md ${activeTab === "info" ? "bg-gray-100 border-purple-600" : "text-gray-500"}`} onClick={() => setActiveTab("info")}>
+            Table View
+          </div>
+        </div>
+      </div>
+      {activeTab === "manage" &&
+        <CustomKanban data={leads} />
+      }
+      {activeTab === "info" &&
+        <GetAllLead />
+      }
+    </div>
   )
 }
 

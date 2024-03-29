@@ -12,18 +12,25 @@ import {
   TagLabel,
   TagCloseButton,
   Flex,
+  Text,
+
 } from "@chakra-ui/react";
 import { Input, Select } from "antd";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 import moment from "moment";
 import SelectSource from "../common/SelectSource";
 import MyDatePicker from "../common/MyDatePicker";
 import SelectTag from "../common/SelectTag";
-
+import { Navigate, useNavigate } from "react-router-dom";
+const RequiredIndicator = () => {
+  return <Text as="span" color="red.500" ml={1}>*</Text>;
+};
 const Lead = () => {
+  const singleFileRef = useRef();
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState({
     enquiryDate: new Date(),
     source: [],
@@ -42,7 +49,7 @@ const Lead = () => {
     state: "",
     pincode: "",
     country: "",
-    requirement: "",
+    requirement: [],
     additionalInformation: "",
     sourceInformation: "",
     singleFile: null,
@@ -120,7 +127,9 @@ const Lead = () => {
   };
 
   const handleDeleteSingleFile = () => {
-    setProjectData({ ...projectData, singleFile: null });
+    singleFileRef.current.value = ""; // Clear the file input if necessary
+    const { singleFile, ...newData } = projectData;
+    setProjectData({ ...newData, singleFile: null }); // Set singleFile to null to clear it
   };
 
   const handleDeleteMultipleFile = (index) => {
@@ -136,23 +145,41 @@ const Lead = () => {
     e.preventDefault();
 
     const formData = new FormData();
+    const requiredFields = [
+      { key: 'brandName', label: 'Brand Name' },
+      { key: 'gender', label: 'Gender' },
+      { key: 'title', label: 'Title' },
+      { key: 'enquiryDate', label: 'Enquiry Date' },
+      { key: 'source', label: 'Source', isArray: true },
+      { key: 'clientName', label: 'Client Name' },
+      { key: 'companyName', label: 'Company Name' },
+      { key: 'phone1', label: 'Phone 1' }
+    ];
 
+    for (let { key, label, isArray } of requiredFields) {
+      if (isArray ? !projectData[key] || projectData[key].length === 0 : !projectData[key]) {
+        toast.error(`${label} is required.`);
+        return;
+      }
+    }
     Object.entries(projectData).forEach(([key, value]) => {
       if (key === "source" && Array.isArray(value)) {
-        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
       } else if (key === "requirement" && Array.isArray(value)) {
-        // Check if the current key is 'source' and it's an array
         value.forEach((sourceItem, index) => {
           formData.append(`${key}[${index}]`, sourceItem);
         });
-      } else if (value !== "") {
-        // For all other non-empty values
+      } else if (key === "multipleFiles" && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append("multipleFiles", value[i]);
+        }
+      } else if (value !== "" && value !== null) {
         formData.append(key, value);
       }
     });
+
     axios
       .post(`${import.meta.env.VITE_API_BASE}/api/admin/createLead`, formData, {
         headers: {
@@ -160,11 +187,42 @@ const Lead = () => {
         },
       })
       .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 200 || response.status === 201) {
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
+          setProjectData({
+            enquiryDate: new Date(),
+            source: [],
+            companyName: "",
+            clientName: "",
+            brandName: "",
+            phone1: "",
+            phone2: "",
+            email1: "",
+            email2: "",
+            website: "",
+            gstNo: "",
+            businessAddress: "",
+            billingAddress: "",
+            city: "",
+            state: "",
+            pincode: "",
+            country: "",
+            requirement: "",
+            additionalInformation: "",
+            sourceInformation: "",
+            singleFile: null,
+            multipleFiles: [],
+          });
+          setTimeout(() => {
+            navigate("/manageLeads");
+          }, 2000);
         } else {
-          console.error("Failed to create project");
-          toast.success(response.data.message);
+
+          toast.success(response.data.message, {
+            autoClose: 2000,
+          });
         }
       })
       .catch((error) => {
@@ -173,10 +231,20 @@ const Lead = () => {
       });
   };
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Handle the case where date is null or undefined
+    const formattedDate = new Date(date);
+    const day = formattedDate.getDate();
+    const month = formattedDate.toLocaleString("default", { month: "short" });
+    const year = formattedDate.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+
   return (
     <form onSubmit={handleSubmit}>
-      <FormControl id="enquiryDate">
-        <FormLabel>Enquiry Date</FormLabel>
+      <FormControl id="enquiryDate" >
+        <FormLabel>Enquiry Date <RequiredIndicator /> </FormLabel>
         <MyDatePicker
           className="mb-1"
           selected={projectData.enquiryDate}
@@ -187,9 +255,7 @@ const Lead = () => {
           format={"DD/MM/YYYY"}
         />
         <br />
-        {projectData?.enquiryDate?._d && (
-          <>{`${projectData?.enquiryDate?._d}`.slice(4, 16)}</>
-        )}
+        <div>{formatDate(projectData.enquiryDate)}</div>
       </FormControl>
       <div className="hidden md:block">
         <Tabs>
@@ -204,9 +270,10 @@ const Lead = () => {
           <TabPanels>
             <TabPanel>
               <div className="flex gap-4 mb-3">
-                <FormControl id="title" maxWidth={130}>
-                  <FormLabel>Title</FormLabel>
+                <FormControl id="title" maxWidth={130} >
+                  <FormLabel>Title <RequiredIndicator /></FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -214,8 +281,8 @@ const Lead = () => {
                     <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="clientName">
-                  <FormLabel>Client Name</FormLabel>
+                <FormControl id="clientName" >
+                  <FormLabel>Client Name <RequiredIndicator /></FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="tags">
@@ -232,9 +299,10 @@ const Lead = () => {
                   <Input name="sourceInformation" onChange={handleChange} />
                 </FormControl>
 
-                <FormControl id="gender" maxWidth={180}>
-                  <FormLabel>Gender</FormLabel>
+                <FormControl id="gender" maxWidth={180} >
+                  <FormLabel>Gender <RequiredIndicator /> </FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
                     onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
@@ -246,8 +314,8 @@ const Lead = () => {
                 </FormControl>
               </div>
               <div className="flex gap-3 mb-3">
-                <FormControl id="phone1">
-                  <FormLabel>Phone Number 1</FormLabel>
+                <FormControl id="phone1" >
+                  <FormLabel>Phone Number 1 <RequiredIndicator /> </FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="phone2">
@@ -298,11 +366,19 @@ const Lead = () => {
                 </FormControl>
                 <FormControl id="city">
                   <FormLabel>City</FormLabel>
-                  <Input name="city" onChange={handleChange} />
+                  <Input
+                    name="city"
+                    onChange={handleChange}
+                    value={projectData.city}
+                  />
                 </FormControl>
                 <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
-                  <Input name="pincode" onChange={handleChange} />
+                  <Input
+                    name="pincode"
+                    onChange={handleChange}
+                    value={projectData.pincode}
+                  />
                 </FormControl>
               </div>
               <FormControl id="businessAddress" className="w-1/2">
@@ -311,6 +387,7 @@ const Lead = () => {
                   name="businessAddress"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.businessAddress}
                 />
               </FormControl>
             </TabPanel>
@@ -318,16 +395,28 @@ const Lead = () => {
             <TabPanel>
               <div className="flex gap-3">
                 <FormControl id="brandName" mb={3} >
-                  <FormLabel>Brand Name</FormLabel>
-                  <Input name="brandName" onChange={handleChange} />
+                  <FormLabel>Brand Name <RequiredIndicator /> </FormLabel>
+                  <Input
+                    name="brandName"
+                    onChange={handleChange}
+                    value={projectData.brandName}
+                  />
                 </FormControl>
-                <FormControl id="companyName" mb={3}>
-                  <FormLabel>Company Name</FormLabel>
-                  <Input name="companyName" onChange={handleChange} />
+                <FormControl id="companyName" mb={3} >
+                  <FormLabel>Company Name <RequiredIndicator /> </FormLabel>
+                  <Input
+                    name="companyName"
+                    onChange={handleChange}
+                    value={projectData.companyName}
+                  />
                 </FormControl>
                 <FormControl id="gst" mb={3}>
                   <FormLabel>GST</FormLabel>
-                  <Input name="gst" onChange={handleChange} />
+                  <Input
+                    name="gstNo"
+                    onChange={handleChange}
+                    value={projectData.gstNo}
+                  />
                 </FormControl>
               </div>
               <FormControl id="billingAddress" className="w-1/2">
@@ -336,8 +425,12 @@ const Lead = () => {
                   name="billingAddress"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.billingAddress}
                 />
               </FormControl>
+              <Button type="submit" colorScheme="purple" className="mt-5">
+                Create Lead
+              </Button>
             </TabPanel>
             <TabPanel>
               <FormControl id="requirement" maxWidth={300}>
@@ -358,8 +451,12 @@ const Lead = () => {
                   name="additionalInformation"
                   onChange={handleChange}
                   className="h-16"
+                  value={projectData.additionalInformation}
                 />
               </FormControl>
+              <Button type="submit" colorScheme="purple" className="mt-5">
+                Create Lead
+              </Button>
             </TabPanel>
             <TabPanel>
               <div className="flex gap-3">
@@ -372,7 +469,11 @@ const Lead = () => {
                 )}
                 <FormControl mb="4">
                   <FormLabel>Single File</FormLabel>
-                  <Input type="file" onChange={handleSingleFileChange} />
+                  <Input
+                    type="file"
+                    ref={singleFileRef}
+                    onChange={handleSingleFileChange}
+                  />
                 </FormControl>
               </div>
               <div className="flex gap-3">
@@ -413,13 +514,27 @@ const Lead = () => {
 
           <TabPanels>
             <TabPanel>
+              <FormControl id="enquiryDate" >
+                <FormLabel>Enquiry Date <RequiredIndicator /> </FormLabel>
+                <MyDatePicker
+                  className="mb-1"
+                  selected={projectData.enquiryDate}
+                  onChange={(date) =>
+                    setProjectData({ ...projectData, enquiryDate: date })
+                  }
+                  defaultValue={moment()}
+                  format={"DD/MM/YYYY"}
+                />
+                <br />
+                <div>{formatDate(projectData.enquiryDate)}</div>
+              </FormControl>
               <div className="flex flex-col gap-3 mb-3">
-                <FormControl id="clientName">
-                  <FormLabel>Client Name</FormLabel>
+                <FormControl id="clientName" >
+                  <FormLabel>Client Name <RequiredIndicator /> </FormLabel>
                   <Input name="clientName" onChange={handleChange} />
                 </FormControl>
-                <FormControl id="phone1">
-                  <FormLabel>Phone Number 1</FormLabel>
+                <FormControl id="phone1" >
+                  <FormLabel>Phone Number 1<RequiredIndicator />  </FormLabel>
                   <Input name="phone1" onChange={handleChange} />
                 </FormControl>
                 <FormControl id="phone2">
@@ -430,34 +545,17 @@ const Lead = () => {
               <div className="flex gap-3 mb-3">
                 <FormControl id="tags">
                   <FormLabel>Source</FormLabel>
-                  <Select
-                    onChange={handleTagChange}
-                    size="md"
-                    placeholder="Select Source"
-                  >
-                    {tags.map((tag) => (
-                      <option key={tag._id} value={tag.source_tag_id}>
-                        {tag.sourceTagName}
-                      </option>
-                    ))}
-                  </Select>
-
-                  {projectData.source.map((tag) => (
-                    <Tag
-                      key={tag._id}
-                      size="md"
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="blue"
-                    >
-                      <TagLabel>{tag}</TagLabel>
-                      <TagCloseButton onClick={() => removeTagById(tag)} />
-                    </Tag>
-                  ))}
+                  <Flex>
+                    <SelectSource
+                      selectSourceValue={selectSourceValue}
+                      setSelectSourceValue={setSelectSourceValue}
+                    />
+                  </Flex>
                 </FormControl>
-                <FormControl id="title" maxWidth={130}>
-                  <FormLabel>Title</FormLabel>
+                <FormControl id="title" maxWidth={130} >
+                  <FormLabel>Title <RequiredIndicator /> </FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     placeholder="Select Title"
                     onChange={(value) => handleSelectOption("title", value)}
                   >
@@ -465,21 +563,26 @@ const Lead = () => {
                     <Select.Option value="Mrs.">Mrs.</Select.Option>
                   </Select>
                 </FormControl>
-                <FormControl id="gender">
-                  <FormLabel>Gender</FormLabel>
+                <FormControl id="gender" >
+                  <FormLabel>Gender <RequiredIndicator /> </FormLabel>
                   <Select
+                    style={{ width: "100%" }}
                     name="gender"
-                    onChange={handleChange}
+                    onChange={(value) => handleSelectOption("gender", value)}
                     placeholder="Select gender"
                   >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                    <Select.Option value="Others">Others</Select.Option>
                   </Select>
                 </FormControl>
               </div>
 
               <div className="flex flex-col gap-3">
+                <FormControl id="clientName">
+                  <FormLabel>Source Information</FormLabel>
+                  <Input name="sourceInformation" onChange={handleChange} />
+                </FormControl>
                 <FormControl id="email1">
                   <FormLabel>Email 1</FormLabel>
                   <Input name="email1" onChange={handleChange} />
@@ -521,11 +624,19 @@ const Lead = () => {
                 </FormControl>
                 <FormControl id="city">
                   <FormLabel>City</FormLabel>
-                  <Input name="city" onChange={handleChange} />
+                  <Input
+                    name="city"
+                    onChange={handleChange}
+                    value={projectData.city}
+                  />
                 </FormControl>
                 <FormControl id="pincode">
                   <FormLabel>Pincode</FormLabel>
-                  <Input name="pincode" onChange={handleChange} />
+                  <Input
+                    name="pincode"
+                    onChange={handleChange}
+                    value={projectData.pincode}
+                  />
                 </FormControl>
               </div>
               <FormControl id="businessAddress" className="w-1/2">
@@ -534,28 +645,42 @@ const Lead = () => {
                   name="businessAddress"
                   onChange={handleChange}
                   className="h-32"
+                  value={projectData.businessAddress}
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
                 <FormControl id="brandName" mb={3} >
-                  <FormLabel>Brand Name</FormLabel>
-                  <Input name="brandName" onChange={handleChange} />
+                  <FormLabel>Brand Name <RequiredIndicator /> </FormLabel>
+                  <Input
+                    name="brandName"
+                    onChange={handleChange}
+                    value={projectData.brandName}
+                  />
                 </FormControl>
-                <FormControl id="companyName" mb={3}>
-                  <FormLabel>Company Name</FormLabel>
-                  <Input name="companyName" onChange={handleChange} />
+                <FormControl id="companyName" mb={3} >
+                  <FormLabel>Company Name <RequiredIndicator /> </FormLabel>
+                  <Input
+                    name="companyName"
+                    onChange={handleChange}
+                    value={projectData.companyName}
+                  />
                 </FormControl>
                 <FormControl id="gst" mb={3}>
                   <FormLabel>GST</FormLabel>
-                  <Input name="gst" onChange={handleChange} />
+                  <Input
+                    name="gstNo"
+                    onChange={handleChange}
+                    value={projectData.gstNo}
+                  />
                 </FormControl>
               </div>
-              <FormControl id="billingAddress" isRequired className="w-1/2">
+              <FormControl id="billingAddress" className="w-1/2">
                 <FormLabel>Billing Address</FormLabel>
                 <Input
                   name="billingAddress"
                   onChange={handleChange}
                   className="h-32"
+                  value={projectData.billingAddress}
                 />
               </FormControl>
               <div className="flex flex-col mt-3 gap-3">
@@ -573,6 +698,7 @@ const Lead = () => {
                     name="additionalInformation"
                     onChange={handleChange}
                     className="h-16"
+                    value={projectData.additionalInformation}
                   />
                 </FormControl>
               </div>
@@ -586,7 +712,7 @@ const Lead = () => {
                 )}
                 <FormControl mb="4">
                   <FormLabel>Single File</FormLabel>
-                  <Input type="file" onChange={handleSingleFileChange} />
+                  <Input type="file" ref={singleFileRef} onChange={handleSingleFileChange} />
                 </FormControl>
               </div>
               <div className="flex gap-3">

@@ -12,18 +12,20 @@ const AppLayout = ({ children,
     activeSideabarLink,
     setActiveSideabarLink }: Props) => {
     const [showSidebar, setShowSidebar] = useState(true);
-    
+    const [isPhoneView, setIsPhoneView] = useState(false);
+
     useLayoutEffect(() => {
         const windowWidth = window.innerWidth;
-        if (windowWidth <= 640) setShowSidebar(false);
+        if (windowWidth <= 640) {
+            setShowSidebar(false);
+            setIsPhoneView(true);
+        }
     }, [])
 
 
     return (
         <div className='flex'>
-            {showSidebar &&
-                <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} activeLink={activeSideabarLink} setActiveLink={setActiveSideabarLink} />
-            }
+            <Sidebar isPhoneView={isPhoneView} showSidebar={showSidebar} setShowSidebar={setShowSidebar} activeLink={activeSideabarLink} setActiveLink={setActiveSideabarLink} />
 
             <div className='w-full'>
                 <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />

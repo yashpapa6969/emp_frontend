@@ -16,6 +16,8 @@ import CreateLead from "./components/CreateLead";
 import AppLayout from "./layouts/AppLayout";
 import { useState } from "react";
 import ToDoPage from "./components/ToDoPage";
+import Settings from "./components/Settings";
+
 import GetAllProject from "./components/GetAllProject";
 import InfoBoxByID from "./components/common/InfoBoxByID";
 import GetAllLead from "./components/GetAllLead";
@@ -32,7 +34,13 @@ import GetProject from "./components/common/InfoBoxProject";
 import InfoBoxClient from "./components/common/InfoBoxClient";
 import InfoBoxEmployee from "./components/common/InfoBoxEmployee";
 import UpdateClient from "./components/forms/UpdateClient";
-
+import UpdateLead from "./components/forms/UpdateLead";
+import UpdateLeave from "./components/forms/UpdateLeave";
+import UpdateLetter from "./components/forms/UpdateLetter";
+import GetAllLeaves from "./components/GetAllLeaves";
+import GetAllLetters from "./components/GetAllLetters";
+import CreateLeave from "./components/CreateLeave";
+import CreateLetter from "./components/CreateLetter";
 function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   // const refreshPage = () => {
@@ -145,6 +153,28 @@ function App() {
             }
           />
           <Route
+            path="/getAllLeaves"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllLeaves"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllLeaves />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/getAllLetters"
+            element={
+              <AppLayout
+                activeSideabarLink={"getAllLetters"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <GetAllLetters/>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/getAllTodo"
             element={
               <AppLayout
@@ -152,6 +182,17 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <ToDoPage />
+              </AppLayout>
+            }
+          />
+             <Route
+            path="/settings"
+            element={
+              <AppLayout
+                activeSideabarLink={"settings"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <Settings />
               </AppLayout>
             }
           />
@@ -178,6 +219,28 @@ function App() {
             }
           />
           <Route
+            path="/createLeave"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateLeave"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateLeave />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/createLetter"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateLetter"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <CreateLetter/>
+              </AppLayout>
+            }
+          />
+          <Route
             path="/createClient"
             element={
               <AppLayout
@@ -196,6 +259,39 @@ function App() {
                 setActiveSideabarLink={setActiveSideabarLink}
               >
                 <UpdateClient></UpdateClient>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLead"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLead></UpdateLead>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLeave"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLeave></UpdateLeave>
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/UpdateLetter"
+            element={
+              <AppLayout
+                activeSideabarLink={"CreateClient"}
+                setActiveSideabarLink={setActiveSideabarLink}
+              >
+                <UpdateLetter></UpdateLetter>
               </AppLayout>
             }
           />
